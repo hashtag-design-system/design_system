@@ -1,0 +1,10 @@
+{
+  "name": "design_system",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "cd packages/components && yarn build; cd ../icons && yarn build"
+  }
+}

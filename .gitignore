@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+node_modules/
+packages/components/node_modules
+packages/icons/node_modules
+tmp/
+temp/
+yarn-error.log
+packages/components/yarn-error.log
+packages/icons/yarn-error.log

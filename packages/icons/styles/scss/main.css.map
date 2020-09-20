@@ -1,0 +1,21 @@
+{
+    "version": 3,
+    "mappings": "AOAA,OAAO,CAAC,qJAAI",
+    "sources": [
+        "main.scss",
+        "_variables.scss",
+        "1-utils/_functions.scss",
+        "1-utils/_mixins.scss",
+        "2-base/_base.scss",
+        "2-base/_buttons.scss",
+        "2-base/_links.scss",
+        "2-base/_typography.scss",
+        "3-layout/_footer.scss",
+        "3-layout/_header.scss",
+        "3-layout/_navigation.scss",
+        "5-pages/_home.scss",
+        "5-pages/_search.scss"
+    ],
+    "names": [],
+    "file": "main.css"
+}
