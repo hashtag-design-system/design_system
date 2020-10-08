@@ -1,0 +1,155 @@
+.input {
+  @include input-base;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  &__field-container {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    position: relative;
+  }
+
+  &__label-container {
+    align-self: stretch;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 150%;
+    width: auto;
+    color: $grey-9;
+    margin-block: 0;
+  }
+
+  &__floating-label {
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    width: auto;
+    height: 18px;
+    align-self: stretch;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    color: $grey-7;
+    transform-origin: left top;
+    outline: none;
+
+    &:focus {
+      color: $primary;
+    }
+
+    &:focus-within,
+    &.active {
+      @extend .input__floating-label;
+      @include body;
+      top: 9px;
+      font-size: 10px;
+      line-height: 100%;
+      height: 10px;
+    }
+  }
+
+  &__help-text {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+    align-self: flex-end;
+    width: auto;
+    height: 18px;
+    margin-block: 0;
+    color: $grey-7;
+
+    &.error {
+      color: $red-6;
+    }
+  }
+
+  &-password {
+    letter-spacing: 0.05em;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: inherit;
+    border-color: $grey-8;
+    color: $grey-8;
+  }
+
+  @include input-placeholder-color;
+}
+
+.floating.input {
+  &:focus-within {
+    padding-top: 20px;
+    padding-bottom: 9px;
+  }
+  &:not(:placeholder-shown) {
+    padding-top: 20px;
+    padding-bottom: 9px;
+  }
+}
+
+.input-multiline {
+  @extend .input__container;
+  padding: 20px 0 0 0;
+  height: auto;
+  width: auto;
+  gap: 0;
+
+  .input {
+    height: auto;
+    border: none;
+    align-self: stretch;
+    padding: 0 12px 12px 12px !important;
+    resize: vertical;
+  }
+
+  &:focus-within {
+    @include input-focus;
+  }
+}
+
+.input,
+.input-multiline {
+  &.success {
+    @include input-state-color($green-7);
+  }
+
+  &.error {
+    @include input-state-color($red-6);
+  }
+
+  &.grey {
+    &:focus {
+      border-color: $grey-5;
+
+      + .input__floating-label.active {
+        color: $grey-7;
+      }
+    }
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: $grey-4;
+    border: none;
+    color: $grey-7;
+  }
+}

@@ -1,8 +1,25 @@
 @import "./styles/main.scss";
-@import "./components/Button/Button.module.scss";
+@import "components/Button/button";
+@import "components/Input/index";
+
+html,
+body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto";
+}
 
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.App > * {
+  align-self: center;
 }
 
 .App-logo {

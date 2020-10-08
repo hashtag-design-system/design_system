@@ -1,9 +1,22 @@
 import React from "react";
-import { IconPosition, IconSize } from "./config/.index";
 
-export type IconProp = {
+export type IconPropType = {
   component: React.ReactNode;
-  position: IconPosition;
   color?: string;
-  size?: IconSize;
 };
+
+export type InputHelpTextType = {
+  value: string;
+  icon?: React.ReactNode;
+};
+
+export interface GenerateIdParams {
+  length: number;
+  specialCharacters?: string;
+  lowerCase?: boolean;
+  upperCase?: boolean;
+  numbersOnly?: boolean;
+  numbers?: boolean;
+  hyphen?: boolean;
+  underscore?: boolean;
+}

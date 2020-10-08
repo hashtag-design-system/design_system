@@ -1,6 +1,7 @@
 import { tuple, tupleNum } from "../utils/type";
 
-export const ComponentStates = tuple("default", "focused", "hover", "active", "disabled");
+export const ComponentStates = tuple("default", "focus-visible", "hover", "disabled");
+export const InputComponentStates = tuple("default", "focus-visible", "hover", "disabled");
 
 export const IconPositions = tuple("left", "right");
 export type IconPosition = typeof IconPositions[number];

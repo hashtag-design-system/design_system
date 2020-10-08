@@ -2,3 +2,122 @@
   font-family: "Roboto";
   src: url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+// Base
+.font-bold {
+  @include font-bold;
+}
+
+.font-medium {
+  @include font-medium;
+}
+
+.font-uppercase {
+  @include font-uppercase;
+}
+
+.font-lowercase {
+  @include font-lowercase;
+}
+
+// Headings
+h1,
+.header-1 {
+  @include h1;
+}
+
+h2,
+.header-2 {
+  @include h2;
+}
+
+h3,
+.header-3 {
+  @include h3;
+}
+
+h4,
+.header-4 {
+  @include h4;
+}
+
+h5,
+.header-5 {
+  @include h5;
+}
+
+h6,
+.header-6 {
+  @include h6;
+}
+
+// Body
+p,
+.body-16 {
+  @include body;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.body-14 {
+  @include body;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.body-12 {
+  @include body;
+  font-size: 12px;
+  line-height: 150%;
+}
+
+// Other
+.pre-header {
+  @include font-base;
+  @include font-uppercase;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.04em;
+}
+
+.link-font {
+  @include font-base;
+  @include font-bold;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.input-label-font {
+  @include body;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.input-placeholder-font {
+  @include body;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.input-password-font {
+  letter-spacing: 0.05em !important;
+}
+
+.btn-default-font {
+  @include body;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.025em;
+}

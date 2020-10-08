@@ -1,0 +1,75 @@
+// Default button
+.btn {
+  @include base-btn;
+  background-color: $grey-1;
+  border: 2px solid $primary;
+  box-sizing: border-box;
+
+  &:hover,
+  &.hover {
+    background-color: $primary;
+    cursor: pointer;
+    color: $grey-1;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: inherit;
+    border-color: $grey-8;
+    color: $grey-8;
+  }
+
+  // Pill button
+  &.pill {
+    border-radius: 24px !important;
+  }
+}
+
+// Primary button
+.btn-primary {
+  background-color: $primary;
+  color: $grey-1;
+
+  &:hover,
+  &.hover {
+    background-color: darken($primary, 10);
+    cursor: pointer;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: $grey-7;
+    color: $grey-10;
+  }
+}
+
+// Danger button
+.btn-danger {
+  color: $red-6;
+  border-color: $red-6;
+
+  &:hover,
+  &.hover {
+    background-color: $red-7;
+    cursor: pointer;
+    color: $grey-1;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: inherit;
+    border-color: $red-6;
+    color: $red-6;
+  }
+
+  &:focus-visible,
+  &.focus-visible {
+    background-color: $red-6;
+  }
+}

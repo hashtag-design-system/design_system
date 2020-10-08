@@ -3,12 +3,19 @@
 // ! Make sure to @import first the other files located in this directory
 // ! & after the ones from the other folders, in the order they are presented from the first time
 
-// Current directory
-@import "./variables";
-
 // Utils
 @import "utils/functions";
 @import "utils/mixins";
 
+// Mixins
+@import "mixins/button";
+@import "mixins/input";
+@import "mixins/typography";
+
 // Base
+@import "base/global";
 @import "base/typography";
+@import "base/colors";
+@import "base/animations";
+
+@import "./variables";

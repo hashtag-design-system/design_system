@@ -1,34 +1,43 @@
 import React from "react";
-import { ComponentStates } from "../../config/.index";
-import { IconProp } from "../../typings";
-import { tuple } from "../../utils/type";
-import styles from "./Button.module.scss";
+import { ComponentStates } from "../../config/index";
+import { addClassnames } from "../../utils/styles";
 
-const ButtonTypes = tuple("default", "pill", "danger");
+const ButtonTypes = ["default", "primary", "danger"] as const;
 export type ButtonType = typeof ButtonTypes[number];
 export type ButtonState = typeof ComponentStates[number];
 
-type Props = {
+export type Props = {
   type?: ButtonType;
   state?: ButtonState;
-  outlined?: boolean;
-  icon?: IconProp;
+  block?: boolean;
+  pill?: boolean;
 };
 
-const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
+export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
   type = "default",
   state = "default",
-  outlined = false,
-  icon = {
-    size: 24,
-  },
+  block = false,
+  pill = false,
   children,
-  ...rest
+  ...props
 }) => {
+  const { className, ...rest } = props;
+  let classNames = addClassnames("btn btn-default-font", props);
+  if (type !== "default") {
+    classNames += ` btn-${type}`;
+  }
+  if (block) {
+    classNames += " block";
+  }
+  if (pill) {
+    classNames += " pill";
+  }
+  if (state !== "default") {
+    classNames += ` ${state}`;
+  }
   return (
-    <button className={styles.button} {...rest}>
-      <h1>{children}</h1>
-      <p>Hye</p>
+    <button className={classNames} {...rest}>
+      {children}
     </button>
   );
 };
