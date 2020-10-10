@@ -3,9 +3,12 @@ import errors from "../../config/errors";
 import { IconPropType, InputHelpTextType } from "../../typings";
 import { generateId } from "../../utils";
 import { addClassnames } from "../../utils/styles";
+import Digit from "./Digit";
+import DigitSequence from "./DigitSequence";
 import FloatingLabel from "./FloatingLabel";
 import LabelContainer from "./LabelContainer";
 import Multiline from "./Multiline";
+import Number from "./Number";
 import Password from "./Password";
 
 const InputStates = ["default", "focused", "success", "error", "disabled"] as const;
@@ -15,7 +18,7 @@ export type InputType = typeof InputTypes[number];
 export type ReactInputHTMLAttributes = React.InputHTMLAttributes<HTMLInputElement>;
 
 export type Props = {
-  placeholder: string;
+  placeholder?: string;
   floatingPlaceholder?: boolean;
   type?: InputType;
   label?: string;
@@ -36,7 +39,13 @@ type State = {
 export default class Input extends React.Component<Props & ReactInputHTMLAttributes, State> {
   public static Multiline: typeof Multiline;
 
+  public static Number: typeof Number;
+
   public static Password: typeof Password;
+
+  public static Digit: typeof Digit;
+
+  public static DigitSequence: typeof DigitSequence;
 
   state: State = {
     id: this.props.id || "",
@@ -88,6 +97,10 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
     }
   };
 
+  // focus = () => {
+  // ReactDOM.findDOMNode(this.refs.input).focus();
+  // };
+
   render() {
     let {
       placeholder,
@@ -106,7 +119,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
     } = this.props;
     const { id, isActive, value } = this.state;
 
-    let classNames = addClassnames(`input ${floatingPlaceholder ? "floating" : ""} input-placeholder-font`, this.props);
+    let classNames = addClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, this.props);
     if (state !== "default") {
       classNames += ` ${state}`;
     }
@@ -128,7 +141,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
     }
 
     return (
-      <div className="input__container" style={{ width: this.props.style?.width }}>
+      <div className="input__container" style={{ width: this.props.style?.width || this.props.width }}>
         {(label || helpText) && (
           <LabelContainer
             label={label}

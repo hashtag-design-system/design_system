@@ -10,7 +10,8 @@ function App() {
     <div className="App">
       <Button>Login</Button>
       <Input state="disabled" placeholder="Email" />
-      <Input.Multiline state="disabled" placeholder="Write here..." />
+      <Input.Digit />
+      <Input.DigitSequence helpText={{ value: "hey" }} digits={8} />
     </div>
   );
 }

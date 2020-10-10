@@ -4,8 +4,7 @@ import { addClassnames } from "../../utils/styles";
 import { InputProps } from "./index";
 import Input, { ReactInputHTMLAttributes } from "./Input";
 
-export type Props = Omit<InputProps, "placeholder" | "allowClear" | "icon"> & {
-  placeholder?: string;
+export type Props = Omit<InputProps, "allowClear" | "icon"> & {
   visibilityToggle?: boolean;
   toggleIcon?: IconPropType;
   // React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]

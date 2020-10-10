@@ -6,13 +6,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+    width: 280px;
   }
 
   &__field-container {
     display: flex;
     flex-direction: column;
-    width: 280px;
+    width: auto;
     position: relative;
+    align-self: stretch;
   }
 
   &__label-container {
@@ -93,6 +95,36 @@
   @include input-placeholder-color;
 }
 
+.input,
+.input-multiline {
+  &.success {
+    @include input-state-color($green-7);
+  }
+
+  &.error {
+    @include input-state-color($red-6);
+  }
+
+  &.grey {
+    &:focus {
+      border-color: $grey-5;
+
+      + .input__floating-label.active {
+        color: $grey-7;
+      }
+    }
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: $grey-4;
+    border: none;
+    color: $grey-7;
+  }
+}
+
 .floating.input {
   &:focus-within {
     padding-top: 20px;
@@ -124,32 +156,49 @@
   }
 }
 
-.input,
-.input-multiline {
-  &.success {
-    @include input-state-color($green-7);
-  }
-
-  &.error {
-    @include input-state-color($red-6);
-  }
-
-  &.grey {
-    &:focus {
-      border-color: $grey-5;
-
-      + .input__floating-label.active {
-        color: $grey-7;
-      }
-    }
-  }
+.input-digit {
+  background-color: $grey-1;
+  height: 80px;
+  width: 70px;
+  border-radius: 10px;
+  border-color: $grey-1;
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  justify-content: center;
 
   &:disabled,
   &.disabled,
   &[aria-disabled="true"] {
-    @include disabled-state;
-    background-color: $grey-4;
-    border: none;
-    color: $grey-7;
+    box-shadow: none;
+  }
+
+  &-sequence {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: none;
+    justify-content: center;
+    width: auto;
+    gap: 24px;
+
+    &__container {
+      @extend .input-digit-sequence;
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    &__right {
+      @extend .input-digit-sequence__container;
+    }
+
+    &__left {
+      @extend .input-digit-sequence__container;
+    }
+
+    .input__label-container {
+      align-self: center;
+    }
   }
 }
