@@ -42,7 +42,7 @@
 @mixin input-state-color($color) {
   border-color: $color;
 
-  + .input__floating-label {
+  + .input__help-text__icon {
     color: $color;
   }
 
@@ -52,7 +52,7 @@
   &:focus-within {
     border-color: $color;
 
-    + .input__floating-label.active {
+    + .input__help-text__icon {
       color: $color;
     }
   }

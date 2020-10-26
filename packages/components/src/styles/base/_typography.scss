@@ -16,19 +16,19 @@ span {
 }
 
 // Base
-.font-bold {
+.bold {
   @include font-bold;
 }
 
-.font-medium {
+.medium {
   @include font-medium;
 }
 
-.font-uppercase {
+.uppercase {
   @include font-uppercase;
 }
 
-.font-lowercase {
+.lowercase {
   @include font-lowercase;
 }
 

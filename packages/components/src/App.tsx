@@ -9,9 +9,8 @@ function App() {
   return (
     <div className="App">
       <Button>Login</Button>
-      <Input state="disabled" placeholder="Email" />
-      <Input.Digit />
-      <Input.DigitSequence helpText={{ value: "hey" }} digits={8} />
+      <Input maxLength={5} />
+      <Input.IncrDcr />
     </div>
   );
 }

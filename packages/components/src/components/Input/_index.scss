@@ -7,14 +7,14 @@
     align-items: flex-start;
     gap: 4px;
     width: 280px;
-  }
 
-  &__field-container {
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    position: relative;
-    align-self: stretch;
+    &__field {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+      position: relative;
+      align-self: stretch;
+    }
   }
 
   &__label-container {
@@ -164,7 +164,6 @@
   border-color: $grey-1;
   font-size: 36px;
   line-height: 42px;
-  letter-spacing: -0.02em;
   text-align: center;
   justify-content: center;
 
@@ -185,20 +184,50 @@
 
     &__container {
       @extend .input-digit-sequence;
+      @extend .input-digit-sequence__container;
       flex-direction: row;
       gap: 20px;
     }
 
-    &__right {
-      @extend .input-digit-sequence__container;
-    }
-
-    &__left {
-      @extend .input-digit-sequence__container;
-    }
-
     .input__label-container {
       align-self: center;
+    }
+  }
+}
+
+.input-incr-dcr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  margin: 8px;
+  width: 120px;
+  height: 32px;
+
+  &__icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    padding: 0 !important;
+    width: 32px;
+    height: 32px;
+    background-color: lighten($primary, 40);
+    border-color: lighten($primary, 40);
+    stroke: $primary;
+
+    &:hover {
+      background-color: lighten($primary, 20);
+      border-color: lighten($primary, 20);
+    }
+
+    &.disabled {
+      background-color: $grey-5;
+      border-color: $grey-5;
+      stroke: $grey-10;
+      cursor: default;
     }
   }
 }

@@ -6,6 +6,7 @@ import { addClassnames } from "../../utils/styles";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
 import FloatingLabel from "./FloatingLabel";
+import IncrDcr from "./IncrDcr";
 import LabelContainer from "./LabelContainer";
 import Multiline from "./Multiline";
 import Number from "./Number";
@@ -28,11 +29,12 @@ export type Props = {
   icon?: IconPropType;
   allowClear?: boolean;
   state?: InputState;
+  innerRef?: React.RefObject<HTMLInputElement> | any;
 };
 
 type State = {
   id: string;
-  value?: string;
+  value: string;
   isActive: boolean;
 };
 
@@ -47,9 +49,11 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
 
   public static DigitSequence: typeof DigitSequence;
 
+  public static IncrDcr: typeof IncrDcr;
+
   state: State = {
     id: this.props.id || "",
-    value: this.props.defaultValue || undefined,
+    value: this.props.defaultValue || "",
     isActive: this.props.defaultValue === undefined ? false : true,
   };
 
@@ -67,6 +71,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
+
     this.setState({
       value: text,
       isActive: true,
@@ -115,9 +120,14 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
       allowClear = false,
       className,
       disabled,
+      innerRef: ref,
       ...rest
     } = this.props;
     const { id, isActive, value } = this.state;
+
+    if (!placeholder) {
+      floatingPlaceholder = false;
+    }
 
     let classNames = addClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, this.props);
     if (state !== "default") {
@@ -125,7 +135,6 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
     }
 
     // TODO: set icon to the clear icon component
-    // TODO: if maxLength then show character limit, in Input.Multiline
     // Check and change (re-validate) Props
     if (allowClear && icon) {
       throw new Error(errors.allowClearAndIcon);
@@ -144,6 +153,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
       <div className="input__container" style={{ width: this.props.style?.width || this.props.width }}>
         {(label || helpText) && (
           <LabelContainer
+            className="body-12"
             label={label}
             withHelpText={helpText ? true : false}
             withIcon={helpText && helpText.icon ? true : false}
@@ -152,8 +162,9 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
             {helpText?.icon}
           </LabelContainer>
         )}
-        <div className="input__field-container">
+        <div className="input__container__field">
           <input
+            ref={ref}
             id={id}
             type={type}
             className={classNames}
@@ -173,15 +184,17 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
           )}
           {icon}
         </div>
-        {secondHelpText && (
+        {((secondHelpText || this.props.maxLength) && !classNames.includes("input-digit")) && (
           <LabelContainer
+            className="body-12"
             withHelpText
             withIcon={secondHelpText && secondHelpText.icon ? true : false}
+            charactersLimit={{ maxLength: this.props.maxLength, characters: value.length }}
             error={state === "error"}
             style={{ marginLeft: `${label || helpText ? "0px" : "12px"}` }}
           >
             {secondHelpText?.icon}
-            {secondHelpText.value}
+            {secondHelpText?.value}
           </LabelContainer>
         )}
       </div>

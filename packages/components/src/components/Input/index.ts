@@ -1,5 +1,6 @@
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
+import IncrDcr from "./IncrDcr";
 import Input from "./Input";
 import Multiline from "./Multiline";
 import Number from "./Number";
@@ -11,11 +12,13 @@ export type { InputState, InputType, Props as InputProps } from "./Input";
 export type { Props as MultilineInputProps } from "./Multiline";
 export type { Props as NumberInputProps } from "./Number";
 export type { Props as PasswordInputProps } from "./Password";
+export type { Props as IncrDcrInputProps } from "./IncrDcr";
 
 Input.Multiline = Multiline;
 Input.Number = Number;
 Input.Password = Password;
 Input.Digit = Digit;
 Input.DigitSequence = DigitSequence;
+Input.IncrDcr = IncrDcr;
 
 export default Input;
