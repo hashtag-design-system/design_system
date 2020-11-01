@@ -6,7 +6,7 @@ import IncrDcr from "./IncrDcr";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import BaseInput, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/BaseInput";
+import BaseInput, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/InputBase";
 import LabelContainer from "./__helpers__/LabelContainer";
 
 export type Props = InputProps & {

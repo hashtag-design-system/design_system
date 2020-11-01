@@ -1,0 +1,20 @@
+// This is the single file output by SCSS.
+// ! It is intended to ONLY @import other files
+// ! Make sure to @import first the other files located in this directory
+// ! & after the ones from the other folders, in the order they are presented from the first time
+
+// Utils
+@import "utils/functions";
+@import "utils/mixins";
+
+// Mixins
+@import "mixins/typography";
+
+// Base
+@import "base/globals";
+@import "base/shadows";
+@import "base/typography";
+@import "base/colors";
+@import "base/animations";
+
+@import "./variables";

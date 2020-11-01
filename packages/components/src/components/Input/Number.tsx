@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../Button";
-import BaseInput, { ReactInputHTMLAttributes } from "./__helpers__/BaseInput";
+import BaseInput, { ReactInputHTMLAttributes } from "./__helpers__/InputBase";
 
 const animationVariants = {
   hidden: { opacity: 0 },
