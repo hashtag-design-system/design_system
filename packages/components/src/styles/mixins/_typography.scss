@@ -4,8 +4,12 @@
   font-style: normal;
 }
 
+@mixin font-light {
+  font-weight: 200 !important;
+}
+
 @mixin font-medium {
-  font-weight: 500 !important  ;
+  font-weight: 500 !important;
 }
 
 @mixin font-bold {

@@ -1,5 +1,5 @@
 import React from "react";
-import { addClassnames } from "../../utils/styles";
+import { addClassnames } from "../../../utils/styles";
 
 type Props = {
   label?: string;
@@ -36,7 +36,9 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
       {withHelpText && <div className={classNames}>{children}</div>}
       {charactersLimit && charactersLimit.maxLength && (
         <div
-          className={`body-12 ${classNames} ${charactersLimit.maxLength === charactersLimit.characters ? "error medium" : ""}`}
+          className={`body-12 ${classNames} ${
+            charactersLimit.maxLength === charactersLimit.characters ? "error medium" : ""
+          }`}
         >
           {charactersLimit.characters} / {charactersLimit.maxLength}
         </div>
