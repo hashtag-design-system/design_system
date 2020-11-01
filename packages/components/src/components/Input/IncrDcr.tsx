@@ -17,7 +17,6 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & ReactInputHTML
     const { className, ...rest } = props;
     const classNames = addClassnames("input-incr-dcr body-16 medium", props);
 
-
     // TODO: Replace with <Icon /> components
 
     const increment = () => {
@@ -36,7 +35,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & ReactInputHTML
       <div className={classNames} {...rest}>
         <Button
           type="primary"
-          className={`input-incr-dcr__icon ${value > min ? "" : "disabled"}`}
+          className={`input-incr-dcr__icon ${value > min ? "" : "grey"}`}
           onClick={() => decrement()}
         >
           <svg width="14" height="2" viewBox="0 0 20 2" xmlns="http://www.w3.org/2000/svg">

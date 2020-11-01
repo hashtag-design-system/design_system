@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { generateId } from "../../utils";
 import { addClassnames } from "../../utils/styles";
-import FloatingLabel from "./FloatingLabel";
+import FloatingLabel from "./__helpers__/FloatingLabel";
+import LabelContainer from "./__helpers__/LabelContainer";
 import { Props as InputProps } from "./Input";
-import LabelContainer from "./LabelContainer";
 
 export type Props = Omit<InputProps, "type" | "icon" | "ref">;
 
@@ -127,7 +127,7 @@ export const Multiline = React.forwardRef<
             className="body-12"
             withHelpText
             withIcon={secondHelpText && secondHelpText.icon ? true : false}
-            charactersLimit={{ maxLength: props.maxLength, characters: value.length }}
+            charactersLimit={{ maxLength: props.maxLength, characters: String(value).length }}
             error={state === "error"}
             style={{ marginLeft: `${label || helpText ? "0px" : "12px"}` }}
           >

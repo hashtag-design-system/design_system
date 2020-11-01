@@ -3,7 +3,7 @@ import keys from "../../config/keys";
 import { InputHelpTextType } from "../../typings";
 import { addClassnames } from "../../utils/styles";
 import Input from "./Input";
-import LabelContainer from "./LabelContainer";
+import LabelContainer from "./__helpers__/LabelContainer";
 
 export type Props = {
   digits: number;

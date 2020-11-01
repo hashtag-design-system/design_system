@@ -4,7 +4,7 @@ import { addClassnames } from "../../utils/styles";
 import { InputProps } from "./index";
 import Input, { ReactInputHTMLAttributes } from "./Input";
 
-export type Props = Omit<InputProps, "allowClear" | "icon" | "innerRef"> & {
+export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
   visibilityToggle?: boolean;
   toggleIcon?: IconPropType;
   // React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]
@@ -33,7 +33,7 @@ export const Password = React.forwardRef<HTMLInputElement, Props & ReactInputHTM
         autoComplete={autoComplete}
         icon={visibilityToggle ? toggleIcon : undefined}
         className={classNames}
-        innerRef={ref}
+        innerref={ref}
         {...rest}
       />
     );

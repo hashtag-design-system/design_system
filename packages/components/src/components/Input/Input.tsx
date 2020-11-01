@@ -1,44 +1,31 @@
 import React from "react";
-import errors from "../../config/errors";
-import { IconPropType, InputHelpTextType } from "../../typings";
-import { generateId } from "../../utils";
-import { addClassnames } from "../../utils/styles";
+import { InputHelpTextType } from "../../typings";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
-import FloatingLabel from "./FloatingLabel";
 import IncrDcr from "./IncrDcr";
-import LabelContainer from "./LabelContainer";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
+import BaseInput, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/InputBase";
+import LabelContainer from "./__helpers__/LabelContainer";
 
-const InputStates = ["default", "focused", "success", "error", "disabled"] as const;
-export type InputState = typeof InputStates[number];
-const InputTypes = ["text", "email", "hidden", "number", "password", "search", "url"] as const;
-export type InputType = typeof InputTypes[number];
-export type ReactInputHTMLAttributes = React.InputHTMLAttributes<HTMLInputElement>;
-
-export type Props = {
-  placeholder?: string;
-  floatingPlaceholder?: boolean;
-  type?: InputType;
-  label?: string;
-  defaultValue?: string;
+export type Props = InputProps & {
   helpText?: InputHelpTextType;
   secondHelpText?: InputHelpTextType;
-  icon?: IconPropType;
-  allowClear?: boolean;
-  state?: InputState;
-  innerRef?: React.RefObject<HTMLInputElement> | any;
+  characterLimit?: boolean;
+  // React allows custom Props to be passed only when they are spelled in lowercase
+  innerref?: React.RefObject<HTMLInputElement> | any;
 };
 
 type State = {
   id: string;
-  value: string;
+  value: Props["value"];
   isActive: boolean;
 };
 
 export default class Input extends React.Component<Props & ReactInputHTMLAttributes, State> {
+  public static BaseInput: typeof BaseInput;
+
   public static Multiline: typeof Multiline;
 
   public static Number: typeof Number;
@@ -53,21 +40,9 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
 
   state: State = {
     id: this.props.id || "",
-    value: this.props.defaultValue || "",
-    isActive: this.props.defaultValue === undefined ? false : true,
+    value: this.props.value || "",
+    isActive: this.props.value === undefined ? false : true,
   };
-
-  // Generate a unique ID ofr the form element, if not provided
-  componentDidMount() {
-    if (!this.props.id) {
-      this.setState({
-        id: generateId({
-          length: 5,
-          specialCharacters: "-_",
-        }),
-      });
-    }
-  }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -77,77 +52,13 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
       isActive: true,
     });
 
-    if (this.props.onChange) {
-      this.props.onChange(e);
+    if (this.props.invalue) {
+      this.props.invalue(text);
     }
   };
-
-  handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    this.setState({
-      isActive: true,
-    });
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
-    }
-  };
-
-  handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      this.setState({
-        isActive: false,
-      });
-    }
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
-    }
-  };
-
-  // focus = () => {
-  // ReactDOM.findDOMNode(this.refs.input).focus();
-  // };
 
   render() {
-    let {
-      placeholder,
-      floatingPlaceholder = true,
-      type = "text",
-      label,
-      defaultValue,
-      state = "default",
-      icon,
-      helpText,
-      secondHelpText,
-      allowClear = false,
-      className,
-      disabled,
-      innerRef: ref,
-      ...rest
-    } = this.props;
-    const { id, isActive, value } = this.state;
-
-    if (!placeholder) {
-      floatingPlaceholder = false;
-    }
-
-    let classNames = addClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, this.props);
-    if (state !== "default") {
-      classNames += ` ${state}`;
-    }
-
-    // TODO: set icon to the clear icon component
-    // Check and change (re-validate) Props
-    if (allowClear && icon) {
-      throw new Error(errors.allowClearAndIcon);
-    }
-    if (floatingPlaceholder && label) {
-      throw new Error(errors.floatingPlaceholderAndLabel);
-    }
-    if (state === "error") {
-    }
-
-    if (type === "hidden") {
-      return null;
-    }
+    const { label, helpText, secondHelpText, characterLimit, className, state } = this.props;
 
     return (
       <div className="input__container" style={{ width: this.props.style?.width || this.props.width }}>
@@ -162,34 +73,13 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
             {helpText?.icon}
           </LabelContainer>
         )}
-        <div className="input__container__field">
-          <input
-            ref={ref}
-            id={id}
-            type={type}
-            className={classNames}
-            placeholder={!floatingPlaceholder ? placeholder : undefined}
-            value={value}
-            onChange={e => this.handleChange(e)}
-            onFocus={e => this.handleFocus(e)}
-            onBlur={e => this.handleBlur(e)}
-            disabled={disabled || rest["aria-disabled"] === "true" ? true : false || classNames.includes("disabled")}
-            {...rest}
-          />
-
-          {floatingPlaceholder && (
-            <FloatingLabel id={id} isActive={isActive}>
-              {placeholder}
-            </FloatingLabel>
-          )}
-          {icon}
-        </div>
-        {((secondHelpText || this.props.maxLength) && !classNames.includes("input-digit")) && (
+        <BaseInput ref={this.props.innerref} {...this.props} />
+        {(secondHelpText || this.props.maxLength) && characterLimit && !className?.includes("input-digit") && (
           <LabelContainer
             className="body-12"
             withHelpText
             withIcon={secondHelpText && secondHelpText.icon ? true : false}
-            charactersLimit={{ maxLength: this.props.maxLength, characters: value.length }}
+            charactersLimit={{ maxLength: this.props.maxLength, characters: String(this.state.value).length }}
             error={state === "error"}
             style={{ marginLeft: `${label || helpText ? "0px" : "12px"}` }}
           >

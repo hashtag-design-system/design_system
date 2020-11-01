@@ -22,7 +22,8 @@ export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> =
   ...props
 }) => {
   const { className, ...rest } = props;
-  let classNames = addClassnames("btn btn-default-font", props);
+  let classNames = addClassnames("btn btn-default-font shadow__form-2", props);
+
   if (type !== "default") {
     classNames += ` btn-${type}`;
   }
