@@ -1,4 +1,4 @@
-import { ReactInputHTMLAttributes } from "../components/Input/Input";
+import { ReactInputHTMLAttributes } from "../components/Input";
 
 export const addClassnames = <T extends React.AllHTMLAttributes<any> | ReactInputHTMLAttributes>(
   defaultClassname: string,
@@ -8,3 +8,4 @@ export const addClassnames = <T extends React.AllHTMLAttributes<any> | ReactInpu
   const classNames = `${defaultClassname}${props.className !== undefined && className !== null ? ` ${className}` : ""}`;
   return classNames;
 };
+  

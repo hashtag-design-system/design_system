@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { addClassnames } from "../../utils/styles";
 import Button from "../Button";
-import { ReactInputHTMLAttributes } from "./Input";
+import { ReactInputHTMLAttributes } from "./__helpers__/InputBase";
 
 export type Props = {
   min?: number;

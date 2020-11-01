@@ -1,8 +1,7 @@
 import React from "react";
 import { IconPropType } from "../../typings";
 import { addClassnames } from "../../utils/styles";
-import { InputProps } from "./index";
-import Input, { ReactInputHTMLAttributes } from "./Input";
+import Input, { InputProps, ReactInputHTMLAttributes } from "./index";
 
 export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
   visibilityToggle?: boolean;

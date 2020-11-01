@@ -1,7 +1,6 @@
 import React from "react";
 import { addClassnames } from "../../utils/styles";
-import { PasswordInputProps } from "./index";
-import Input, { ReactInputHTMLAttributes } from "./Input";
+import Input, { PasswordInputProps, ReactInputHTMLAttributes } from "./index";
 
 // PasswordInputProps already has omitted props, omitted also in "this" props
 export type Props = Omit<PasswordInputProps, "label" | "helpText" | "secondHelpText">;

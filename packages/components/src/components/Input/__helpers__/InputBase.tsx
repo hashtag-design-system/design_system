@@ -28,7 +28,7 @@ export type Props = {
   prefix?: string;
 };
 
-export const BaseInput = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
+export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
   (
     {
       placeholder,
@@ -114,7 +114,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, Props & ReactInputHT
 
               setSpanWidth(Math.round(el.getBoundingClientRect().width));
             }}
-            className="input-number__prefix body-16 light"
+            className="input__prefix body-16 light"
           >
             {prefix}
           </span>
@@ -148,4 +148,4 @@ export const BaseInput = React.forwardRef<HTMLInputElement, Props & ReactInputHT
   }
 );
 
-export default BaseInput;
+export default InputBase;

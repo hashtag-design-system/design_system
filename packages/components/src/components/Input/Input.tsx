@@ -6,7 +6,7 @@ import IncrDcr from "./IncrDcr";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import BaseInput, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/InputBase";
+import InputBase, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/InputBase";
 import LabelContainer from "./__helpers__/LabelContainer";
 
 export type Props = InputProps & {
@@ -24,7 +24,7 @@ type State = {
 };
 
 export default class Input extends React.Component<Props & ReactInputHTMLAttributes, State> {
-  public static BaseInput: typeof BaseInput;
+  public static InputBase: typeof InputBase;
 
   public static Multiline: typeof Multiline;
 
@@ -73,7 +73,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
             {helpText?.icon}
           </LabelContainer>
         )}
-        <BaseInput ref={this.props.innerref} {...this.props} />
+        <InputBase ref={this.props.innerref} {...this.props} />
         {(secondHelpText || this.props.maxLength) && characterLimit && !className?.includes("input-digit") && (
           <LabelContainer
             className="body-12"

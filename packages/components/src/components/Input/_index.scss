@@ -1,6 +1,13 @@
 .input {
   @include input-base;
 
+  &__prefix {
+    position: absolute;
+    top: 18px;
+    left: 14px;
+    color: $grey-7;
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
@@ -260,12 +267,6 @@
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
     }
-  }
-
-  &__prefix {
-    position: absolute;
-    top: 18px;
-    left: 14px;
   }
 
   &__btn {

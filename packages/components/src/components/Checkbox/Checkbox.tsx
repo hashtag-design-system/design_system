@@ -1,6 +1,6 @@
 import React from "react";
 import { addClassnames } from "../../utils/styles";
-import { ReactInputHTMLAttributes } from "../Input/Input";
+import { ReactInputHTMLAttributes } from "../Input";
 
 const CheckboxStates = [
   "default",
@@ -14,11 +14,11 @@ const CheckboxStates = [
 export type CheckboxState = typeof CheckboxStates[number];
 
 // See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
-const tickVariants = {
-  pressed: (isChecked: boolean) => ({ pathLength: isChecked ? 0.85 : 0.2 }),
-  checked: { pathLength: 1 },
-  unchecked: { pathLength: 0 },
-};
+// const tickVariants = {
+//   pressed: (isChecked: boolean) => ({ pathLength: isChecked ? 0.85 : 0.2 }),
+//   checked: { pathLength: 1 },
+//   unchecked: { pathLength: 0 },
+// };
 
 export type Props = {
   checked?: boolean;
