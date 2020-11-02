@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       {/* <Button>Login</Button> */}
       <Input placeholder="hey" />
-      {/* <Input.IncrDcr max={100} /> */}
+      <Input.IncrDcr />
       <Input.Number prefix="Kg" placeholder="Quantity" />
       <Checkbox></Checkbox>
     </div>

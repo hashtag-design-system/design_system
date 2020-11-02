@@ -13,7 +13,7 @@ export type ReactInputHTMLAttributes = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "value" | "defaultValue" | "type"
 > & {
-  invalue?: (value: string) => void;
+  invalue?: (value: string | number) => void;
 };
 
 export type Props = {

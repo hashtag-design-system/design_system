@@ -22,19 +22,22 @@ export type Props = {
 // TODO: Checkbox animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
 export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
   ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
-    const [value, setValue] = useState(count ? count : "");
+    const [value, setValue] = useState(count !== undefined ? count : "");
     const [isBtnShown, setIsBtnShown] = useState(false);
     const [isUp, setIsUp] = useState(false);
     const [isDown, setIsDown] = useState(false);
 
-    // const increment = () => {
-    //   if (!(value + stepNumber > max) && state !== "disabled") {
-    //     setValue(value => value + stepNumber);
+    // const increment = (multiplyStepNumber = 1) => {
+    //   console.log("hey");
+
+    //   const number = parseFloat(value.toString());
+    //   if (!(number + stepNumber * multiplyStepNumber > max) && state !== "disabled") {
+    //     setValue(number + stepNumber * multiplyStepNumber);
     //   }
     // };
 
-    const { className, onChange, invalue, ...rest } = props;
 
+    // TODO: Shift+up / Shift+down key -> 10 * stepNumber increase or decrease
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const text = e.target.value;
 
@@ -46,9 +49,11 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
       ) {
         e.preventDefault();
       } else {
-        setValue(e.target.value);
+        setValue(text);
       }
     };
+
+    const { className, onChange, onFocus, onBlur, invalue, ...rest } = props;
 
     // TODO: Replace with <Icon /> components
     return (
@@ -59,8 +64,24 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
           value={value}
           ref={ref}
           onChange={e => handleChange(e)}
-          onFocus={() => setIsBtnShown(true)}
-          onBlur={() => setIsBtnShown(false)}
+          onFocus={e => {
+            setIsBtnShown(true);
+            if (String(value) === String(count)) {
+              setValue("");
+            }
+            if (onFocus) {
+              onFocus(e);
+            }
+          }}
+          onBlur={e => {
+            setIsBtnShown(false);
+            if (!value) {
+              setValue(String(count));
+            }
+            if (onBlur) {
+              onBlur(e);
+            }
+          }}
           invalue={value => invalue && invalue(value)}
           {...rest}
         >
