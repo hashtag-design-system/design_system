@@ -1,0 +1,83 @@
+// Base styles
+@mixin font-base {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+}
+
+@mixin font-light {
+  font-weight: 200 !important;
+}
+
+@mixin font-medium {
+  font-weight: 500 !important;
+}
+
+@mixin font-bold {
+  font-weight: bold !important;
+}
+
+@mixin font-uppercase {
+  text-transform: uppercase !important;
+}
+
+@mixin font-lowercase {
+  text-transform: lowercase !important;
+}
+
+@mixin header {
+  @include font-base;
+  @include font-bold;
+  @include font-uppercase;
+}
+
+@mixin subheader {
+  @include font-base;
+  @include font-medium;
+}
+
+@mixin body {
+  @include font-base;
+  font-weight: normal;
+}
+
+// Headings
+@mixin h1 {
+  @include header;
+  font-size: 64px;
+  line-height: 75px;
+  letter-spacing: -0.02em;
+}
+
+@mixin h2 {
+  @include header;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.02em;
+}
+
+@mixin h3 {
+  @include header;
+  font-size: 40px;
+  line-height: 47px;
+  letter-spacing: -0.02em;
+}
+
+@mixin h4 {
+  @include header;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+}
+
+// Subheader
+@mixin h5 {
+  @include subheader;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+@mixin h6 {
+  @include subheader;
+  font-size: 20px;
+  line-height: 23px;
+}
