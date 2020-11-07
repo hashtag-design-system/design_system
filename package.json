@@ -6,5 +6,8 @@
   ],
   "scripts": {
     "build": "cd packages/components && yarn build; cd ../icons && yarn build"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
   }
 }
