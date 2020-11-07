@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStates } from "../../config/index";
 import { addClassnames } from "../../utils/styles";
 
-const ButtonTypes = ["default", "primary", "danger"] as const;
+const ButtonTypes = ["primary", "secondary", "danger"] as const;
 export type ButtonType = typeof ButtonTypes[number];
 export type ButtonState = typeof ComponentStates[number];
 
@@ -13,8 +13,9 @@ export type Props = {
   pill?: boolean;
 };
 
+// TODO: Test <Input.Number /> component, with new <Button /> classNames
 export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
-  type = "default",
+  type = "primary",
   state = "default",
   block = false,
   pill = false,
@@ -22,11 +23,8 @@ export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> =
   ...props
 }) => {
   const { className, ...rest } = props;
-  let classNames = addClassnames("btn btn-default-font shadow__form-2", props);
+  let classNames = addClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
 
-  if (type !== "default") {
-    classNames += ` btn-${type}`;
-  }
   if (block) {
     classNames += " block";
   }

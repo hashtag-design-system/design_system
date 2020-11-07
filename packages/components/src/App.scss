@@ -1,6 +1,16 @@
-@import "./styles/main.scss";
+// ! WARNING !
+// TODO: Make sure to import each SCSS files to this file, so that it works
+:root {
+  --primary: #0303ff;
+  --grey-1: #ffffff;
+  --grey-5: #d6d6d6;
+  --grey-7: #999999;
+}
+
+@import "../node_modules/@hashtag-design-system/primitives/src/index.scss";
 @import "components/Button/index";
 @import "components/Input/index";
+@import "components/Checkbox/index";
 
 html,
 body {

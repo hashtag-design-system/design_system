@@ -12,7 +12,13 @@ function App() {
       <Input placeholder="hey" />
       <Input.IncrDcr />
       <Input.Number prefix="Kg" placeholder="Quantity" />
-      <Checkbox></Checkbox>
+      <Checkbox
+        label={{
+          value:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
+        }}
+      />
+      <Checkbox label={{ value: "Pay here", position: "right" }} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
-import { generateId } from "../../../utils";
+import useInputId from "../../../utils/hooks/useInputId";
 import { addClassnames } from "../../../utils/styles";
 import FloatingLabel from "./FloatingLabel";
 
@@ -47,7 +47,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
     },
     ref
   ) => {
-    const [id, setId] = useState(props.id || "");
+    const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
 
@@ -94,19 +94,8 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
       }
     };
 
-    useEffect(() => {
-      if (!id) {
-        setId(
-          generateId({
-            length: 5,
-            specialCharacters: "-_",
-          })
-        );
-      }
-    }, [id]);
-
     return (
-      <div className="input__container__base">
+      <div className="input__wrapper__base">
         {prefix && (
           <span
             ref={el => {
@@ -133,7 +122,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
           ref={ref}
           style={{
             ...props.style,
-            paddingLeft: prefix ? `${15 + spanWidth}px` : "",
+            paddingLeft: prefix ? `${20 + spanWidth}px` : "",
           }}
           {...rest}
         />

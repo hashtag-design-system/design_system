@@ -61,7 +61,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
     const { label, helpText, secondHelpText, characterLimit, className, state } = this.props;
 
     return (
-      <div className="input__container" style={{ width: this.props.style?.width || this.props.width }}>
+      <div className="input__wrapper" style={{ width: this.props.style?.width || this.props.width }}>
         {(label || helpText) && (
           <LabelContainer
             className="body-12"

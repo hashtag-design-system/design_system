@@ -87,7 +87,7 @@ export const Multiline = React.forwardRef<
     }
 
     return (
-      <div className="input__container" style={{ width: props.style?.width }}>
+      <div className="input__wrapper" style={{ width: props.style?.width }}>
         {(label || helpText) && (
           <LabelContainer
             className="body-12"
@@ -99,7 +99,7 @@ export const Multiline = React.forwardRef<
             {helpText?.icon}
           </LabelContainer>
         )}
-        <div className="input__container__field">
+        <div className="input__wrapper__field">
           <div className={classNames} style={{ paddingTop: `${label || !floatingPlaceholder ? "12px" : "24px"}` }}>
             <textarea
               ref={ref}

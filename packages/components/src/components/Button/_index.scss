@@ -1,5 +1,27 @@
-// Default button
-.btn {
+// Primary button
+.btn-primary {
+  background-color: $primary;
+  color: $grey-1;
+
+  &:hover,
+  &.hover {
+    background-color: darken($primary, 10);
+    border-color: darken($primary, 10);
+    cursor: pointer;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @include disabled-state;
+    background-color: $grey-7;
+    border-color: $grey-7;
+    color: $grey-10;
+  }
+}
+
+// Secondary button
+.btn-secondary {
   @include base-btn;
   background-color: $grey-1;
   border: 2px solid $primary;
@@ -25,28 +47,6 @@
   // Pill button
   &.pill {
     border-radius: 24px !important;
-  }
-}
-
-// Primary button
-.btn-primary {
-  background-color: $primary;
-  color: $grey-1;
-
-  &:hover,
-  &.hover {
-    background-color: darken($primary, 10);
-    border-color: darken($primary, 10);
-    cursor: pointer;
-  }
-
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
-    @include disabled-state;
-    background-color: $grey-7;
-    border-color: $grey-7;
-    color: $grey-10;
   }
 }
 

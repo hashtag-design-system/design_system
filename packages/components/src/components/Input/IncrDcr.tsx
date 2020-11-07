@@ -59,7 +59,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
     return (
       <div className="input-incr-dcr">
         <Button
-          type="primary"
+          type="secondary"
           className={`input-incr-dcr__icon ${parseFloat(value) > min ? "" : "grey"}`}
           onClick={() => decrement()}
         >
@@ -93,7 +93,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
           {...rest}
         />
         <Button
-          type="primary"
+          type="secondary"
           className={`input-incr-dcr__icon ${parseFloat(value) < max || !value ? "" : "grey"}`}
           onClick={() => increment()}
         >

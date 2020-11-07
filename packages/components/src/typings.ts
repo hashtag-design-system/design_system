@@ -20,3 +20,11 @@ export interface GenerateIdParams {
   hyphen?: boolean;
   underscore?: boolean;
 }
+
+const SelectionInputLabelPositions = ["top", "bottom", "right", "left"] as const;
+export type SelectionInputLabelPosition = typeof SelectionInputLabelPositions[number]
+
+export type SelectionInputLabelType = {
+  value: string;
+  position?: SelectionInputLabelPosition;
+}

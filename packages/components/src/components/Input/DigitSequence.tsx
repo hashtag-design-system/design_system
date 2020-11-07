@@ -50,7 +50,7 @@ export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> 
 
   return (
     <div className={classNames} {...rest}>
-      <div className="input-digit-sequence__container" style={{ width: "auto" }}>
+      <div className="input-digit-sequence__wrapper" style={{ width: "auto" }}>
         {/* 
             Separated the components, so that no confusion is made in the browser 
             • 1st component should not have the same ref as the others, because it the first displayed & we set it by default to be focused on componentDidMount

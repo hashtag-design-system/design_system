@@ -20,33 +20,47 @@ export type Props = {
 };
 
 // TODO: Checkbox animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
-export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
+export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInputHTMLAttributes, "step">>(
   ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
-    const [value, setValue] = useState(count !== undefined ? count : "");
+    const [value, setValue] = useState<any>(count);
     const [isBtnShown, setIsBtnShown] = useState(false);
     const [isUp, setIsUp] = useState(false);
     const [isDown, setIsDown] = useState(false);
+    const [shiftKey, setShiftKey] = useState(false);
 
-    // const increment = (multiplyStepNumber = 1) => {
-    //   console.log("hey");
+    const increment = (step = stepNumber) => {
+      const number = value || count;
 
-    //   const number = parseFloat(value.toString());
-    //   if (!(number + stepNumber * multiplyStepNumber > max) && state !== "disabled") {
-    //     setValue(number + stepNumber * multiplyStepNumber);
-    //   }
-    // };
+      if (!(number + step > max) && state !== "disabled") {
+        console.log((parseFloat(String(count)) || count) + step);
 
+        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) + step)));
+      }
+    };
+
+    const decrement = (step = stepNumber) => {
+      const number = value || count;
+
+      if (!(number - step < min) && state !== "disabled") {
+        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) - step)));
+      }
+    };
 
     // TODO: Shift+up / Shift+down key -> 10 * stepNumber increase or decrease
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const text = e.target.value;
-
-      if (
-        text.length > String(max).length ||
-        state === "disabled" ||
-        parseFloat(text) > max ||
-        parseFloat(text) < min
-      ) {
+      if (shiftKey === true) {
+        return;
+      }
+      const text = e.target.valueAsNumber;
+      if (isNaN(text)) {
+        setValue("");
+        return;
+      }
+      if (value === count) {
+        setValue("");
+        return;
+      }
+      if (String(text).length > String(max).length || state === "disabled" || text > max || text < min) {
         e.preventDefault();
       } else {
         setValue(text);
@@ -54,6 +68,7 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
     };
 
     const { className, onChange, onFocus, onBlur, invalue, ...rest } = props;
+    console.log(isBtnShown);
 
     // TODO: Replace with <Icon /> components
     return (
@@ -64,15 +79,18 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
           value={value}
           ref={ref}
           onChange={e => handleChange(e)}
+          step={stepNumber}
           onFocus={e => {
             setIsBtnShown(true);
-            if (String(value) === String(count)) {
+            if (value === count) {
               setValue("");
             }
             if (onFocus) {
               onFocus(e);
             }
           }}
+          onMouseOver={() => setIsBtnShown(true)}
+          onMouseLeave={() => setIsBtnShown(false)}
           onBlur={e => {
             setIsBtnShown(false);
             if (!value) {
@@ -80,6 +98,22 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
             }
             if (onBlur) {
               onBlur(e);
+            }
+          }}
+          onKeyDownCapture={e => {
+            if (e.shiftKey) {
+              if (e.key === "ArrowUp") {
+                setShiftKey(true);
+                increment(10);
+              } else if (e.key === "ArrowDown") {
+                setShiftKey(true);
+                decrement(10);
+              }
+            }
+          }}
+          onKeyUpCapture={e => {
+            if (!(e.shiftKey && (e.key === "ArrowUp" || e.key === "ArrowDown"))) {
+              setShiftKey(false);
             }
           }}
           invalue={value => invalue && invalue(value)}
@@ -94,11 +128,15 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
                 transition={{ duration: 0.3 }}
                 exit={animationVariants.hidden}
                 className="input-number__btn"
+                onMouseOver={() => setIsBtnShown(true)}
+                onMouseLeave={() => setIsBtnShown(false)}
               >
                 <Button
+                  type="secondary"
                   style={{ height: isUp ? "24px" : isDown ? "20px" : "" }}
                   onMouseEnter={() => setIsUp(true)}
                   onMouseLeave={() => setIsUp(false)}
+                  onClick={() => increment()}
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -110,9 +148,11 @@ export const Number = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLA
                   </svg>
                 </Button>
                 <Button
+                  type="secondary"
                   style={{ height: isDown ? "24px" : isUp ? "20px" : "" }}
                   onMouseEnter={() => setIsDown(true)}
                   onMouseLeave={() => setIsDown(false)}
+                  onClick={() => decrement()}
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
