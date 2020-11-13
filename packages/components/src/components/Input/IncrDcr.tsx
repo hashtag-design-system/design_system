@@ -42,12 +42,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const text = e.target.value;
 
-      if (
-        text.length > String(max).length ||
-        state === "disabled" ||
-        parseFloat(text) > max ||
-        parseFloat(text) < min
-      ) {
+      if (text.length > String(max).length || state === "disabled" || parseFloat(text) > max || parseFloat(text) < min) {
         e.preventDefault();
       } else {
         setValue(text);

@@ -1,3 +1,5 @@
+@import "./__helpers__/mixins";
+
 .input {
   @include input-base;
 
@@ -7,7 +9,6 @@
     left: 14px;
   }
 
-  // TODO: Change in Figma `width` value
   &__wrapper {
     display: flex;
     flex-direction: column;
@@ -91,6 +92,14 @@
     letter-spacing: 0.05em;
   }
 
+  &__icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 12px;
+    top: calc(50% - 24px / 2);
+  }
+
   &:disabled,
   &.disabled,
   &[aria-disabled="true"] {
@@ -159,8 +168,8 @@
     resize: vertical;
   }
 
-  &:focus-within {
-    @include input-focus;
+  &:focus {
+    @include input--focus;
   }
 }
 
@@ -271,12 +280,6 @@
 
 .input-number {
   width: 120px;
-
-  .input {
-    &:focus {
-      padding-right: 32px;
-    }
-  }
 
   &__btn {
     background-color: $grey-2;

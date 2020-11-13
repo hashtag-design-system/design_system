@@ -19,7 +19,6 @@ export type Props = {
   state?: NumberInputState;
 };
 
-// TODO: Checkbox animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
 export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInputHTMLAttributes, "step">>(
   ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
     const [value, setValue] = useState<any>(count);
@@ -32,8 +31,6 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
       const number = value || count;
 
       if (!(number + step > max) && state !== "disabled") {
-        console.log((parseFloat(String(count)) || count) + step);
-
         setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) + step)));
       }
     };
@@ -46,7 +43,6 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
       }
     };
 
-    // TODO: Shift+up / Shift+down key -> 10 * stepNumber increase or decrease
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (shiftKey === true) {
         return;
@@ -68,7 +64,6 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
     };
 
     const { className, onChange, onFocus, onBlur, invalue, ...rest } = props;
-    console.log(isBtnShown);
 
     // TODO: Replace with <Icon /> components
     return (
@@ -82,7 +77,8 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
           step={stepNumber}
           onFocus={e => {
             setIsBtnShown(true);
-            if (value === count) {
+            // Bug on 2nd focus, does not work
+            if (String(value) === String(count)) {
               setValue("");
             }
             if (onFocus) {
@@ -90,7 +86,6 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
             }
           }}
           onMouseOver={() => setIsBtnShown(true)}
-          onMouseLeave={() => setIsBtnShown(false)}
           onBlur={e => {
             setIsBtnShown(false);
             if (!value) {
@@ -118,6 +113,7 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
           }}
           invalue={value => invalue && invalue(value)}
           {...rest}
+          style={{ paddingRight: isBtnShown ? "30px" : "" }}
         >
           <AnimatePresence>
             {isBtnShown && (
@@ -139,12 +135,7 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
                   onClick={() => increment()}
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12.25 6.91665L7 1.08331L1.75 6.91665"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M12.25 6.91665L7 1.08331L1.75 6.91665" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Button>
                 <Button
@@ -155,12 +146,7 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
                   onClick={() => decrement()}
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12.25 1.08332L7 6.91666L1.75 1.08332"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M12.25 1.08332L7 6.91666L1.75 1.08332" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Button>
               </motion.div>

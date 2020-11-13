@@ -1,4 +1,19 @@
 // Primary button
+.btn {
+  @include base-btn;
+
+  &__loading-icon {
+    position: relative;
+    top: -3px;
+    left: -76px;
+    align-self: center;
+
+    &__path {
+      stroke: lighten($primary, 20);
+    }
+  }
+}
+
 .btn-primary {
   background-color: $primary;
   color: $grey-1;

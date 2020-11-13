@@ -1,0 +1,119 @@
+:root {
+  /* Grey */
+  --grey-1: #ffffff;
+  --grey-2: #fafafa;  //darken($grey-1, 2)
+  --grey-3: #f5f5f5;  //darken($grey-1, 4)
+  --grey-4: #ebebeb;  //darken($grey-1, 8)
+  --grey-5: #d6d6d6;  //darken($grey-1, 16)
+  --grey-6: #c2c2c2;  //darken($grey-1, 24)
+  --grey-7: #999999;  //darken($grey-1, 40)
+  --grey-8: #666666;  //darken($grey-1, 60)
+  --grey-9: #333333;  //darken($grey-1, 80)
+  --grey-10: #000000;  //darken($grey-1, 100)
+  /* Blue */
+  --blue-1: #cfcfff;
+  --blue-2: #9c9cff;  //darken($blue-1, 10)
+  --blue-3: #6969ff;  //darken($blue-1, 20)
+  --blue-4: #3636ff;  //darken($blue-1, 30)
+  --blue-5: #0303ff;  //darken($blue-1, 40)
+  --blue-6: #0000cf;  //darken($blue-1, 50)
+  --blue-7: #00009c;  //darken($blue-1, 60)
+  --blue-8: #000069;  //darken($blue-1, 70)
+  --blue-9: #000036;  //darken($blue-1, 80)
+  /* Cyan */
+  --cyan-1: #ccffff;
+  --cyan-2: #99ffff;  //darken($cyan-1, 10)
+  --cyan-3: #66ffff;  //darken($cyan-1, 20)
+  --cyan-4: #33ffff;  //darken($cyan-1, 30)
+  --cyan-5: #00ffff;  //darken($cyan-1, 40)
+  --cyan-6: #00cccc;  //darken($cyan-1, 50)
+  --cyan-7: #009999;  //darken($cyan-1, 60)
+  --cyan-8: #006666;  //darken($cyan-1, 70)
+  --cyan-9: #003333;  //darken($cyan-1, 80)
+  /* Green */
+  --green-1: #dbfff2;
+  --green-2: #a8ffe0;  //darken($green-1, 10)
+  --green-3: #75ffcd;  //darken($green-1, 20)
+  --green-4: #42ffbb;  //darken($green-1, 30)
+  --green-5: #0fffa8;  //darken($green-1, 40)
+  --green-6: #00db8c;  //darken($green-1, 50)
+  --green-7: #00a86b;  //darken($green-1, 60)
+  --green-8: #00754b;  //darken($green-1, 70)
+  --green-9: #00422a;  //darken($green-1, 80)
+  /* Purple */
+  --purple-1: #e0b5ff;
+  --purple-2: #cb82ff;  //darken($purple-1, 10)
+  --purple-3: #b54fff;  //darken($purple-1, 20)
+  --purple-4: #a01cff;  //darken($purple-1, 30)
+  --purple-5: #8700e8;  //darken($purple-1, 40)
+  --purple-6: #6900b5;  //darken($purple-1, 50)
+  --purple-7: #4c0082;  //darken($purple-1, 60)
+  --purple-8: #2e004f;  //darken($purple-1, 70)
+  --purple-9: #10001c;  //darken($purple-1, 80)
+  /* Magenta */
+  --magenta-1: #ffccff;
+  --magenta-2: #ff99ff;  //darken($magenta-1, 10)
+  --magenta-3: #ff66ff;  //darken($magenta-1, 20)
+  --magenta-4: #ff33ff;  //darken($magenta-1, 30)
+  --magenta-5: #ff00ff;  //darken($magenta-1, 40)
+  --magenta-6: #cc00cc;  //darken($magenta-1, 50)
+  --magenta-7: #990099;  //darken($magenta-1, 60)
+  --magenta-8: #660066;  //darken($magenta-1, 70)
+  --magenta-9: #330033;  //darken($magenta-1, 80)
+  /* Yellow */
+  --yellow-1: #fff9cc;
+  --yellow-2: #fff399;  //darken($yellow-1, 10)
+  --yellow-3: #ffed66;  //darken($yellow-1, 20)
+  --yellow-4: #ffe733;  //darken($yellow-1, 30)
+  --yellow-5: #ffe100;  //darken($yellow-1, 40)
+  --yellow-6: #ccb400;  //darken($yellow-1, 50)
+  --yellow-7: #998700;  //darken($yellow-1, 60)
+  --yellow-8: #665a00;  //darken($yellow-1, 70)
+  --yellow-9: #332d00;  //darken($yellow-1, 80)
+  /* Orange */
+  --orange-1: #fff1e2;
+  --orange-2: #ffd8af;  //darken($orange-1, 10)
+  --orange-3: #ffc07c;  //darken($orange-1, 20)
+  --orange-4: #ffa749;  //darken($orange-1, 30)
+  --orange-5: #ff8f16;  //darken($orange-1, 40)
+  --orange-6: #e27500;  //darken($orange-1, 50)
+  --orange-7: #af5b00;  //darken($orange-1, 60)
+  --orange-8: #7c4000;  //darken($orange-1, 70)
+  --orange-9: #492600;  //darken($orange-1, 80)
+  /* Volcano */
+  --volcano-1: #ffdacc;
+  --volcano-2: #ffb599;  //darken($volcano-1, 10)
+  --volcano-3: #ff9066;  //darken($volcano-1, 20)
+  --volcano-4: #ff6b33;  //darken($volcano-1, 30)
+  --volcano-5: #ff4600;  //darken($volcano-1, 40)
+  --volcano-6: #cc3800;  //darken($volcano-1, 50)
+  --volcano-7: #992a00;  //darken($volcano-1, 60)
+  --volcano-8: #661c00;  //darken($volcano-1, 70)
+  --volcano-9: #330e00;  //darken($volcano-1, 80)
+  /* Bronze */
+  --bronze-1: #f5e5d6;
+  --bronze-2: #ebcbad;  //darken($bronze-1, 10)
+  --bronze-3: #e1b184;  //darken($bronze-1, 20)
+  --bronze-4: #d7975b;  //darken($bronze-1, 30)
+  --bronze-5: #cd7d32;  //darken($bronze-1, 40)
+  --bronze-6: #a46428;  //darken($bronze-1, 50)
+  --bronze-7: #7b4b1e;  //darken($bronze-1, 60)
+  --bronze-8: #523214;  //darken($bronze-1, 70)
+  --bronze-9: #29190a;  //darken($bronze-1, 80)
+  /* Red */
+  --red-1: #ffcccc;
+  --red-2: #ff9999;  //darken($red-1, 10)
+  --red-3: #ff6666;  //darken($red-1, 20)
+  --red-4: #ff3333;  //darken($red-1, 30)
+  --red-5: #ff0000;  //darken($red-1, 40)
+  --red-6: #cc0000;  //darken($red-1, 50)
+  --red-7: #990000;  //darken($red-1, 60)
+  --red-8: #660000;  //darken($red-1, 70)
+  --red-9: #330000;  //darken($red-1, 80)
+
+  /* Variables */
+  --primary: #{$blue-5};
+  --input-bg: #{$grey-2};
+
+
+}

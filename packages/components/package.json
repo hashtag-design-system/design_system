@@ -8,7 +8,8 @@
     "eject": "react-scripts eject",
     "test": "react-scripts test",
     "test:lint": "eslint . --ext .tsx, .ts --ignore-pattern node_modules/",
-    "test:prettier": "prettier --config .prettierrc.json --config-precedence cli-override --write ."
+    "test:prettier": "prettier --config .prettierrc.json --config-precedence cli-override --write .",
+    "css:var": "node src/utils/css/variablesToCss.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -18,7 +19,8 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "ie 10"
     ],
     "development": [
       "last 1 chrome version",
@@ -27,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "^1.0.0",
+    "@hashtag-design-system/primitives": "^1.0.17",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -36,8 +38,7 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
     "react-scripts": "3.4.3",
-    "sass": "^1.27.0",
-    "sass-loader": "^10.0.2"
+    "sass": "^1.29.0"
   },
   "devDependencies": {
     "@types/node": "^14.11.1",
@@ -54,6 +55,10 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.1.2",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^8.2.0",
+    "postcss-nested": "^5.0.1",
+    "postcss-preset-env": "^6.7.0",
     "prettier": "^2.1.2",
     "typescript": "^4.0.3"
   }

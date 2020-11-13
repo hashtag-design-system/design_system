@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { generateId } from "../generateId";
 
-const useInputId = (identifier?: string): string => {
+export const useInputId = (identifier?: string): string => {
   const [id, setId] = useState(identifier || "");
 
   useEffect(() => {
@@ -17,5 +17,3 @@ const useInputId = (identifier?: string): string => {
 
   return id;
 };
-
-export default useInputId;

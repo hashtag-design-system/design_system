@@ -10,8 +10,8 @@ import InputBase, { Props as InputProps, ReactInputHTMLAttributes } from "./__he
 import LabelContainer from "./__helpers__/LabelContainer";
 
 export type Props = InputProps & {
-  helpText?: InputHelpTextType;
-  secondHelpText?: InputHelpTextType;
+  helptext?: InputHelpTextType;
+  secondhelptext?: InputHelpTextType;
   characterLimit?: boolean;
   // React allows custom Props to be passed only when they are spelled in lowercase
   innerref?: React.RefObject<HTMLInputElement> | any;
@@ -58,33 +58,33 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
   };
 
   render() {
-    const { label, helpText, secondHelpText, characterLimit, className, state } = this.props;
+    const { label, helptext, secondhelptext, characterLimit, className, state } = this.props;
 
     return (
       <div className="input__wrapper" style={{ width: this.props.style?.width || this.props.width }}>
-        {(label || helpText) && (
+        {(label || helptext) && (
           <LabelContainer
             className="body-12"
             label={label}
-            withHelpText={helpText ? true : false}
-            withIcon={helpText && helpText.icon ? true : false}
+            withHelpText={helptext ? true : false}
+            withIcon={helptext && helptext.icon ? true : false}
           >
-            {helpText?.value}
-            {helpText?.icon}
+            {helptext?.value}
+            {helptext?.icon}
           </LabelContainer>
         )}
         <InputBase ref={this.props.innerref} {...this.props} />
-        {(secondHelpText || this.props.maxLength) && characterLimit && !className?.includes("input-digit") && (
+        {(secondhelptext || this.props.maxLength || characterLimit) && !className?.includes("input-digit") && (
           <LabelContainer
             className="body-12"
             withHelpText
-            withIcon={secondHelpText && secondHelpText.icon ? true : false}
+            withIcon={secondhelptext && secondhelptext.icon ? true : false}
             charactersLimit={{ maxLength: this.props.maxLength, characters: String(this.state.value).length }}
             error={state === "error"}
-            style={{ marginLeft: `${label || helpText ? "0px" : "12px"}` }}
+            style={{ marginLeft: `${label || helptext ? "0px" : "12px"}` }}
           >
-            {secondHelpText?.icon}
-            {secondHelpText?.value}
+            {secondhelptext?.icon}
+            {secondhelptext?.value}
           </LabelContainer>
         )}
       </div>

@@ -1,0 +1,88 @@
+@import "./mixins";
+
+.selection-input {
+  &__hidden-input {
+    display: none;
+    pointer-events: none;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__span {
+    height: 100%;
+    width: auto;
+    max-width: 700px;
+    align-self: center;
+    text-align: justify;
+    display: inline-block;
+  }
+
+  &__box {
+    align-self: center !important;
+    width: 24px;
+    height: 24px;
+    background-color: $grey-1;
+    border: 2px solid;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: box-shadow 0.3s;
+    flex-shrink: 0;
+
+    &.focus-visible:not(.disabled) {
+      @include selection-input--focus-visible;
+    }
+
+    &:focus-visible:not(.disabled) {
+      @include selection-input--focus-visible;
+    }
+
+    &:disabled,
+    &.disabled,
+    &[aria-disabled="true"] {
+      cursor: default;
+
+      &.checkbox,
+      &.radio-button[data-state="disabled|unchecked"] {
+        border: none !important;
+        background-color: $grey-5 !important;
+      }
+
+      &.radio-button {
+        border-color: $grey-5;
+      }
+    }
+  }
+}
+
+.radio-button,
+.switch {
+  + .selection-input__span {
+    text-align: center;
+  }
+}
+
+.dropdown {
+  &__item {
+    transition: background 0.1s;
+    padding: 4px 4px;
+    border-radius: 4px;
+    align-self: stretch;
+
+    &:hover {
+      background-color: $grey-3;
+    }
+
+    &__wrapper {
+      cursor: pointer;
+      padding: 0px 4px;
+    }
+  }
+}

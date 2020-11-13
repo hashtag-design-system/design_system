@@ -1,5 +1,5 @@
 import React from "react";
-import { addClassnames } from "../../../utils/styles";
+import { useClassnames } from "../../../utils";
 
 type Props = {
   label?: string;
@@ -18,8 +18,7 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
   children,
   ...props
 }) => {
-  const { className, ...rest } = props;
-  let classNames = addClassnames("", props);
+  let [classNames, rest] = useClassnames("", props);
   if (error) {
     classNames += " input__help-text error";
   } else {
@@ -35,11 +34,7 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
       {label}
       {withHelpText && <div className={classNames}>{children}</div>}
       {charactersLimit && charactersLimit.maxLength && (
-        <div
-          className={`body-12 ${classNames} ${
-            charactersLimit.maxLength === charactersLimit.characters ? "error medium" : ""
-          }`}
-        >
+        <div className={`body-12 ${classNames} ${charactersLimit.maxLength === charactersLimit.characters ? "error medium" : ""}`}>
           {charactersLimit.characters} / {charactersLimit.maxLength}
         </div>
       )}

@@ -1,10 +1,15 @@
 import React from "react";
-import { ComponentStates } from "../../config/index";
-import { addClassnames } from "../../utils/styles";
+import { useClassnames } from "../../utils";
+
+// const variants = {
+//   checked: { pathLength: 1 },
+//   initial: { pathLength: 0 },
+// };
 
 const ButtonTypes = ["primary", "secondary", "danger"] as const;
 export type ButtonType = typeof ButtonTypes[number];
-export type ButtonState = typeof ComponentStates[number];
+const ButtonStates = ["default", "disabled", "focus-visible", "hover"] as const;
+export type ButtonState = typeof ButtonStates[number];
 
 export type Props = {
   type?: ButtonType;
@@ -13,7 +18,6 @@ export type Props = {
   pill?: boolean;
 };
 
-// TODO: Test <Input.Number /> component, with new <Button /> classNames
 export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
   type = "primary",
   state = "default",
@@ -22,8 +26,10 @@ export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> =
   children,
   ...props
 }) => {
-  const { className, ...rest } = props;
-  let classNames = addClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
+  let [classNames, rest] = useClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
+
+  // Animation state
+  // const pathLength = useMotionValue(0);
 
   if (block) {
     classNames += " block";
@@ -35,9 +41,24 @@ export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> =
     classNames += ` ${state}`;
   }
   return (
+    // <div className="flex">
     <button className={classNames} {...rest}>
       {children}
     </button>
+    /* {state === "loading" && (
+        <motion.svg className="btn__loading-icon" width={78} height={41} fill="transparent">
+          <motion.path
+            d="M71.15 1H6a5 5 0 00-5 5v28a5 5 0 005 5h65.15a5 5 0 005-5V6a5 5 0 00-5-5z"
+            strokeWidth={4}
+            className="btn__loading-icon__path"
+            variants={tickVariants}
+            animate="checked"
+            transition={{ duration: 5 }}
+            style={{ pathLength }}
+          />
+        </motion.svg>
+      )} */
+    // </div>
   );
 };
 

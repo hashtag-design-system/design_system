@@ -1,19 +1,20 @@
 import React, { useMemo } from "react";
-import { SelectionInputLabelType } from "../../typings";
-import { CheckboxProps } from "../Checkbox/index";
+import { SelectionInputLabelType, SelectionInputProps } from "../../../typings";
 
 type RequiredInputLabel = Required<SelectionInputLabelType>;
 
 export type Props = {
-  label: CheckboxProps["label"];
+  id?: string;
+  label: SelectionInputProps["label"];
 };
 
-export const SelectionInputLabelContainer: React.FC<Props> = ({ label: propsLabel, children }) => {
-  const label: Required<SelectionInputLabelType> | undefined = useMemo(() => {
+export const LabelContainer: React.FC<Props> = ({ id, label: propsLabel, children }) => {
+  const label: RequiredInputLabel | undefined = useMemo(() => {
     if (propsLabel) {
-      const newLabel: Required<SelectionInputLabelType> = {
+      const newLabel: RequiredInputLabel = {
         value: "",
         position: (typeof propsLabel === "object" && propsLabel.position) || "right",
+        gap: "",
       };
 
       if (typeof propsLabel === "string") {
@@ -30,10 +31,12 @@ export const SelectionInputLabelContainer: React.FC<Props> = ({ label: propsLabe
   return (
     <>
       {!topOrLeft && children}
-      {label && <span className="checkbox__span input-label-font">{label.value}</span>}
+      {label && (
+        <label htmlFor={id} className="selection-input__span input-label-font">
+          {label.value}
+        </label>
+      )}
       {topOrLeft && children}
     </>
   );
 };
-
-export default SelectionInputLabelContainer;

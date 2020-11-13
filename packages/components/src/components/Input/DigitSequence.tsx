@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import keys from "../../config/keys";
 import { InputHelpTextType } from "../../typings";
-import { addClassnames } from "../../utils/styles";
+import { useClassnames } from "../../utils";
 import Input from "./Input";
 import LabelContainer from "./__helpers__/LabelContainer";
 
@@ -11,17 +11,11 @@ export type Props = {
   error?: boolean;
 };
 
-export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
-  digits = 4,
-  helpText,
-  error,
-  ...props
-}) => {
+export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
   const initialRef = useRef<HTMLInputElement>(null);
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 
-  const { className, ...rest } = props;
-  let classNames = addClassnames("input-digit-sequence", props);
+  let [classNames, rest] = useClassnames("input-digit-sequence", props);
   const state = error ? "error" : "default";
 
   useEffect(() => {

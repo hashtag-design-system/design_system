@@ -1,0 +1,17 @@
+.radio-button {
+  margin: 2px 0px 2px 0px;
+  border-radius: 100%;
+  display: flex;
+
+  + .selection-input__span {
+    cursor: pointer;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    + .selection-input__span {
+      cursor: default;
+    }
+  }
+}

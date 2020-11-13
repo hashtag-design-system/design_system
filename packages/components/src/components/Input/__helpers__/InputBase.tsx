@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
-import useInputId from "../../../utils/hooks/useInputId";
-import { addClassnames } from "../../../utils/styles";
+import { useClassnames, useInputId } from "../../../utils";
 import FloatingLabel from "./FloatingLabel";
 
-const InputStates = ["default", "focused", "success", "error", "disabled"] as const;
+const InputStates = ["default", "focus", "success", "error", "disabled"] as const;
 export type InputState = typeof InputStates[number];
 const InputTypes = ["text", "email", "hidden", "number", "password", "search", "url"] as const;
 export type InputType = typeof InputTypes[number];
-export type ReactInputHTMLAttributes = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "value" | "defaultValue" | "type"
-> & {
+export type ReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "type"> & {
   invalue?: (value: string | number) => void;
 };
 
@@ -43,6 +39,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
       children,
       prefix,
       invalue,
+      style,
       ...props
     },
     ref
@@ -50,20 +47,18 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
     const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
+    let [classNames, rest] = useClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, props);
 
-    const { className, onChange, onFocus, onBlur, ...rest } = props;
-
-    let classNames = addClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, props);
-
-    if (state !== "default" && state !== "focused") {
+    if (state !== "default") {
       classNames += ` ${state}`;
     }
-
     if (!placeholder) {
       floatingPlaceholder = false;
     }
 
-    // TODO: set icon to the clear icon component
+    const { onChange, onFocus, onBlur } = props;
+
+    // TODO: Replace with <Icon /> component
     // Check and change (re-validate) Props
     if (allowClear && icon) {
       throw new Error(errors.allowClearAndIcon);
@@ -121,8 +116,9 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
           disabled={disabled || rest["aria-disabled"] === "true" ? true : false || classNames.includes("disabled")}
           ref={ref}
           style={{
-            ...props.style,
-            paddingLeft: prefix ? `${20 + spanWidth}px` : "",
+            ...style,
+            paddingLeft: prefix ? `${20 + spanWidth}px` : undefined,
+            paddingRight: icon ? "36px" : undefined,
           }}
           {...rest}
         />

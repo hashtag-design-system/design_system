@@ -1,6 +1,6 @@
 import React from "react";
 import { IconPropType } from "../../typings";
-import { addClassnames } from "../../utils/styles";
+import { useClassnames } from "../../utils";
 import Input, { InputProps, ReactInputHTMLAttributes } from "./index";
 
 export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
@@ -12,18 +12,11 @@ export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
 
 export const Password = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
   (
-    {
-      placeholder = "Password",
-      floatingPlaceholder = true,
-      visibilityToggle = true,
-      toggleIcon,
-      autoComplete = "on",
-      ...props
-    },
+    { placeholder = "Password", floatingPlaceholder = true, visibilityToggle = true, toggleIcon, autoComplete = "on", ...props },
     ref
   ) => {
-    const { className, ...rest } = props;
-    let classNames = addClassnames("input-password", props);
+    let [classNames, rest] = useClassnames("input-password", props);
+
     return (
       <Input
         type="password"

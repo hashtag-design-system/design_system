@@ -1,0 +1,55 @@
+.switch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 3px;
+  width: auto;
+  min-width: 48px;
+  height: 27px;
+  background-color: $grey-4;
+  // Inner shadow
+  box-shadow: inset 0px 2px 2px -1px rgba(0, 4, 97, 0.2);
+  border-radius: 16px;
+  border: none;
+
+  &[data-ison="true"] {
+    // Works perfect with the <span /> HTML element & the adjacent in `padding-right`
+    flex-direction: row-reverse;
+
+    .switch__span {
+      visibility: hidden;
+
+      &[data-position="toggle"] {
+        margin-left: 6px;
+        margin-right: 0px;
+        visibility: visible;
+        color: $grey-1;
+      }
+    }
+  }
+
+  &__handler {
+    width: 19px;
+    height: 19px;
+    background-color: $grey-1;
+    border-radius: 100%;
+    z-index: 2;
+  }
+
+  &.disabled {
+    background-color: $grey-5 !important;
+    box-shadow: none;
+
+    .switch__handler {
+      box-shadow: none;
+    }
+  }
+
+  .switch__span {
+    margin-right: 6px;
+    margin-left: 0px;
+    color: $grey-10;
+    z-index: 1;
+  }
+}

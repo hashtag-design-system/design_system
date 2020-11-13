@@ -1,0 +1,4 @@
+@mixin selection-input--focus-visible {
+  @include accessibility-3dp;
+  border-color: $primary !important;
+}

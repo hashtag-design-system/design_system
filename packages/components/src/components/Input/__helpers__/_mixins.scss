@@ -1,0 +1,63 @@
+@mixin input--focus {
+  background-color: $grey-1;
+  border-color: $primary;
+
+  + .input__floating-label.active {
+    color: $primary;
+  }
+}
+
+@mixin input-base {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  background-color: $input-bg;
+  padding: 12px;
+  border: 2px solid $grey-5;
+  border-radius: 4px;
+  align-self: stretch;
+  outline: none;
+  transition: all 0.3s;
+
+  &.focus {
+    @include input--focus;
+  }
+
+  &:focus {
+    @include input--focus;
+  }
+}
+
+@mixin input-placeholder-color($color: $grey-7) {
+  &::placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+
+  &::-ms-input-placeholder {
+    color: $color;
+  }
+}
+
+@mixin input-state-color($color) {
+  border-color: $color;
+
+  + .input__help-text__icon {
+    color: $color;
+  }
+
+  @include input-placeholder-color($color);
+
+  &:focus,
+  &:focus-within {
+    border-color: $color;
+
+    + .input__help-text__icon {
+      color: $color;
+    }
+  }
+}

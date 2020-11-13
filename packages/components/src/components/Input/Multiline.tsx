@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { generateId } from "../../utils";
-import { addClassnames } from "../../utils/styles";
+import { generateId, useClassnames } from "../../utils";
+import { Props as InputProps } from "./Input";
 import FloatingLabel from "./__helpers__/FloatingLabel";
 import LabelContainer from "./__helpers__/LabelContainer";
-import { Props as InputProps } from "./Input";
 
 export type Props = Omit<InputProps, "type" | "icon" | "ref">;
 
-export const Multiline = React.forwardRef<
-  HTMLTextAreaElement,
-  Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>
->(
+export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
   (
     {
       placeholder,
@@ -18,8 +14,8 @@ export const Multiline = React.forwardRef<
       floatingPlaceholder = true,
       defaultValue,
       state = "default",
-      helpText,
-      secondHelpText,
+      helptext: helpText,
+      secondhelptext: secondHelpText,
       allowClear = false,
       cols = 28,
       rows = 5,
@@ -32,8 +28,8 @@ export const Multiline = React.forwardRef<
     const [value, setValue] = useState(defaultValue || "");
     const [isActive, setIsActive] = useState(defaultValue === "");
 
-    const { className, onChange, onFocus, onBlur, ...rest } = props;
-    let classNames = addClassnames(`input input-multiline`, props);
+    const { onChange, onFocus, onBlur } = props;
+    let [classNames, rest] = useClassnames(`input input-multiline`, props);
     if (state !== "default") {
       classNames += ` ${state}`;
     }
