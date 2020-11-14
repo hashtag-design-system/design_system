@@ -1,0 +1,18 @@
+// * See -> https://stackoverflow.com/questions/44735495/sass-customize-class-names-with-variables
+@mixin flex-class($direction, $align) {
+  .flex-#{$direction}-#{$align} {
+    display: flex;
+    flex-direction: #{$direction};
+    align-items: #{$align};
+  }
+}
+
+$directions: ("column", "column-reverse", "row", "row-reverse", "unset");
+$aligns: ("baseline", "center", "flex-end", "flex-start", "stretch", "unset");
+@mixin generate-flex() {
+  @each $direction in $directions {
+    @each $align in $aligns {
+      @include flex-class($direction, $align);
+    }
+  }
+}

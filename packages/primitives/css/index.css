@@ -1,0 +1,382 @@
+.block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.flex-column-baseline {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-column-flex-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.flex-column-flex-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.flex-column-stretch {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.flex-column-unset {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+}
+
+.flex-column-reverse-baseline {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: baseline;
+}
+
+.flex-column-reverse-center {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.flex-column-reverse-flex-end {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+
+.flex-column-reverse-flex-start {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.flex-column-reverse-stretch {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+}
+
+.flex-column-reverse-unset {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: unset;
+}
+
+.flex-row-baseline {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-row-flex-end {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.flex-row-flex-start {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.flex-row-stretch {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.flex-row-unset {
+  display: flex;
+  flex-direction: row;
+  align-items: unset;
+}
+
+.flex-row-reverse-baseline {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: baseline;
+}
+
+.flex-row-reverse-center {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.flex-row-reverse-flex-end {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+}
+
+.flex-row-reverse-flex-start {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+}
+
+.flex-row-reverse-stretch {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: stretch;
+}
+
+.flex-row-reverse-unset {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: unset;
+}
+
+.flex-unset-baseline {
+  display: flex;
+  flex-direction: unset;
+  align-items: baseline;
+}
+
+.flex-unset-center {
+  display: flex;
+  flex-direction: unset;
+  align-items: center;
+}
+
+.flex-unset-flex-end {
+  display: flex;
+  flex-direction: unset;
+  align-items: flex-end;
+}
+
+.flex-unset-flex-start {
+  display: flex;
+  flex-direction: unset;
+  align-items: flex-start;
+}
+
+.flex-unset-stretch {
+  display: flex;
+  flex-direction: unset;
+  align-items: stretch;
+}
+
+.flex-unset-unset {
+  display: flex;
+  flex-direction: unset;
+  align-items: unset;
+}
+
+.shadow-2 {
+  box-shadow: 0px 2px 4px rgba(0, 2, 46, 0.06);
+}
+.shadow-6 {
+  box-shadow: 4px 6px 12px rgba(0, 2, 46, 0.18);
+}
+.shadow__form-2 {
+  box-shadow: 0px 2px 2px rgba(0, 2, 46, 0.06), 2px 2px 4px rgba(0, 2, 46, 0.06);
+}
+.shadow__form-4 {
+  box-shadow: 0px 4px 4px rgba(0, 2, 46, 0.08), 4px 4px 8px rgba(0, 2, 46, 0.06);
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.light {
+  font-weight: 200 !important;
+}
+
+.medium {
+  font-weight: 500 !important;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.lowercase {
+  text-transform: lowercase !important;
+}
+
+h1,
+.header-1 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  font-size: 64px;
+  line-height: 75px;
+  letter-spacing: -0.02em;
+}
+
+h2,
+.header-2 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.02em;
+}
+
+h3,
+.header-3 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  font-size: 40px;
+  line-height: 47px;
+  letter-spacing: -0.02em;
+}
+
+h4,
+.header-4 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+}
+
+h5,
+.header-5 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+h6,
+.header-6 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+p,
+.body-16 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.body-14 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.body-12 {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 150%;
+}
+
+.pre-header {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  text-transform: uppercase !important;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.04em;
+}
+
+.link-font {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold !important;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.input-label-font {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.input-placeholder-font {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.input-password-font {
+  letter-spacing: 0.05em !important;
+}
+
+.btn-default-font {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.025em;
+}
+
+/* Grey */
+/* Blue */
+/* Cyan */
+/* Green */
+/* Purple */
+/* Magenta */
+/* Yellow */
+/* Orange */
+/* Volcano */
+/* Bronze */
+/* Red */
+/* Variables */
+
+/*# sourceMappingURL=index.css.map */

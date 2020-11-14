@@ -1,10 +1,16 @@
 {
   "name": "@hashtag-design-system/primitives",
-  "version": "1.0.0",
+  "version": "1.0.17",
   "description": "The CSS (SCSS) primitives of the #hashtag Design System",
   "main": "./src/index.scss",
   "scripts": {
-    "fresh": "rm -rf node_modules; yarn"
+    "fresh": "rm -rf node_modules; yarn",
+    "scss": "sass ./src:./css -c --update",
+    "npm:pusblish": "yarn scss && npm version $npm_config_version && npm publish",
+    "npm:hey": "yarn npm:publish --version=patch",
+    "npm:patch": "yarn scss && npm version patch && npm publish",
+    "npm:minor": "yarn scss && npm version minor && npm publish",
+    "npm:major": "yarn scss && npm version major && npm publish"
   },
   "repository": "https://github.com/hashtag-design-system/design_system",
   "author": "George Krachtopoulos <georgekraxt@gmail.com>",
@@ -13,5 +19,8 @@
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "sass": "^1.29.0"
   }
 }

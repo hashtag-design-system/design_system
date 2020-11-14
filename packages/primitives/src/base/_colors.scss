@@ -1,120 +1,121 @@
 /* Grey */
 $grey-1: #ffffff !default;
-$grey-2: darken($grey-1, 2) !default;
-$grey-3: darken($grey-1, 4) !default;
-$grey-4: darken($grey-1, 8) !default;
-$grey-5: darken($grey-1, 16) !default;
-$grey-6: darken($grey-1, 24) !default;
-$grey-7: darken($grey-1, 40) !default;
-$grey-8: darken($grey-1, 60) !default;
-$grey-9: darken($grey-1, 80) !default;
-$grey-10: darken($grey-1, 100) !default;
+$grey-2: #fafafa !default; //darken($grey-1, 2)
+$grey-3: #f5f5f5 !default; //darken($grey-1, 4)
+$grey-4: #ebebeb !default; //darken($grey-1, 8)
+$grey-5: #d6d6d6 !default; //darken($grey-1, 16)
+$grey-6: #c2c2c2 !default; //darken($grey-1, 24)
+$grey-7: #999999 !default; //darken($grey-1, 40)
+$grey-8: #666666 !default; //darken($grey-1, 60)
+$grey-9: #333333 !default; //darken($grey-1, 80)
+$grey-10: #000000 !default; //darken($grey-1, 100)
 
 /* Blue */
 $blue-1: #cfcfff !default;
-$blue-2: darken($blue-1, 10) !default;
-$blue-3: darken($blue-1, 20) !default;
-$blue-4: darken($blue-1, 30) !default;
-$blue-5: darken($blue-1, 40) !default;
-$blue-6: darken($blue-1, 50) !default;
-$blue-7: darken($blue-1, 60) !default;
-$blue-8: darken($blue-1, 70) !default;
-$blue-9: darken($blue-1, 80) !default;
+$blue-2: #9c9cff !default; //darken($blue-1, 10)
+$blue-3: #6969ff !default; //darken($blue-1, 20)
+$blue-4: #3636ff !default; //darken($blue-1, 30)
+$blue-5: #0303ff !default; //darken($blue-1, 40)
+$blue-6: #0000cf !default; //darken($blue-1, 50)
+$blue-7: #00009c !default; //darken($blue-1, 60)
+$blue-8: #000069 !default; //darken($blue-1, 70)
+$blue-9: #000036 !default; //darken($blue-1, 80)
 
 /* Cyan */
 $cyan-1: #ccffff !default;
-$cyan-2: darken($cyan-1, 10) !default;
-$cyan-3: darken($cyan-1, 20) !default;
-$cyan-4: darken($cyan-1, 40) !default;
-$cyan-5: darken($cyan-1, 50) !default;
-$cyan-6: darken($cyan-1, 60) !default;
-$cyan-7: darken($cyan-1, 70) !default;
-$cyan-8: darken($cyan-1, 80) !default;
+$cyan-2: #99ffff !default; //darken($cyan-1, 10)
+$cyan-3: #66ffff !default; //darken($cyan-1, 20)
+$cyan-4: #33ffff !default; //darken($cyan-1, 30)
+$cyan-5: #00ffff !default; //darken($cyan-1, 40)
+$cyan-6: #00cccc !default; //darken($cyan-1, 50)
+$cyan-7: #009999 !default; //darken($cyan-1, 60)
+$cyan-8: #006666 !default; //darken($cyan-1, 70)
+$cyan-9: #003333 !default; //darken($cyan-1, 80)
 
 /* Green */
 $green-1: #dbfff2 !default;
-$green-2: darken($green-1, 10) !default;
-$green-3: darken($green-1, 20) !default;
-$green-4: darken($green-1, 30) !default;
-$green-5: darken($green-1, 40) !default;
-$green-6: darken($green-1, 50) !default;
-$green-7: darken($green-1, 60) !default;
-$green-8: darken($green-1, 70) !default;
-$green-9: darken($green-1, 80) !default;
+$green-2: #a8ffe0 !default; //darken($green-1, 10)
+$green-3: #75ffcd !default; //darken($green-1, 20)
+$green-4: #42ffbb !default; //darken($green-1, 30)
+$green-5: #0fffa8 !default; //darken($green-1, 40)
+$green-6: #00db8c !default; //darken($green-1, 50)
+$green-7: #00a86b !default; //darken($green-1, 60)
+$green-8: #00754b !default; //darken($green-1, 70)
+$green-9: #00422a !default; //darken($green-1, 80)
 
 /* Purple */
 $purple-1: #e0b5ff !default;
-$purple-2: darken($purple-1, 10) !default;
-$purple-3: darken($purple-1, 20) !default;
-$purple-4: darken($purple-1, 30) !default;
-$purple-5: darken($purple-1, 40) !default;
-$purple-6: darken($purple-1, 50) !default;
-$purple-7: darken($purple-1, 60) !default;
-$purple-8: darken($purple-1, 70) !default;
-$purple-9: darken($purple-1, 80) !default;
+$purple-2: #cb82ff !default; //darken($purple-1, 10)
+$purple-3: #b54fff !default; //darken($purple-1, 20)
+$purple-4: #a01cff !default; //darken($purple-1, 30)
+$purple-5: #8700e8 !default; //darken($purple-1, 40)
+$purple-6: #6900b5 !default; //darken($purple-1, 50)
+$purple-7: #4c0082 !default; //darken($purple-1, 60)
+$purple-8: #2e004f !default; //darken($purple-1, 70)
+$purple-9: #10001c !default; //darken($purple-1, 80)
 
 /* Magenta */
 $magenta-1: #ffccff !default;
-$magenta-2: darken($magenta-1, 10) !default;
-$magenta-3: darken($magenta-1, 20) !default;
-$magenta-4: darken($magenta-1, 30) !default;
-$magenta-5: darken($magenta-1, 40) !default;
-$magenta-6: darken($magenta-1, 50) !default;
-$magenta-7: darken($magenta-1, 60) !default;
-$magenta-8: darken($magenta-1, 70) !default;
-$magenta-9: darken($magenta-1, 80) !default;
+$magenta-2: #ff99ff !default; //darken($magenta-1, 10)
+$magenta-3: #ff66ff !default; //darken($magenta-1, 20)
+$magenta-4: #ff33ff !default; //darken($magenta-1, 30)
+$magenta-5: #ff00ff !default; //darken($magenta-1, 40)
+$magenta-6: #cc00cc !default; //darken($magenta-1, 50)
+$magenta-7: #990099 !default; //darken($magenta-1, 60)
+$magenta-8: #660066 !default; //darken($magenta-1, 70)
+$magenta-9: #330033 !default; //darken($magenta-1, 80)
 
 /* Yellow */
 $yellow-1: #fff9cc !default;
-$yellow-2: darken($yellow-1, 10) !default;
-$yellow-3: darken($yellow-1, 20) !default;
-$yellow-4: darken($yellow-1, 30) !default;
-$yellow-5: darken($yellow-1, 40) !default;
-$yellow-6: darken($yellow-1, 50) !default;
-$yellow-7: darken($yellow-1, 60) !default;
-$yellow-8: darken($yellow-1, 70) !default;
-$yellow-9: darken($yellow-1, 80) !default;
+$yellow-2: #fff399 !default; //darken($yellow-1, 10)
+$yellow-3: #ffed66 !default; //darken($yellow-1, 20)
+$yellow-4: #ffe733 !default; //darken($yellow-1, 30)
+$yellow-5: #ffe100 !default; //darken($yellow-1, 40)
+$yellow-6: #ccb400 !default; //darken($yellow-1, 50)
+$yellow-7: #998700 !default; //darken($yellow-1, 60)
+$yellow-8: #665a00 !default; //darken($yellow-1, 70)
+$yellow-9: #332d00 !default; //darken($yellow-1, 80)
 
 /* Orange */
 $orange-1: #fff1e2 !default;
-$orange-2: darken($orange-1, 10) !default;
-$orange-3: darken($orange-1, 20) !default;
-$orange-4: darken($orange-1, 30) !default;
-$orange-5: darken($orange-1, 40) !default;
-$orange-6: darken($orange-1, 50) !default;
-$orange-7: darken($orange-1, 60) !default;
-$orange-8: darken($orange-1, 70) !default;
-$orange-9: darken($orange-1, 80) !default;
+$orange-2: #ffd8af !default; //darken($orange-1, 10)
+$orange-3: #ffc07c !default; //darken($orange-1, 20)
+$orange-4: #ffa749 !default; //darken($orange-1, 30)
+$orange-5: #ff8f16 !default; //darken($orange-1, 40)
+$orange-6: #e27500 !default; //darken($orange-1, 50)
+$orange-7: #af5b00 !default; //darken($orange-1, 60)
+$orange-8: #7c4000 !default; //darken($orange-1, 70)
+$orange-9: #492600 !default; //darken($orange-1, 80)
 
 /* Volcano */
 $volcano-1: #ffdacc !default;
-$volcano-2: darken($volcano-1, 10) !default;
-$volcano-3: darken($volcano-1, 20) !default;
-$volcano-4: darken($volcano-1, 30) !default;
-$volcano-5: darken($volcano-1, 40) !default;
-$volcano-6: darken($volcano-1, 50) !default;
-$volcano-7: darken($volcano-1, 60) !default;
-$volcano-8: darken($volcano-1, 70) !default;
-$volcano-9: darken($volcano-1, 80) !default;
+$volcano-2: #ffb599 !default; //darken($volcano-1, 10)
+$volcano-3: #ff9066 !default; //darken($volcano-1, 20)
+$volcano-4: #ff6b33 !default; //darken($volcano-1, 30)
+$volcano-5: #ff4600 !default; //darken($volcano-1, 40)
+$volcano-6: #cc3800 !default; //darken($volcano-1, 50)
+$volcano-7: #992a00 !default; //darken($volcano-1, 60)
+$volcano-8: #661c00 !default; //darken($volcano-1, 70)
+$volcano-9: #330e00 !default; //darken($volcano-1, 80)
 
 /* Bronze */
 $bronze-1: #f5e5d6 !default;
-$bronze-2: darken($bronze-1, 10) !default;
-$bronze-3: darken($bronze-1, 20) !default;
-$bronze-4: darken($bronze-1, 30) !default;
-$bronze-5: darken($bronze-1, 40) !default;
-$bronze-6: darken($bronze-1, 50) !default;
-$bronze-7: darken($bronze-1, 60) !default;
-$bronze-8: darken($bronze-1, 70) !default;
-$bronze-9: darken($bronze-1, 80) !default;
+$bronze-2: #ebcbad !default; //darken($bronze-1, 10)
+$bronze-3: #e1b184 !default; //darken($bronze-1, 20)
+$bronze-4: #d7975b !default; //darken($bronze-1, 30)
+$bronze-5: #cd7d32 !default; //darken($bronze-1, 40)
+$bronze-6: #a46428 !default; //darken($bronze-1, 50)
+$bronze-7: #7b4b1e !default; //darken($bronze-1, 60)
+$bronze-8: #523214 !default; //darken($bronze-1, 70)
+$bronze-9: #29190a !default; //darken($bronze-1, 80)
 
 /* Red */
 $red-1: #ffcccc !default;
-$red-2: darken($red-1, 10) !default;
-$red-3: darken($red-1, 20) !default;
-$red-4: darken($red-1, 30) !default;
-$red-5: darken($red-1, 40) !default;
-$red-6: darken($red-1, 50) !default;
-$red-7: darken($red-1, 60) !default;
-$red-8: darken($red-1, 70) !default;
-$red-9: darken($red-1, 80) !default;
+$red-2: #ff9999 !default; //darken($red-1, 10)
+$red-3: #ff6666 !default; //darken($red-1, 20)
+$red-4: #ff3333 !default; //darken($red-1, 30)
+$red-5: #ff0000 !default; //darken($red-1, 40)
+$red-6: #cc0000 !default; //darken($red-1, 50)
+$red-7: #990000 !default; //darken($red-1, 60)
+$red-8: #660000 !default; //darken($red-1, 70)
+$red-9: #330000 !default; //darken($red-1, 80)
