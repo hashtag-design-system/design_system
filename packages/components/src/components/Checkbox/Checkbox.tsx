@@ -1,7 +1,7 @@
 import { AnimateSharedLayout, motion, useMotionValue, useTransform } from "framer-motion";
 import React, { useMemo, useState } from "react";
 import { SelectionInputProps, SelectionInputState } from "../../typings";
-import { useClassnames, useInputId } from "../../utils";
+import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 
 // See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
@@ -111,5 +111,7 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
     );
   }
 );
+
+Checkbox.displayName = "Checkbox";
 
 export default Checkbox;

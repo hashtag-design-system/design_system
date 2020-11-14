@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import { useClassnames } from "../../utils";
+import React, { useCallback, useMemo, useState } from "react";
+import DropdownContext from "../../utils/ctx/DropdownContext";
+import { useClassnames } from "../../utils/hooks";
 import Input, { InputProps, ReactInputHTMLAttributes } from "../Input";
 import Icon from "./__helpers__/Icon";
-import OptionsListBox, { Props as OptionsListBoxProps } from "./__helpers__/OptionsListBox";
 
-export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "characterLimit"> &
-  OptionsListBoxProps & {
-    defaultOpen?: boolean;
-    inselect: (option: string) => void;
-  };
+export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "characterLimit"> & {
+  defaultOpen?: boolean;
+  regex?: RegExp;
+  options?: string[];
+  selectedOption?: string;
+  inselect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>) => void;
+};
 
 export const Select: React.FC<Props & ReactInputHTMLAttributes> = ({
   floatingPlaceholder,
@@ -18,30 +20,41 @@ export const Select: React.FC<Props & ReactInputHTMLAttributes> = ({
   label,
   placeholder,
   prefix,
+  defaultValue,
   state,
-  value,
   style,
-  maxHeight,
   inselect,
   children,
   defaultOpen = false,
+  regex,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const [inputValue, setInputValue] = useState(value);
+  const [value, setValue] = useState(defaultValue || "");
   const [classNames, rest] = useClassnames("flex-column-stretch select__wrapper", props);
+
+  const handleSelect = useCallback(
+    (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string) => {
+      if (inselect) inselect(key, e);
+      setIsOpen(false);
+      if (children) {
+        setValue(children);
+      }
+    },
+    [inselect]
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setValue(value);
+  };
+
+  const providerValue = useMemo(() => ({ isOpen, handleSelect }), [isOpen, handleSelect]);
 
   const newWidth = 168 || props.width || (style && style.width);
 
-  const onSelect = (value: string, children: string) => {
-    setIsOpen(false);
-    setInputValue(children);
-    if (inselect !== undefined) {
-      inselect(value);
-    }
-  };
-
-  const childrenWithExtraProps = React.Children.map(children, child => React.cloneElement(child as any, { onClick: onSelect }));
+  // * Alternative approach to `useContext` hook
+  // const childrenWithExtraProps = React.Children.map(children, child => React.cloneElement(child as any, { onClick: onSelect }));
 
   return (
     <div className={classNames} {...rest}>
@@ -53,17 +66,17 @@ export const Select: React.FC<Props & ReactInputHTMLAttributes> = ({
         helptext={helptext}
         secondhelptext={secondhelptext}
         state={isOpen ? "focus" : state}
-        value={inputValue}
+        value={value}
         label={label}
         prefix={prefix}
         innerref={innerref}
         style={style}
-        onKeyDownCapture={e => console.log(e.key)}
+        onChange={e => handleChange(e)}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
-        onChange={e => setInputValue(e.target.value)}
+        inchange={hey => console.log(hey)}
       />
-      {isOpen && children && <OptionsListBox maxHeight={maxHeight}>{childrenWithExtraProps}</OptionsListBox>}
+      {children && <DropdownContext.Provider value={providerValue}>{children}</DropdownContext.Provider>}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../Button";
-import InputBase, { ReactInputHTMLAttributes } from "./__helpers__/InputBase";
+import Base, { BaseReactInputHTMLAttributes } from "./__helpers__/Base";
 
 const IncrDcrInputStates = [
   "default",
@@ -21,7 +21,7 @@ export type Props = {
   state?: IncrDcrInputState;
 };
 
-export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInputHTMLAttributes, "prefix">>(
+export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "prefix">>(
   ({ min = 0, max = 1000, count = 0, stepNumber = 1, state = "default", ...props }, ref) => {
     const [value, setValue] = useState<string>(String(count));
 
@@ -49,7 +49,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
       }
     };
 
-    const { className, onChange, onFocus, onBlur, invalue, ...rest } = props;
+    const { className, onChange, onFocus, onBlur, inchange, ...rest } = props;
 
     return (
       <div className="input-incr-dcr">
@@ -62,13 +62,13 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
             <path d="M1 1H19" strokeWidth={2} strokeLinecap="round" />
           </svg>
         </Button>
-        <InputBase
+        <Base
           type="number"
           className={className}
           value={value}
           ref={ref}
           onChange={e => handleChange(e)}
-          invalue={value => invalue && invalue(value)}
+          inchange={value => inchange && inchange(value)}
           onFocus={e => {
             if (String(value) === String(count)) {
               setValue("");
@@ -100,5 +100,7 @@ export const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactInpu
     );
   }
 );
+
+IncrDcr.displayName = "InputIncrDcr";
 
 export default IncrDcr;

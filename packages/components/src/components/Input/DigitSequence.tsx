@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import keys from "../../config/keys";
 import { InputHelpTextType } from "../../typings";
-import { useClassnames } from "../../utils";
+import { useClassnames } from "../../utils/hooks";
 import Input from "./Input";
 import LabelContainer from "./__helpers__/LabelContainer";
 
@@ -82,5 +82,7 @@ export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> 
     </div>
   );
 };
+
+DigitSequence.displayName = "InputDigitSequence"
 
 export default DigitSequence;

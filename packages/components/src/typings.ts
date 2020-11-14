@@ -1,4 +1,6 @@
+import { HTMLMotionProps } from "framer-motion";
 import React from "react";
+import { BaseReactInputHTMLAttributes } from "./components/Input";
 
 export type IconPropType = React.ReactNode;
 
@@ -37,3 +39,5 @@ export type SelectionInputProps = {
 
 const SelectionInputStates = ["unchecked", "pressed", "focus-visible", "checked", "disabled|unchecked", "disabled|checked"] as const;
 export type SelectionInputState = typeof SelectionInputStates[number];
+
+export type AllProps = React.AllHTMLAttributes<unknown> | BaseReactInputHTMLAttributes | HTMLMotionProps<any>;

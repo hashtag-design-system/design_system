@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { IconPropType, SelectionInputProps } from "../../typings";
-import { useClassnames, useInputId } from "../../utils";
+import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
@@ -100,5 +100,7 @@ export const Switch = React.forwardRef<HTMLLabelElement, Props>(
     );
   }
 );
+
+Switch.displayName = "Switch";
 
 export default Switch;

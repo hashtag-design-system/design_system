@@ -7,6 +7,10 @@
   }
 }
 
+@mixin input--hover {
+  background-color: $grey-1;
+}
+
 @mixin input-base {
   width: 100%;
   box-sizing: border-box;
@@ -18,6 +22,14 @@
   align-self: stretch;
   outline: none;
   transition: all 0.3s;
+
+  &.hover {
+    @include input--hover;
+  }
+
+  &:hover {
+    @include input--hover;
+  }
 
   &.focus {
     @include input--focus;

@@ -3,17 +3,18 @@
 import React from "react";
 import "./App.scss";
 import Checkbox from "./components/Checkbox";
+import Dropdown from "./components/Dropdown";
+import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
 import Switch from "./components/Switch";
-import Option from "./components/__helpers__/Dropdown/Option";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
   return (
     <div className="App">
-      {/* <Input.Number prefix="Kg" placeholder="Quantity" /> */}
+      <Input placeholder="Placeholder" inchange={value => console.log(value)} />
       <Checkbox
         label={{
           value:
@@ -31,9 +32,11 @@ function App() {
         helptext={{ value: "Help text" }}
         secondhelptext={{ value: "2nd Help text" }}
       >
-        <Option value="amsterdam">Amsterdam</Option>
-        <Option value="colombia">Colombia</Option>
-        <Option value="north_korea">North Korea</Option>
+        <Dropdown.OptionsBox>
+          <Dropdown.Option value="amsterdam">Amsterdam</Dropdown.Option>
+          <Dropdown.Option value="colombia">Colombia</Dropdown.Option>
+          <Dropdown.Option value="north_korea">North Korea</Dropdown.Option>
+        </Dropdown.OptionsBox>
       </Select>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum ullam magni, impedit facilis asperiores facere mollitia harum

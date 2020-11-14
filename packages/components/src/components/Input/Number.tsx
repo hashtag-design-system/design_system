@@ -1,25 +1,22 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../Button";
-import InputBase, { ReactInputHTMLAttributes } from "./__helpers__/InputBase";
+import Base, { BaseReactInputHTMLAttributes, InputState } from "./__helpers__/Base";
 
 const animationVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-const NumberInputStates = ["default", "focused", "success", "error", "disabled"] as const;
-export type NumberInputState = typeof NumberInputStates[number];
-
 export type Props = {
   min?: number;
   max?: number;
   count?: number;
   stepNumber?: number;
-  state?: NumberInputState;
+  state?: InputState;
 };
 
-export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInputHTMLAttributes, "step">>(
+export const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "step">>(
   ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
     const [value, setValue] = useState<any>(count);
     const [isBtnShown, setIsBtnShown] = useState(false);
@@ -63,12 +60,12 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
       }
     };
 
-    const { className, onChange, onFocus, onBlur, invalue, ...rest } = props;
+    const { className, onChange, onFocus, onBlur, inchange, ...rest } = props;
 
     // TODO: Replace with <Icon /> components
     return (
       <div className="input-number" style={props.style}>
-        <InputBase
+        <Base
           type="number"
           className={className}
           value={value}
@@ -111,7 +108,7 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
               setShiftKey(false);
             }
           }}
-          invalue={value => invalue && invalue(value)}
+          inchange={value => inchange && inchange(value)}
           {...rest}
           style={{ paddingRight: isBtnShown ? "30px" : "" }}
         >
@@ -152,10 +149,12 @@ export const Number = React.forwardRef<HTMLInputElement, Props & Omit<ReactInput
               </motion.div>
             )}
           </AnimatePresence>
-        </InputBase>
+        </Base>
       </div>
     );
   }
 );
+
+Number.displayName = "InputNumber";
 
 export default Number;

@@ -6,16 +6,17 @@ import IncrDcr from "./IncrDcr";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import InputBase, { Props as InputProps, ReactInputHTMLAttributes } from "./__helpers__/InputBase";
+import Base, { BaseReactInputHTMLAttributes, Props as InputProps } from "./__helpers__/Base";
 import LabelContainer from "./__helpers__/LabelContainer";
 
-export type Props = InputProps & {
-  helptext?: InputHelpTextType;
-  secondhelptext?: InputHelpTextType;
-  characterLimit?: boolean;
-  // React allows custom Props to be passed only when they are spelled in lowercase
-  innerref?: React.RefObject<HTMLInputElement> | any;
-};
+export type Props = InputProps &
+  BaseReactInputHTMLAttributes & {
+    helptext?: InputHelpTextType;
+    secondhelptext?: InputHelpTextType;
+    characterLimit?: boolean;
+    // React allows custom Props to be passed only when they are spelled in lowercase
+    innerref?: React.RefObject<HTMLInputElement> | any;
+  };
 
 type State = {
   id: string;
@@ -23,8 +24,8 @@ type State = {
   isActive: boolean;
 };
 
-export default class Input extends React.Component<Props & ReactInputHTMLAttributes, State> {
-  public static InputBase: typeof InputBase;
+export default class Input extends React.Component<Props, State> {
+  public static InputBase: typeof Base;
 
   public static Multiline: typeof Multiline;
 
@@ -38,6 +39,8 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
 
   public static IncrDcr: typeof IncrDcr;
 
+  static displayName = "Input";
+
   state: State = {
     id: this.props.id || "",
     value: this.props.value || "",
@@ -47,13 +50,15 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
 
+    const { inchange } = this.props;
+
     this.setState({
       value: text,
       isActive: true,
     });
 
-    if (this.props.invalue) {
-      this.props.invalue(text);
+    if (inchange) {
+      inchange(text);
     }
   };
 
@@ -73,7 +78,7 @@ export default class Input extends React.Component<Props & ReactInputHTMLAttribu
             {helptext?.icon}
           </LabelContainer>
         )}
-        <InputBase ref={this.props.innerref} {...this.props} />
+        <Base ref={this.props.innerref} onChange={e => this.handleChange(e)} {...this.props} />
         {(secondhelptext || this.props.maxLength || characterLimit) && !className?.includes("input-digit") && (
           <LabelContainer
             className="body-12"

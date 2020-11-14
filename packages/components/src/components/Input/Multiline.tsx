@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { generateId, useClassnames } from "../../utils";
+import React, { useState } from "react";
+import { useClassnames, useInputId } from "../../utils/hooks";
 import { Props as InputProps } from "./Input";
 import FloatingLabel from "./__helpers__/FloatingLabel";
 import LabelContainer from "./__helpers__/LabelContainer";
@@ -24,7 +24,7 @@ export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.Tex
     },
     ref
   ) => {
-    const [id, setId] = useState(props.id || "");
+    const id = useInputId(props.id);
     const [value, setValue] = useState(defaultValue || "");
     const [isActive, setIsActive] = useState(defaultValue === "");
 
@@ -33,18 +33,6 @@ export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.Tex
     if (state !== "default") {
       classNames += ` ${state}`;
     }
-
-    // Generate a unique ID ofr the form element, if not provided
-    useEffect(() => {
-      if (id === "") {
-        setId(
-          generateId({
-            length: 5,
-            specialCharacters: "-_",
-          })
-        );
-      }
-    }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const target = e.target;
@@ -113,7 +101,7 @@ export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.Tex
             />
           </div>
           {floatingPlaceholder && (
-            <FloatingLabel id={id} isActive={isActive}>
+            <FloatingLabel id={id} defaultValue={defaultValue ? true : false} isActive={isActive}>
               {placeholder}
             </FloatingLabel>
           )}
@@ -135,5 +123,7 @@ export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.Tex
     );
   }
 );
+
+Multiline.displayName = "InputMultiline";
 
 export default Multiline;

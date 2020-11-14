@@ -1,5 +1,5 @@
 import React from "react";
-import { useClassnames } from "../../utils";
+import { useClassnames } from "../../utils/hooks";
 
 // const variants = {
 //   checked: { pathLength: 1 },

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { SelectionInputProps, SelectionInputState } from "../../typings";
-import { useClassnames, useInputId } from "../../utils";
+import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
@@ -89,5 +89,7 @@ export const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
     );
   }
 );
+
+RadioButton.displayName = "RadioButton";
 
 export default RadioButton;

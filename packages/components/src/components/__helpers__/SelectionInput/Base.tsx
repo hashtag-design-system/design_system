@@ -1,6 +1,6 @@
 import React from "react";
 import { SelectionInputProps } from "../../../typings";
-import { useClassnames } from "../../../utils";
+import { useClassnames } from "../../../utils/hooks";
 import { LabelContainer } from "./LabelContainer";
 
 export type Props = SelectionInputProps & {

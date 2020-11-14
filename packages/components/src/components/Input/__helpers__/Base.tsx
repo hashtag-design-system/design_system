@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
-import { useClassnames, useInputId } from "../../../utils";
+import { useClassnames, useInputId } from "../../../utils/hooks";
 import FloatingLabel from "./FloatingLabel";
 
-const InputStates = ["default", "focus", "success", "error", "disabled"] as const;
+const InputStates = ["default", "hover", "focus", "success", "error", "disabled"] as const;
 export type InputState = typeof InputStates[number];
 const InputTypes = ["text", "email", "hidden", "number", "password", "search", "url"] as const;
 export type InputType = typeof InputTypes[number];
-export type ReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "type"> & {
-  invalue?: (value: string | number) => void;
+export type BaseReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "type"> & {
+  value?: React.ReactText;
+  defaultValue?: React.ReactText;
+  inchange?: (value: React.ReactText) => void;
 };
+export type ReactInputHTMLAttributes = Omit<BaseReactInputHTMLAttributes, "value">;
 
 export type Props = {
   placeholder?: string;
@@ -18,13 +21,12 @@ export type Props = {
   type?: InputType;
   state?: InputState;
   label?: string;
-  value?: string | number;
   icon?: IconPropType;
   allowClear?: boolean;
   prefix?: string;
 };
 
-export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHTMLAttributes>(
+export const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
   (
     {
       placeholder,
@@ -32,13 +34,14 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
       type = "text",
       label,
       value,
+      defaultValue,
       state = "default",
       icon,
       allowClear = false,
       disabled,
       children,
       prefix,
-      invalue,
+      inchange,
       style,
       ...props
     },
@@ -47,19 +50,20 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
     const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
-    let [classNames, rest] = useClassnames(`input ${floatingPlaceholder ? "floating " : ""}input-placeholder-font`, props);
+    let [classNames, rest] = useClassnames(`input ${floatingPlaceholder ? "floating" : ""} input-placeholder-font`, props);
 
+    // Change and revalidate Props
     if (state !== "default") {
       classNames += ` ${state}`;
     }
+
     if (!placeholder) {
       floatingPlaceholder = false;
     }
-
-    const { onChange, onFocus, onBlur } = props;
-
+    if (!placeholder && !label) {
+      throw new Error("The property `placeholder` or `label` must be provided");
+    }
     // TODO: Replace with <Icon /> component
-    // Check and change (re-validate) Props
     if (allowClear && icon) {
       throw new Error(errors.allowClearAndIcon);
     }
@@ -72,6 +76,8 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
     if (type === "hidden") {
       return null;
     }
+
+    const { onChange, onFocus, onBlur } = props;
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsActive(true);
@@ -110,6 +116,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
           className={classNames}
           placeholder={!floatingPlaceholder ? placeholder : undefined}
           value={value}
+          defaultValue={defaultValue}
           onChange={e => onChange && onChange(e)}
           onFocus={e => handleFocus(e)}
           onBlur={e => handleBlur(e)}
@@ -123,7 +130,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
           {...rest}
         />
         {floatingPlaceholder && (
-          <FloatingLabel id={id} isActive={isActive || prefix !== undefined}>
+          <FloatingLabel id={id} defaultValue={defaultValue ? true : false} isActive={isActive || prefix !== undefined}>
             {placeholder}
           </FloatingLabel>
         )}
@@ -133,4 +140,4 @@ export const InputBase = React.forwardRef<HTMLInputElement, Props & ReactInputHT
   }
 );
 
-export default InputBase;
+export default Base;
