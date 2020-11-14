@@ -6,7 +6,7 @@ export type Props = {
   value: string;
 };
 
-export const Option: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick">> = ({ value, children, ...props }) => {
+export const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick">> = ({ value, children, ...props }) => {
   const [classNames, rest] = useClassnames("dropdown__item__wrapper flex-column-flex-start", props);
 
   const { handleSelect } = useContext(DropdownContext);
@@ -26,6 +26,6 @@ export const Option: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, 
   );
 };
 
-Option.displayName = "DropdownOption";
+Item.displayName = "DropdownOption";
 
-export default Option;
+export default Item;

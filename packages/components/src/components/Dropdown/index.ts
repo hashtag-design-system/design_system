@@ -1,12 +1,12 @@
 import Dropdown from "./Dropdown";
-import Option from "./Option";
-import OptionsBox from "./OptionsBox";
+import Item from "./Item";
+import ListbOX from "./ListBox";
 
 export type { Props as DropdownProps } from "./Dropdown";
-export type { Props as OptionDropdownProps } from "./Option";
-export type { Props as OptionsBoxDropdownProps } from "./OptionsBox";
+export type { Props as OptionDropdownProps } from "./Item";
+export type { Props as OptionsBoxDropdownProps } from "./ListBox";
 
-Dropdown.Option = Option;
-Dropdown.OptionsBox = OptionsBox;
+Dropdown.Option = Item;
+Dropdown.OptionsBox = ListbOX;
 
 export default Dropdown;

@@ -10,7 +10,7 @@ export type Props = {
   maxHeight?: React.ReactText;
 };
 
-export const OptionsBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, style, children, ...props }) => {
+export const ListbOX: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, style, children, ...props }) => {
   const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("select__list-box", props);
 
   const { isOpen } = useContext(DropdownContext);
@@ -24,6 +24,6 @@ export const OptionsBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight,
   ) : null;
 };
 
-OptionsBox.displayName = "DropdownOptionsListBox";
+ListbOX.displayName = "DropdownOptionsListBox";
 
-export default OptionsBox;
+export default ListbOX;
