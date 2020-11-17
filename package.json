@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.8",
+    "@types/node": "^14.14.7",
     "@types/react": "^16.9.52",
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
@@ -29,8 +29,6 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "file:packages/primitives",
-    "components": "file:packages/components",
-    "icons": "file:packages/icons"
+    "@hashtag-design-system/primitives": "1.0.20"
   }
 }
