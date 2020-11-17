@@ -1,5 +1,4 @@
 import React from "react";
-import {} fro
 
 type cssColorAttribute = React.SVGAttributes<SVGElement>["color"];
 
@@ -15,7 +14,7 @@ export type Props = {
   strokeLinecap?: React.SVGAttributes<SVGElement>["strokeLinecap"];
 };
 
-export const Icon: React.FC<Props & React.SVGAttributes<SVGElement>> = ({
+const Icon: React.FC<Props & React.SVGAttributes<SVGElement>> = ({
   d,
   size = 24,
   width,
@@ -28,7 +27,7 @@ export const Icon: React.FC<Props & React.SVGAttributes<SVGElement>> = ({
   ...props
 }) => {
   const { className, ...rest } = props;
-  let classNames = addClassnames(`input input-multiline`, props);
+  // let classNames = addClassnames(`input input-multiline`, props);
   // Size is to set both the width and the height, without duplicating props and their values
   if (size) {
     width = size;
@@ -37,7 +36,7 @@ export const Icon: React.FC<Props & React.SVGAttributes<SVGElement>> = ({
 
   return (
     <svg
-      className={classNames}
+      // className={classNames}
       viewBox={viewBox}
       width={`${width}px`}
       height={`${height}px`}
