@@ -3,9 +3,6 @@ import React, { useContext } from "react";
 import DropdownContext from "../../utils/ctx/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
 
-// TODO: Remember to implement
-type OptionType = string | { name: string; options: string[] };
-
 export type Props = {
   maxHeight?: React.ReactText;
 };
