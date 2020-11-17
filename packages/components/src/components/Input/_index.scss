@@ -123,7 +123,9 @@
     }
   }
 
-  &.disabled {
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
     @include disabled-state;
     background-color: $grey-4;
     border: none;
