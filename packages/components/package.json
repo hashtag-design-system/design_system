@@ -1,7 +1,7 @@
 {
   "name": "components",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
@@ -14,6 +14,12 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": "https://github.com/hashtag-design-system/design_system",
+  "author": "George Krachtopoulos <georgekraxt@gmail.com>",
+  "license": "UNLICENSED",
   "typings": "src/index.d.ts",
   "browserslist": {
     "production": [
