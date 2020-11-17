@@ -1,7 +1,18 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: "/packages/components"
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: "/packages/icons"
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: "/packages/primitives"
+    schedule:
+      interval: weekly
