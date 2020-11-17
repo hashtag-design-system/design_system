@@ -1102,7 +1102,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.1", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.1", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.12.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
@@ -2415,6 +2415,20 @@
     pretty-format "^25.1.0"
     wait-for-expect "^3.0.2"
 
+"@testing-library/dom@^7.26.6":
+  version "7.26.7"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.26.7.tgz#b9008b21524288fb09f7bc20bf366a3aa1f0ce72"
+  integrity sha512-Ykb+W02Q5lAAuwwANq/LCxMqrLKF7S+udJ0tFDwyuHyr84kQ2YKeYdIl5B3HnLKSWK4mGqA+Xe7dbU25DXhlkQ==
+  dependencies:
+    "@babel/code-frame" "^7.10.4"
+    "@babel/runtime" "^7.12.5"
+    "@types/aria-query" "^4.2.0"
+    aria-query "^4.2.2"
+    chalk "^4.1.0"
+    dom-accessibility-api "^0.5.4"
+    lz-string "^1.4.4"
+    pretty-format "^26.6.2"
+
 "@testing-library/jest-dom@^4.2.4":
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-4.2.4.tgz#00dfa0cbdd837d9a3c2a7f3f0a248ea6e7b89742"
@@ -2430,6 +2444,14 @@
     pretty-format "^24.0.0"
     redent "^3.0.0"
 
+"@testing-library/react@^11.1.2":
+  version "11.1.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-11.1.2.tgz#089b06d3828e76fc1ff0092dd69c7b59c454c998"
+  integrity sha512-foL0/Mo68M51DdgFwEsO2SDEkUpocuEYidOTcJACGEcoakZDINuERYwVdd6T5e3pPE+BZyGwwURaXcrX1v9RbQ==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
+    "@testing-library/dom" "^7.26.6"
+
 "@testing-library/react@^9.3.2":
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-9.5.0.tgz#71531655a7890b61e77a1b39452fbedf0472ca5e"
@@ -2439,10 +2461,12 @@
     "@testing-library/dom" "^6.15.0"
     "@types/testing-library__react" "^9.1.2"
 
-"@testing-library/user-event@^7.1.2":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-7.2.1.tgz#2ad4e844175a3738cb9e7064be5ea070b8863a1c"
-  integrity sha512-oZ0Ib5I4Z2pUEcoo95cT1cr6slco9WY7yiPpG+RGNkj8YcYgJnM7pXmYmorNOReh8MIGcKSqXyeGjxnr8YiZbA==
+"@testing-library/user-event@^12.2.2":
+  version "12.2.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.2.2.tgz#22d0047da745289335240f523dfe74c889ec96cb"
+  integrity sha512-mTYL9LrwiSeyorStUOMuRGQDn1ca40tIhuv//o/K3lY8wBEp+9Im90MFVx5i3u7zCPmavn3uWZs/10chsbI8Tg==
+  dependencies:
+    "@babel/runtime" "^7.10.2"
 
 "@types/aria-query@^4.2.0":
   version "4.2.0"
@@ -4340,8 +4364,8 @@ component-emitter@^1.2.1:
   dependencies:
     "@hashtag-design-system/primitives" "file:packages/primitives"
     "@testing-library/jest-dom" "^4.2.4"
-    "@testing-library/react" "^9.3.2"
-    "@testing-library/user-event" "^7.1.2"
+    "@testing-library/react" "^11.1.2"
+    "@testing-library/user-event" "^12.2.2"
     framer-motion "^2.9.4"
     react "^17.0.1"
     react-dom "^17.0.1"
@@ -5251,7 +5275,7 @@ dom-accessibility-api@^0.3.0:
   resolved "https://registry.yarnpkg.com/dom-accessibility-api/-/dom-accessibility-api-0.3.0.tgz#511e5993dd673b97c87ea47dba0e3892f7e0c983"
   integrity sha512-PzwHEmsRP3IGY4gv/Ug+rMeaTIyTJvadCb+ujYXYeIylbHJezIyNToe8KfEgHTCEYyC+/bUghYOGg8yMGlZ6vA==
 
-dom-accessibility-api@^0.5.1:
+dom-accessibility-api@^0.5.1, dom-accessibility-api@^0.5.4:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/dom-accessibility-api/-/dom-accessibility-api-0.5.4.tgz#b06d059cdd4a4ad9a79275f9d414a5c126241166"
   integrity sha512-TvrjBckDy2c6v6RLxPv5QXOnU+SmF9nBII5621Ve5fu6Z/BDrENurBEvlC1f44lKEUVqOpK4w9E5Idc5/EgkLQ==
@@ -7123,7 +7147,7 @@ humanize-ms@^1.2.1:
   dependencies:
     "@testing-library/jest-dom" "^4.2.4"
     "@testing-library/react" "^9.3.2"
-    "@testing-library/user-event" "^7.1.2"
+    "@testing-library/user-event" "^12.2.2"
     react "^17.0.1"
     react-dom "^17.0.1"
     react-scripts "3.4.3"
