@@ -1,38 +1,28 @@
 import React, { useState } from "react";
-import { useClassnames, useInputId } from "../../utils/hooks";
+import errors from "../../config/errors";
+import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
 import { Props as InputProps } from "./Input";
 import FloatingLabel from "./__helpers__/FloatingLabel";
-import LabelContainer from "./__helpers__/LabelContainer";
+import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 export type Props = Omit<InputProps, "type" | "icon" | "ref">;
 
-export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
-  (
-    {
-      placeholder,
+const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+  ({ placeholder, floatingplaceholder: floatingPlaceholder = true, defaultValue, cols = 28, rows = 5, ...props }, ref) => {
+    const {
       label,
-      floatingPlaceholder = true,
-      defaultValue,
-      state = "default",
-      helptext: helpText,
-      secondhelptext: secondHelpText,
-      allowClear = false,
-      cols = 28,
-      rows = 5,
-      disabled,
-      ...props
-    },
-    ref
-  ) => {
+      // allowClear = false,
+    } = props;
+
     const id = useInputId(props.id);
     const [value, setValue] = useState(defaultValue || "");
     const [isActive, setIsActive] = useState(defaultValue === "");
+    const isDisabled = useDisabled(props);
+    let [classNames, rest] = useClassnames(`input input-multiline`, props, {
+      stateToRemove: { state: props.state, defaultState: "default" },
+    });
 
     const { onChange, onFocus, onBlur } = props;
-    let [classNames, rest] = useClassnames(`input input-multiline`, props);
-    if (state !== "default") {
-      classNames += ` ${state}`;
-    }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const target = e.target;
@@ -63,62 +53,44 @@ export const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.Tex
 
     // Check and change (re-validate) Props
     if (floatingPlaceholder && label) {
-      floatingPlaceholder = false;
+      throw new Error(errors.floatingPlaceholderAndLabel);
     }
-
     if (!placeholder) {
-      floatingPlaceholder = false;
+      throw new Error(errors.placeholderOrLabel);
     }
 
     return (
       <div className="input__wrapper" style={{ width: props.style?.width }}>
-        {(label || helpText) && (
-          <LabelContainer
-            className="body-12"
-            label={label}
-            withHelpText={helpText ? true : false}
-            withIcon={helpText && helpText.icon ? true : false}
-          >
-            {helpText?.value}
-            {helpText?.icon}
-          </LabelContainer>
-        )}
-        <div className="input__wrapper__field">
-          <div className={classNames} style={{ paddingTop: `${label || !floatingPlaceholder ? "12px" : "24px"}` }}>
-            <textarea
-              ref={ref}
+        <HelpTextContainer value={value} {...props}>
+          <div className="input__wrapper__base">
+            <div className={classNames} style={{ paddingTop: `${label || !floatingPlaceholder ? "12px" : "20px"}` }}>
+              <textarea
+                ref={ref}
+                id={id}
+                className={`input ${floatingPlaceholder ? "floating" : ""} input-placeholder-font`}
+                placeholder={!floatingPlaceholder ? placeholder : undefined}
+                onChange={e => handleChange(e)}
+                onFocus={e => handleFocus(e)}
+                onBlur={e => handleBlur(e)}
+                value={value}
+                // * Enable / disabled the Grammarly extension
+                // data-gramm="false"
+                cols={cols}
+                rows={rows}
+                disabled={isDisabled}
+                {...rest}
+              />
+            </div>
+            <FloatingLabel
               id={id}
-              className={`input ${floatingPlaceholder ? "floating" : ""} input-placeholder-font`}
-              placeholder={!floatingPlaceholder ? placeholder : undefined}
-              onChange={e => handleChange(e)}
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              value={value}
-              cols={cols}
-              rows={rows}
-              disabled={disabled || rest["aria-disabled"] === "true" ? true : false || classNames.includes("disabled")}
-              {...rest}
-            />
-          </div>
-          {floatingPlaceholder && (
-            <FloatingLabel id={id} defaultValue={defaultValue ? true : false} isActive={isActive}>
+              floatingPlaceholder={floatingPlaceholder}
+              defaultValue={defaultValue ? true : false}
+              isActive={isActive}
+            >
               {placeholder}
             </FloatingLabel>
-          )}
-        </div>
-        {(secondHelpText || props.maxLength) && (
-          <LabelContainer
-            className="body-12"
-            withHelpText
-            withIcon={secondHelpText && secondHelpText.icon ? true : false}
-            charactersLimit={{ maxLength: props.maxLength, characters: String(value).length }}
-            error={state === "error"}
-            style={{ marginLeft: `${label || helpText ? "0px" : "12px"}` }}
-          >
-            {secondHelpText?.icon}
-            {secondHelpText?.value}
-          </LabelContainer>
-        )}
+          </div>
+        </HelpTextContainer>
       </div>
     );
   }

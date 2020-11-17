@@ -10,7 +10,7 @@ const boxVariants = {
     backgroundColor: "var(--primary)",
   },
   initial: {
-    backgroundColor: "var(--grey-4)",
+    backgroundColor: "var(--grey-5)",
   },
 };
 
@@ -39,7 +39,7 @@ export type Props = Omit<SelectionInputProps, "state"> & {
   insideText?: { value: string } & SwitchElementsType;
 };
 
-export const Switch = React.forwardRef<HTMLLabelElement, Props>(
+const Switch = React.forwardRef<HTMLLabelElement, Props>(
   ({ defaultChecked = false, checked, state = "off", label, groupName, icon, insideText, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));

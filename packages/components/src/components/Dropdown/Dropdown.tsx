@@ -1,20 +1,20 @@
 import React from "react";
 import Item from "./Item";
-import ListbOX from "./ListBox";
+import ListBox from "./ListBox";
 
 export type Props = {};
 
 interface SubComponents {
-  OptionsBox: typeof ListbOX;
-  Option: typeof Item;
+  Item: typeof Item;
+  OptionsBox: typeof ListBox;
 }
 
-export const Dropdown: React.FC<Props> & SubComponents = () => {
+const Dropdown: React.FC<Props> & SubComponents = () => {
   return <div></div>;
 };
 
 Dropdown.displayName = "Dropdown";
-Dropdown.Option = Item;
-Dropdown.OptionsBox = ListbOX;
+Dropdown.Item = Item;
+Dropdown.OptionsBox = ListBox;
 
 export default Dropdown;

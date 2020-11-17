@@ -69,20 +69,4 @@
   }
 }
 
-.dropdown {
-  &__item {
-    transition: background 0.1s;
-    padding: 4px 4px;
-    border-radius: 4px;
-    align-self: stretch;
 
-    &:hover {
-      background-color: $grey-4;
-    }
-
-    &__wrapper {
-      cursor: pointer;
-      padding: 0px 4px;
-    }
-  }
-}

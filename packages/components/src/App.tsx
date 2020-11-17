@@ -11,31 +11,43 @@ import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
+const options = [
+  { value: "amsterdam", label: "George Krachtopoulos" },
+  { value: "colombia", label: "Colombia" },
+  { value: "sweden", label: "Sweden" },
+  { value: "sweden", label: "Sweden" },
+  { value: "sweden", label: "Sweden" },
+  { value: "sweden", label: "Sweden" },
+  { value: "sweden", label: "Sweden" },
+];
+
 function App() {
   return (
     <div className="App">
-      <Input placeholder="Placeholder" inchange={value => console.log(value)} />
       <Checkbox
         label={{
           value:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
+      <Input.Multiline placeholder="me" secondhelptext={{ value: "hey" }} />
       {/* TODO: Configure the Todo Tree extension */}
       <RadioButton label={{ value: "Label" }} />
       <Switch insideText={{ value: "georgekrax", position: "right" }} label={{ value: "Label", position: "left" }} />
+      <Input placeholder="Placeholder" inchange={value => console.log(value)} />
       <Select
-        inselect={(option: string) => console.log(option)}
-        placeholder="Placeholder"
+        helptext={{ value: "hey" }}
         label="Label"
-        floatingPlaceholder={false}
-        helptext={{ value: "Help text" }}
-        secondhelptext={{ value: "2nd Help text" }}
+        placeholder="Placeholder"
+        floatingplaceholder={false}
+        inselect={(option: string) => console.log(option)}
       >
-        <Dropdown.OptionsBox>
-          <Dropdown.Option value="amsterdam">Amsterdam</Dropdown.Option>
-          <Dropdown.Option value="colombia">Colombia</Dropdown.Option>
-          <Dropdown.Option value="north_korea">North Korea</Dropdown.Option>
+        <Dropdown.OptionsBox maxHeight={150}>
+          {options.map((option, i) => (
+            <Dropdown.Item key={i} id={option.value}>
+              {option.label}
+            </Dropdown.Item>
+          ))}
         </Dropdown.OptionsBox>
       </Select>
       <p>

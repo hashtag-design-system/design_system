@@ -1,0 +1,70 @@
+@import "./__helpers__/mixins";
+
+.dropdown {
+  &.disabled {
+    .dropdown__icon {
+      cursor: default;
+    }
+  }
+
+  &__item {
+    transition: background 0.1s;
+    padding: 8px 4px;
+    border-radius: 4px;
+    align-self: stretch;
+    cursor: pointer;
+    gap: 8px;
+    width: auto;
+
+    &.hover {
+      @include dropdown__item--hover;
+    }
+
+    &:hover {
+      @include dropdown__item--hover;
+    }
+
+    &.active {
+      @include dropdown__item--active;
+    }
+
+    &:active {
+      @include dropdown__item--active;
+    }
+
+    &__icon {
+      justify-content: center;
+
+      &.right {
+        margin-left: auto;
+      }
+    }
+  }
+
+  // TODO: Figma add the `border` property
+  &__list-box {
+    display: block;
+    list-style: none;
+    padding: 0.25rem;
+    margin-block: 0;
+    background-color: $grey-1;
+    border-radius: 4px;
+    border: 1px solid $grey-5;
+    z-index: 999;
+    overflow: auto;
+    position: absolute;
+    // TODO: Set programmatically
+    margin-top: 77px;
+    align-self: stretch;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+      width: 4.5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 2px;
+      background: $grey-7;
+    }
+  }
+}

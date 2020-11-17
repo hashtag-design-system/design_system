@@ -18,7 +18,7 @@ export type Props = {
   pill?: boolean;
 };
 
-export const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
+const Button: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
   type = "primary",
   state = "default",
   block = false,

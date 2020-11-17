@@ -1,0 +1,8 @@
+@mixin dropdown__item--hover {
+  background-color: $grey-4;
+}
+
+@mixin dropdown__item--active {
+  @include accessibility--base;
+  background-color: $grey-5;
+}

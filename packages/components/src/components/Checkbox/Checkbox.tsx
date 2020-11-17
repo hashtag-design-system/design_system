@@ -26,7 +26,7 @@ export type CheckboxState = SelectionInputState | "indeterminate";
 
 export type Props = Omit<SelectionInputProps, "state"> & { state?: CheckboxState };
 
-export const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
+const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
   ({ defaultChecked = false, checked, state = "unchecked", label, groupName, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");

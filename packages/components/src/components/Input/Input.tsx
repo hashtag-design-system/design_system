@@ -7,7 +7,7 @@ import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
 import Base, { BaseReactInputHTMLAttributes, Props as InputProps } from "./__helpers__/Base";
-import LabelContainer from "./__helpers__/LabelContainer";
+import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 export type Props = InputProps &
   BaseReactInputHTMLAttributes & {
@@ -48,9 +48,9 @@ export default class Input extends React.Component<Props, State> {
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-
     const { inchange } = this.props;
+
+    const text = e.target.value;
 
     this.setState({
       value: text,
@@ -63,36 +63,10 @@ export default class Input extends React.Component<Props, State> {
   };
 
   render() {
-    const { label, helptext, secondhelptext, characterLimit, className, state } = this.props;
-
     return (
-      <div className="input__wrapper" style={{ width: this.props.style?.width || this.props.width }}>
-        {(label || helptext) && (
-          <LabelContainer
-            className="body-12"
-            label={label}
-            withHelpText={helptext ? true : false}
-            withIcon={helptext && helptext.icon ? true : false}
-          >
-            {helptext?.value}
-            {helptext?.icon}
-          </LabelContainer>
-        )}
+      <HelpTextContainer value={this.state.value} {...this.props}>
         <Base ref={this.props.innerref} onChange={e => this.handleChange(e)} {...this.props} />
-        {(secondhelptext || this.props.maxLength || characterLimit) && !className?.includes("input-digit") && (
-          <LabelContainer
-            className="body-12"
-            withHelpText
-            withIcon={secondhelptext && secondhelptext.icon ? true : false}
-            charactersLimit={{ maxLength: this.props.maxLength, characters: String(this.state.value).length }}
-            error={state === "error"}
-            style={{ marginLeft: `${label || helptext ? "0px" : "12px"}` }}
-          >
-            {secondhelptext?.icon}
-            {secondhelptext?.value}
-          </LabelContainer>
-        )}
-      </div>
+      </HelpTextContainer>
     );
   }
 }

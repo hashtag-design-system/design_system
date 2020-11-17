@@ -23,7 +23,7 @@ export type RadioButtonState = SelectionInputState;
 
 export type Props = SelectionInputProps;
 
-export const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
+const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
   ({ defaultChecked = false, checked, state = "unchecked", label, groupName, ...props }, ref) => {
     const id = useInputId(props.id);
     // * It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state

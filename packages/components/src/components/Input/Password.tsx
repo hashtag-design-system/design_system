@@ -10,9 +10,9 @@ export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
   autoComplete?: "on" | "off" | "current-password" | "new-password";
 };
 
-export const Password = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
+const Password = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
   (
-    { placeholder = "Password", floatingPlaceholder = true, visibilityToggle = true, toggleIcon, autoComplete = "on", ...props },
+    { placeholder = "Password", floatingplaceholder: floatingPlaceholder = true, visibilityToggle = true, toggleIcon, autoComplete = "on", ...props },
     ref
   ) => {
     let [classNames, rest] = useClassnames("input-password", props);
@@ -21,7 +21,7 @@ export const Password = React.forwardRef<HTMLInputElement, Props & BaseReactInpu
       <Input
         type="password"
         placeholder={placeholder}
-        floatingPlaceholder={floatingPlaceholder}
+        floatingplaceholder={floatingPlaceholder}
         autoComplete={autoComplete}
         icon={visibilityToggle ? toggleIcon : undefined}
         className={classNames}

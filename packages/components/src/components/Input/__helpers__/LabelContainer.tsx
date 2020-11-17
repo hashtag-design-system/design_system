@@ -6,7 +6,6 @@ type Props = {
   withHelpText?: boolean;
   withIcon?: boolean;
   charactersLimit?: { characters: number; maxLength?: number };
-  error?: boolean;
 };
 
 const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
@@ -14,19 +13,10 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
   withHelpText = false,
   withIcon = false,
   charactersLimit,
-  error = false,
   children,
   ...props
 }) => {
-  let [classNames, rest] = useClassnames("", props);
-  if (error) {
-    classNames += " input__help-text error";
-  } else {
-    classNames += " input__help-text";
-  }
-  if (withIcon) {
-    classNames += ` input__help-text__icon ${error ? "error" : ""}`;
-  }
+  let [classNames, rest] = useClassnames("input__help-text", props);
 
   // TODO: Make the input__help-text__icon classes in the stylesheets
   return (
@@ -41,5 +31,7 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
     </div>
   );
 };
+
+LabelContainer.displayName = "InputLabelContainer";
 
 export default LabelContainer;

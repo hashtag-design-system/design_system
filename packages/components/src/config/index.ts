@@ -1,5 +1,7 @@
 import { tuple, tupleNum } from "../utils/type";
 
+
+// TODO: Improve and add more
 export const InputComponentStates = tuple("default", "focus-visible", "hover", "disabled");
 
 export const IconPositions = tuple("left", "right");

@@ -16,7 +16,7 @@ export type Props = {
   state?: InputState;
 };
 
-export const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "step">>(
+const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "step">>(
   ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
     const [value, setValue] = useState<any>(count);
     const [isBtnShown, setIsBtnShown] = useState(false);

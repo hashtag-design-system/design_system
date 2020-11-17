@@ -11,7 +11,7 @@ export type Props = {
   error?: boolean;
 };
 
-export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
+const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
   const initialRef = useRef<HTMLInputElement>(null);
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 
@@ -74,7 +74,7 @@ export const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> 
         )}
       </div>
       {helpText && (
-        <LabelContainer className="body-14" error={error ? true : false} withHelpText>
+        <LabelContainer className="body-14" withHelpText>
           {helpText.icon}
           {helpText.value}
         </LabelContainer>

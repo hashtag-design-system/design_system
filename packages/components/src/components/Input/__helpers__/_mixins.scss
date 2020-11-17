@@ -1,16 +1,3 @@
-@mixin input--focus {
-  background-color: $grey-1;
-  border-color: $primary;
-
-  + .input__floating-label.active {
-    color: $primary;
-  }
-}
-
-@mixin input--hover {
-  background-color: $grey-1;
-}
-
 @mixin input-base {
   width: 100%;
   box-sizing: border-box;
@@ -40,7 +27,7 @@
   }
 }
 
-@mixin input-placeholder-color($color: $grey-7) {
+@mixin input-placeholder($color) {
   &::placeholder {
     color: $color;
     opacity: 1;
@@ -55,12 +42,39 @@
   }
 }
 
+@mixin input-placeholder-color($color: $grey-7) {
+  @include input-placeholder($color);
+}
+
+@mixin input-floating-label-state($color: $primary) {
+  + .input__floating-label,
+  .input__floating-label.active {
+    color: $color;
+  }
+}
+
+@mixin input--focus {
+  background-color: $grey-1;
+  border-color: $primary;
+
+  @include input-floating-label-state;
+}
+
+@mixin input--hover {
+  background-color: $grey-1;
+
+  // @include input-floating-label-state;
+}
+
 @mixin input-state-color($color) {
   border-color: $color;
 
   + .input__help-text__icon {
     color: $color;
   }
+
+  // https://stackoverflow.com/questions/7115959/adding-important-using-a-compass-mixin
+  @include input-floating-label-state($color !important);
 
   @include input-placeholder-color($color);
 
