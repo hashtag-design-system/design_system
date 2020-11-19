@@ -9,8 +9,7 @@
     "test": "react-scripts test",
     "test:lint": "eslint . --ext .tsx, .ts --ignore-pattern node_modules/",
     "test:prettier": "prettier --config .prettierrc.json --config-precedence cli-override --write .",
-    "css:var": "node src/utils/css/variablesToCss.js",
-    "css:find-rules": "stylelint-find-rules"
+    "css:var": "node src/utils/css/variablesToCss.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,11 +45,5 @@
     "react-dropzone": "^11.2.0",
     "react-scripts": "4.0.0",
     "sass": "^1.29.0"
-  },
-  "devDependencies": {
-    "stylelint": "^13.8.0",
-    "stylelint-config-standard": "^20.0.0",
-    "stylelint-find-rules": "^2.2.0",
-    "stylelint-order": "^4.1.0"
   }
 }

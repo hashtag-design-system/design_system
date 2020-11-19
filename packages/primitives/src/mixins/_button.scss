@@ -7,7 +7,7 @@
   align-self: flex-start;
   position: relative;
   white-space: nowrap;
-  padding: 8px 16px;
+  padding: em(8) em(16);
   width: auto;
   align-items: center;
   border-radius: 4px;
@@ -16,7 +16,7 @@
   overflow: hidden;
   position: relative;
   text-align: center;
-  height: 36px;
+  height: em(36);
   appearance: none;
   transition: all 0.2s cubic-bezier(0.3, 0, 0.5, 1);
 

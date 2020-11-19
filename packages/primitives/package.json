@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/primitives",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "description": "The CSS (SCSS) primitives of the #hashtag Design System",
   "main": "./src/index.scss",
   "scripts": {
