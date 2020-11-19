@@ -53,7 +53,6 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
     const [spanWidth, setSpanWidth] = useState(0);
     const isDisabled = useDisabled(props) || !typing;
     let [classNames, rest] = useClassnames(`input input-placeholder-font ${floatingPlaceholder ? "floating" : ""}`, props);
-    console.log(type);
 
     // Change and revalidate Props
     // Set related to the <Select /> component
@@ -125,6 +124,7 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
           onFocus={e => handleFocus(e)}
           onBlur={e => handleBlur(e)}
           disabled={isDisabled}
+          aria-disabled={isDisabled}
           ref={ref}
           style={{
             ...style,

@@ -3,7 +3,7 @@ import { IconPropType } from "../../typings";
 import DropdownContext from "../../utils/ctx/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
 
-const DropdownItemStates = ["default", "hover", "active"] as const;
+const DropdownItemStates = ["default", "hover"] as const;
 export type DropdownItemState = typeof DropdownItemStates[number];
 
 export type Props = {
@@ -21,11 +21,11 @@ const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick"
   children,
   ...props
 }) => {
-  const [classNames, rest] = useClassnames("dropdown__item body-14 flex-row-stretch", props, {
+  const [classNames, rest] = useClassnames("dropdown__item body-16 flex-row-stretch", props, {
     stateToRemove: { state, defaultState: "default" },
   });
 
-  const { handleSelect } = useContext(DropdownContext);
+  const { setIsVisible, handleSelect } = useContext(DropdownContext);
 
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     if (handleSelect) {
@@ -37,8 +37,19 @@ const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick"
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLLIElement>) => {
+    const { key } = e;
+    if (key === "Enter" || key === " ") {
+      handleClick(e as any);
+    }
+
+    if (key === "Escape" && setIsVisible) {
+      setIsVisible(false);
+    }
+  };
+
   return (
-    <li className={classNames} onClick={e => handleClick(e)} tabIndex={0} {...rest}>
+    <li className={classNames} onClick={e => handleClick(e)} tabIndex={0} onKeyDown={e => handleKeyPress(e)} {...rest}>
       {leftIcon && <span className="dropdown__item__icon flex-column-center left">{leftIcon}</span>}
       {children}
       {rightIcon && <span className="dropdown__item__icon flex-column-center right">{rightIcon}</span>}

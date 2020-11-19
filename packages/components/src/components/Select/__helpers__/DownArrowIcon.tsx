@@ -5,7 +5,7 @@ import DropdownContext from "../../../utils/ctx/DropdownContext";
 export const DownArrowIcon: React.FC = () => {
   const selectCtx = useContext(DropdownContext);
 
-  const { isOpen, disabled, setIsOpen } = selectCtx;
+  const { isVisible, handleClick } = selectCtx;
 
   return (
     <motion.svg
@@ -14,12 +14,10 @@ export const DownArrowIcon: React.FC = () => {
       fill="none"
       className="input__icon select__icon"
       // * A "spring" animation might be too much and useless for this element
-      animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
-      onClick={() => setIsOpen && !disabled && setIsOpen(!isOpen)}
+      animate={isVisible ? { rotate: 180 } : { rotate: 0 }}
+      onClick={e => handleClick && handleClick(e)}
     >
-      <path d="M17.8 9l-5.4 6L7 9" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17.8 9l-5.4 6L7 9" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
     </motion.svg>
   );
 };
-
-export default DownArrowIcon;

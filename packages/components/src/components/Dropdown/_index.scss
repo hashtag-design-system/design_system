@@ -7,30 +7,22 @@
     }
   }
 
+  &__hr {
+    background-color: $grey-6;
+    border: 0 inset $grey-6;
+    height: 1.5px;
+    width: 95%;
+  }
+
   &__item {
-    transition: background 0.1s;
-    padding: 8px 4px;
+    align-self: center !important;
     border-radius: 4px;
-    align-self: stretch;
     cursor: pointer;
     gap: 8px;
+    position: relative;
+    padding: 8px;
+    transition: background 0.1s;
     width: auto;
-
-    &.hover {
-      @include dropdown__item--hover;
-    }
-
-    &:hover {
-      @include dropdown__item--hover;
-    }
-
-    &.active {
-      @include dropdown__item--active;
-    }
-
-    &:active {
-      @include dropdown__item--active;
-    }
 
     &__icon {
       justify-content: center;
@@ -39,32 +31,64 @@
         margin-left: auto;
       }
     }
+
+    @include dropdown__item--state;
   }
 
   // TODO: Figma add the `border` property
+
   &__list-box {
+    background-color: $grey-1;
+    border: 1px solid $grey-5;
+    border-radius: 4px;
     display: block;
     list-style: none;
-    padding: 0.25rem;
-    margin-block: 0;
-    background-color: $grey-1;
-    border-radius: 4px;
-    border: 1px solid $grey-5;
-    z-index: 999;
-    overflow: auto;
+    margin-block: 0; // TODO: Set programmatically
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 0.35em;
     position: absolute;
-    // TODO: Set programmatically
-    margin-top: 77px;
-    align-self: stretch;
     scrollbar-width: auto;
+    z-index: 9;
+    right: 0;
+    width: max-content;
+    max-width: 220px;
 
+    // http://jsfiddle.net/6KprJ/1/
     &::-webkit-scrollbar {
-      width: 4.5px;
+      width: 8px;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 2px;
-      background: $grey-7;
+      border: 3px solid $grey-1;
+      border-left-width: 0.5px;
+      background-clip: padding-box;
+      border-radius: 50px;
+      -webkit-border-radius: 50px;
+      background-color: $grey-6;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+
+    &__tooltip {
+      display: none;
+
+      @supports (clip-path: inset(50%)) {
+        // https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
+        display: block;
+        height: 16px;
+        width: 16px;
+        background-color: $grey-5;
+        border-radius: 0px 0px 0px 4px;
+        position: absolute;
+        right: 15px;
+        bottom: -13px;
+        z-index: 10;
+        clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+        transform: rotate(135deg);
+      }
     }
   }
 }

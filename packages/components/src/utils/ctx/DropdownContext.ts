@@ -1,19 +1,19 @@
 import React from "react";
 
 type DropdownContextType = {
-  isOpen: boolean;
-  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  isVisible: boolean;
+  setIsVisible?: React.Dispatch<React.SetStateAction<boolean>>;
   helptext: boolean;
   label: boolean;
-  disabled: boolean;
+  ref?: React.RefObject<any>;
   handleSelect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string | undefined) => void;
+  handleClick?: (e: React.MouseEvent<HTMLInputElement | SVGElement>) => void;
 };
 
 const DropdownContext = React.createContext<DropdownContextType>({
-  isOpen: false,
+  isVisible: false,
   helptext: false,
   label: false,
-  disabled: false,
 });
 
 export default DropdownContext;

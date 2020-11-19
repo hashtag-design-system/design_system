@@ -78,6 +78,7 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHT
                 cols={cols}
                 rows={rows}
                 disabled={isDisabled}
+                aria-disabled={isDisabled}
                 {...rest}
               />
             </div>

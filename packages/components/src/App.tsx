@@ -7,12 +7,11 @@ import Dropdown from "./components/Dropdown";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
-import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 const options = [
-  { value: "amsterdam", label: "George Krachtopoulos" },
+  { value: "amsterdam", label: "George Krachtopoulos frff rwf rfw rfwrff r frf f rrf fwrf f ff ffjdkfjjfkdsjfk" },
   { value: "colombia", label: "Colombia" },
   { value: "sweden", label: "Sweden" },
   { value: "sweden", label: "Sweden" },
@@ -30,10 +29,8 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Input.Multiline placeholder="me" secondhelptext={{ value: "hey" }} />
       {/* TODO: Configure the Todo Tree extension */}
       <RadioButton label={{ value: "Label" }} />
-      <Switch insideText={{ value: "georgekrax", position: "right" }} label={{ value: "Label", position: "left" }} />
       <Input placeholder="Placeholder" inchange={value => console.log(value)} />
       <Select
         helptext={{ value: "hey" }}
@@ -48,6 +45,8 @@ function App() {
               {option.label}
             </Dropdown.Item>
           ))}
+          <Dropdown.Hr />
+          <Dropdown.Item id="hey">hey</Dropdown.Item>
         </Dropdown.OptionsBox>
       </Select>
       <p>

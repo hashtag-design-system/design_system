@@ -1,15 +1,17 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/ctx/DropdownContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
+import useVisible from "../../utils/hooks/useVisible";
 import Input, { InputProps, ReactInputHTMLAttributes } from "../Input";
-import DownArrowIcon from "./__helpers__/DownArrowIcon";
+import { DividerIcon } from "./__helpers__/DividerIcon";
+import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
 export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "characterLimit"> & {
   defaultOpen?: boolean;
   inselect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>) => void;
 };
 
-const Select: React.FC<Props & Omit<ReactInputHTMLAttributes, "floatingplaceholder">> = ({ ...props }) => {
+const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   const {
     helptext,
     secondhelptext,
@@ -18,65 +20,86 @@ const Select: React.FC<Props & Omit<ReactInputHTMLAttributes, "floatingplacehold
     placeholder,
     prefix,
     defaultValue,
+    defaultOpen = false,
+    floatingplaceholder = false,
     inselect,
     children,
-    defaultOpen = false,
     style,
+    ...rest
   } = props;
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  let { ref, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
   const [value, setValue] = useState(defaultValue || "");
-  const isDisabled = useDisabled(props);
-  let [classNames, rest] = useClassnames(`dropdown select__wrapper flex-column-stretch  ${isDisabled ? "disabled" : ""}`, props);
+  const isDisabled = useDisabled<typeof props>(props);
+  let [classNames, restProps] = useClassnames(`dropdown select__wrapper flex-column-stretch  ${isDisabled ? "disabled" : ""}`, rest);
 
   const handleSelect = useCallback(
     (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string) => {
       if (inselect) inselect(key, e);
-      setIsOpen(false);
+      setIsVisible(false);
       if (children) {
         setValue(children);
       }
     },
-    [inselect]
-  );
-
-  const providerValue = useMemo(
-    () => ({ isOpen, setIsOpen, helptext: helptext ? true : false, label: label ? true : false, disabled: isDisabled, handleSelect }),
-    [isOpen, helptext, label, isDisabled, handleSelect]
+    [setIsVisible, inselect]
   );
 
   const newWidth = 168 || (style && style.width);
 
-  // * Alternative approach to `useContext` hook
-  // const childrenWithExtraProps = React.Children.map(children, child => React.cloneElement(child as any, { onClick: onSelect }));
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key } = e;
+    if (key === "Enter" || key === " ") {
+      setIsVisible(!isVisible);
+    }
+  };
 
-  // * Check and re-validate props
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLInputElement | SVGElement>) => {
+      if (setIsVisible && !isDisabled) {
+        setIsVisible(!isVisible);
+      }
+    },
+    [isVisible, setIsVisible, isDisabled]
+  );
+
+  const providerValue = useMemo(
+    () => ({
+      isVisible,
+      setIsVisible,
+      helptext: helptext ? true : false,
+      label: label ? true : false,
+      ref,
+      handleSelect,
+      handleClick,
+    }),
+    [isVisible, setIsVisible, helptext, label, ref, handleSelect, handleClick]
+  );
+
+  // * Alternative approach to `useContext` hook
+  // const childrenWithExtraProps = React.Children.map(children, child => React.cloneElement(child as any, { onClick: onSelect });
+
   return (
     <DropdownContext.Provider value={providerValue}>
-      <div className={classNames} style={{ ...style, width: newWidth }} {...rest}>
+      <div className={classNames} style={{ ...style, width: newWidth }} {...restProps}>
         <Input
           icon={<DownArrowIcon />}
           width={newWidth}
           placeholder={placeholder}
-          floatingplaceholder={false}
+          floatingplaceholder={floatingplaceholder}
           helptext={helptext}
           secondhelptext={secondhelptext}
-          state={isOpen && !props.state ? "focus" : props.state}
+          state={isVisible && !props.state ? "focus" : isDisabled ? "disabled" : props.state}
           value={value}
           label={label}
           prefix={prefix}
           innerref={innerref}
           style={style}
-          tabIndex={0}
           onClick={e => {
-            setIsOpen(!isOpen);
-            if (props.onClick) props.onClick(e as React.MouseEvent<HTMLInputElement>);
+            handleClick(e);
+            if (props.onClick) props.onClick(e);
           }}
-          onBlur={() => setIsOpen(false)}
+          onKeyDown={e => handleKeyPress(e)}
         >
-          <svg width={2} className="select__input__divider" height={34} fill="none">
-            <path d="M1 32V1" strokeWidth={1.2} strokeLinecap="round" />
-          </svg>
-          <DownArrowIcon />
+          <DividerIcon />
         </Input>
         {children}
       </div>
