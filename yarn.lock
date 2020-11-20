@@ -1188,6 +1188,13 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@hashtag-design-system/primitives@1.0.20":
+  version "1.0.20"
+  resolved "https://npm.pkg.github.com/download/@hashtag-design-system/primitives/1.0.20/ced1a4dd965bb32ae5617787d260755e3c1b39a75344f8a4a70cc2cdf9b66012#33eb0dd181dd98562febd7eb1338b62047471d2e"
+  integrity sha512-eqt7Ic6AMtw4gJe7KLb41KC72a+bO8H3VhNfGobvV/7OmAZcwr8EdZJFnZNG/EWugE5Ka4RWJ8wv4ftHCKid5g==
+  dependencies:
+    sass "^1.29.0"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
