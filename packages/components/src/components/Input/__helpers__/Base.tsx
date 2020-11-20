@@ -52,7 +52,7 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
     const isDisabled = useDisabled(props) || !typing;
-    let [classNames, rest] = useClassnames(`input input-placeholder-font ${floatingPlaceholder ? "floating" : ""}`, props);
+    let [classNames, rest] = useClassnames(`input input-placeholder-font shadow__inset-small ${floatingPlaceholder ? "floating" : ""}`, props);
 
     // Change and revalidate Props
     // Set related to the <Select /> component

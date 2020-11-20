@@ -126,7 +126,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
               >
                 <Button
                   type="secondary"
-                  style={{ height: isUp ? "24px" : isDown ? "20px" : "" }}
+                  style={{ height: isUp ? "1.5em" : isDown ? "1.25em" : "" }}
                   onMouseEnter={() => setIsUp(true)}
                   onMouseLeave={() => setIsUp(false)}
                   onClick={() => increment()}
@@ -137,7 +137,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
                 </Button>
                 <Button
                   type="secondary"
-                  style={{ height: isDown ? "24px" : isUp ? "20px" : "" }}
+                  style={{ height: isDown ? "1.5em" : isUp ? "1.25em" : "" }}
                   onMouseEnter={() => setIsDown(true)}
                   onMouseLeave={() => setIsDown(false)}
                   onClick={() => decrement()}

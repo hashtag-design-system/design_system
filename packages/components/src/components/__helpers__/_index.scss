@@ -17,7 +17,7 @@
   &__span {
     height: 100%;
     width: auto;
-    max-width: 700px;
+    max-width: em(700);
     align-self: center;
     text-align: justify;
     display: inline-block;

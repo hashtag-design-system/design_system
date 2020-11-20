@@ -1,13 +1,15 @@
 import React from "react";
-import Hr from "./Hr";
+import HR from "./HR";
 import Item from "./Item";
+import ItemGroup from "./ItemGroup";
 import ListBox from "./ListBox";
 
 export type Props = {};
 
 interface SubComponents {
-  Hr: typeof Hr;
+  HR: typeof HR;
   Item: typeof Item;
+  ItemGroup: typeof ItemGroup
   OptionsBox: typeof ListBox;
 }
 
@@ -17,7 +19,8 @@ const Dropdown: React.FC<Props> & SubComponents = () => {
 
 Dropdown.displayName = "Dropdown";
 Dropdown.Item = Item;
+Dropdown.ItemGroup = ItemGroup;
 Dropdown.OptionsBox = ListBox;
-Dropdown.Hr = Hr;
+Dropdown.HR = HR;
 
 export default Dropdown;

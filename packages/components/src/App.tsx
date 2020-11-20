@@ -14,10 +14,6 @@ const options = [
   { value: "amsterdam", label: "George Krachtopoulos frff rwf rfw rfwrff r frf f rrf fwrf f ff ffjdkfjjfkdsjfk" },
   { value: "colombia", label: "Colombia" },
   { value: "sweden", label: "Sweden" },
-  { value: "sweden", label: "Sweden" },
-  { value: "sweden", label: "Sweden" },
-  { value: "sweden", label: "Sweden" },
-  { value: "sweden", label: "Sweden" },
 ];
 
 function App() {
@@ -45,8 +41,10 @@ function App() {
               {option.label}
             </Dropdown.Item>
           ))}
-          <Dropdown.Hr />
-          <Dropdown.Item id="hey">hey</Dropdown.Item>
+          <Dropdown.ItemGroup value="Group name">
+            <Dropdown.Item id="hey">hey</Dropdown.Item>
+            <Dropdown.Item id="hey">hey</Dropdown.Item>
+          </Dropdown.ItemGroup>
         </Dropdown.OptionsBox>
       </Select>
       <p>

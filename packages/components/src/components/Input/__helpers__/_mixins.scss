@@ -1,7 +1,7 @@
 @mixin input-base {
   width: 100%;
   box-sizing: border-box;
-  height: 48px;
+  height: em(48);
   background-color: $input-bg;
   padding: 12px;
   border: 2px solid $grey-5;

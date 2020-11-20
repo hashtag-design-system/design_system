@@ -35,7 +35,7 @@ const HelpTextContainer: React.FC<Props> = ({
           withHelpText
           withIcon={secondhelptext && secondhelptext.icon ? true : false}
           charactersLimit={{ maxLength: props.maxLength, characters: String(value).length }}
-          style={{ marginLeft: `${label || helptext ? "0px" : "12px"}` }}
+          style={{ marginLeft: `${label || helptext ? "0px" : "0.75em"}` }}
         >
           {secondhelptext?.icon}
           {secondhelptext?.value}

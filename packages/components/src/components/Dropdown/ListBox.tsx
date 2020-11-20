@@ -8,7 +8,7 @@ export type Props = {
 };
 
 const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, children, ...props }) => {
-  const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("dropdown__list-box shadow-2", props);
+  const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("dropdown__list-box shadow-large", props);
 
   const { isVisible, helptext, label, ref } = useContext(DropdownContext);
 
@@ -21,11 +21,11 @@ const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, children,
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="dropdown__list-box__tooltip"
+            className="tooltip__bubble"
           />
           <motion.ul
             className={classNames}
-            style={{ ...props.style, maxHeight, marginTop: helptext && !label ? "74px" : label ? "77px" : "52px" }}
+            style={{ ...props.style, maxHeight, marginTop: helptext && !label ? "4.625em" : label ? "4.8125em" : "3.25em" }}
             layout
             ref={ref}
             initial={{ opacity: 0 }}

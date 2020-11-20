@@ -3,10 +3,10 @@
   flex-direction: row;
   align-items: center;
   gap: 6px;
-  padding: 4px 3px;
+  padding: rem(4) rem(3);
   width: auto;
-  min-width: 48px;
-  height: 27px;
+  min-width: em(48);
+  height: em(27);
   // Inner shadow
   box-shadow: inset 0px 2px 2px -1px rgba(0, 4, 97, 0.2);
   border-radius: 16px;
@@ -20,8 +20,8 @@
       visibility: hidden;
 
       &[data-position="toggle"] {
-        margin-left: 6px;
-        margin-right: 0px;
+        margin-left: em(6);
+        margin-right: 0;
         visibility: visible;
         color: $grey-1;
       }
@@ -29,8 +29,8 @@
   }
 
   &__handler {
-    width: 19px;
-    height: 19px;
+    width: em(19);
+    height: em(19);
     background-color: $grey-1;
     border-radius: 100%;
     z-index: 2;
@@ -46,8 +46,8 @@
   }
 
   .switch__span {
-    margin-right: 6px;
-    margin-left: 0px;
+    margin-right: em(6);
+    margin-left: 0;
     color: $grey-10;
     z-index: 1;
   }

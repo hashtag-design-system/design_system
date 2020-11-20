@@ -18,9 +18,10 @@
     align-self: center !important;
     border-radius: 4px;
     cursor: pointer;
+    display: block;
     gap: 8px;
     position: relative;
-    padding: 8px;
+    padding: em(8);
     transition: background 0.1s;
     width: auto;
 
@@ -32,10 +33,23 @@
       }
     }
 
+    &__group {
+      margin-top: 0.15em;
+      font-weight: lighter;
+      cursor: text;
+
+      &:hover,
+      &:focus {
+        background-color: unset !important;
+      }
+
+      &__elements {
+        padding-left: 0.75rem;
+      }
+    }
+
     @include dropdown__item--state;
   }
-
-  // TODO: Figma add the `border` property
 
   &__list-box {
     background-color: $grey-1;
@@ -52,7 +66,7 @@
     z-index: 9;
     right: 0;
     width: max-content;
-    max-width: 220px;
+    max-width: em(220);
 
     // http://jsfiddle.net/6KprJ/1/
     &::-webkit-scrollbar {
@@ -71,24 +85,24 @@
     &::-webkit-scrollbar-corner {
       background-color: transparent;
     }
+  }
+}
 
-    &__tooltip {
-      display: none;
+.tooltip__bubble {
+  display: none;
 
-      @supports (clip-path: inset(50%)) {
-        // https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
-        display: block;
-        height: 16px;
-        width: 16px;
-        background-color: $grey-5;
-        border-radius: 0px 0px 0px 4px;
-        position: absolute;
-        right: 15px;
-        bottom: -13px;
-        z-index: 10;
-        clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
-        transform: rotate(135deg);
-      }
-    }
+  @supports (clip-path: inset(50%)) {
+    // https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
+    display: block;
+    height: 16px;
+    width: 16px;
+    background-color: $grey-5;
+    border-radius: 0px 0px 0px 4px;
+    position: absolute;
+    right: 15px;
+    bottom: -13px;
+    z-index: 10;
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    transform: rotate(135deg);
   }
 }
