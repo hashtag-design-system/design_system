@@ -14,7 +14,7 @@ export type Props = {
   strokeLinecap?: React.SVGAttributes<SVGElement>["strokeLinecap"];
 };
 
-const Icon: React.FC<Props & React.SVGAttributes<SVGElement>> = ({
+const Icon: React.FunctionComponent<Props & React.SVGProps<SVGSVGElement>> = ({
   d,
   size = 24,
   width,
