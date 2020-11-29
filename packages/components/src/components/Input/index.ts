@@ -5,7 +5,8 @@ import Input from "./Input";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import Base from "./__helpers__/Base";
+import BaseField from "./__helpers__/BaseField";
+import BaseInput from "./__helpers__/BaseInput";
 
 export type { Props as DigitInputProps } from "./Digit";
 export type { Props as DigitSequenceInputProps } from "./DigitSequence";
@@ -14,12 +15,19 @@ export type { Props as InputProps } from "./Input";
 export type { Props as MultilineInputProps } from "./Multiline";
 export type { Props as NumberInputProps } from "./Number";
 export type { Props as PasswordInputProps } from "./Password";
-export type { BaseReactInputHTMLAttributes, InputState, InputType, Props as InputBaseProps, ReactInputHTMLAttributes } from "./__helpers__/Base";
+export type {
+  BaseReactInputHTMLAttributes,
+  InputState,
+  InputType,
+  Props as InputBaseProps,
+  ReactInputHTMLAttributes,
+} from "./__helpers__/BaseField";
 
 Input.Multiline = Multiline;
 Input.Number = Number;
 Input.Password = Password;
-Input.InputBase = Base;
+Input.BaseField = BaseField;
+Input.BaseInput = BaseInput;
 Input.Digit = Digit;
 Input.DigitSequence = DigitSequence;
 Input.IncrDcr = IncrDcr;

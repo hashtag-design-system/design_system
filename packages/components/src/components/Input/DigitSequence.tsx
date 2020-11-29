@@ -11,7 +11,7 @@ export type Props = {
   error?: boolean;
 };
 
-const DigitSequence: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
+const DigitSequence: React.FunctionComponent<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
   const initialRef = useRef<HTMLInputElement>(null);
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../Button";
-import Base, { BaseReactInputHTMLAttributes, InputState } from "./__helpers__/Base";
+import BaseField, { BaseReactInputHTMLAttributes, InputState } from "./__helpers__/BaseField";
 
 const animationVariants = {
   hidden: { opacity: 0 },
@@ -65,7 +65,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
     // TODO: Replace with <Icon /> components
     return (
       <div className="input-number" style={props.style}>
-        <Base
+        <BaseField
           type="number"
           className={className}
           value={value}
@@ -111,6 +111,9 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
           inchange={value => inchange && inchange(value)}
           {...rest}
           style={{ paddingRight: isBtnShown ? "30px" : "" }}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
         >
           <AnimatePresence>
             {isBtnShown && (
@@ -149,7 +152,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
               </motion.div>
             )}
           </AnimatePresence>
-        </Base>
+        </BaseField>
       </div>
     );
   }

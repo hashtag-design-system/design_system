@@ -4,7 +4,7 @@ export type Props = {
   width?: number;
 };
 
-export const HR: React.FC<Props> = ({ width }) => {
+export const HR: React.FunctionComponent<Props> = ({ width }) => {
   return <hr style={{ width }} className="dropdown__hr" />;
 };
 

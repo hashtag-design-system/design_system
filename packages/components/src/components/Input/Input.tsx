@@ -6,7 +6,8 @@ import IncrDcr from "./IncrDcr";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import Base, { BaseReactInputHTMLAttributes, Props as InputProps } from "./__helpers__/Base";
+import BaseField, { BaseReactInputHTMLAttributes, Props as InputProps } from "./__helpers__/BaseField";
+import BaseInput from "./__helpers__/BaseInput";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 export type Props = InputProps &
@@ -25,7 +26,9 @@ type State = {
 };
 
 export default class Input extends React.Component<Props, State> {
-  public static InputBase: typeof Base;
+  public static BaseField: typeof BaseField;
+
+  public static BaseInput: typeof BaseInput;
 
   public static Multiline: typeof Multiline;
 
@@ -65,7 +68,7 @@ export default class Input extends React.Component<Props, State> {
   render() {
     return (
       <HelpTextContainer value={this.state.value} {...this.props}>
-        <Base ref={this.props.innerref} onChange={e => this.handleChange(e)} {...this.props} />
+        <BaseField ref={this.props.innerref} onChange={e => this.handleChange(e)} {...this.props} />
       </HelpTextContainer>
     );
   }

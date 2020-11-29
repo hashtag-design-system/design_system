@@ -8,7 +8,7 @@ import HelpTextContainer from "./__helpers__/HelpTextContainer";
 export type Props = Omit<InputProps, "type" | "icon" | "ref">;
 
 const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
-  ({ placeholder, floatingplaceholder: floatingPlaceholder = true, defaultValue, cols = 28, rows = 5, ...props }, ref) => {
+  ({ placeholder, floatingplaceholder = true, defaultValue, cols = 28, rows = 5, ...props }, ref) => {
     const {
       label,
       // allowClear = false,
@@ -52,7 +52,7 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHT
     };
 
     // Check and change (re-validate) Props
-    if (floatingPlaceholder && label) {
+    if (floatingplaceholder && label) {
       throw new Error(errors.floatingPlaceholderAndLabel);
     }
     if (!placeholder) {
@@ -63,12 +63,12 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHT
       <div className="input__wrapper" style={{ width: props.style?.width }}>
         <HelpTextContainer value={value} {...props}>
           <div className="input__wrapper__base">
-            <div className={classNames} style={{ paddingTop: `${label || !floatingPlaceholder ? "12px" : "20px"}` }}>
+            <div className={classNames} style={{ paddingTop: `${label || !floatingplaceholder ? "12px" : "20px"}` }}>
               <textarea
                 ref={ref}
                 id={id}
-                className={`input ${floatingPlaceholder ? "floating" : ""} input-placeholder-font`}
-                placeholder={!floatingPlaceholder ? placeholder : undefined}
+                className={`input ${floatingplaceholder ? "floating" : ""} input-placeholder-font`}
+                placeholder={!floatingplaceholder ? placeholder : undefined}
                 onChange={e => handleChange(e)}
                 onFocus={e => handleFocus(e)}
                 onBlur={e => handleBlur(e)}
@@ -84,7 +84,7 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHT
             </div>
             <FloatingLabel
               id={id}
-              floatingPlaceholder={floatingPlaceholder}
+              floatingPlaceholder={floatingplaceholder}
               defaultValue={defaultValue ? true : false}
               isActive={isActive}
             >

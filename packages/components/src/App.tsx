@@ -7,6 +7,7 @@ import Dropdown from "./components/Dropdown";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
+import Slider from "./components/Slider";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -47,11 +48,8 @@ function App() {
           </Dropdown.ItemGroup>
         </Dropdown.OptionsBox>
       </Select>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum ullam magni, impedit facilis asperiores facere mollitia harum
-        nihil consequatur cumque? Magni voluptatum iste saepe commodi laudantium, aut libero natus reiciendis distinctio voluptate. Ab
-        eveniet sapiente voluptas impedit odit, at repudiandae aliquid quia sit, error est nobis. Ea fuga tempora culpa.
-      </p>
+      <Slider />
+      <Input.Multiline placeholder="Placeholder" />
     </div>
   );
 }

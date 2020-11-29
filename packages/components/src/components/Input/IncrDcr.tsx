@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../Button";
-import Base, { BaseReactInputHTMLAttributes } from "./__helpers__/Base";
+import BaseField, { BaseReactInputHTMLAttributes } from "./__helpers__/BaseField";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 const IncrDcrInputStates = [
@@ -64,7 +64,7 @@ const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHT
               <path d="M1 1H19" strokeWidth={2} strokeLinecap="round" />
             </svg>
           </Button>
-          <Base
+          <BaseField
             type="number"
             className={className}
             value={value}

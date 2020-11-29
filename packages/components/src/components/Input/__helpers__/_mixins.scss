@@ -4,8 +4,8 @@
   height: em(48);
   background-color: $input-bg;
   padding: 12px;
-  border: 2px solid $grey-5;
-  border-radius: 4px;
+  border: 1.5px solid $grey-5;
+  border-radius: 6px;
   align-self: stretch;
   outline: none;
   transition: all 0.3s;
@@ -31,14 +31,6 @@
   &::placeholder {
     color: $color;
     opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    color: $color;
-  }
-
-  &::-ms-input-placeholder {
-    color: $color;
   }
 }
 
@@ -68,6 +60,12 @@
 
 @mixin input-state-color($color) {
   border-color: $color;
+
+  @if $color == $red-6 {
+    background-color: $red-1;
+  } @else if $color == $green-7 {
+    background-color: $green-1;
+  }
 
   + .input__help-text__icon {
     color: $color;

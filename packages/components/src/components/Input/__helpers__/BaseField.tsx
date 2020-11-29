@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
-import { useClassnames, useDisabled, useInputId } from "../../../utils/hooks";
+import { useInputId } from "../../../utils/hooks";
+import BaseInput from "./BaseInput";
 import FloatingLabel from "./FloatingLabel";
 
 const InputStates = ["default", "hover", "focus", "success", "error", "disabled"] as const;
 export type InputState = typeof InputStates[number];
-const InputTypes = ["text", "email", "hidden", "number", "password", "search", "button", "url"] as const;
+const InputTypes = ["text", "email", "hidden", "number", "password", "range", "search", "button", "url"] as const;
 export type InputType = typeof InputTypes[number];
 export type BaseReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "type"> & {
   value?: React.ReactText;
@@ -23,22 +24,23 @@ export type Props = {
   state?: InputState;
   label?: string;
   icon?: IconPropType;
-  allowClear?: boolean;
+  allowclear?: boolean;
   prefix?: string;
 };
 
-const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
+const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
   (
     {
       placeholder,
-      floatingplaceholder: floatingPlaceholder = true,
+      floatingplaceholder = true,
       type = "text",
       label,
       value,
+      className,
       typing = true,
       defaultValue,
       icon,
-      allowClear = false,
+      allowclear = false,
       children,
       prefix,
       style,
@@ -51,26 +53,18 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
     const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
-    const isDisabled = useDisabled(props) || !typing;
-    let [classNames, rest] = useClassnames(`input input-placeholder-font shadow__inset-small ${floatingPlaceholder ? "floating" : ""}`, props);
-
-    // Change and revalidate Props
-    // Set related to the <Select /> component
-    if (state !== "default" && (typing || state === "focus")) {
-      classNames += ` ${state}`;
-    }
 
     if (!placeholder) {
-      floatingPlaceholder = false;
+      floatingplaceholder = false;
     }
     if (!placeholder && !label) {
       throw new Error("The property `placeholder` or `label` must be provided");
     }
     // TODO: Replace with <Icon /> component
-    if (allowClear && icon) {
+    if (allowclear && icon) {
       throw new Error(errors.allowClearAndIcon);
     }
-    if (floatingPlaceholder && label) {
+    if (floatingplaceholder && label) {
       throw new Error(errors.floatingPlaceholderAndLabel);
     }
     if (state === "error") {
@@ -80,7 +74,7 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
       return null;
     }
 
-    const { onChange, onFocus, onBlur, ...restProps } = rest;
+    const { onChange, onFocus, onBlur, ...restProps } = props;
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsActive(true);
@@ -113,18 +107,22 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
           </span>
         )}
         {children}
-        <input
-          id={id}
+        <BaseInput
+          placeholder={placeholder}
+          className={className}
+          floatingplaceholder={floatingplaceholder}
           type={type}
-          className={classNames}
-          placeholder={!floatingPlaceholder ? placeholder : undefined}
+          label={label}
           value={value}
+          typing={typing}
           defaultValue={defaultValue}
+          icon={icon}
+          allowclear={allowclear}
+          prefix={prefix}
           onChange={e => onChange && onChange(e)}
           onFocus={e => handleFocus(e)}
           onBlur={e => handleBlur(e)}
-          disabled={isDisabled}
-          aria-disabled={isDisabled}
+          state={state}
           ref={ref}
           style={{
             ...style,
@@ -135,7 +133,7 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
         />
         <FloatingLabel
           id={id}
-          floatingPlaceholder={floatingPlaceholder}
+          floatingPlaceholder={floatingplaceholder}
           defaultValue={defaultValue ? true : false}
           isActive={isActive || prefix !== undefined}
         >
@@ -147,6 +145,6 @@ const Base = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttrib
   }
 );
 
-Base.displayName = "InputBase";
+BaseField.displayName = "InputBaseField";
 
-export default Base;
+export default BaseField;

@@ -9,16 +9,16 @@ export type Props = SelectionInputProps & {
 };
 
 export const Base: React.FC<Props & Omit<React.AllHTMLAttributes<HTMLInputElement>, "label" | "onChange">> = ({
+  id,
   checked,
   defaultChecked,
   state = "default",
   label,
   groupName,
   type,
-  children,
   onClick,
   onChange,
-  id,
+  children,
   ...props
 }) => {
   const topOrBottom = label && typeof label === "object" && label.position ? ["top", "bottom"].includes(label.position) : false;

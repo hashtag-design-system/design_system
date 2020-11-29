@@ -21,9 +21,14 @@
     display: block;
     gap: 8px;
     position: relative;
-    padding: em(8);
+    padding: 0.5em;
     transition: background 0.1s;
     width: auto;
+    margin-bottom: 0.25em;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
 
     &__icon {
       justify-content: center;
@@ -54,8 +59,7 @@
   &__list-box {
     background-color: $grey-1;
     border: 1px solid $grey-5;
-    border-radius: 4px;
-    display: block;
+    border-radius: 6px;
     list-style: none;
     margin-block: 0; // TODO: Set programmatically
     overflow-y: scroll;
@@ -74,12 +78,12 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      border: 3px solid $grey-1;
+      border: 3.5px solid $grey-1;
       border-left-width: 0.5px;
       background-clip: padding-box;
-      border-radius: 50px;
+      border-radius: 100%;
       -webkit-border-radius: 50px;
-      background-color: $grey-6;
+      background-color: $grey-5;
     }
 
     &::-webkit-scrollbar-corner {
@@ -100,7 +104,7 @@
     border-radius: 0px 0px 0px 4px;
     position: absolute;
     right: 15px;
-    bottom: -13px;
+    bottom: -15px;
     z-index: 10;
     clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
     transform: rotate(135deg);

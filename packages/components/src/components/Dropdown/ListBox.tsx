@@ -5,10 +5,11 @@ import { useClassnames } from "../../utils/hooks";
 
 export type Props = {
   maxHeight?: React.ReactText;
+  tooltipBubble?: boolean;
 };
 
-const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, children, ...props }) => {
-  const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("dropdown__list-box shadow-large", props);
+const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBubble = true, children, ...props }) => {
+  const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("dropdown__list-box shadow-2", props);
 
   const { isVisible, helptext, label, ref } = useContext(DropdownContext);
 
@@ -16,16 +17,22 @@ const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, children,
     <AnimatePresence>
       {isVisible && (
         <>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="tooltip__bubble"
-          />
+          {tooltipBubble && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="tooltip__bubble"
+            />
+          )}
           <motion.ul
             className={classNames}
-            style={{ ...props.style, maxHeight, marginTop: helptext && !label ? "4.625em" : label ? "4.8125em" : "3.25em" }}
+            style={{
+              ...props.style,
+              maxHeight,
+              marginTop: helptext && !label ? "4.75em" : label ? "4.9375em" : "3.375em",
+            }}
             layout
             ref={ref}
             initial={{ opacity: 0 }}

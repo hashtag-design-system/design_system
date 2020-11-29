@@ -1,17 +1,9 @@
 import { AnimateSharedLayout, motion, useMotionValue, useTransform } from "framer-motion";
 import React, { useMemo, useState } from "react";
 import { SelectionInputProps, SelectionInputState } from "../../typings";
-import { useClassnames, useInputId } from "../../utils/hooks";
-import { Base } from "../__helpers__";
-
-// See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
-const tickVariants = {
-  pressed: (isChecked: boolean) => ({
-    pathLength: isChecked ? 0.75 : 0.3,
-  }),
-  checked: { pathLength: 1 },
-  initial: { pathLength: 0 },
-};
+import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
+import { Animated, Base } from "../__helpers__";
+import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
 
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
@@ -37,6 +29,8 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
       props
     );
 
+    const [pathLength, opacity] = useAnimateCheckmark();
+
     const handleChange = () => {
       if (checked !== undefined) {
         checked = isChecked;
@@ -52,10 +46,6 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
     const isIndeterminate = useMemo(() => state === "indeterminate", [state]);
 
     const whileTap = !state.includes("disabled") && state !== "checked" ? "pressed" : undefined;
-
-    // Animation state
-    const pathLength = useMotionValue(0);
-    const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
 
     return (
       <Base type="checkbox" label={label} id={id} onChange={() => handleChange()} checked={isChecked} ref={ref}>
@@ -77,7 +67,14 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
             aria-labelledby={id}
             {...rest}
           >
-            <motion.svg whileTap={whileTap} initial={false} width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+            {/* <motion.svg
+              whileTap={whileTap}
+              initial={false}
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               {!isIndeterminate ? (
                 <motion.path
                   d="M1.75 7.156l3.55 3.658 7.43-7.897"
@@ -104,7 +101,29 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
                   transition={{ duration: 0.2 }}
                 />
               )}
-            </motion.svg>
+            </motion.svg> */}
+            <Animated.Checkmark
+              width={14}
+              whileTap={whileTap}
+              initial={false}
+              custom={isChecked}
+              // inPathLength={value => setPathLength(value)}
+              // inOpacity={value => setOpacity(value)}
+            >
+              {isIndeterminate && (
+                <motion.path
+                  d="M1.75 7.583h10.5"
+                  fill="transparent"
+                  stroke="var(--primary)"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  initial={checkmarkVariants.initial}
+                  animate={checkmarkVariants.checked}
+                  style={{ pathLength, opacity }}
+                  transition={{ duration: 0.2 }}
+                />
+              )}
+            </Animated.Checkmark>
           </motion.label>
         </AnimateSharedLayout>
       </Base>

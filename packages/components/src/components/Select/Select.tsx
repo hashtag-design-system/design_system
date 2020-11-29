@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/ctx/DropdownContext";
-import { useClassnames, useDisabled } from "../../utils/hooks";
-import useVisible from "../../utils/hooks/useVisible";
+import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
 import Input, { InputProps, ReactInputHTMLAttributes } from "../Input";
 import { DividerIcon } from "./__helpers__/DividerIcon";
 import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
@@ -23,8 +22,8 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
     defaultOpen = false,
     floatingplaceholder = false,
     inselect,
-    children,
     style,
+    children,
     ...rest
   } = props;
   let { ref, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
@@ -53,7 +52,7 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   };
 
   const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement | SVGElement>) => {
+    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => {
       if (setIsVisible && !isDisabled) {
         setIsVisible(!isVisible);
       }
