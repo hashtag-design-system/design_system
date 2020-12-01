@@ -2,8 +2,8 @@ import React from "react";
 import { useClassnames, useDisabled, useInputId } from "../../../utils/hooks";
 import { BaseReactInputHTMLAttributes, Props as InputProps } from "./BaseField";
 
-const BaseInput = React.forwardRef<HTMLInputElement, InputProps & BaseReactInputHTMLAttributes>(({ placeholder, value, defaultValue, type, floatingplaceholder, typing, allowclear, ...props }, ref) => 
- {
+const BaseInput = React.forwardRef<HTMLInputElement, InputProps & BaseReactInputHTMLAttributes>(
+  ({ placeholder, value, defaultValue, type, floatingplaceholder, typing, allowclear, children, ...props }, ref) => {
     const { state = "default" } = props;
 
     const id = useInputId(props.id);
@@ -17,22 +17,24 @@ const BaseInput = React.forwardRef<HTMLInputElement, InputProps & BaseReactInput
     }
 
     return (
-      <input
-        id={id}
-        type={type}
-        className={classNames}
-        placeholder={!floatingplaceholder ? placeholder : undefined}
-        value={value}
-        defaultValue={defaultValue}
-        disabled={isDisabled}
-        aria-disabled={isDisabled}
-        aria-placeholder={placeholder}
-        ref={ref}
-        {...rest}
-      />
+      <>
+        <input
+          id={id}
+          type={type}
+          className={classNames}
+          placeholder={!floatingplaceholder ? placeholder : undefined}
+          value={value}
+          defaultValue={defaultValue}
+          disabled={isDisabled}
+          aria-disabled={isDisabled}
+          aria-placeholder={placeholder}
+          ref={ref}
+          {...rest}
+        />
+        {children}
+      </>
     );
   }
 );
-
 
 export default BaseInput;

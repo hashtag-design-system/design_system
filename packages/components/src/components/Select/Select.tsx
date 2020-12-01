@@ -97,6 +97,9 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
             if (props.onClick) props.onClick(e);
           }}
           onKeyDown={e => handleKeyPress(e)}
+          aria-haspopup="true"
+          aria-expanded={isVisible}
+          // aria-controls=
         >
           <DividerIcon />
         </Input>

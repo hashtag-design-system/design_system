@@ -1,4 +1,4 @@
-import { AnimateSharedLayout, motion, useMotionValue, useTransform } from "framer-motion";
+import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useMemo, useState } from "react";
 import { SelectionInputProps, SelectionInputState } from "../../typings";
 import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
@@ -67,49 +67,7 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
             aria-labelledby={id}
             {...rest}
           >
-            {/* <motion.svg
-              whileTap={whileTap}
-              initial={false}
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {!isIndeterminate ? (
-                <motion.path
-                  d="M1.75 7.156l3.55 3.658 7.43-7.897"
-                  fill="transparent"
-                  stroke="var(--grey-1)"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  variants={tickVariants}
-                  style={{ pathLength, opacity }}
-                  custom={isChecked}
-                  transition={{ duration: 0.2 }}
-                />
-              ) : (
-                <motion.path
-                  d="M1.75 7.583h10.5"
-                  fill="transparent"
-                  stroke="var(--primary)"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  initial={tickVariants.initial}
-                  animate={tickVariants.checked}
-                  style={{ pathLength, opacity }}
-                  transition={{ duration: 0.2 }}
-                />
-              )}
-            </motion.svg> */}
-            <Animated.Checkmark
-              width={14}
-              whileTap={whileTap}
-              initial={false}
-              custom={isChecked}
-              // inPathLength={value => setPathLength(value)}
-              // inOpacity={value => setOpacity(value)}
-            >
+            <Animated.Checkmark width={14} whileTap={whileTap} initial={false} custom={isChecked}>
               {isIndeterminate && (
                 <motion.path
                   d="M1.75 7.583h10.5"

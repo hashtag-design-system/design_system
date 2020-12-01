@@ -11,21 +11,21 @@ const animationVariants = {
 export type Props = {
   min?: number;
   max?: number;
-  count?: number;
-  stepNumber?: number;
+  defaultValue?: number;
+  step?: number;
   state?: InputState;
 };
 
 const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "step">>(
-  ({ min = 0, max = 9999999, count = 0, stepNumber = 1, state, ...props }, ref) => {
-    const [value, setValue] = useState<any>(count);
+  ({ min = 0, max = 9999999, defaultValue = 0, step: stepNumber = 1, state, ...props }, ref) => {
+    const [value, setValue] = useState<any>(defaultValue);
     const [isBtnShown, setIsBtnShown] = useState(false);
     const [isUp, setIsUp] = useState(false);
     const [isDown, setIsDown] = useState(false);
     const [shiftKey, setShiftKey] = useState(false);
 
     const increment = (step = stepNumber) => {
-      const number = value || count;
+      const number = value || defaultValue;
 
       if (!(number + step > max) && state !== "disabled") {
         setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) + step)));
@@ -33,7 +33,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
     };
 
     const decrement = (step = stepNumber) => {
-      const number = value || count;
+      const number = value || defaultValue;
 
       if (!(number - step < min) && state !== "disabled") {
         setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) - step)));
@@ -49,7 +49,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
         setValue("");
         return;
       }
-      if (value === count) {
+      if (value === defaultValue) {
         setValue("");
         return;
       }
@@ -75,7 +75,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
           onFocus={e => {
             setIsBtnShown(true);
             // Bug on 2nd focus, does not work
-            if (String(value) === String(count)) {
+            if (String(value) === String(defaultValue)) {
               setValue("");
             }
             if (onFocus) {
@@ -86,7 +86,7 @@ const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTM
           onBlur={e => {
             setIsBtnShown(false);
             if (!value) {
-              setValue(String(count));
+              setValue(String(defaultValue));
             }
             if (onBlur) {
               onBlur(e);

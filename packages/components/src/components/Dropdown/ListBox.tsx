@@ -40,6 +40,7 @@ const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBu
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             {...rest}
+            role="tablist"
           >
             {children}
           </motion.ul>
