@@ -10,15 +10,12 @@
   }
 
   &__wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    @extend .flex-column-flex-start-flex-start;
     gap: 4px;
     width: em(280);
 
     &__base {
-      display: flex;
-      flex-direction: column;
+      @extend .flex-column-flex-start-flex-start;
       width: auto;
       position: relative;
       align-self: stretch;
@@ -26,12 +23,8 @@
   }
 
   &__label-container {
-    align-self: stretch;
-    display: flex;
+    @extend .flex-row-flex-start-stretch;
     flex-wrap: nowrap;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
     height: auto;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
@@ -73,9 +66,6 @@
   }
 
   &__help-text {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
     gap: 4px;
     align-self: flex-end;
     width: auto;
@@ -192,11 +182,8 @@
   }
 
   &-sequence {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @extend .flex-column-center-center;
     flex: none;
-    justify-content: center;
     width: auto;
     gap: 24px;
 
@@ -214,10 +201,7 @@
 }
 
 .input-incr-dcr {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  @extend .flex-row-space-between-center;
   text-align: center;
   margin: 8px;
   width: em(120);
@@ -240,10 +224,8 @@
   }
 
   &__icon {
+    @extend .flex-column-center-center;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 4px;
     padding: 0 !important;
     width: 28px;
@@ -293,10 +275,8 @@
     border-left: 2px solid $grey-5;
 
     .btn {
+      @extend .flex-column-center-center;
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 0 !important;
       width: em(22) !important;
       height: em(22);

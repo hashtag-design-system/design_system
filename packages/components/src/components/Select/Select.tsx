@@ -29,7 +29,7 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   let { ref, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
   const [value, setValue] = useState(defaultValue || "");
   const isDisabled = useDisabled<typeof props>(props);
-  let [classNames, restProps] = useClassnames(`dropdown select__wrapper flex-column-stretch  ${isDisabled ? "disabled" : ""}`, rest);
+  let [classNames, restProps] = useClassnames(`dropdown select__wrapper flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`, rest);
 
   const handleSelect = useCallback(
     (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string) => {
@@ -99,7 +99,6 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
           onKeyDown={e => handleKeyPress(e)}
           aria-haspopup="true"
           aria-expanded={isVisible}
-          // aria-controls=
         >
           <DividerIcon />
         </Input>

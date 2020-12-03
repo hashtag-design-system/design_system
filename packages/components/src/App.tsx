@@ -29,13 +29,8 @@ function App() {
       {/* TODO: Configure the Todo Tree extension */}
       <RadioButton label={{ value: "Label" }} />
       <Input placeholder="Placeholder" inchange={value => console.log(value)} />
-      <Select
-        helptext={{ value: "hey" }}
-        label="Label"
-        placeholder="Placeholder"
-        floatingplaceholder={false}
-        inselect={(option: string) => console.log(option)}
-      >
+      {/* TODO: Test `floatingplaceholder` Prop */}
+      <Select placeholder="Placeholder" floatingplaceholder={false} inselect={(option: string) => console.log(option)}>
         <Dropdown.OptionsBox maxHeight={150}>
           {options.map((option, i) => (
             <Dropdown.Item key={i} id={option.value}>
@@ -71,8 +66,23 @@ function App() {
           // { value: 95, label: "95" },
           { value: 100, label: "100" },
         ]}
-        lockOnMarks
-        zeroPercentageOnEdgeMakrs
+        // lockOnMarks
+        max={100}
+        zeroPercentageOnEdgeMarks
+        chart={{
+          type: "bar",
+          data: [
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+            { value: 1 },
+          ],
+        }}
       />
     </div>
   );

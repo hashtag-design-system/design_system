@@ -6,10 +6,21 @@ import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input"
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc
 // See -> https://www.youtube.com/watch?v=MxbEjINYIPc
 
+export type SliderMarkProp = { value: number; label: string };
+type SliderChartDataProp = { value: number; percentage?: boolean; width?: number };
+
 export type Props = NumberInputProps & {
-  marks: { value: number; label: string }[];
+  marks: SliderMarkProp[];
   lockOnMarks?: boolean;
-  zeroPercentageOnEdgeMakrs?: boolean;
+  zeroPercentageOnEdgeMarks?: boolean;
+  formatRegExp?: {
+    searchValue: string | RegExp;
+    replaceValue: string;
+  };
+  chart?: {
+    type: "bar";
+    data: SliderChartDataProp[];
+  };
 };
 
 const DEFAULT_SIZE = 0.875;
@@ -23,8 +34,10 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
       step = 1,
       marks,
       lockOnMarks = false,
-      zeroPercentageOnEdgeMakrs = false,
+      zeroPercentageOnEdgeMarks = false,
       inchange,
+      formatRegExp,
+      chart,
       ...props
     },
     ref
@@ -39,16 +52,20 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     const progressRef = useRef<HTMLSpanElement>(null);
 
     const incr = () => {
-      setValue(value => value + step);
+      setValue(value => value + sliderStep);
     };
 
     const dcr = () => {
-      setValue(value => value - step);
+      setValue(value => value - sliderStep);
     };
 
-    const calcPercentage = useCallback((): number => {
-      return ((value - min) / (max - min)) * 100;
-    }, [value, min, max]);
+    const calcPercentage = useCallback(
+      (number?: number): number => {
+        const num = number === undefined ? value : number;
+        return ((num - min) / (max - min)) * 100;
+      },
+      [value, min, max]
+    );
 
     const calcValue = useCallback(
       (percentage: number): number => {
@@ -57,29 +74,55 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
       [max]
     );
 
-    const calcPosition = (markValue: number, idx: number, last: boolean): number | undefined => {
-      let value: number = calcValue(markValue);
+    const calcPosition = (mark: SliderMarkProp, last: boolean): number | undefined => {
+      const { value: markValue, label } = mark;
       if (!last) {
-        if (zeroPercentageOnEdgeMakrs && idx === 0) {
-          value = 0;
-        } else {
-          value = value - (window.outerWidth >= 700 ? 1 : 1.75);
-        }
-        return value;
+        return calcPercentage(markValue) - 0.55 * String(label).length;
+      } else if (markValue === min) {
+        return 0;
       } else {
         return undefined;
+      }
+    };
+
+    const calcBarHeight = (data: SliderChartDataProp) => {
+      const { width, percentage } = data;
+      if (percentage) {
+        console.log(percentage);
       }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       const { key } = e;
 
+      const currentValueIdx = marks.map(mark => mark.value).indexOf(value);
       if (key === "ArrowRight" || key === "ArrowUp") {
-        incr();
+        if (lockOnMarks && currentValueIdx !== -1) {
+          const nextValue = marks[currentValueIdx + 1];
+
+          if (nextValue) {
+            const val = nextValue.value;
+            setSliderStep(val - value);
+            setValue(val);
+          }
+        } else {
+          incr();
+        }
       } else if (key === "ArrowLeft" || key === "ArrowDown") {
-        dcr();
+        if (lockOnMarks && currentValueIdx !== -1) {
+          const prevValue = marks[currentValueIdx - 1];
+
+          if (prevValue) {
+            const val = prevValue.value;
+            setSliderStep(value - val);
+            setValue(val);
+          }
+        } else {
+          dcr();
+        }
       }
 
+      // TODO: Numeric keyboard comment
       if (!isNaN(+key)) {
         const numKey = parseInt(key);
         const number = calcValue(numKey * 10);
@@ -97,25 +140,26 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
       const { valueAsNumber } = e.target;
 
       if (lockOnMarks) {
-        const currentValueIdx = marks.map(mark => mark.value).indexOf(value);
-        const nextValue = marks[currentValueIdx + 1];
-        const prevValue = marks[currentValueIdx - 1];
+        const closest = marks
+          .map(mark => mark.value)
+          .reduce(function (prev, curr) {
+            return Math.abs(curr - valueAsNumber) < Math.abs(prev - valueAsNumber) ? curr : prev;
+          });
 
-        let targetValue = value;
-        if (nextValue === undefined) {
-          targetValue = max;
-        } else if (prevValue === undefined) {
-          targetValue = 0;
-        }
-
-        if (valueAsNumber > targetValue) {
-          const val = nextValue.value;
-          setSliderStep(val - targetValue);
-          setValue(val);
+        // if (valueAsNumber > targetValue) {
+        //   const val = nextValue.value;
+        //   setSliderStep(val - targetValue);
+        //   setValue(val);
+        // } else {
+        //   const val = prevValue.value;
+        //   setSliderStep(targetValue - val);
+        //   setValue(val);
+        // }
+        const marksValues = marks.map(mark => mark.value);
+        if (marksValues.includes(valueAsNumber)) {
+          setValue(valueAsNumber);
         } else {
-          const val = prevValue.value;
-          setSliderStep(targetValue - val);
-          setValue(val);
+          setValue(closest);
         }
       } else {
         setValue(valueAsNumber);
@@ -148,14 +192,21 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     }, [max, onHover, size]);
 
     return (
-      <div className="slider__wrapper flex-column-center" onMouseEnter={() => setOnHover(true)} onMouseLeave={() => setOnHover(false)}>
+      <div className="slider__wrapper flex-column-flex-start-center">
+        {chart && (
+          <div className="slider__chart flex-row-flex-start-center">
+            {chart.data.map((datum, i) => {
+              return <div key={i} className="slider__chart__bar" style={{ height: `${calcBarHeight(datum)}%` }}></div>;
+            })}
+          </div>
+        )}
         <div
-          className="slider__field flex-column-stretch"
-          role="slider"
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={value}
-          {...rest}
+          className="slider__field flex-column-flex-start-stretch"
+          onMouseEnter={() => setOnHover(true)}
+          onMouseLeave={() => setOnHover(false)}
+          onClickCapture={() => setOnHover(true)}
+          onTouchMove={() => setOnHover(true)}
+          onTouchEnd={() => setOnHover(false)}
         >
           <Input.BaseInput
             type="range"
@@ -167,6 +218,11 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
             onChange={e => handleChange(e)}
             ref={ref}
             tabIndex={-1}
+            role="slider"
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={value}
+            list="tickmarks"
             {...rest}
           >
             <span className="slider__bar shadow__inset-small">
@@ -174,7 +230,7 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
             </span>
           </Input.BaseInput>
           <div
-            className="slider__value flex-row-center"
+            className="slider__thumb flex-row-center-center"
             style={{
               left: `${calcPercentage()}%`,
               width: `${size}em`,
@@ -182,27 +238,40 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
             }}
             tabIndex={0}
             onKeyDown={e => handleKeyDown(e)}
+            data-onhover={onHover}
           >
-            <span className="slider__value__span body-16">{value}</span>
+            <span className="slider__thumb__value body-16">
+              {formatRegExp ? String(value).replaceAll(formatRegExp.searchValue, formatRegExp.replaceValue) : value}
+            </span>
           </div>
         </div>
-        <div className="slider__marks flex-row-flex-start">
-          {marks.map(({ value, label }, i) => {
-            const last = i === marks.length - 1;
-            return (
-              <span
-                key={i}
-                className="body-14"
-                style={{
-                  right: `${zeroPercentageOnEdgeMakrs && last ? "0" : ""}`,
-                  left: `${calcPosition(value, i, last)}%`,
-                }}
-              >
-                {label}
-              </span>
-            );
-          })}
-        </div>
+        {marks && (
+          <div className="slider__marks flex-row-center-center">
+            {marks.map((mark, i) => {
+              const rightStyle = (i === marks.length - 1 || i === 0) && zeroPercentageOnEdgeMarks;
+              const { label } = mark;
+
+              return (
+                <span
+                  key={i}
+                  className="slider__marks__span body-14"
+                  style={{
+                    right: `${rightStyle ? "0%" : undefined}`,
+                    // It is easier to set with `position:absolute`, because we only have to set the `left` property
+                    /*  
+                    If we used `display: flex` and `transform: translateX(x%)` propertie, then we would have to deal
+                    with each value individually. Which means, that we would need to set the `tranform` property 
+                    different for the markValue < middle, the middle one and the ones with markValue < middle
+                   */
+                    left: `${calcPosition(mark, rightStyle)}%`,
+                  }}
+                >
+                  {label}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }

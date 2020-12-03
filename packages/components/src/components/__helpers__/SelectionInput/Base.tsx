@@ -27,7 +27,7 @@ export const Base: React.FC<Props & Omit<React.AllHTMLAttributes<HTMLInputElemen
 
   return (
     <div
-      className="selection-input__wrapper"
+      className="selection-input__wrapper flex-row-center-center"
       style={{
         width: props.style?.width,
         flexDirection: topOrBottom ? "column" : undefined,

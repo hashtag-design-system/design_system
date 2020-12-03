@@ -44,7 +44,7 @@ const Switch = React.forwardRef<HTMLLabelElement, Props>(
     const id = useInputId(props.id);
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));
     const [classNames, rest] = useClassnames(
-      `switch selection-input__box ${state.includes("disabled") ? "disabled" : ""} ${
+      `switch selection-input__box flex-row-flex-start-center ${state.includes("disabled") ? "disabled" : ""} ${
         state === "focus-visible" ? "focus-visible" : ""
       }`,
       props

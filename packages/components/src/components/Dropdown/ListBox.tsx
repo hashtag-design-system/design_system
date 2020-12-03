@@ -13,6 +13,8 @@ const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBu
 
   const { isVisible, helptext, label, ref } = useContext(DropdownContext);
 
+  // TODO: Replace the <span /> tag with the <Tooltip /> component, when it is made
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -31,7 +33,7 @@ const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBu
             style={{
               ...props.style,
               maxHeight,
-              marginTop: helptext && !label ? "4.75em" : label ? "4.9375em" : "3.375em",
+              marginTop: helptext && !label ? "4.5625em" : label ? "4.75em" : "3.1875em",
             }}
             layout
             ref={ref}

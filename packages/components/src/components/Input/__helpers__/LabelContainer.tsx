@@ -16,11 +16,15 @@ const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
   children,
   ...props
 }) => {
-  let [classNames, rest] = useClassnames("input__help-text", props);
+  let [classNames, rest] = useClassnames("input__help-text flex-row-unset-flex-end", props);
 
   // TODO: Make the input__help-text__icon classes in the stylesheets
   return (
-    <div className="input__label-container" style={{ justifyContent: `${!label ? "flex-end" : ""}` }} {...rest}>
+    <div
+      className="input__label-container flex-row-space-between-center"
+      style={{ justifyContent: `${!label ? "flex-end" : ""}` }}
+      {...rest}
+    >
       {label}
       {withHelpText && <div className={classNames}>{children}</div>}
       {charactersLimit && charactersLimit.maxLength && (

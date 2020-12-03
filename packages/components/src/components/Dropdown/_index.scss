@@ -18,7 +18,6 @@
     align-self: center !important;
     border-radius: 4px;
     cursor: pointer;
-    display: block;
     gap: 8px;
     position: relative;
     padding: 0.5em;
@@ -30,12 +29,8 @@
       margin-bottom: 0;
     }
 
-    &__icon {
-      justify-content: center;
-
-      &.right {
-        margin-left: auto;
-      }
+    &__icon.right {
+      margin-left: auto;
     }
 
     &__group {
@@ -95,16 +90,16 @@
 .tooltip__bubble {
   display: none;
 
+  // https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
   @supports (clip-path: inset(50%)) {
-    // https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
     display: block;
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
     background-color: $grey-5;
     border-radius: 0px 0px 0px 4px;
     position: absolute;
     right: 15px;
-    bottom: -15px;
+    bottom: -10px;
     z-index: 10;
     clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
     transform: rotate(135deg);

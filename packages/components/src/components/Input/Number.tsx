@@ -8,7 +8,7 @@ const animationVariants = {
   visible: { opacity: 1 },
 };
 
-export type Props = {
+export type Props = Omit<BaseReactInputHTMLAttributes, "step"> & {
   min?: number;
   max?: number;
   defaultValue?: number;
@@ -16,7 +16,7 @@ export type Props = {
   state?: InputState;
 };
 
-const Number = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "step">>(
+const Number = React.forwardRef<HTMLInputElement, Props>(
   ({ min = 0, max = 9999999, defaultValue = 0, step: stepNumber = 1, state, ...props }, ref) => {
     const [value, setValue] = useState<any>(defaultValue);
     const [isBtnShown, setIsBtnShown] = useState(false);
