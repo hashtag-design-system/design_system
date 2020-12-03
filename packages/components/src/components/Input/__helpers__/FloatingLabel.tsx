@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { InputProps } from "..";
 
 type Props = {
   id: string;
   defaultValue: boolean;
   isActive?: boolean;
-  floatingPlaceholder: boolean;
+  floatingplaceholder: InputProps["floatingplaceholder"];
 };
 
-const FloatingLabel: React.FC<Props> = ({ id, defaultValue, isActive = false, floatingPlaceholder, children }) => {
-  return floatingPlaceholder ? (
-    <label htmlFor={id} className={`input-placeholder-font input__floating-label ${isActive || defaultValue ? "active" : ""}`}>
+const FloatingLabel: React.FC<Props> = ({ id, defaultValue, isActive = false, floatingplaceholder, children }) => {
+  const [isFloated, setIsFloated] = useState(defaultValue || isActive);
+
+  useEffect(() => {
+    if (typeof floatingplaceholder === "object") {
+      setIsFloated(floatingplaceholder.now);
+    } else {
+      setIsFloated(defaultValue || isActive);
+    }
+  }, [floatingplaceholder, isActive, defaultValue]);
+
+  if (typeof floatingplaceholder) {
+  }
+
+  return floatingplaceholder ? (
+    <label htmlFor={id} className={`input-placeholder-font input__floating-label ${isFloated ? "active" : ""}`}>
       {children}
     </label>
   ) : null;

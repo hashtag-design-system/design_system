@@ -2,7 +2,7 @@ import React from "react";
 import { InputProps } from "..";
 import LabelContainer from "./LabelContainer";
 
-export type Props = Omit<InputProps, "state"> & {state?: string};
+export type Props = Omit<InputProps, "state"> & { state?: string };
 
 const HelpTextContainer: React.FC<Props> = ({
   label,

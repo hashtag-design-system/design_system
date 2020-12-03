@@ -14,14 +14,16 @@ export type BaseReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLIn
   defaultValue?: React.ReactText;
   typing?: boolean;
   inchange?: (value: React.ReactText) => void;
+  inselect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>) => void;
 };
 export type ReactInputHTMLAttributes = Omit<BaseReactInputHTMLAttributes, "value">;
 
 export type Props = {
   placeholder?: string;
-  floatingplaceholder?: boolean;
+  floatingplaceholder?: boolean | { now: boolean };
   type?: InputType;
   state?: InputState;
+  forceState?: boolean;
   label?: string;
   icon?: IconPropType;
   allowclear?: boolean;
@@ -49,7 +51,7 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLA
     },
     ref
   ) => {
-    const { state = "default" } = props;
+    const { state = "default", forceState = false } = props;
     const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);
@@ -133,7 +135,7 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLA
         />
         <FloatingLabel
           id={id}
-          floatingPlaceholder={floatingplaceholder}
+          floatingplaceholder={floatingplaceholder}
           defaultValue={defaultValue ? true : false}
           isActive={isActive || prefix !== undefined}
         >

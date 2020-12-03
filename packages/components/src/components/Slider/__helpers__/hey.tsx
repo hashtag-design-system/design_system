@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input";
-import { ContextProvider } from "./__helpers__/ContextProvider";
-import { Field } from "./__helpers__/Field";
-import { Marks } from "./__helpers__/Marks";
+import { BaseReactInputHTMLAttributes, NumberInputProps } from "../../Input";
+import { ContextProvider } from "./ContextProvider";
+import { Field } from "./Field";
+import { Marks } from "./Marks";
 
 // See -> https://www.youtube.com/watch?v=zOA2vpx44Nw
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc

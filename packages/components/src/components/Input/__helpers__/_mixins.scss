@@ -10,20 +10,22 @@
   outline: none;
   transition: all 0.3s;
 
-  &.hover {
-    @include input--hover;
-  }
+  &:not([data-forcestate="true"][state="default"]) {
+    &.hover {
+      @include input--hover;
+    }
 
-  &:hover {
-    @include input--hover;
-  }
+    &:hover {
+      @include input--hover;
+    }
 
-  &.focus {
-    @include input--focus;
-  }
+    &.focus {
+      @include input--focus;
+    }
 
-  &:focus {
-    @include input--focus;
+    &:focus {
+      @include input--focus;
+    }
   }
 }
 

@@ -30,7 +30,7 @@ function App() {
       <RadioButton label={{ value: "Label" }} />
       <Input placeholder="Placeholder" inchange={value => console.log(value)} />
       {/* TODO: Test `floatingplaceholder` Prop */}
-      <Select placeholder="Placeholder" floatingplaceholder={false} inselect={(option: string) => console.log(option)}>
+      <Select placeholder="Placeholder" floatingplaceholder={true} inselect={(option: string) => console.log(option)}>
         <Dropdown.OptionsBox maxHeight={150}>
           {options.map((option, i) => (
             <Dropdown.Item key={i} id={option.value}>

@@ -84,7 +84,7 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHT
             </div>
             <FloatingLabel
               id={id}
-              floatingPlaceholder={floatingplaceholder}
+              floatingplaceholder={floatingplaceholder}
               defaultValue={defaultValue ? true : false}
               isActive={isActive}
             >

@@ -7,7 +7,6 @@ import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
 export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "characterLimit"> & {
   defaultOpen?: boolean;
-  inselect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>) => void;
 };
 
 const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
@@ -22,6 +21,7 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
     defaultOpen = false,
     floatingplaceholder = false,
     inselect,
+    onClick,
     style,
     children,
     ...rest
@@ -29,7 +29,10 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   let { ref, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
   const [value, setValue] = useState(defaultValue || "");
   const isDisabled = useDisabled<typeof props>(props);
-  let [classNames, restProps] = useClassnames(`dropdown select__wrapper flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`, rest);
+  let [classNames, restProps] = useClassnames(
+    `dropdown select__wrapper flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`,
+    rest
+  );
 
   const handleSelect = useCallback(
     (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string) => {
@@ -52,12 +55,16 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   };
 
   const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => {
+    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement | any>) => {
       if (setIsVisible && !isDisabled) {
         setIsVisible(!isVisible);
       }
+
+      if (onClick) {
+        onClick(e);
+      }
     },
-    [isVisible, setIsVisible, isDisabled]
+    [isVisible, setIsVisible, isDisabled, onClick]
   );
 
   const providerValue = useMemo(
@@ -83,10 +90,21 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
           icon={<DownArrowIcon />}
           width={newWidth}
           placeholder={placeholder}
-          floatingplaceholder={floatingplaceholder}
+          floatingplaceholder={floatingplaceholder === true ? { now: isVisible || String(value).length > 0 } : false}
           helptext={helptext}
           secondhelptext={secondhelptext}
-          state={isVisible && !props.state ? "focus" : isDisabled ? "disabled" : props.state}
+          state={
+            isVisible && !props.state
+              ? "focus"
+              : isDisabled
+              ? "disabled"
+              : props.state
+              ? props.state
+              : !isVisible
+              ? "default"
+              : undefined
+          }
+          forceState={props.forceState === undefined ? true : props.forceState}
           value={value}
           label={label}
           prefix={prefix}
