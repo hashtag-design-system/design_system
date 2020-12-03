@@ -1,3 +1,10 @@
 /* Variables */
 $primary: $blue-5 !default;
-$input-bg: $grey-2 !default;
+$input-bg: $grey-3 !default;
+$breakpoints: (
+  "xs": 600px,
+  "sm": 600px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+);

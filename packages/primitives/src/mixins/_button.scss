@@ -1,8 +1,6 @@
 // Base button style
 @mixin base-btn {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  @extend .flex-row-center-center;
   flex: none;
   align-self: flex-start;
   position: relative;

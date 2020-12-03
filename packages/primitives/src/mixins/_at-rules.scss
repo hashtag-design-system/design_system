@@ -1,0 +1,11 @@
+@mixin breakpoint($name) {
+  @if $name == "xs" {
+    @media screen and (max-width: map-get($breakpoints, $name)) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: map-get($breakpoints, $name)) {
+      @content;
+    }
+  }
+}

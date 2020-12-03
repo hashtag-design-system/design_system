@@ -1,18 +1,48 @@
 // * See -> https://stackoverflow.com/questions/44735495/sass-customize-class-names-with-variables
-@mixin flex-class($direction, $align) {
-  .flex-#{$direction}-#{$align} {
+$flex-directions: (
+  "column",
+  "column-reverse",
+  "row",
+  "row-reverse",
+  "initial",
+  "inherit"
+);
+$align-items: (
+  "baseline",
+  "center",
+  "flex-end",
+  "flex-start",
+  "stretch",
+  "initial",
+  "inherit",
+  "unset",
+);
+$justify-contents: (
+  "flex-start",
+  "flex-end",
+  "center",
+  "space-between",
+  "space-arround",
+  "initial",
+  "inherit",
+  "unset"
+);
+
+@mixin flex-class($direction, $content, $align) {
+  .flex-#{$direction}-#{$content}-#{$align} {
     display: flex;
     flex-direction: #{$direction};
+    justify-content: #{$content};
     align-items: #{$align};
   }
 }
 
-$directions: ("column", "column-reverse", "row", "row-reverse", "unset");
-$aligns: ("baseline", "center", "flex-end", "flex-start", "stretch", "unset");
 @mixin generate-flex() {
-  @each $direction in $directions {
-    @each $align in $aligns {
-      @include flex-class($direction, $align);
+  @each $direction in $flex-directions {
+    @each $content in $justify-contents {
+      @each $align in $align-items {
+        @include flex-class($direction, $content, $align);
+      }
     }
   }
 }

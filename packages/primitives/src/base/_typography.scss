@@ -19,13 +19,12 @@ span {
 .light {
   @include font-light;
 }
-  .medium {
-    @include font-medium;
-  }
+.medium {
+  @include font-medium;
+}
 .bold {
   @include font-bold;
 }
-
 
 .uppercase {
   @include font-uppercase;
