@@ -4,11 +4,11 @@
 
 // Utils
 @import "utils/functions";
-@import "utils/mixins";
+@import "utils/generate";
 
 // Mixins
 @import "mixins/button";
-@import "mixins/generate";
+@import "mixins/general";
 @import "mixins/typography";
 @import "mixins/at-rules";
 
