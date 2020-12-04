@@ -1,6 +1,6 @@
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import React, { useContext } from "react";
-import DropdownContext from "../../utils/ctx/DropdownContext";
+import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
 
 export type Props = {

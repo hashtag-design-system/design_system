@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { calculatePercentage, calculateValue } from "../../utils/calculate";
 import { useClassnames } from "../../utils/hooks";
 import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input";
 
@@ -7,7 +8,7 @@ import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input"
 // See -> https://www.youtube.com/watch?v=MxbEjINYIPc
 
 export type SliderMarkProp = { value: number; label: string };
-type SliderChartDataProp = { value: number; percentage?: boolean; width?: number };
+type SliderChartDataProp = { value: number };
 
 export type Props = NumberInputProps & {
   marks: SliderMarkProp[];
@@ -20,6 +21,7 @@ export type Props = NumberInputProps & {
   chart?: {
     type: "bar";
     data: SliderChartDataProp[];
+    percentage?: boolean;
   };
 };
 
@@ -62,14 +64,16 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     const calcPercentage = useCallback(
       (number?: number): number => {
         const num = number === undefined ? value : number;
-        return ((num - min) / (max - min)) * 100;
+        const res = calculatePercentage(num, min, max);
+        return res;
       },
       [value, min, max]
     );
 
     const calcValue = useCallback(
       (percentage: number): number => {
-        return (percentage / 100) * max;
+        const res = calculateValue(percentage, max);
+        return res;
       },
       [max]
     );
@@ -85,12 +89,24 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
       }
     };
 
-    const calcBarHeight = (data: SliderChartDataProp) => {
-      const { width, percentage } = data;
-      if (percentage) {
-        console.log(percentage);
-      }
-    };
+    const calcBarHeight = useCallback(
+      (data: SliderChartDataProp) => {
+        if (!chart) {
+          return undefined;
+        }
+        const { percentage } = chart;
+        const { value } = data;
+        if (percentage) {
+          return value;
+        } else {
+          const data = chart.data.map(datum => datum.value);
+          const maxVal = Math.max(...data);
+          const perc = calculatePercentage(value, 0, maxVal, { returnRounded: true });
+          return perc;
+        }
+      },
+      [chart]
+    );
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       const { key } = e;
@@ -194,7 +210,7 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     return (
       <div className="slider__wrapper flex-column-flex-start-center">
         {chart && (
-          <div className="slider__chart flex-row-flex-start-center">
+          <div className="slider__chart flex-row-flex-start-flex-end">
             {chart.data.map((datum, i) => {
               return <div key={i} className="slider__chart__bar" style={{ height: `${calcBarHeight(datum)}%` }}></div>;
             })}

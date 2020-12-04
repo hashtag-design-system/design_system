@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSliderContext } from "../../../utils/ctx/SliderContext";
+import { useSliderContext } from "../../../utils/contexts/SliderContext";
 
 type Props = {
   size: number;

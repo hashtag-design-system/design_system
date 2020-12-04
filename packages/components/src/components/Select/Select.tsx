@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import DropdownContext from "../../utils/ctx/DropdownContext";
+import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
 import Input, { InputProps, ReactInputHTMLAttributes } from "../Input";
 import { DividerIcon } from "./__helpers__/DividerIcon";
@@ -89,22 +89,12 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
         <Input
           icon={<DownArrowIcon />}
           width={newWidth}
+          className={isVisible || props.state === "focus" ? undefined : "select"}
           placeholder={placeholder}
           floatingplaceholder={floatingplaceholder === true ? { now: isVisible || String(value).length > 0 } : false}
           helptext={helptext}
           secondhelptext={secondhelptext}
-          state={
-            isVisible && !props.state
-              ? "focus"
-              : isDisabled
-              ? "disabled"
-              : props.state
-              ? props.state
-              : !isVisible
-              ? "default"
-              : undefined
-          }
-          forceState={props.forceState === undefined ? true : props.forceState}
+          state={isVisible && !props.state ? "focus" : isDisabled ? "disabled" : props.state}
           value={value}
           label={label}
           prefix={prefix}

@@ -10,7 +10,7 @@
   outline: none;
   transition: all 0.3s;
 
-  &:not([data-forcestate="true"][state="default"]) {
+  &:not([class*="select"]) {
     &.hover {
       @include input--hover;
     }

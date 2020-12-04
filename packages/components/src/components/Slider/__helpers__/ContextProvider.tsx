@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { SliderProps } from "..";
-import { SliderContextProvider, SliderContextType } from "../../../utils/ctx/SliderContext";
+import { SliderContextProvider, SliderContextType } from "../../../utils/contexts/SliderContext";
 
 export type Props = {
   value: number;

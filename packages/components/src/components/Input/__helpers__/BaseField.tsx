@@ -23,7 +23,6 @@ export type Props = {
   floatingplaceholder?: boolean | { now: boolean };
   type?: InputType;
   state?: InputState;
-  forceState?: boolean;
   label?: string;
   icon?: IconPropType;
   allowclear?: boolean;
@@ -51,7 +50,7 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLA
     },
     ref
   ) => {
-    const { state = "default", forceState = false } = props;
+    const { state = "default" } = props;
     const id = useInputId(props.id);
     const [isActive, setIsActive] = useState(value ? true : false);
     const [spanWidth, setSpanWidth] = useState(0);

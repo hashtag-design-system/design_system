@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useContext } from "react";
-import DropdownContext from "../../../utils/ctx/DropdownContext";
+import DropdownContext from "../../../utils/contexts/DropdownContext";
 
 export const DownArrowIcon: React.FunctionComponent = () => {
   const selectCtx = useContext(DropdownContext);

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SliderProps } from "..";
-import { useSliderContext } from "../../../utils/ctx/SliderContext";
+import { useSliderContext } from "../../../utils/contexts/SliderContext";
 import { useClassnames } from "../../../utils/hooks";
 import Input from "../../Input";
 import { Thumb } from "./Thumb";

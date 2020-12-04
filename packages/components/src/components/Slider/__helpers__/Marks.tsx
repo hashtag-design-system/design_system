@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { SliderProps } from "..";
-import { useSliderContext } from "../../../utils/ctx/SliderContext";
+import { useSliderContext } from "../../../utils/contexts/SliderContext";
 
 export const Marks: React.FunctionComponent<Omit<SliderProps, "lockOnMarks">> = ({ marks, zeroPercentageOnEdgeMarks }) => {
   const { calcPercentage } = useSliderContext();

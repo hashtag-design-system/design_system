@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { IconPropType } from "../../typings";
-import DropdownContext from "../../utils/ctx/DropdownContext";
+import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
 
 const DropdownItemStates = ["default", "hover"] as const;

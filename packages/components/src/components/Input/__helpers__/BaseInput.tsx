@@ -3,7 +3,7 @@ import { useClassnames, useDisabled, useInputId } from "../../../utils/hooks";
 import { BaseReactInputHTMLAttributes, Props as InputProps } from "./BaseField";
 
 const BaseInput = React.forwardRef<HTMLInputElement, InputProps & BaseReactInputHTMLAttributes>(
-  ({ placeholder, value, defaultValue, type, floatingplaceholder, forceState, typing, allowclear, children, ...props }, ref) => {
+  ({ placeholder, value, defaultValue, type, floatingplaceholder, typing, allowclear, children, ...props }, ref) => {
     const { state = "default" } = props;
 
     const id = useInputId(props.id);
@@ -28,7 +28,6 @@ const BaseInput = React.forwardRef<HTMLInputElement, InputProps & BaseReactInput
           disabled={isDisabled}
           aria-disabled={isDisabled}
           aria-placeholder={placeholder}
-          data-forcestate={forceState}
           ref={ref}
           {...rest}
         />
