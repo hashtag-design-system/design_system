@@ -1,0 +1,3 @@
+@mixin animation-3s($type, $properties: "") {
+  transition: #{$properties} 0.3s #{$type};
+}
