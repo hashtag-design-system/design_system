@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BaseReactInputHTMLAttributes, NumberInputProps } from "../../Input";
 import { ContextProvider } from "./ContextProvider";
-import { Field } from "./Field";
-import { Marks } from "./Marks";
 
 // See -> https://www.youtube.com/watch?v=zOA2vpx44Nw
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc
@@ -62,7 +60,7 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
             aria-valuenow={value}
             {...rest}
           >
-            <Field
+            {/* <Field
               className={className}
               size={size}
               min={min}
@@ -76,8 +74,8 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
               ref={ref}
               {...rest}
             />
+          <Marks marks={marks} zeroPercentageOnEdgeMarks={zeroPercentageOnEdgeMarks} /> */}
           </div>
-          <Marks marks={marks} zeroPercentageOnEdgeMarks={zeroPercentageOnEdgeMarks} />
         </div>
       </ContextProvider>
     );

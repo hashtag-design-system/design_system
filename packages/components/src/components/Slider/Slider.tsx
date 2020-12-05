@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePercentage, calculateValue } from "../../utils/calculate";
+import { calculatePercentage, calculateValue } from "../../utils";
 import { useClassnames } from "../../utils/hooks";
 import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input";
 
@@ -52,6 +52,8 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     const [sliderStep, setSliderStep] = useState<number>(step);
 
     const progressRef = useRef<HTMLSpanElement>(null);
+    const chartFrameRef = useRef<HTMLDivElement>(null);
+    const chartOverlayFrameRef = useRef<HTMLDivElement>(null);
 
     const incr = () => {
       setValue(value => value + sliderStep);
@@ -138,7 +140,7 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
         }
       }
 
-      // TODO: Numeric keyboard comment
+      // Move thumb and change value, directly from numeric keyboard
       if (!isNaN(+key)) {
         const numKey = parseInt(key);
         const number = calcValue(numKey * 10);
@@ -207,13 +209,29 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
       }
     }, [max, onHover, size]);
 
+    useEffect(() => {
+      if (chartFrameRef && chartFrameRef.current && chartOverlayFrameRef && chartOverlayFrameRef.current) {
+        chartOverlayFrameRef.current.style.width = `${chartFrameRef.current.offsetWidth}px`;
+      }
+    }, [chartFrameRef, chartOverlayFrameRef]);
+
+    // TODO: Keep percentage of value in useState
     return (
       <div className="slider__wrapper flex-column-flex-start-center">
         {chart && (
-          <div className="slider__chart flex-row-flex-start-flex-end">
-            {chart.data.map((datum, i) => {
-              return <div key={i} className="slider__chart__bar" style={{ height: `${calcBarHeight(datum)}%` }}></div>;
-            })}
+          <div className="slider__chart flex-column-flex-start-flex-start" data-onhover={onHover}>
+            <div className="slider__chart__overlay" style={{ width: `calc(${calcPercentage()}% )` }}>
+              <div className="slider__chart__frame slider__chart__frame__overlay" ref={chartOverlayFrameRef}>
+                {chart.data.map((datum, i) => {
+                  return <div key={i} className="slider__chart__bar" style={{ height: `calc(${calcBarHeight(datum)}%)` }}></div>;
+                })}
+              </div>
+            </div>
+            <div className="slider__chart__frame" ref={chartFrameRef}>
+              {chart.data.map((datum, i) => {
+                return <div key={i} className="slider__chart__bar" style={{ height: `calc(${calcBarHeight(datum)}%)` }}></div>;
+              })}
+            </div>
           </div>
         )}
         <div
@@ -223,6 +241,7 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
           onClickCapture={() => setOnHover(true)}
           onTouchMove={() => setOnHover(true)}
           onTouchEnd={() => setOnHover(false)}
+          onKeyDown={e => handleKeyDown(e)}
         >
           <Input.BaseInput
             type="range"
@@ -253,7 +272,6 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
               height: `${size}em`,
             }}
             tabIndex={0}
-            onKeyDown={e => handleKeyDown(e)}
             data-onhover={onHover}
           >
             <span className="slider__thumb__value body-16">
