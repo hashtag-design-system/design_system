@@ -15,7 +15,7 @@ $align-items: (
   "stretch",
   "initial",
   "inherit",
-  "unset",
+  "unset"
 );
 $justify-contents: (
   "flex-start",
@@ -25,7 +25,8 @@ $justify-contents: (
   "space-arround",
   "initial",
   "inherit",
-  "unset"
+  "unset",
+  "stretch"
 );
 
 @mixin flex-class($direction, $content, $align) {
