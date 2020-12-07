@@ -5,7 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "cd packages/components && yarn build; cd ../icons && yarn build"
+    "build": "cd packages/components && yarn build; cd ../icons && yarn build",
+    "dependabot": "git pull; yarn"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",

@@ -1,4 +1,4 @@
-@mixin transition-3s($type, $animatedProperty: "", $properties: "",) {
+@mixin transition-3s($type, $animatedProperty: "", $properties: "") {
   transition: #{$animatedProperty} 0.3s #{$type}, #{$properties};
 
   @include breakpoint("xs") {
