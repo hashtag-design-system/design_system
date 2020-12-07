@@ -1,26 +1,34 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
-import { useClassnames, useWindowDimensions } from "../../utils/hooks";
+import { SliderContextProvider } from "../../utils/contexts/SliderContext";
+import { useClassnames } from "../../utils/hooks";
 import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input";
 import Double from "./Double";
+import { Bar } from "./__helpers__/Bar";
+import { Chart } from "./__helpers__/Chart";
+import { Marks } from "./__helpers__/Marks";
+import { Thumb } from "./__helpers__/Thumb";
 
 // See -> https://www.youtube.com/watch?v=zOA2vpx44Nw
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc
 // See -> https://www.youtube.com/watch?v=MxbEjINYIPc
 
-export type SliderThumbProp = { defaultValue?: number };
+export type SliderThumbProp = {
+  defaultValue?: number;
+  formatRegExp?: {
+    searchValue: string | RegExp;
+    replaceValue: string;
+  };
+};
 export type SliderMarkProp = { value: number; label?: string };
-type SliderChartDataProp = { value: number };
+export type SliderChartDataProp = { value: number };
 
 export type Props = Omit<NumberInputProps, "value" | "defaultValue"> & {
   thumb?: SliderThumbProp;
   marks: SliderMarkProp[];
   lockOnMarks?: boolean;
   zeroPercentageOnEdgeMarks?: boolean;
-  formatRegExp?: {
-    searchValue: string | RegExp;
-    replaceValue: string;
-  };
+
   chart?: {
     type: "bar";
     data: SliderChartDataProp[];
@@ -47,7 +55,6 @@ const Slider: React.FC<
   lockOnMarks = false,
   zeroPercentageOnEdgeMarks = false,
   inchange,
-  formatRegExp,
   chart,
   ref,
   ...props
@@ -58,13 +65,8 @@ const Slider: React.FC<
   const [onHover, setOnHover] = useState<boolean>(false);
   const [size, setSize] = useState<number>(DEFAULT_SIZE);
   const [sliderStep, setSliderStep] = useState<number>(step);
-  const [chartOverlayLeft, setChartOverlayLeft] = useState<number>(0);
-  const windowDimensions = useWindowDimensions();
 
   const progressRef = useRef<HTMLSpanElement>(null);
-  const chartFrameRef = useRef<HTMLDivElement>(null);
-  const chartOverlayFrameRef = useRef<HTMLDivElement>(null);
-  const chartOverlay = useRef<HTMLDivElement>(null);
 
   const incr = () => {
     setValue(value => value + sliderStep);
@@ -89,36 +91,6 @@ const Slider: React.FC<
       return res;
     },
     [max]
-  );
-
-  const calcPosition = (mark: SliderMarkProp, last: boolean): number | undefined => {
-    const { value: markValue, label } = mark;
-    if (!last) {
-      return calcPercentage(markValue) - 0.55 * String(label !== undefined ? label : markValue).length;
-    } else if (markValue === min) {
-      return 0;
-    } else {
-      return undefined;
-    }
-  };
-
-  const calcBarHeight = useCallback(
-    (data: SliderChartDataProp) => {
-      if (!chart) {
-        return undefined;
-      }
-      const { percentage } = chart;
-      const { value } = data;
-      if (percentage) {
-        return value;
-      } else {
-        const data = chart.data.map(datum => datum.value);
-        const maxVal = Math.max(...data);
-        const perc = calculatePercentage(value, 0, maxVal, { returnRounded: true });
-        return perc;
-      }
-    },
-    [chart]
   );
 
   const setStep = (valueAsNumber: number) => {
@@ -186,6 +158,7 @@ const Slider: React.FC<
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const { valueAsNumber } = e.target;
 
     if (lockOnMarks) {
@@ -234,108 +207,48 @@ const Slider: React.FC<
     }
   }, [max, onHover, size]);
 
-  useEffect(() => {
-    if (chartFrameRef && chartFrameRef.current && chartOverlayFrameRef && chartOverlayFrameRef.current) {
-      chartOverlayFrameRef.current.style.width = `${chartFrameRef.current.offsetWidth}px`;
-    }
-  }, [windowDimensions.width, chartFrameRef, chartOverlayFrameRef]);
-
-  useEffect(() => {
-    if (chartOverlay && chartOverlay.current) {
-      setChartOverlayLeft(chartOverlay.current.offsetLeft);
-    }
-  }, [chartOverlay]);
-
   return (
-    <div className="slider__wrapper flex-column-flex-start-center">
-      {chart && (
-        <div className="slider__chart flex-column-flex-start-flex-start" data-onhover={onHover}>
-          <div className="slider__chart__overlay" style={{ right: `${calcPercentage(max - value)}%` }} ref={chartOverlay}>
-            <div
-              className="slider__chart__frame slider__chart__frame__overlay"
-              ref={chartOverlayFrameRef}
-              style={{ left: `-${chartOverlayLeft}px` }}
-            >
-              {chart.data.map((datum, i) => {
-                return <div key={i} className="slider__chart__bar" style={{ height: `calc(${calcBarHeight(datum)}%)` }}></div>;
-              })}
-            </div>
-          </div>
-          <div className="slider__chart__frame" ref={chartFrameRef}>
-            {chart.data.map((datum, i) => {
-              return <div key={i} className="slider__chart__bar" style={{ height: `calc(${calcBarHeight(datum)}%)` }}></div>;
-            })}
-          </div>
+    <SliderContextProvider
+      value={{
+        min,
+        max,
+        zeroPercentageOnEdgeMarks,
+        marks,
+        chart,
+        calcPercentage,
+        calcValue,
+      }}
+    >
+      <div className="slider__wrapper flex-column-flex-start-center">
+        <Chart value={value} onHover={onHover} style={{ right: `${calcPercentage(max - value)}%` }} />
+        <div className="slider__field" onMouseLeave={() => setOnHover(false)} onKeyDown={e => handleKeyDown(e)}>
+          <Input.BaseInput
+            type="range"
+            min={min}
+            max={max}
+            step={sliderStep}
+            value={value}
+            className={classNames}
+            onChange={e => handleChange(e)}
+            ref={ref}
+            tabIndex={-1}
+            role="slider"
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={value}
+            onMouseOver={() => setOnHover(true)}
+            onMouseOut={() => setOnHover(false)}
+            onTouchMove={() => setOnHover(true)}
+            onTouchEnd={() => setOnHover(false)}
+            {...rest}
+          >
+            <Bar ref={progressRef} />
+          </Input.BaseInput>
+          <Thumb value={value} onHover={onHover} size={size} thumb={thumb} />
         </div>
-      )}
-      <div className="slider__field flex-column-flex-start-stretch" onKeyDown={e => handleKeyDown(e)}>
-        <Input.BaseInput
-          type="range"
-          min={min}
-          max={max}
-          step={sliderStep}
-          value={value}
-          className={classNames}
-          onChange={e => handleChange(e)}
-          ref={ref}
-          tabIndex={-1}
-          role="slider"
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={value}
-          onMouseOver={() => setOnHover(true)}
-          onMouseOut={() => setOnHover(false)}
-          onTouchMove={() => setOnHover(true)}
-          onTouchEnd={() => setOnHover(false)}
-          {...rest}
-        >
-          <span className="slider__bar shadow__inset-sm">
-            <span ref={progressRef} className="slider__bar__progress" />
-          </span>
-        </Input.BaseInput>
-        <div
-          className="slider__thumb"
-          style={{
-            left: `${calcPercentage()}%`,
-            width: `${size}em`,
-            height: `${size}em`,
-          }}
-          tabIndex={0}
-          data-onhover={onHover}
-        >
-          <span className="slider__thumb__value body-16">
-            {formatRegExp ? String(value).replaceAll(formatRegExp.searchValue, formatRegExp.replaceValue) : value}
-          </span>
-        </div>
+        <Marks />
       </div>
-      {marks && (
-        <div className="slider__marks flex-row-center-center">
-          {marks.map((mark, i) => {
-            const rightStyle = (i === marks.length - 1 || i === 0) && zeroPercentageOnEdgeMarks;
-            const { value: markValue, label } = mark;
-
-            return (
-              <span
-                key={i}
-                className="slider__marks__span body-14"
-                style={{
-                  right: `${rightStyle ? "0%" : undefined}`,
-                  // It is easier to set with `position:absolute`, because we only have to set the `left` property
-                  /*  
-                    If we used `display: flex` and `transform: translateX(x%)` propertie, then we would have to deal
-                    with each value individually. Which means, that we would need to set the `tranform` property 
-                    different for the markValue < middle, the middle one and the ones with markValue < middle
-                   */
-                  left: `${calcPosition(mark, rightStyle)}%`,
-                }}
-              >
-                {label !== undefined ? label : markValue}
-              </span>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    </SliderContextProvider>
   );
 };
 

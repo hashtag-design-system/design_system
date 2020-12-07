@@ -38,7 +38,6 @@ function App() {
         lThumb={{ defaultValue: 20 }}
         rThumb={{ defaultValue: 50 }}
         zeroPercentageOnEdgeMarks
-        step={10}
         chart={{
           type: "bar",
           data: [
@@ -69,7 +68,6 @@ function App() {
           { value: 90, label: "90" },
           { value: 100, label: "100" },
         ]}
-        lockOnMarks
         zeroPercentageOnEdgeMarks
         chart={{
           type: "bar",

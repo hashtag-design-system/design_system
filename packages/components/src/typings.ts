@@ -41,3 +41,5 @@ const SelectionInputStates = ["unchecked", "pressed", "focus-visible", "checked"
 export type SelectionInputState = typeof SelectionInputStates[number];
 
 export type AllProps = React.AllHTMLAttributes<unknown> | BaseReactInputHTMLAttributes | HTMLMotionProps<any>;
+
+export type AtLeastOneFrom<T> = { [K in keyof T]: Pick<T, K> }[keyof T];
