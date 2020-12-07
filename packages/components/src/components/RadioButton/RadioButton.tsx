@@ -30,7 +30,7 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
     // * that the `state.includes("checked")` would
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const [classNames, rest] = useClassnames(
-      `radio-button selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-2" : "disabled"} ${
+      `radio-button selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"} ${
         state === "focus-visible" ? "focus-visible" : ""
       }`,
       props

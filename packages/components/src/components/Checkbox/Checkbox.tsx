@@ -23,7 +23,7 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const [classNames, rest] = useClassnames(
-      `checkbox selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-2" : "disabled"} ${
+      `checkbox selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"} ${
         state === "focus-visible" ? "focus-visible" : ""
       }`,
       props

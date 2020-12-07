@@ -55,13 +55,9 @@ const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
   };
 
   const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement | any>) => {
+    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => {
       if (setIsVisible && !isDisabled) {
         setIsVisible(!isVisible);
-      }
-
-      if (onClick) {
-        onClick(e);
       }
     },
     [isVisible, setIsVisible, isDisabled, onClick]

@@ -1,28 +1,40 @@
 .slider {
   -webkit-appearance: none;
+  opacity: 0;
   z-index: 99;
   padding: 0;
   margin: 0;
+  position: absolute;
   width: 100%;
-  // min-width: em(222);
   height: em(8);
   align-self: center;
   border: none;
   outline: none;
+  pointer-events: all;
   background-color: transparent;
-  opacity: 0;
   cursor: pointer;
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: em(28);
-    height: em(100);
-    transform: translateX(-1%);
+    pointer-events: all;
+    width: em(40);
+    height: em(40);
+    background-color: red;
+  }
+
+  &.double {
+    pointer-events: none;
+  }
+
+  &[name="rThumb"] {
+    transform: rotate(180deg);
   }
 
   &__thumb {
+    @extend .flex-row-center-center;
     position: absolute;
     left: 0;
+    bottom: 7px;
     width: em(12);
     height: em(12);
     border: 5px solid $primary;
@@ -33,11 +45,11 @@
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 50%;
     cursor: pointer;
-    transform: translateX(-50%);
     user-select: none;
     outline: none;
+    transform: translateX(-50%);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-    transition: 0.3s ease-in-out, left 0s, right 0s;
+    @include transition-3s("ease-in-out", "", "left 0s, right 0s");
 
     &:focus-visible {
       @include accessibility-3dp;
@@ -55,11 +67,21 @@
       border-width: 2px;
       border-bottom-left-radius: 0%;
       padding: 4px;
-      transform: rotate(-45deg) translate(57.5%, -130%);
+      transform: rotate(-45deg) translate(35%, -110%);
 
       .slider__thumb__value {
         visibility: visible;
         transition-delay: 0.1s;
+      }
+    }
+
+    &.right {
+      left: unset;
+      right: 25%;
+      transform: translateX(50%);
+
+      &[data-onhover="true"] {
+        transform: rotate(-45deg) translate(110%, -35%) !important;
       }
     }
   }
@@ -98,42 +120,36 @@
     width: 100%;
     margin: 0;
     height: 100%;
-
-    &:hover {
-      .slider__thumb {
-        border-width: 2px;
-        border-bottom-left-radius: 0%;
-        padding: 4px;
-        transform: rotate(-45deg) translate(57.5%, -130%);
-
-        &__value {
-          visibility: visible;
-          transition-delay: 0.1s;
-        }
-      }
-    }
   }
 
   &__bar {
     z-index: 97;
-    background-color: darken($input-bg, 2) !important;
+    background-color: darken($input-bg, 6) !important;
     height: em(8);
     border-radius: 6px;
     overflow: hidden;
+    cursor: pointer;
 
     &__progress {
       display: block;
+      position: absolute;
       width: 50%;
+      left: 0;
+      right: 0;
+      bottom: 16px;
       border-radius: inherit;
-      height: 100%;
+      height: inherit;
       background-color: $primary;
+
+      &.double {
+        width: unset;
+      }
     }
   }
 
   &__chart {
     position: relative;
     display: block;
-    margin-bottom: -8px;
     width: 99.5%;
     height: 104px;
     display: flex;
@@ -148,15 +164,18 @@
       height: 100%;
       flex: 1;
       gap: 1%;
-      @include animation-3s("ease-in", "opacity");
+      @include transition-3s("ease-in", "opacity");
 
       &__overlay {
         position: absolute;
-        width: 583.64px;
+        // left: -10%;
+        // right: -12.5%;
+        // width: 583.64px;
         height: 100%;
 
         .slider__chart__bar {
           background: lighten($primary, 20);
+          opacity: 0.65;
         }
       }
     }
@@ -165,7 +184,9 @@
       align-self: flex-start;
       position: absolute;
       z-index: 1;
-      width: 75%;
+      left: 0;
+      right: 0;
+      // width: 100px;
       height: 100%;
       overflow: hidden;
     }
@@ -175,11 +196,6 @@
       height: 100%;
       background-color: $grey-5;
       border-radius: 4px 4px 0 0;
-    }
-
-    &[data-onhover="true"] > *,
-    &:hover > * {
-      opacity: 0.75;
     }
   }
 }

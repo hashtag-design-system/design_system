@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BaseReactInputHTMLAttributes, NumberInputProps } from "../../Input";
-import { ContextProvider } from "./ContextProvider";
+// import { ContextProvider } from "./ContextProvider";
 
 // See -> https://www.youtube.com/watch?v=zOA2vpx44Nw
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc
@@ -46,21 +46,21 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
     }, [max, onHover, size]);
 
     return (
-      <ContextProvider value={value} setValue={setValue} min={min} max={max} defaultValue={defaultValue} step={step}>
+      // <ContextProvider value={value} setValue={setValue} min={min} max={max} defaultValue={defaultValue} step={step}>
+      <div
+        className="slider__wrapper flex-column-flex-start-center"
+        onMouseEnter={() => setOnHover(true)}
+        onMouseLeave={() => setOnHover(false)}
+      >
         <div
-          className="slider__wrapper flex-column-flex-start-center"
-          onMouseEnter={() => setOnHover(true)}
-          onMouseLeave={() => setOnHover(false)}
+          className="slider__field flex-column-flex-start-stretch"
+          role="slider"
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
+          {...rest}
         >
-          <div
-            className="slider__field flex-column-flex-start-stretch"
-            role="slider"
-            aria-valuemin={min}
-            aria-valuemax={max}
-            aria-valuenow={value}
-            {...rest}
-          >
-            {/* <Field
+          {/* <Field
               className={className}
               size={size}
               min={min}
@@ -75,9 +75,9 @@ const Slider = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttr
               {...rest}
             />
           <Marks marks={marks} zeroPercentageOnEdgeMarks={zeroPercentageOnEdgeMarks} /> */}
-          </div>
         </div>
-      </ContextProvider>
+      </div>
+      // </ContextProvider>
     );
   }
 );
