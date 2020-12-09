@@ -11,12 +11,14 @@
   transition: all 0.3s;
 
   &:not([class*="select"]) {
-    &.hover {
-      @include input--hover;
-    }
+    &:not([class*="disabled"]) {
+      &.hover {
+        @include input--hover;
+      }
 
-    &:hover {
-      @include input--hover;
+      &:hover {
+        @include input--hover;
+      }
     }
 
     &.focus {

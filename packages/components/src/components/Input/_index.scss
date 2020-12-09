@@ -113,12 +113,9 @@
     }
   }
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     @include disabled-state;
-    background-color: $grey-4;
-    border: none;
+    @extend .input__disabled--bg;
     color: $grey-8;
   }
 }
@@ -175,9 +172,7 @@
   text-align: center;
   justify-content: center;
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     box-shadow: none;
   }
 
@@ -245,16 +240,14 @@
     }
 
     &.grey {
-      background-color: $grey-4;
-      border-color: $grey-4;
+      background-color: $input-disabled-bg;
+      border: none;
       cursor: default;
       stroke: $grey-7;
     }
   }
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     .input-incr-dcr__icon {
       @extend .grey;
     }

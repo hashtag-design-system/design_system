@@ -1,5 +1,14 @@
 @import "./mixins";
 
+.input__disabled--bg {
+  background-color: $input-disabled-bg !important;
+  border: none !important;
+}
+
+.input__disabled--border {
+  border-color: $input-disabled-bg !important;
+}
+
 .selection-input {
   &__hidden-input {
     display: none;
@@ -40,19 +49,16 @@
       @include selection-input--focus-visible;
     }
 
-    &:disabled,
-    &.disabled,
-    &[aria-disabled="true"] {
+    @include disabled-classNames {
       cursor: default;
 
       &.checkbox,
       &.radio-button[data-state="disabled|unchecked"] {
-        border: none !important;
-        background-color: $grey-5 !important;
+        @extend .input__disabled--bg;
       }
 
       &.radio-button {
-        border-color: $grey-5;
+        @extend .input__disabled--border;
       }
     }
   }

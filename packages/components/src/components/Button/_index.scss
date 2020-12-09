@@ -25,9 +25,7 @@
     cursor: pointer;
   }
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     @include disabled-state;
     background-color: $grey-7;
     border-color: $grey-7;
@@ -50,9 +48,7 @@
     border-color: $primary;
   }
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     @include disabled-state;
     background-color: inherit;
     border-color: $grey-8;
@@ -78,9 +74,7 @@
     color: $grey-1;
   }
 
-  &:disabled,
-  &.disabled,
-  &[aria-disabled="true"] {
+  @include disabled-classNames {
     @include disabled-state;
     background-color: inherit;
     border-color: $red-6;
