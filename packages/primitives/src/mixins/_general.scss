@@ -15,3 +15,11 @@
 @mixin disabled-state {
   cursor: default;
 }
+
+@mixin disabled-classNames {
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    @content;
+  }
+}
