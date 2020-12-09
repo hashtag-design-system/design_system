@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SliderProps } from ".";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
-import { useClassnames, useWindowDimensions } from "../../utils/hooks";
+import { useClassnames } from "../../utils/hooks";
 import Input, { BaseReactInputHTMLAttributes } from "../Input";
 import { SliderThumbProp } from "./Slider";
 import { Bar } from "./__helpers__/Bar";
@@ -11,10 +11,9 @@ import { Marks } from "./__helpers__/Marks";
 import { Thumb } from "./__helpers__/Thumb";
 
 export type SliderMarkProp = { value: number; label?: string };
-type SliderChartDataProp = { value: number };
 
 type ThumbNumberStateType = { lThumb: number; rThumb: number };
-type ThumbStringLiteralType = "lThumb" | "rThumb";
+export type ThumbStringLiteralType = "lThumb" | "rThumb";
 
 export type Props = Omit<SliderProps, "value" | "defaultValue" | "lockOnMarks" | "thumb"> & {
   lThumb?: SliderThumbProp;
@@ -48,13 +47,8 @@ const Double: React.FC<
   const [prevKey, setPrevKey] = useState<string>("0");
   const [onHover, setOnHover] = useState<{ lThumb: boolean; rThumb: boolean }>({ lThumb: false, rThumb: false });
   const [size, setSize] = useState<ThumbNumberStateType>({ lThumb: DEFAULT_SIZE, rThumb: DEFAULT_SIZE });
-  const [chartOverlayLeft, setChartOverlayLeft] = useState<number>(0);
-  const windowDimensions = useWindowDimensions();
 
   const progressRef = useRef<HTMLSpanElement>(null);
-  const chartFrameRef = useRef<HTMLDivElement>(null);
-  const chartOverlayFrameRef = useRef<HTMLDivElement>(null);
-  const chartOverlay = useRef<HTMLDivElement>(null);
 
   const incr = (thumb: ThumbStringLiteralType) => {
     setCheckValue(thumb, value[thumb] + step);
@@ -81,25 +75,6 @@ const Double: React.FC<
       return res;
     },
     [max]
-  );
-
-  const calcBarHeight = useCallback(
-    (data: SliderChartDataProp) => {
-      if (!chart) {
-        return undefined;
-      }
-      const { percentage } = chart;
-      const { value } = data;
-      if (percentage) {
-        return value;
-      } else {
-        const data = chart.data.map(datum => datum.value);
-        const maxVal = Math.max(...data);
-        const perc = calculatePercentage(value, 0, maxVal, { returnRounded: true });
-        return perc;
-      }
-    },
-    [chart]
   );
 
   const handleHover = (e: React.MouseEvent<HTMLInputElement, MouseEvent> | React.TouchEvent<HTMLInputElement>, isHover: boolean) => {
@@ -228,18 +203,6 @@ const Double: React.FC<
   useEffect(() => {
     setSizeCallaback();
   }, [setSizeCallaback]);
-
-  useEffect(() => {
-    if (chartFrameRef && chartFrameRef.current && chartOverlayFrameRef && chartOverlayFrameRef.current) {
-      chartOverlayFrameRef.current.style.width = `${chartFrameRef.current.offsetWidth}px`;
-    }
-  }, [windowDimensions.width, chartFrameRef, chartOverlayFrameRef]);
-
-  useEffect(() => {
-    if (chartOverlay && chartOverlay.current) {
-      setChartOverlayLeft(chartOverlay.current.offsetLeft);
-    }
-  }, [chartOverlay, value]);
 
   return (
     <SliderContextProvider

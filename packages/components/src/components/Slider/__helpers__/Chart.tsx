@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage } from "../../../utils";
 import { useSliderContext } from "../../../utils/contexts/SliderContext";
 import { useWindowDimensions } from "../../../utils/hooks";
-import { SliderChartDataProp, SliderMarkProp } from "../Slider";
+import { SliderChartDataProp } from "../Slider";
 
 type Props = {
   value: number | object;

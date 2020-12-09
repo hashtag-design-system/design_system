@@ -124,9 +124,11 @@
   }
 
   &__bar {
-    z-index: 97;
+    z-index: 96;
     background-color: darken($input-bg, 6) !important;
     height: em(8);
+    border: 1px solid $grey-5;
+    border-top: none;
     border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
@@ -149,6 +151,8 @@
   }
 
   &__chart {
+    margin-bottom: -1px;
+    z-index: 97;
     position: relative;
     display: block;
     width: 99.5%;
