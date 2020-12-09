@@ -1,5 +1,14 @@
 import React, { useMemo } from "react";
-import { SelectionInputLabelType, SelectionInputProps } from "../../../typings";
+import { SelectionInputProps } from "./Base";
+
+const SelectionInputLabelPositions = ["top", "bottom", "right", "left"] as const;
+type SelectionInputLabelPosition = typeof SelectionInputLabelPositions[number];
+
+export type SelectionInputLabelType = {
+  value: string;
+  position?: SelectionInputLabelPosition;
+  gap?: React.CSSProperties["gap"];
+};
 
 type RequiredInputLabel = Required<SelectionInputLabelType>;
 

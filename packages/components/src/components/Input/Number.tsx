@@ -1,20 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../Button";
-import BaseField, { BaseReactInputHTMLAttributes, InputState } from "./__helpers__/BaseField";
+import { ReactProps } from "../__helpers__";
+import BaseField, { InputState } from "./__helpers__/BaseField";
 
 const animationVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-export type Props = Omit<BaseReactInputHTMLAttributes, "step"> & {
+export type Props = Omit<ReactProps["base_input"], "step"> & {
   min?: number;
   max?: number;
   defaultValue?: number;
   step?: number;
-  state?: InputState;
-};
+} & ReactProps<undefined, InputState>["input_state_obj"];
 
 const Number = React.forwardRef<HTMLInputElement, Props>(
   ({ min = 0, max = 9999999, defaultValue = 0, step: stepNumber = 1, state, ...props }, ref) => {
@@ -108,7 +108,7 @@ const Number = React.forwardRef<HTMLInputElement, Props>(
               setShiftKey(false);
             }
           }}
-          inchange={value => inchange && inchange(value)}
+          inchange={(value, e) => inchange && inchange(value, e)}
           {...rest}
           style={{ paddingRight: isBtnShown ? "30px" : "" }}
           aria-valuemin={min}

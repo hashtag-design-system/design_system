@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { IconPropType, SelectionInputProps } from "../../typings";
+import { IconPropType } from "../../typings";
 import { useClassnames, useInputId } from "../../utils/hooks";
-import { Base } from "../__helpers__";
+import { Base, ReactProps } from "../__helpers__";
+import { SelectionInputProps } from "../__helpers__/SelectionInput/Base";
 
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
 const boxVariants = {
@@ -37,7 +38,7 @@ export type Props = Omit<SelectionInputProps, "state"> & {
   state?: SwitchState;
   icon?: IconPropType & SwitchElementsType;
   insideText?: { value: string } & SwitchElementsType;
-};
+} & ReactProps<undefined, SwitchState>["input_state_obj"];
 
 const Switch = React.forwardRef<HTMLLabelElement, Props>(
   ({ defaultChecked = false, checked, state = "off", label, groupName, icon, insideText, ...props }, ref) => {

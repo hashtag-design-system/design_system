@@ -1,14 +1,27 @@
 import React from "react";
-import { SelectionInputProps } from "../../../typings";
 import { useClassnames } from "../../../utils/hooks";
-import { LabelContainer } from "./LabelContainer";
+import { InputProps } from "../../Input";
+import { ReactProps } from "../props";
+import { LabelContainer, SelectionInputLabelType } from "./LabelContainer";
 
-export type Props = SelectionInputProps & {
-  ref?: React.ForwardedRef<HTMLLabelElement>;
+const SelectionInputStates = ["default", "pressed", "focus-visible", "checked", "disabled|unchecked", "disabled|checked"] as const;
+export type SelectionInputState = typeof SelectionInputStates[number];
+
+export type SelectionInputProps = {
+  checked?: boolean;
+  defaultChecked?: boolean;
+  label?: string | SelectionInputLabelType;
+  groupName?: string;
+} & ReactProps<undefined, SelectionInputState>["input_state_obj"] &
+  ReactProps["input"] &
+  Pick<InputProps, "type">;
+
+export type Props = {
   onChange: React.AllHTMLAttributes<HTMLInputElement>["onChange"];
-};
+} & SelectionInputProps &
+  Pick<React.HTMLAttributes<HTMLDivElement>, "onClick">;
 
-export const Base: React.FC<Props & Omit<React.AllHTMLAttributes<HTMLInputElement>, "label" | "onChange">> = ({
+export const Base: React.FC<Omit<React.ComponentPropsWithRef<"label">, "onClick"> & Props> = ({
   id,
   checked,
   defaultChecked,
@@ -33,7 +46,7 @@ export const Base: React.FC<Props & Omit<React.AllHTMLAttributes<HTMLInputElemen
         flexDirection: topOrBottom ? "column" : undefined,
         gap: label && typeof label === "object" && label.gap !== undefined ? label.gap : undefined,
       }}
-      onClick={onClick}
+      onClick={e => onClick && onClick(e)}
     >
       <LabelContainer label={label} id={id}>
         <input

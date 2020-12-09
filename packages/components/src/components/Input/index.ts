@@ -15,13 +15,7 @@ export type { Props as InputProps } from "./Input";
 export type { Props as MultilineInputProps } from "./Multiline";
 export type { Props as NumberInputProps } from "./Number";
 export type { Props as PasswordInputProps } from "./Password";
-export type {
-  BaseReactInputHTMLAttributes,
-  InputState,
-  InputType,
-  Props as InputBaseProps,
-  ReactInputHTMLAttributes,
-} from "./__helpers__/BaseField";
+export type { InputState, InputType, Props as InputBaseProps } from "./__helpers__/BaseField";
 
 Input.Multiline = Multiline;
 Input.Number = Number;

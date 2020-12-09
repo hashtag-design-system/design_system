@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
-import { SelectionInputProps, SelectionInputState } from "../../typings";
 import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
+import { SelectionInputProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
 
@@ -24,15 +24,15 @@ export type RadioButtonState = SelectionInputState;
 export type Props = SelectionInputProps;
 
 const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
-  ({ defaultChecked = false, checked, state = "unchecked", label, groupName, ...props }, ref) => {
+  ({ defaultChecked = false, checked, state = "default", label, groupName, ...props }, ref) => {
     const id = useInputId(props.id);
     // * It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
     // * that the `state.includes("checked")` would
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const [classNames, rest] = useClassnames(
-      `radio-button selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"} ${
-        state === "focus-visible" ? "focus-visible" : ""
-      }`,
+      `radio-button selection-input__box ${
+        state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"
+      } ${state === "focus-visible" ? "focus-visible" : ""}`,
       props
     );
 

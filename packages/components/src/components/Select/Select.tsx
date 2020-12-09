@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
-import Input, { InputProps, ReactInputHTMLAttributes } from "../Input";
+import Input, { InputProps } from "../Input";
+import { ReactProps } from "../__helpers__";
 import { DividerIcon } from "./__helpers__/DividerIcon";
 import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
@@ -9,7 +10,7 @@ export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "character
   defaultOpen?: boolean;
 };
 
-const Select: React.FC<Props & ReactInputHTMLAttributes> = props => {
+const Select: React.FC<Props & ReactProps["input"]> = props => {
   const {
     helptext,
     secondhelptext,

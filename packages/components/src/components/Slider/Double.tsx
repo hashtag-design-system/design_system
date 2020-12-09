@@ -3,7 +3,8 @@ import { SliderProps } from ".";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames } from "../../utils/hooks";
-import Input, { BaseReactInputHTMLAttributes } from "../Input";
+import Input from "../Input";
+import { ReactProps } from "../__helpers__";
 import { SliderThumbProp } from "./Slider";
 import { Bar } from "./__helpers__/Bar";
 import { Chart } from "./__helpers__/Chart";
@@ -25,7 +26,7 @@ const DEFAULT_SIZE = 0.875;
 const Double: React.FC<
   Omit<React.ComponentPropsWithRef<"input">, "value" | "defaultValue"> &
     Props &
-    Omit<BaseReactInputHTMLAttributes, "value" | "defaultValue">
+    Omit<ReactProps["base_input"], "value" | "defaultValue">
 > = ({
   min = 0,
   max = 100,
@@ -163,7 +164,7 @@ const Double: React.FC<
     setCheckValue(name, valueAsNumber);
 
     if (inchange) {
-      inchange(valueAsNumber);
+      inchange(valueAsNumber, e);
     }
   };
 

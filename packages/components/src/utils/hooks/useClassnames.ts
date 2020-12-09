@@ -1,8 +1,9 @@
+import { ReactProps } from "../../components/__helpers__";
 import { AllProps } from "../../typings";
 import { addClassnames } from "../styles";
 
 type useClassnamesConfig = {
-  stateToRemove?: { state?: string; defaultState: string };
+  stateToRemove?: { defaultState: string } & ReactProps["input_state_obj"];
 };
 
 export const useClassnames = <T extends AllProps>(defaultClassname: string, props: T, options?: useClassnamesConfig): any[] => {

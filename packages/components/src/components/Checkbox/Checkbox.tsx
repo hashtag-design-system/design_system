@@ -1,9 +1,9 @@
 import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useMemo, useState } from "react";
-import { SelectionInputProps, SelectionInputState } from "../../typings";
 import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
-import { Animated, Base } from "../__helpers__";
+import { Animated, Base, ReactProps } from "../__helpers__";
 import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
+import { SelectionInputProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
@@ -16,10 +16,10 @@ const boxVariants = {
 
 export type CheckboxState = SelectionInputState | "indeterminate";
 
-export type Props = Omit<SelectionInputProps, "state"> & { state?: CheckboxState };
+export type Props = Omit<SelectionInputProps, "state"> & ReactProps<undefined, CheckboxState>["input_state_obj"];
 
 const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
-  ({ defaultChecked = false, checked, state = "unchecked", label, groupName, ...props }, ref) => {
+  ({ defaultChecked = false, checked, state = "default", label, groupName, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const [classNames, rest] = useClassnames(

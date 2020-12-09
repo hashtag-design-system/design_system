@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames } from "../../utils/hooks";
-import Input, { BaseReactInputHTMLAttributes, NumberInputProps } from "../Input";
+import Input, { NumberInputProps } from "../Input";
+import { ReactProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar } from "./__helpers__/Bar";
 import { Chart } from "./__helpers__/Chart";
@@ -44,7 +45,7 @@ const DEFAULT_SIZE = 0.875;
 const Slider: React.FC<
   Omit<React.ComponentPropsWithRef<"input">, "value" | "defaultValue"> &
     Props &
-    Omit<BaseReactInputHTMLAttributes, "value" | "defaultValue">
+    Omit<ReactProps["base_input"], "value" | "defaultValue">
 > &
   SubComponents = ({
   min = 0,
@@ -182,7 +183,7 @@ const Slider: React.FC<
     }
 
     if (inchange) {
-      inchange(valueAsNumber);
+      inchange(valueAsNumber, e);
     }
   };
 

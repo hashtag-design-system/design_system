@@ -2,34 +2,26 @@ import React, { useState } from "react";
 import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
 import { useInputId } from "../../../utils/hooks";
+import { ReactProps } from "../../__helpers__";
 import BaseInput from "./BaseInput";
 import FloatingLabel from "./FloatingLabel";
 
 const InputStates = ["default", "hover", "focus", "success", "error", "disabled"] as const;
 export type InputState = typeof InputStates[number];
-const InputTypes = ["text", "email", "hidden", "number", "password", "range", "search", "button", "url"] as const;
+const InputTypes = ["text", "email", "hidden", "number", "password", "checkbox", "radio", "range", "search", "button", "url"] as const;
 export type InputType = typeof InputTypes[number];
-export type BaseReactInputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "type"> & {
-  value?: React.ReactText;
-  defaultValue?: React.ReactText;
-  typing?: boolean;
-  inchange?: (value: React.ReactText) => void;
-  inselect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>) => void;
-};
-export type ReactInputHTMLAttributes = Omit<BaseReactInputHTMLAttributes, "value">;
 
 export type Props = {
   placeholder?: string;
   floatingplaceholder?: boolean | { now: boolean };
   type?: InputType;
-  state?: InputState;
   label?: string;
   icon?: IconPropType;
   allowclear?: boolean;
   prefix?: string;
-};
+} & ReactProps<undefined, InputState>["input_state_obj"];
 
-const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLAttributes>(
+const BaseField = React.forwardRef<HTMLInputElement, Props & ReactProps["base_input"]>(
   (
     {
       placeholder,
@@ -38,7 +30,7 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLA
       label,
       value,
       className,
-      typing = true,
+      allowTyping: typing = true,
       defaultValue,
       icon,
       allowclear = false,
@@ -115,7 +107,7 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & BaseReactInputHTMLA
           type={type}
           label={label}
           value={value}
-          typing={typing}
+          allowTyping={typing}
           defaultValue={defaultValue}
           icon={icon}
           allowclear={allowclear}

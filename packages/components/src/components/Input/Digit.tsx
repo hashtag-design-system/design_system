@@ -1,11 +1,12 @@
 import React from "react";
 import { useClassnames } from "../../utils/hooks";
-import Input, { BaseReactInputHTMLAttributes, PasswordInputProps } from "./index";
+import { ReactProps } from "../__helpers__";
+import Input, { PasswordInputProps } from "./index";
 
 // PasswordInputProps already has omitted props, omitted also in "this" props
 export type Props = Omit<PasswordInputProps, "label" | "helpText" | "secondHelpText">;
 
-const Digit = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "maxLength">>(
+const Digit = React.forwardRef<HTMLInputElement, Props & Omit<ReactProps["base_input"], "maxLength">>(
   ({ ...props }, ref) => {
     const [classNames, rest] = useClassnames("input-digit shadow__form-4", props);
 

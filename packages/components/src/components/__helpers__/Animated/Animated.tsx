@@ -1,13 +1,11 @@
 import React from "react";
 import { Checkmark } from "./Checkmark";
 
-export type Props = {};
-
 type SubComponents = {
   Checkmark: typeof Checkmark;
 };
 
-export const Animated: React.FunctionComponent<Props> & SubComponents = () => {
+export const Animated: React.FunctionComponent & SubComponents = () => {
   return <></>;
 };
 

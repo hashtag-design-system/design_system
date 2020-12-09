@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "../Button";
-import BaseField, { BaseReactInputHTMLAttributes } from "./__helpers__/BaseField";
+import { ReactProps } from "../__helpers__";
+import BaseField from "./__helpers__/BaseField";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 const IncrDcrInputStates = [
@@ -19,10 +20,9 @@ export type Props = {
   max?: number;
   count?: number;
   stepNumber?: number;
-  state?: IncrDcrInputState;
-};
+} & ReactProps<undefined, IncrDcrInputState>["input_state_obj"];
 
-const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHTMLAttributes, "prefix">>(
+const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactProps["base_input"], "prefix">>(
   ({ min = 0, max = 1000, count = 0, stepNumber = 1, state = "default", ...props }, ref) => {
     const [value, setValue] = useState<string>(String(count));
 
@@ -70,7 +70,7 @@ const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<BaseReactInputHT
             value={value}
             ref={ref}
             onChange={e => handleChange(e)}
-            inchange={value => inchange && inchange(value)}
+            inchange={(value, e) => inchange && inchange(value, e)}
             onFocus={e => {
               if (String(value) === String(count)) {
                 setValue("");

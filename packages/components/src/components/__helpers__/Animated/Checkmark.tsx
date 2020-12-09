@@ -14,11 +14,10 @@ export const checkmarkVariants = {
 
 export type Props = {
   width?: number;
-  whileTap?: TapHandlers["whileTap"];
-  initial?: MotionProps["initial"];
-  custom?: MotionAdvancedProps["custom"];
-  stroke?: SVGMotionProps<SVGSVGElement>["stroke"];
-};
+} & Pick<TapHandlers, "whileTap"> &
+  Pick<MotionProps, "initial"> &
+  Pick<MotionAdvancedProps, "custom"> &
+  Pick<SVGMotionProps<SVGSVGElement>, "stroke">;
 
 export const Checkmark: React.FC<Props> = ({ width, whileTap, initial = false, custom, stroke = "var(--grey-1)", children }) => {
   // Animation state

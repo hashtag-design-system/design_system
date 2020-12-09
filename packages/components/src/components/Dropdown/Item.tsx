@@ -2,16 +2,16 @@ import React, { useContext } from "react";
 import { IconPropType } from "../../typings";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
+import { ReactProps } from "../__helpers__";
 
 const DropdownItemStates = ["default", "hover"] as const;
 export type DropdownItemState = typeof DropdownItemStates[number];
 
 export type Props = {
   id: string;
-  state?: DropdownItemState;
   leftIcon?: IconPropType;
   rightIcon?: IconPropType;
-};
+} & ReactProps<undefined, DropdownItemState>["input_state_obj"];
 
 const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick">> = ({
   id,

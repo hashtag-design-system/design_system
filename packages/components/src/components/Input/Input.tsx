@@ -1,17 +1,18 @@
 import React from "react";
 import { InputHelpTextType } from "../../typings";
+import { ReactProps } from "../__helpers__";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
 import IncrDcr from "./IncrDcr";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import BaseField, { BaseReactInputHTMLAttributes, Props as InputProps } from "./__helpers__/BaseField";
+import BaseField, { Props as InputProps } from "./__helpers__/BaseField";
 import BaseInput from "./__helpers__/BaseInput";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 export type Props = InputProps &
-  BaseReactInputHTMLAttributes & {
+  ReactProps["base_input"] & {
     helptext?: InputHelpTextType;
     secondhelptext?: InputHelpTextType;
     characterLimit?: boolean;
@@ -61,7 +62,7 @@ export default class Input extends React.Component<Props, State> {
     });
 
     if (inchange) {
-      inchange(text);
+      inchange(text, e);
     }
   };
 
