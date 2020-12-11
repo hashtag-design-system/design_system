@@ -12,19 +12,13 @@
 
   &:not([class*="select"]) {
     &:not([class*="disabled"]) {
-      &.hover {
-        @include input--hover;
-      }
-
+      &.hover,
       &:hover {
-        @include input--hover;
+        background-color: $grey-1;
       }
     }
 
-    &.focus {
-      @include input--focus;
-    }
-
+    &.focus,
     &:focus {
       @include input--focus;
     }
@@ -54,12 +48,6 @@
   border-color: $primary;
 
   @include input-floating-label-state;
-}
-
-@mixin input--hover {
-  background-color: $grey-1;
-
-  // @include input-floating-label-state;
 }
 
 @mixin input-state-color($color) {

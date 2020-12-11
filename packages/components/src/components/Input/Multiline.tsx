@@ -19,7 +19,7 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, FProps>(
     const [isActive, setIsActive] = useState(defaultValue === "");
     const isDisabled = useDisabled(props);
     let [classNames, rest] = useClassnames(`input input-multiline`, props, {
-      stateToRemove: { state: props.state, defaultState: "default" },
+      stateToRemove: { state: props.state },
     });
 
     const { onChange, onFocus, onBlur } = props;

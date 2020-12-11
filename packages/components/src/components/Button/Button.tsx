@@ -18,16 +18,9 @@ export type Props = {
   pill?: boolean;
 };
 
-export type FProps = Props & React.ComponentPropsWithRef<"button">;
+export type FProps = Props & Omit<React.ComponentPropsWithRef<"button">, "type">;
 
-const Button: React.FC<FProps> = ({
-  type = "primary",
-  state = "default",
-  block = false,
-  pill = false,
-  children,
-  ...props
-}) => {
+const Button: React.FC<FProps> = ({ type = "primary", state = "default", block = false, pill = false, children, ...props }) => {
   let [classNames, rest] = useClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
 
   // Animation state

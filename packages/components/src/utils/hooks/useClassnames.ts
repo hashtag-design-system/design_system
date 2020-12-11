@@ -3,7 +3,7 @@ import { AllProps } from "../../typings";
 import { addClassnames } from "../styles";
 
 type useClassnamesConfig = {
-  stateToRemove?: { defaultState: string } & ReactProps<string>["input_state_prop"];
+  stateToRemove?: { defaultState?: string } & ReactProps<string>["input_state_prop"];
 };
 
 export const useClassnames = <T extends AllProps>(defaultClassname: string, props: T, options?: useClassnamesConfig): any[] => {
@@ -12,7 +12,7 @@ export const useClassnames = <T extends AllProps>(defaultClassname: string, prop
   if (options) {
     const { stateToRemove } = options;
     if (stateToRemove) {
-      const { state, defaultState } = stateToRemove;
+      const { state, defaultState = "default" } = stateToRemove;
 
       if (state && state !== defaultState) {
         classNames += state;

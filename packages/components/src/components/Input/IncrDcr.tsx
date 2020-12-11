@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Input from "./index";
 import Button from "../Button";
 import { ReactProps } from "../__helpers__";
+import Input from "./index";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 const IncrDcrInputStates = [

@@ -51,7 +51,8 @@
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
     @include transition-3s("ease-in-out", "", "left 0s, right 0s");
 
-    &:focus-visible {
+    &:focus-visible,
+    &.focus-visible {
       @include accessibility-5dp;
     }
 
@@ -63,7 +64,7 @@
       transform: rotate(45deg);
     }
 
-    &[data-onhover="true"] {
+    @include hover-classNames() {
       border-width: 2px;
       border-bottom-left-radius: 0%;
       padding: 4px;
@@ -80,7 +81,7 @@
       right: 25%;
       transform: translateX(50%);
 
-      &[data-onhover="true"] {
+      @include hover-classNames() {
         transform: rotate(-45deg) translate(110%, -35%) !important;
       }
     }
@@ -90,6 +91,28 @@
     position: relative;
     height: 100%;
     width: 100%;
+
+    @include disabled-classNames() {
+      .slider__bar,
+      .slider__thumb,
+      .input {
+        cursor: not-allowed !important;
+      }
+
+      .slider__bar__progress {
+        background-color: $grey-7;
+      }
+
+      .slider__thumb {
+        border-color: $grey-7;
+      }
+
+      .slider__chart__bar {
+        background-color: $grey-5 !important;
+      }
+
+      opacity: 0.75;
+    }
   }
 
   &__marks {

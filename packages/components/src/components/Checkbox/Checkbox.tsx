@@ -1,7 +1,7 @@
 import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useMemo, useState } from "react";
 import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
-import { Animated, Base, ReactProps } from "../__helpers__";
+import { Animated, Base } from "../__helpers__";
 import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
 import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 

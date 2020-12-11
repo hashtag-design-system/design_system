@@ -35,8 +35,8 @@ function App() {
         ]}
         min={0}
         max={100}
-        lThumb={{ defaultValue: 20 }}
-        rThumb={{ defaultValue: 50 }}
+        lThumb={{ state: "focus-visible" }}
+        rThumb={{ state: "focus-visible" }}
         zeroPercentageOnEdgeMarks
         chart={{
           type: "bar",
@@ -55,6 +55,7 @@ function App() {
         }}
       />
       <Slider
+        thumb={{ state: "focus-visible" }}
         marks={[
           { value: 0, label: "0" },
           { value: 10, label: "10" },

@@ -13,18 +13,13 @@ export type Props = {
   rightIcon?: IconPropType;
 };
 
-export type FProps = Props & Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown"> & ReactProps<DropdownItemState>["input_state_prop"];
+export type FProps = Props &
+  Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown"> &
+  ReactProps<DropdownItemState>["input_state_prop"];
 
-const Item: React.FC<FProps> = ({
-  id,
-  state,
-  leftIcon,
-  rightIcon,
-  children,
-  ...props
-}) => {
+const Item: React.FC<FProps> = ({ id, state, leftIcon, rightIcon, children, ...props }) => {
   const [classNames, rest] = useClassnames("dropdown__item body-16 flex-row-flex-start-stretch", props, {
-    stateToRemove: { state, defaultState: "default" },
+    stateToRemove: { state },
   });
 
   const { setIsVisible, handleSelect } = useContext(DropdownContext);

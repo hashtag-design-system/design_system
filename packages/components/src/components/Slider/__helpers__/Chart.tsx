@@ -6,12 +6,11 @@ import { SliderChartDataProp } from "../Slider";
 
 type Props = {
   value: number | object;
-  onHover: boolean;
 };
 
 type FProps = Props & Pick<React.ComponentPropsWithoutRef<"div">, "style">;
 
-export const Chart: React.FunctionComponent<FProps> = ({ value, onHover, style }) => {
+export const Chart: React.FunctionComponent<FProps> = ({ value, style }) => {
   const [chartOverlayLeft, setChartOverlayLeft] = useState<number>(0);
   const windowDimensions = useWindowDimensions();
 
@@ -53,7 +52,7 @@ export const Chart: React.FunctionComponent<FProps> = ({ value, onHover, style }
   }, [windowDimensions.width, chartFrameRef, chartOverlayFrameRef]);
 
   return chart ? (
-    <div className="slider__chart flex-column-flex-start-flex-start" data-onhover={onHover}>
+    <div className="slider__chart flex-column-flex-start-flex-start">
       <div className="slider__chart__overlay" style={style} ref={chartOverlay}>
         <div
           className="slider__chart__frame slider__chart__frame__overlay"

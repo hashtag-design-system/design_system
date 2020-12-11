@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
-import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
+import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
 
