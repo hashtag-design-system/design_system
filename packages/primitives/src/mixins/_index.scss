@@ -23,3 +23,24 @@
     @content;
   }
 }
+
+@mixin hover-classNames {
+  &:hover,
+  &.hover {
+    @content;
+  }
+}
+
+@mixin focus-classNames {
+  &:focus,
+  &.focus {
+    @content;
+  }
+}
+
+@mixin focus-visible-classNames {
+  &:focus-visible,
+  &.focus-visible {
+    @content;
+  }
+}
