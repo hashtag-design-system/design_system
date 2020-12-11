@@ -1,14 +1,15 @@
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
-import React, { useContext } from "react";
+import React, { CSSProperties, useContext } from "react";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
 
 export type Props = {
-  maxHeight?: React.ReactText;
   tooltipBubble?: boolean;
 };
 
-const ListBox: React.FC<Props & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBubble = true, children, ...props }) => {
+export type FProps = Props & Pick<CSSProperties, "maxHeight">;
+
+const ListBox: React.FC<FProps & HTMLMotionProps<"ul">> = ({ maxHeight, tooltipBubble = true, children, ...props }) => {
   const [classNames, rest] = useClassnames<HTMLMotionProps<"ul">>("dropdown__list-box shadow-sm", props);
 
   const { isVisible, helptext, label, ref } = useContext(DropdownContext);

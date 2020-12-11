@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { InputProps } from "..";
+import { InputFProps } from "../index";
 
 type Props = {
-  id: string;
   defaultValue: boolean;
   isActive?: boolean;
-  floatingplaceholder: InputProps["floatingplaceholder"];
 };
 
-const FloatingLabel: React.FC<Props> = ({ id, defaultValue, isActive = false, floatingplaceholder, children }) => {
+type FProps = Props & Pick<InputFProps, "floatingplaceholder" | "id">;
+
+const FloatingLabel: React.FC<FProps> = ({ id, defaultValue, isActive = false, floatingplaceholder, children }) => {
   const [isFloated, setIsFloated] = useState(defaultValue || isActive);
 
   useEffect(() => {

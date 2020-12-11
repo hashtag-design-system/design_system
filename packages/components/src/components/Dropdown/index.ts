@@ -1,8 +1,8 @@
 import Dropdown from "./Dropdown";
 
-export type { Props as DropdownProps } from "./Dropdown";
 export type { Props as DropdownHRProps } from "./HR";
-export type { DropdownItemState, Props as DropdownItemProps } from "./Item";
-export type { Props as DropdownListBoxProps } from "./ListBox";
+export type { DropdownItemState, FProps as DropdownItemFProps, Props as DropdownItemProps } from "./Item";
+export type { FProps as DropdownItemGroupFProps, Props as DropdownItemGroupProps } from "./ItemGroup";
+export type { FProps as DropdownListBoxFProps, Props as DropdownListBoxProps } from "./ListBox";
 
 export default Dropdown;

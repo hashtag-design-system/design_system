@@ -1,17 +1,17 @@
 import React from "react";
 import { IconPropType } from "../../typings";
 import { useClassnames } from "../../utils/hooks";
-import { ReactProps } from "../__helpers__";
-import Input, { InputProps } from "./index";
+import Input, { InputFProps } from "./index";
 
-export type Props = Omit<InputProps, "allowClear" | "icon" | "innerref"> & {
+export type Props = {
   visibilityToggle?: boolean;
   toggleIcon?: IconPropType;
-  // React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]
-  autoComplete?: "on" | "off" | "current-password" | "new-password";
+  form?: "sign-up" | "login";
 };
 
-const Password = React.forwardRef<HTMLInputElement, Props & ReactProps["base_input"]>(
+export type FProps = Props & Omit<InputFProps, "allowClear" | "icon" | "ref">;
+
+const Password = React.forwardRef<HTMLInputElement, FProps>(
   (
     {
       placeholder = "Password",
@@ -19,11 +19,18 @@ const Password = React.forwardRef<HTMLInputElement, Props & ReactProps["base_inp
       visibilityToggle = true,
       toggleIcon,
       autoComplete = "on",
+      form,
       ...props
     },
     ref
   ) => {
     let [classNames, rest] = useClassnames("input-password", props);
+
+    if (form === "sign-up") {
+      autoComplete = "new-password";
+    } else if (form === "login") {
+      autoComplete = "current-password";
+    }
 
     return (
       <Input

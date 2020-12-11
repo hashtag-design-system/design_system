@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import errors from "../../config/errors";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { Props as InputProps } from "./Input";
+import { InputFProps } from "./index";
 import FloatingLabel from "./__helpers__/FloatingLabel";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
-export type Props = Omit<InputProps, "type" | "icon" | "ref">;
+export type FProps = Omit<InputFProps, "type" | "icon" | "ref"> & React.ComponentPropsWithoutRef<"textarea">;
 
-const Multiline = React.forwardRef<HTMLTextAreaElement, Props & React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+const Multiline = React.forwardRef<HTMLTextAreaElement, FProps>(
   ({ placeholder, floatingplaceholder = true, defaultValue, cols = 28, rows = 5, ...props }, ref) => {
     const {
       label,

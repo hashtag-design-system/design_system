@@ -1,45 +1,41 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
+import Input, { InputState } from "./index";
 import Button from "../Button";
 import { ReactProps } from "../__helpers__";
-import BaseField, { InputState } from "./__helpers__/BaseField";
 
 const animationVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-export type Props = Omit<ReactProps["base_input"], "step"> & {
-  min?: number;
-  max?: number;
-  defaultValue?: number;
-  step?: number;
-} & ReactProps<undefined, InputState>["input_state_obj"];
+export type Props = ReactProps<InputState>["number_input"];
 
 const Number = React.forwardRef<HTMLInputElement, Props>(
-  ({ min = 0, max = 9999999, defaultValue = 0, step: stepNumber = 1, state, ...props }, ref) => {
+  ({ min = 0, max = 9999999, defaultValue = 0, step = 1, state, ...props }, ref) => {
     const [value, setValue] = useState<any>(defaultValue);
     const [isBtnShown, setIsBtnShown] = useState(false);
     const [isUp, setIsUp] = useState(false);
     const [isDown, setIsDown] = useState(false);
     const [shiftKey, setShiftKey] = useState(false);
 
-    const increment = (step = stepNumber) => {
+    const increment = (stepNumber = step) => {
       const number = value || defaultValue;
 
-      if (!(number + step > max) && state !== "disabled") {
-        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) + step)));
+      if (!(number + stepNumber > max) && state !== "disabled") {
+        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) + stepNumber)));
       }
     };
 
-    const decrement = (step = stepNumber) => {
+    const decrement = (stepNumber = step) => {
       const number = value || defaultValue;
 
-      if (!(number - step < min) && state !== "disabled") {
-        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) - step)));
+      if (!(number - stepNumber < min) && state !== "disabled") {
+        setValue((count: number) => parseFloat(String((parseFloat(String(count)) || count) - stepNumber)));
       }
     };
 
+    const { className, onChange, onFocus, onBlur, ...rest } = props;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (shiftKey === true) {
         return;
@@ -58,20 +54,22 @@ const Number = React.forwardRef<HTMLInputElement, Props>(
       } else {
         setValue(text);
       }
-    };
 
-    const { className, onChange, onFocus, onBlur, inchange, ...rest } = props;
+      if (onChange) {
+        onChange(e);
+      }
+    };
 
     // TODO: Replace with <Icon /> components
     return (
       <div className="input-number" style={props.style}>
-        <BaseField
+        <Input.BaseField
           type="number"
           className={className}
           value={value}
           ref={ref}
           onChange={e => handleChange(e)}
-          step={stepNumber}
+          step={step}
           onFocus={e => {
             setIsBtnShown(true);
             // Bug on 2nd focus, does not work
@@ -108,7 +106,6 @@ const Number = React.forwardRef<HTMLInputElement, Props>(
               setShiftKey(false);
             }
           }}
-          inchange={(value, e) => inchange && inchange(value, e)}
           {...rest}
           style={{ paddingRight: isBtnShown ? "30px" : "" }}
           aria-valuemin={min}
@@ -152,7 +149,7 @@ const Number = React.forwardRef<HTMLInputElement, Props>(
               </motion.div>
             )}
           </AnimatePresence>
-        </BaseField>
+        </Input.BaseField>
       </div>
     );
   }

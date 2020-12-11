@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { SelectionInputProps } from "./Base";
+import { SelectionInputFProps } from "./Base";
 
 const SelectionInputLabelPositions = ["top", "bottom", "right", "left"] as const;
 type SelectionInputLabelPosition = typeof SelectionInputLabelPositions[number];
@@ -12,10 +12,7 @@ export type SelectionInputLabelType = {
 
 type RequiredInputLabel = Required<SelectionInputLabelType>;
 
-export type Props = {
-  id?: string;
-  label: SelectionInputProps["label"];
-};
+export type Props = Pick<SelectionInputFProps, "id" | "label">;
 
 export const LabelContainer: React.FC<Props> = ({ id, label: propsLabel, children }) => {
   const label: RequiredInputLabel | undefined = useMemo(() => {

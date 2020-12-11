@@ -1,15 +1,16 @@
 import React from "react";
-import { SliderProps } from "..";
 import { useSliderContext } from "../../../utils/contexts/SliderContext";
+import { SliderFProps } from "../index";
 
 type Props = {
   onHover: boolean;
   size: number;
   value: number;
-} & Required<Pick<SliderProps, "thumb">> &
-  Pick<SliderProps, "className">;
+};
 
-export const Thumb: React.FunctionComponent<Props> = ({ onHover, size, thumb, value, className }) => {
+type FProps = Props & Required<Pick<SliderFProps, "thumb">> & Pick<SliderFProps, "className">;
+
+export const Thumb: React.FunctionComponent<FProps> = ({ onHover, size, thumb, value, className }) => {
   const { formatRegExp } = thumb;
   const { calcPercentage } = useSliderContext();
 

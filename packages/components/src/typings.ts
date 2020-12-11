@@ -20,7 +20,7 @@ export interface GenerateIdParams {
   underscore?: boolean;
 }
 
-export type AllProps = React.AllHTMLAttributes<unknown> | ReactProps["base_input"] | HTMLMotionProps<any>;
+export type AllProps = React.ComponentPropsWithoutRef<any> | ReactProps<string>["base_input"] | HTMLMotionProps<any>;
 
 export type AtLeastOneFrom<T> = { [K in keyof T]: Pick<T, K> }[keyof T];
 

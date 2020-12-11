@@ -11,9 +11,11 @@ export type Props = {
   id: string;
   leftIcon?: IconPropType;
   rightIcon?: IconPropType;
-} & ReactProps<undefined, DropdownItemState>["input_state_obj"];
+};
 
-const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick">> = ({
+export type FProps = Props & Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown"> & ReactProps<DropdownItemState>["input_state_prop"];
+
+const Item: React.FC<FProps> = ({
   id,
   state,
   leftIcon,
@@ -30,9 +32,9 @@ const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick"
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     if (handleSelect) {
       if (typeof children === "string") {
-        handleSelect(id, e, children);
+        handleSelect(e, id, children);
       } else {
-        handleSelect(id, e);
+        handleSelect(e, id);
       }
     }
   };
@@ -49,7 +51,7 @@ const Item: React.FC<Props & Omit<React.HTMLAttributes<HTMLLIElement>, "onClick"
   };
 
   return (
-    <li className={classNames} onClick={e => handleClick(e)} tabIndex={0} onKeyDown={e => handleKeyPress(e)} {...rest}>
+    <li className={classNames} onClick={e => handleClick(e)} onKeyDown={e => handleKeyPress(e)} tabIndex={0} data-key={id} {...rest}>
       {leftIcon && <span className="dropdown__item__icon flex-column-center-center left">{leftIcon}</span>}
       {children}
       {rightIcon && <span className="dropdown__item__icon flex-column-center-center right">{rightIcon}</span>}

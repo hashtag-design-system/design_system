@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
 import { Animated, Base, ReactProps } from "../__helpers__";
 import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
-import { SelectionInputProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
+import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
@@ -16,9 +16,9 @@ const boxVariants = {
 
 export type CheckboxState = SelectionInputState | "indeterminate";
 
-export type Props = Omit<SelectionInputProps, "state"> & ReactProps<undefined, CheckboxState>["input_state_obj"];
+export type FProps = SelectionInputFProps<CheckboxState>;
 
-const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
+const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
   ({ defaultChecked = false, checked, state = "default", label, groupName, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");

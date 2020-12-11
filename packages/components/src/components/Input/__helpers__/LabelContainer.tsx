@@ -8,7 +8,9 @@ type Props = {
   charactersLimit?: { characters: number; maxLength?: number };
 };
 
-const LabelContainer: React.FC<Props & React.HTMLAttributes<HTMLElement>> = ({
+type FProps = Props & React.ComponentPropsWithoutRef<"div">;
+
+const LabelContainer: React.FC<FProps> = ({
   label,
   withHelpText = false,
   withIcon = false,

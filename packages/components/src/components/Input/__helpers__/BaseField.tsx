@@ -8,20 +8,19 @@ import FloatingLabel from "./FloatingLabel";
 
 const InputStates = ["default", "hover", "focus", "success", "error", "disabled"] as const;
 export type InputState = typeof InputStates[number];
-const InputTypes = ["text", "email", "hidden", "number", "password", "checkbox", "radio", "range", "search", "button", "url"] as const;
-export type InputType = typeof InputTypes[number];
 
 export type Props = {
   placeholder?: string;
   floatingplaceholder?: boolean | { now: boolean };
-  type?: InputType;
   label?: string;
   icon?: IconPropType;
   allowclear?: boolean;
   prefix?: string;
-} & ReactProps<undefined, InputState>["input_state_obj"];
+};
 
-const BaseField = React.forwardRef<HTMLInputElement, Props & ReactProps["base_input"]>(
+export type FProps = Props & ReactProps<InputState>["base_input"];
+
+const BaseField = React.forwardRef<HTMLInputElement, FProps>(
   (
     {
       placeholder,
@@ -37,7 +36,6 @@ const BaseField = React.forwardRef<HTMLInputElement, Props & ReactProps["base_in
       children,
       prefix,
       style,
-      inchange,
       ...props
     },
     ref

@@ -1,7 +1,7 @@
-import { SliderProps } from "../../components/Slider";
+import { SliderFProps } from "../../components/Slider";
 import { createCtx } from "../createCtx";
 
-export type SliderContextType = SliderProps & {
+export type SliderContextType = SliderFProps & {
   calcValue: (percentage: number) => number;
   calcPercentage: (number: number) => number;
 };

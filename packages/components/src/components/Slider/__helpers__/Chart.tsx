@@ -7,10 +7,11 @@ import { SliderChartDataProp } from "../Slider";
 type Props = {
   value: number | object;
   onHover: boolean;
-  style: React.CSSProperties;
 };
 
-export const Chart: React.FunctionComponent<Props> = ({ value, onHover, style }) => {
+type FProps = Props & Pick<React.ComponentPropsWithoutRef<"div">, "style">;
+
+export const Chart: React.FunctionComponent<FProps> = ({ value, onHover, style }) => {
   const [chartOverlayLeft, setChartOverlayLeft] = useState<number>(0);
   const windowDimensions = useWindowDimensions();
 

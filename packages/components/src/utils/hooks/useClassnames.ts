@@ -3,7 +3,7 @@ import { AllProps } from "../../typings";
 import { addClassnames } from "../styles";
 
 type useClassnamesConfig = {
-  stateToRemove?: { defaultState: string } & ReactProps["input_state_obj"];
+  stateToRemove?: { defaultState: string } & ReactProps<string>["input_state_prop"];
 };
 
 export const useClassnames = <T extends AllProps>(defaultClassname: string, props: T, options?: useClassnamesConfig): any[] => {

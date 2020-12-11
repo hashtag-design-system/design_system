@@ -1,17 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import keys from "../../config/keys";
-import { InputHelpTextType } from "../../typings";
 import { useClassnames } from "../../utils/hooks";
+import { InputFProps } from "./index";
 import Input from "./Input";
 import LabelContainer from "./__helpers__/LabelContainer";
 
 export type Props = {
   digits: number;
-  helpText?: InputHelpTextType;
   error?: boolean;
 };
 
-const DigitSequence: React.FunctionComponent<Props & React.HTMLAttributes<HTMLElement>> = ({ digits = 4, helpText, error, ...props }) => {
+export type FProps = Props & Pick<InputFProps, "helptext">;
+
+const DigitSequence: React.FunctionComponent<FProps> = ({ digits = 4, helptext, error, ...props }) => {
   const initialRef = useRef<HTMLInputElement>(null);
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 
@@ -73,16 +74,16 @@ const DigitSequence: React.FunctionComponent<Props & React.HTMLAttributes<HTMLEl
           )
         )}
       </div>
-      {helpText && (
+      {helptext && (
         <LabelContainer className="body-14" withHelpText>
-          {helpText.icon}
-          {helpText.value}
+          {helptext.icon}
+          {helptext.value}
         </LabelContainer>
       )}
     </div>
   );
 };
 
-DigitSequence.displayName = "InputDigitSequence"
+DigitSequence.displayName = "InputDigitSequence";
 
 export default DigitSequence;

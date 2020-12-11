@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import Input from "./index";
 import Button from "../Button";
 import { ReactProps } from "../__helpers__";
-import BaseField from "./__helpers__/BaseField";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 const IncrDcrInputStates = [
@@ -15,30 +15,27 @@ const IncrDcrInputStates = [
 ] as const;
 export type IncrDcrInputState = typeof IncrDcrInputStates[number];
 
-export type Props = {
-  min?: number;
-  max?: number;
-  count?: number;
-  stepNumber?: number;
-} & ReactProps<undefined, IncrDcrInputState>["input_state_obj"];
+export type FProps = Omit<ReactProps<IncrDcrInputState>["number_input"], "prefix">;
 
-const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactProps["base_input"], "prefix">>(
-  ({ min = 0, max = 1000, count = 0, stepNumber = 1, state = "default", ...props }, ref) => {
+const IncrDcr = React.forwardRef<HTMLInputElement, FProps>(
+  ({ min = 0, max = 1000, count = 0, step = 1, state = "default", ...props }, ref) => {
     const [value, setValue] = useState<string>(String(count));
 
     // TODO: Replace with <Icon /> components
 
     const increment = () => {
-      if (!(parseFloat(value) + stepNumber > max)) {
-        setValue(value => String(parseFloat(value) + stepNumber));
+      if (!(parseFloat(value) + step > max)) {
+        setValue(value => String(parseFloat(value) + step));
       }
     };
 
     const decrement = () => {
-      if (!(parseFloat(value) - stepNumber < min)) {
-        setValue(value => String(parseFloat(value) - stepNumber));
+      if (!(parseFloat(value) - step < min)) {
+        setValue(value => String(parseFloat(value) - step));
       }
     };
+
+    const { className, onChange, onFocus, onBlur, ...rest } = props;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const text = e.target.value;
@@ -48,9 +45,11 @@ const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactProps["base
       } else {
         setValue(text);
       }
-    };
 
-    const { className, onChange, onFocus, onBlur, inchange, ...rest } = props;
+      if (onChange) {
+        onChange(e);
+      }
+    };
 
     return (
       <HelpTextContainer state={state} {...props}>
@@ -64,13 +63,12 @@ const IncrDcr = React.forwardRef<HTMLInputElement, Props & Omit<ReactProps["base
               <path d="M1 1H19" strokeWidth={2} strokeLinecap="round" />
             </svg>
           </Button>
-          <BaseField
+          <Input.BaseField
             type="number"
             className={className}
             value={value}
             ref={ref}
             onChange={e => handleChange(e)}
-            inchange={(value, e) => inchange && inchange(value, e)}
             onFocus={e => {
               if (String(value) === String(count)) {
                 setValue("");

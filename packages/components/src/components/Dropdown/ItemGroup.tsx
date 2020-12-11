@@ -5,7 +5,9 @@ export type Props = {
   value: string;
 };
 
-const ItemGroup: React.FC<Props & React.HTMLAttributes<HTMLSpanElement>> = ({ value, children, ...props }) => {
+export type FProps = Props & React.ComponentPropsWithRef<"span">;
+
+const ItemGroup: React.FC<FProps> = ({ value, children, ...props }) => {
   const [classNames, rest] = useClassnames("dropdown__item dropdown__item__group body-12", props);
 
   return (

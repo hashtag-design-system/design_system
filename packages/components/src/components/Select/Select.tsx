@@ -1,33 +1,34 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
-import Input, { InputProps } from "../Input";
-import { ReactProps } from "../__helpers__";
+import Input, { InputFProps } from "../Input";
 import { DividerIcon } from "./__helpers__/DividerIcon";
 import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
-export type Props = Omit<InputProps, "type" | "icon" | "allowClear" | "characterLimit"> & {
+export type Props = {
   defaultOpen?: boolean;
 };
 
-const Select: React.FC<Props & ReactProps["input"]> = props => {
+export type FProps = Props & Omit<InputFProps, "type" | "icon" | "allowClear" | "characterLimit">;
+
+const Select: React.FC<FProps> = props => {
   const {
     helptext,
     secondhelptext,
-    innerref,
     label,
     placeholder,
     prefix,
     defaultValue,
     defaultOpen = false,
     floatingplaceholder = false,
-    inselect,
+    innerRef,
     onClick,
+    onSelect,
     style,
     children,
     ...rest
   } = props;
-  let { ref, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
+  let { ref: listBoxRef, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
   const [value, setValue] = useState(defaultValue || "");
   const isDisabled = useDisabled<typeof props>(props);
   let [classNames, restProps] = useClassnames(
@@ -36,14 +37,14 @@ const Select: React.FC<Props & ReactProps["input"]> = props => {
   );
 
   const handleSelect = useCallback(
-    (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string) => {
-      if (inselect) inselect(key, e);
+    (e: React.MouseEvent<HTMLLIElement>, key: string, children?: string) => {
+      if (onSelect) onSelect(e, key);
       setIsVisible(false);
       if (children) {
         setValue(children);
       }
     },
-    [setIsVisible, inselect]
+    [setIsVisible, onSelect]
   );
 
   const newWidth = 168 || (style && style.width);
@@ -60,6 +61,10 @@ const Select: React.FC<Props & ReactProps["input"]> = props => {
       if (setIsVisible && !isDisabled) {
         setIsVisible(!isVisible);
       }
+
+      if (onClick) {
+        onClick(e as any);
+      }
     },
     [isVisible, setIsVisible, isDisabled, onClick]
   );
@@ -70,11 +75,11 @@ const Select: React.FC<Props & ReactProps["input"]> = props => {
       setIsVisible,
       helptext: helptext ? true : false,
       label: label ? true : false,
-      ref,
+      ref: listBoxRef,
       handleSelect,
       handleClick,
     }),
-    [isVisible, setIsVisible, helptext, label, ref, handleSelect, handleClick]
+    [isVisible, setIsVisible, helptext, label, listBoxRef, handleSelect, handleClick]
   );
 
   // * Alternative approach to `useContext` hook
@@ -95,7 +100,7 @@ const Select: React.FC<Props & ReactProps["input"]> = props => {
           value={value}
           label={label}
           prefix={prefix}
-          innerref={innerref}
+          ref={() => innerRef}
           style={style}
           onClick={e => {
             handleClick(e);

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { IconPropType } from "../../typings";
 import { useClassnames, useInputId } from "../../utils/hooks";
 import { Base, ReactProps } from "../__helpers__";
-import { SelectionInputProps } from "../__helpers__/SelectionInput/Base";
+import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
 
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
 const boxVariants = {
@@ -34,13 +34,14 @@ export type SwitchElementsType = {
   position?: "right" | "toggle";
 };
 
-export type Props = Omit<SelectionInputProps, "state"> & {
-  state?: SwitchState;
+export type Props = {
   icon?: IconPropType & SwitchElementsType;
   insideText?: { value: string } & SwitchElementsType;
-} & ReactProps<undefined, SwitchState>["input_state_obj"];
+};
 
-const Switch = React.forwardRef<HTMLLabelElement, Props>(
+export type FProps = Props & SelectionInputFProps<SwitchState>;
+
+const Switch = React.forwardRef<HTMLLabelElement, FProps>(
   ({ defaultChecked = false, checked, state = "off", label, groupName, icon, insideText, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));

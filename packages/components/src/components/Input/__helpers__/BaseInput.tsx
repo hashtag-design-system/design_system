@@ -1,9 +1,8 @@
 import React from "react";
+import { InputBaseFProps } from "../index";
 import { useClassnames, useDisabled, useInputId } from "../../../utils/hooks";
-import { ReactProps } from "../../__helpers__";
-import { Props as InputProps } from "./BaseField";
 
-const BaseInput = React.forwardRef<HTMLInputElement, InputProps & ReactProps["base_input"]>(
+const BaseInput = React.forwardRef<HTMLInputElement, InputBaseFProps>(
   ({ placeholder, value, defaultValue, type, floatingplaceholder, allowTyping: typing, allowclear, children, ...props }, ref) => {
     const { state = "default" } = props;
 

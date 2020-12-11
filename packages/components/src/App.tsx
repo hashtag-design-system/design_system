@@ -18,7 +18,7 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Input placeholder="Placeholder" inchange={value => console.log(value)} />
+      <Input placeholder="Placeholder" onChange={e => console.log(e.target.value)} />
       <Slider.Double
         marks={[
           { value: 0 },

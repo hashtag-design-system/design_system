@@ -4,29 +4,30 @@ import { ReactProps } from "../__helpers__";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
 import IncrDcr from "./IncrDcr";
+import { InputBaseFProps } from "./index";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import BaseField, { Props as InputProps } from "./__helpers__/BaseField";
+import BaseField from "./__helpers__/BaseField";
 import BaseInput from "./__helpers__/BaseInput";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
-export type Props = InputProps &
-  ReactProps["base_input"] & {
-    helptext?: InputHelpTextType;
-    secondhelptext?: InputHelpTextType;
-    characterLimit?: boolean;
-    // React allows custom Props to be passed only when they are spelled in lowercase
-    innerref?: React.RefObject<HTMLInputElement> | any;
-  };
+// React allows custom Props to be passed only when they are spelled in lowercase
+export type Props = {
+  helptext?: InputHelpTextType;
+  secondhelptext?: InputHelpTextType;
+  characterLimit?: boolean;
+};
+
+export type FProps = Props & InputBaseFProps & ReactProps["inner_ref"];
 
 type State = {
   id: string;
-  value: Props["value"];
+  value: FProps["value"];
   isActive: boolean;
 };
 
-export default class Input extends React.Component<Props, State> {
+export default class Input extends React.Component<FProps, State> {
   public static BaseField: typeof BaseField;
 
   public static BaseInput: typeof BaseInput;
@@ -52,7 +53,7 @@ export default class Input extends React.Component<Props, State> {
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { inchange } = this.props;
+    const { onChange } = this.props;
 
     const text = e.target.value;
 
@@ -61,16 +62,25 @@ export default class Input extends React.Component<Props, State> {
       isActive: true,
     });
 
-    if (inchange) {
-      inchange(text, e);
+    if (onChange) {
+      onChange(e);
     }
   };
 
   render() {
     return (
       <HelpTextContainer value={this.state.value} {...this.props}>
-        <BaseField ref={this.props.innerref} onChange={e => this.handleChange(e)} {...this.props} />
+        <BaseField ref={this.props.innerRef} onChange={e => this.handleChange(e)} {...this.props} />
       </HelpTextContainer>
     );
   }
 }
+
+Input.Multiline = Multiline;
+Input.Number = Number;
+Input.Password = Password;
+Input.BaseField = BaseField;
+Input.BaseInput = BaseInput;
+Input.Digit = Digit;
+Input.DigitSequence = DigitSequence;
+Input.IncrDcr = IncrDcr;

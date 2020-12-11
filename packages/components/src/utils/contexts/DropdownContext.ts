@@ -6,7 +6,7 @@ type DropdownContextType = {
   helptext: boolean;
   label: boolean;
   ref?: React.RefObject<any>;
-  handleSelect?: (key: string, e: React.SyntheticEvent<HTMLLIElement>, children?: string | undefined) => void;
+  handleSelect?: (e: React.MouseEvent<HTMLLIElement>, key: string, children?: string | undefined) => void;
   handleClick?: (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => void;
 };
 

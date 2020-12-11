@@ -1,7 +1,7 @@
 .slider {
   -webkit-appearance: none;
   opacity: 0;
-  z-index: 99;
+  z-index: 9;
   padding: 0;
   margin: 0;
   position: absolute;
@@ -38,7 +38,7 @@
     width: em(12);
     height: em(12);
     border: 5px solid $primary;
-    z-index: 98;
+    z-index: 8;
     background-color: $grey-1;
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;
@@ -52,7 +52,7 @@
     @include transition-3s("ease-in-out", "", "left 0s, right 0s");
 
     &:focus-visible {
-      @include accessibility-3dp;
+      @include accessibility-5dp;
     }
 
     &__value {
@@ -124,7 +124,7 @@
   }
 
   &__bar {
-    z-index: 96;
+    z-index: 6;
     background-color: darken($input-bg, 6) !important;
     height: em(8);
     border: 1px solid $grey-5;
@@ -152,7 +152,7 @@
 
   &__chart {
     margin-bottom: -1px;
-    z-index: 97;
+    z-index: 7;
     position: relative;
     display: block;
     width: 99.5%;

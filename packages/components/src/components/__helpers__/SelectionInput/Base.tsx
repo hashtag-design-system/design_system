@@ -1,27 +1,17 @@
 import React from "react";
 import { useClassnames } from "../../../utils/hooks";
-import { InputProps } from "../../Input";
-import { ReactProps } from "../props";
-import { LabelContainer, SelectionInputLabelType } from "./LabelContainer";
+import { ReactProps, SelectionInputProps } from "../index";
+import { LabelContainer } from "./LabelContainer";
 
 const SelectionInputStates = ["default", "pressed", "focus-visible", "checked", "disabled|unchecked", "disabled|checked"] as const;
 export type SelectionInputState = typeof SelectionInputStates[number];
 
-export type SelectionInputProps = {
-  checked?: boolean;
-  defaultChecked?: boolean;
-  label?: string | SelectionInputLabelType;
-  groupName?: string;
-} & ReactProps<undefined, SelectionInputState>["input_state_obj"] &
-  ReactProps["input"] &
-  Pick<InputProps, "type">;
+// TODO: State
+export type SelectionInputFProps<S extends string | undefined = undefined> = SelectionInputProps & ReactProps<S extends undefined ? SelectionInputState : S>["input"];
 
-export type Props = {
-  onChange: React.AllHTMLAttributes<HTMLInputElement>["onChange"];
-} & SelectionInputProps &
-  Pick<React.HTMLAttributes<HTMLDivElement>, "onClick">;
+export type FProps = SelectionInputFProps & Pick<React.ComponentPropsWithoutRef<"div">, "onClick">;
 
-export const Base: React.FC<Omit<React.ComponentPropsWithRef<"label">, "onClick"> & Props> = ({
+export const Base: React.FC<Omit<React.ComponentPropsWithRef<"label">, "onClick"> & FProps> = ({
   id,
   checked,
   defaultChecked,

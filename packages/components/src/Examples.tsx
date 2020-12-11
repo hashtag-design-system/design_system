@@ -31,7 +31,7 @@ const Examples: React.FC = () => {
         }}
       />
       <RadioButton label={{ value: "Label" }} />
-      <Select placeholder="Placeholder" floatingplaceholder={true} inselect={(option: string) => console.log(option)}>
+      <Select placeholder="Placeholder" floatingplaceholder={true} onSelect={(_, key) => console.log(key)}>
         <Dropdown.OptionsBox maxHeight={150}>
           {options.map((option, i) => (
             <Dropdown.Item key={i} id={option.value}>

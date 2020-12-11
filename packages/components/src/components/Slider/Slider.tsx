@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames } from "../../utils/hooks";
-import Input, { NumberInputProps } from "../Input";
+import Input from "../Input";
 import { ReactProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar } from "./__helpers__/Bar";
@@ -24,12 +24,11 @@ export type SliderThumbProp = {
 export type SliderMarkProp = { value: number; label?: string };
 export type SliderChartDataProp = { value: number };
 
-export type Props = Omit<NumberInputProps, "value" | "defaultValue"> & {
+export type Props = {
   thumb?: SliderThumbProp;
   marks: SliderMarkProp[];
   lockOnMarks?: boolean;
   zeroPercentageOnEdgeMarks?: boolean;
-
   chart?: {
     type: "bar";
     data: SliderChartDataProp[];
@@ -37,17 +36,14 @@ export type Props = Omit<NumberInputProps, "value" | "defaultValue"> & {
   };
 };
 
+export type FProps = Props & Omit<ReactProps<undefined, true>["number_input"], "defaultValue">;
+
 interface SubComponents {
   Double: typeof Double;
 }
 const DEFAULT_SIZE = 0.875;
 
-const Slider: React.FC<
-  Omit<React.ComponentPropsWithRef<"input">, "value" | "defaultValue"> &
-    Props &
-    Omit<ReactProps["base_input"], "value" | "defaultValue">
-> &
-  SubComponents = ({
+const Slider: React.FC<FProps> & SubComponents = ({
   min = 0,
   max = 100,
   thumb = { defaultValue: max / 2 },
@@ -55,7 +51,7 @@ const Slider: React.FC<
   marks,
   lockOnMarks = false,
   zeroPercentageOnEdgeMarks = false,
-  inchange,
+  onChange,
   chart,
   ref,
   ...props
@@ -182,8 +178,8 @@ const Slider: React.FC<
       setValue(valueAsNumber);
     }
 
-    if (inchange) {
-      inchange(valueAsNumber, e);
+    if (onChange) {
+      onChange(e);
     }
   };
 
