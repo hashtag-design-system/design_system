@@ -38,9 +38,12 @@
       font-weight: lighter;
       cursor: text;
 
-      &:hover,
-      &:focus {
-        background-color: unset !important;
+      @include hover-classNames() {
+        @include dropdown__group--state();
+      }
+
+      @include focus-classNames() {
+        @include dropdown__group--state();
       }
 
       &__elements {

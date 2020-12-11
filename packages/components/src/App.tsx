@@ -35,8 +35,6 @@ function App() {
         ]}
         min={0}
         max={100}
-        lThumb={{ state: "focus-visible" }}
-        rThumb={{ state: "focus-visible" }}
         zeroPercentageOnEdgeMarks
         chart={{
           type: "bar",

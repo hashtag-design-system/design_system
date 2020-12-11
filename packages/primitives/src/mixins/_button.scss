@@ -18,8 +18,7 @@
   appearance: none;
   transition: all 0.2s cubic-bezier(0.3, 0, 0.5, 1);
 
-  &:focus-visible,
-  &.focus-visible {
+  @include focus-visible-classNames() {
     @include accessibility-5dp;
     background-color: $blue-5;
     color: $grey-1;

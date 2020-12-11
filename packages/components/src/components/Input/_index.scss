@@ -49,19 +49,17 @@
     transform-origin: left top;
     outline: none;
 
-    &:focus {
+    @include focus-classNames() {
       @extend .active;
       color: $primary;
     }
 
-    &:focus-within,
+    @include focus-within-classNames() {
+      @include input--focus-within;
+    }
+
     &.active {
-      @extend .input__floating-label;
-      @include body;
-      top: 8px;
-      font-size: rem(10);
-      line-height: 100%;
-      height: 10px;
+      @include input--focus-within;
     }
   }
 
@@ -104,7 +102,7 @@
   }
 
   &.grey {
-    &:focus {
+    @include focus-classNames() {
       border-color: $grey-5;
 
       + .input__floating-label.active {
@@ -121,7 +119,7 @@
 }
 
 .floating.input {
-  &:focus-within {
+  @include focus-within-classNames() {
     padding-top: em(20);
     padding-bottom: em(9);
   }
@@ -150,13 +148,16 @@
   + .input__floating-label {
     top: 12px;
 
-    &:focus-within,
+    @include focus-within-classNames() {
+      top: 8px;
+    }
+
     &.active {
       top: 8px;
     }
   }
 
-  &:focus-within {
+  @include focus-within-classNames() {
     @include input--focus;
   }
 }
@@ -212,7 +213,7 @@
     background-color: $grey-2;
     border-color: $grey-2;
 
-    &:focus {
+    @include focus-classNames() {
       background-color: $grey-3;
       border-color: $grey-3;
     }
@@ -229,13 +230,12 @@
     border-color: lighten($primary, 40);
     stroke: $primary;
 
-    &:hover,
-    &:focus-visible {
-      background-color: lighten($primary, 30);
-      border-color: lighten($primary, 30);
+    @include hover-classNames() {
+      @include input-incr-dcr__icon--state();
     }
 
-    &:focus-visible {
+    @include focus-visible-classNames() {
+      @include input-incr-dcr__icon--state();
       @include accessibility-3dp;
     }
 
@@ -277,7 +277,7 @@
       box-shadow: none;
       stroke: $grey-6;
 
-      &:hover {
+      @include hover-classNames() {
         background-color: transparent;
         stroke: $primary;
       }

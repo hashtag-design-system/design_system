@@ -44,3 +44,10 @@
     @content;
   }
 }
+
+@mixin focus-within-classNames {
+  &:focus-within,
+  &.focus-within {
+    @content;
+  }
+}

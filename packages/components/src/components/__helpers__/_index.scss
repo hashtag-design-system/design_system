@@ -41,12 +41,10 @@
     transition: box-shadow 0.3s;
     flex-shrink: 0;
 
-    &.focus-visible:not(.disabled) {
-      @include selection-input--focus-visible;
-    }
-
-    &:focus-visible:not(.disabled) {
-      @include selection-input--focus-visible;
+    @include focus-visible-classNames() {
+      &:not(.disabled) {
+        @include selection-input--focus-visible;
+      }
     }
 
     @include disabled-classNames {

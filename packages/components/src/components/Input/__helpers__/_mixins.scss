@@ -12,14 +12,12 @@
 
   &:not([class*="select"]) {
     &:not([class*="disabled"]) {
-      &.hover,
-      &:hover {
+      @include hover-classNames() {
         background-color: $grey-1;
       }
     }
 
-    &.focus,
-    &:focus {
+    @include focus-classNames() {
       @include input--focus;
     }
   }
@@ -68,12 +66,33 @@
 
   @include input-placeholder-color($color);
 
-  &:focus,
-  &:focus-within {
+  @include focus-classNames() {
     border-color: $color;
 
     + .input__help-text__icon {
       color: $color;
     }
   }
+
+  @include focus-within-classNames() {
+    border-color: $color;
+
+    + .input__help-text__icon {
+      color: $color;
+    }
+  }
+}
+
+@mixin input-incr-dcr__icon--state {
+  background-color: lighten($primary, 30);
+  border-color: lighten($primary, 30);
+}
+
+@mixin input--focus-within {
+  @extend .input__floating-label;
+  @include body;
+  top: 8px;
+  font-size: rem(10);
+  line-height: 100%;
+  height: 10px;
 }

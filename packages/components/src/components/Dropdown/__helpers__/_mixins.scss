@@ -4,9 +4,15 @@
 }
 
 @mixin dropdown__item--state {
-  &.hover,
-  &:hover,
-  &:focus {
+  @include hover-classNames() {
     @include dropdown__item--hover;
   }
+
+  @include focus-classNames() {
+    @include dropdown__item--hover;
+  }
+}
+
+@mixin dropdown__group--state {
+  background-color: unset !important;
 }

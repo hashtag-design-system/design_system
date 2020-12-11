@@ -18,8 +18,7 @@
   background-color: $primary;
   color: $grey-1;
 
-  &:hover,
-  &.hover {
+  @include hover-classNames() {
     background-color: darken($primary, 10);
     border-color: darken($primary, 10);
     cursor: pointer;
@@ -40,8 +39,7 @@
   border: 2px solid $primary;
   box-sizing: border-box;
 
-  &:hover,
-  &.hover {
+  @include hover-classNames() {
     background-color: $primary;
     cursor: pointer;
     color: $grey-1;
@@ -66,8 +64,7 @@
   color: $red-6;
   border-color: $red-6;
 
-  &:hover,
-  &.hover {
+  @include hover-classNames() {
     background-color: $red-7;
     border-color: $red-7;
     cursor: pointer;
@@ -81,8 +78,7 @@
     color: $red-6;
   }
 
-  &:focus-visible,
-  &.focus-visible {
+  @include focus-visible-classNames() {
     background-color: $red-6;
     border-color: $red-6;
   }
