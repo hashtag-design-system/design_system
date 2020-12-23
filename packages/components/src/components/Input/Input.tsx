@@ -1,6 +1,8 @@
 import React from "react";
-import { InputHelpTextType } from "../../typings";
-import { ReactProps } from "../__helpers__";
+import { IconPropType } from "../../typings";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
+import { generateInputId } from "../../utils/hooks/useInputId";
+import { InputAutocompleteType } from "../__helpers__";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
 import IncrDcr from "./IncrDcr";
@@ -8,59 +10,79 @@ import { InputBaseFProps } from "./index";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
-import BaseField from "./__helpers__/BaseField";
-import BaseInput from "./__helpers__/BaseInput";
-import HelpTextContainer from "./__helpers__/HelpTextContainer";
+import { Base, FieldContainer, InputContainer } from "./__helpers__";
 
-// React allows custom Props to be passed only when they are spelled in lowercase
+const InputBaseStates = ["default", "focus", "disabled"] as const;
+export type InputBaseState = typeof InputBaseStates[number];
+
+export const InputStates = [...InputBaseStates, "hover", "error", "success"] as const;
+export type InputState = typeof InputStates[number];
+
+export type InputHelpTextType = {
+  value: string;
+  icon?: IconPropType;
+};
+
+type State = {
+  id: FProps["id"];
+  value: FProps["value"];
+};
+
 export type Props = {
+  defaultValue?: React.ReactText;
   helptext?: InputHelpTextType;
   secondhelptext?: InputHelpTextType;
   characterLimit?: boolean;
+  floatingplaceholder?: boolean | { now: boolean };
+  label?: string;
+  allowClear?: boolean;
+  autoComplete?: InputAutocompleteType;
+  optional?: boolean;
+  forwardref?: React.ComponentPropsWithRef<"input">["ref"];
+  passwordboxes?: React.ReactNode;
 };
 
-export type FProps = Props & InputBaseFProps & ReactProps["inner_ref"];
+export type FProps = Props & InputBaseFProps<InputState>;
 
-type State = {
-  id: string;
-  value: FProps["value"];
-  isActive: boolean;
-};
+export type SBProps = Omit<Props, "passwordboxes"> &
+  Pick<FProps, "placeholder" | "state" | "allowClear" | "suffix" | "prefix" | "type" | "maxLength">;
 
 export default class Input extends React.Component<FProps, State> {
-  public static BaseField: typeof BaseField;
+  static Base: typeof Base;
 
-  public static BaseInput: typeof BaseInput;
+  static Password: typeof Password;
 
-  public static Multiline: typeof Multiline;
+  static Multiline: typeof Multiline;
 
-  public static Number: typeof Number;
+  static Digit: typeof Digit;
 
-  public static Password: typeof Password;
+  static DigitSequence: typeof DigitSequence;
 
-  public static Digit: typeof Digit;
+  static Number: typeof Number;
 
-  public static DigitSequence: typeof DigitSequence;
-
-  public static IncrDcr: typeof IncrDcr;
+  static IncrDcr: typeof IncrDcr;
 
   static displayName = "Input";
 
   state: State = {
     id: this.props.id || "",
-    value: this.props.value || "",
-    isActive: this.props.value === undefined ? false : true,
+    value: this.props.value || this.props.defaultValue || "",
+  };
+
+  componentDidMount = () => {
+    if (!this.state.id) {
+      this.setState(prevState => ({
+        ...prevState,
+        id: generateInputId(),
+      }));
+    }
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // `overrideOnChange` Prop is being handle by the <Base /> helper component
     const { onChange } = this.props;
 
-    const text = e.target.value;
-
-    this.setState({
-      value: text,
-      isActive: true,
-    });
+    this.setState({ value: e.target.value });
 
     if (onChange) {
       onChange(e);
@@ -68,19 +90,34 @@ export default class Input extends React.Component<FProps, State> {
   };
 
   render() {
+    const { id, value } = this.state;
+
+    const { value: propsValue, overrideOnChange } = this.props;
+
     return (
-      <HelpTextContainer value={this.state.value} {...this.props}>
-        <BaseField ref={this.props.innerRef} onChange={e => this.handleChange(e)} {...this.props} />
-      </HelpTextContainer>
+      <InputContextProvider
+        value={{
+          ...this.props,
+          id,
+          value: overrideOnChange && propsValue !== undefined ? propsValue : value,
+          onChange: overrideOnChange ? this.props.onChange : this.handleChange,
+          overrideOnChange,
+        }}
+      >
+        <InputContainer>
+          <FieldContainer />
+        </InputContainer>
+      </InputContextProvider>
     );
   }
 }
 
-Input.Multiline = Multiline;
-Input.Number = Number;
+// 6 (+1 <Base /> helper) sub-components in total
+// ! Always add sub-components after declaration inside the component
+Input.Base = Base;
 Input.Password = Password;
-Input.BaseField = BaseField;
-Input.BaseInput = BaseInput;
+Input.Multiline = Multiline;
 Input.Digit = Digit;
 Input.DigitSequence = DigitSequence;
+Input.Number = Number;
 Input.IncrDcr = IncrDcr;

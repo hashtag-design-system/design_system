@@ -1,114 +1,25 @@
 @import "./__helpers__/mixins";
 
 .input {
-  @include input-base;
+  @extend .flex-row-center-center;
+  @extend .body-16;
+  color: $grey-10;
+  padding: em(10) em(12);
+  width: 100%;
+  height: em(48);
+  box-sizing: border-box;
+  border: $input-border-width solid $input-border-color;
+  border-radius: $input-border-radius;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  outline: none;
+  @include transition-3s("ease-in-out", "", "padding 0s");
 
-  &__prefix {
-    position: absolute;
-    top: 18px;
-    left: 14px;
-  }
+  @include input-background();
 
-  &__wrapper {
-    @extend .flex-column-flex-start-flex-start;
-    gap: 4px;
-    width: em(280);
-
-    &__base {
-      @extend .flex-column-flex-start-flex-start;
-      width: auto;
-      position: relative;
-      align-self: stretch;
-    }
-  }
-
-  &__label-container {
-    @extend .flex-row-flex-start-stretch;
-    flex-wrap: nowrap;
-    height: auto;
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    font-size: rem(14);
-    line-height: 150%;
-    width: auto;
-    color: $grey-9;
-    margin-block: 0;
-  }
-
-  &__floating-label {
-    position: absolute;
-    top: 15px;
-    left: 13px;
-    width: auto;
-    height: em(18);
-    align-self: stretch;
-    pointer-events: none;
-    transition: all 0.2s ease-in-out;
+  &::placeholder {
     color: $grey-7;
-    transform-origin: left top;
-    outline: none;
-
-    @include focus-classNames() {
-      @extend .active;
-      color: $primary;
-    }
-
-    @include focus-within-classNames() {
-      @include input--focus-within;
-    }
-
-    &.active {
-      @include input--focus-within;
-    }
-  }
-
-  &__help-text {
-    gap: 4px;
-    align-self: flex-end;
-    width: auto;
-    height: rem(18);
-    margin-block: 0;
-    color: $grey-7;
-
-    &.error {
-      color: $red-6;
-    }
-  }
-
-  &-password {
-    letter-spacing: 0.05em;
-  }
-
-  &__icon {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    right: 12px;
-    top: calc(50% - 20px / 2);
-  }
-
-  @include input-placeholder-color;
-}
-
-.input,
-.input-multiline {
-  &.success {
-    @include input-state-color($green-7);
-  }
-
-  &.error {
-    @include input-state-color($red-6);
-  }
-
-  &.grey {
-    @include focus-classNames() {
-      border-color: $grey-5;
-
-      + .input__floating-label.active {
-        color: $grey-7;
-      }
-    }
   }
 
   @include disabled-classNames {
@@ -116,169 +27,315 @@
     @extend .input__disabled--bg;
     color: $grey-8;
   }
+
+  @include hover-classNames() {
+    @include input--hover();
+  }
+
+  @include focus-classNames() {
+    @include input--hover();
+
+    border-color: $primary;
+    &:not([placeholder]) {
+      &[data-hasfloatingplaceholder="true"] {
+        padding-bottom: em(0);
+
+        ~ .input__floating-placeholder {
+          @include input__floating-placeholder--focus();
+        }
+      }
+    }
+  }
+
+  &__container {
+    @extend .flex-column-stretch-flex-start;
+    width: em(280);
+    gap: em(4);
+
+    &__field {
+      padding: 0;
+      width: auto;
+      align-self: stretch;
+      position: relative;
+
+      &[data-isfloated="true"] {
+        .input {
+          padding-bottom: em(0);
+
+          &__floating-placeholder {
+            @include input__floating-placeholder--focus();
+          }
+        }
+      }
+    }
+
+    @include focus-within-classNames() {
+      .input__character-limit {
+        opacity: 1;
+      }
+
+      .input-password__strength-meter-box {
+        // Faded, not "full" opacity
+        opacity: 0.75;
+      }
+    }
+  }
+
+  &__floating-placeholder {
+    @extend .body-16;
+    order: 2;
+    z-index: 1;
+    position: absolute;
+    top: rem(14);
+    left: rem(12);
+    color: $grey-7;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    user-select: none;
+    pointer-events: none;
+    overflow: visible;
+    @include transition-3s("ease-in-out");
+
+    @include hover-classNames() {
+      cursor: text;
+    }
+  }
+
+  &__label {
+    @extend .medium;
+    color: $grey-9;
+    align-self: stretch;
+    width: auto;
+
+    &__container {
+      @extend .flex-row-space-between-flex-end;
+      padding: 0;
+      height: auto;
+      align-self: stretch;
+    }
+  }
+
+  &__help-text__container {
+    @extend .flex-row-flex-end-center;
+    gap: em(4);
+    color: $grey-7;
+    padding: 0;
+    flex: none;
+    height: auto;
+    order: 1;
+    flex-grow: 0;
+    user-select: none;
+    align-self: stretch;
+
+    @include icon-classNames() {
+      stroke: $grey-7;
+      fill: $grey-7;
+    }
+
+    &.second {
+      order: 2;
+      justify-content: flex-start;
+      align-self: center;
+      width: auto;
+      max-width: 82.5%;
+      flex-grow: 1;
+      text-align: left;
+
+      &.error {
+        color: $error-color;
+
+        @include icon-classNames() {
+          stroke: $error-color;
+          fill: $error-color;
+        }
+      }
+    }
+
+    &-and-character-limit {
+      @extend .flex-row-space-between-center;
+      align-self: stretch;
+      width: auto;
+      gap: em(8);
+    }
+  }
+
+  &__padding-container {
+    padding: 0 rem(4) 0 rem(4);
+  }
+
+  &__character-limit {
+    @extend .flex-column-flex-start-center;
+    @include transition-3s("ease-out");
+    order: 2;
+    text-align: right;
+    opacity: 0;
+    color: $grey-7;
+    justify-self: flex-end;
+    user-select: none;
+  }
+
+  &.error {
+    @include input--state($error-color);
+  }
+
+  &.success {
+    @include input--state($success-color);
+  }
+
+  &__icon {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-40%);
+    color: $grey-9;
+
+    &.left {
+      left: 12px;
+    }
+
+    &.right {
+      right: 12px;
+    }
+  }
 }
 
-.floating.input {
-  @include focus-within-classNames() {
-    padding-top: em(20);
-    padding-bottom: em(9);
-  }
-  &:not(:placeholder-shown) {
-    padding-top: em(20);
-    padding-bottom: em(9);
+.input-password {
+  letter-spacing: 0.05em;
+
+  &__strength-meter-box {
+    height: 10px;
+    width: 10px;
+    border-radius: calc(#{$input-border-radius} / 3);
+    background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
+    margin-left: em(6);
+    opacity: 0;
+    @include transition-3s("ease-out");
+
+    &.sm-secure {
+      background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
+    }
+
+    &.md-secure {
+      background: linear-gradient(48deg, $volcano-4 0%, $yellow-5 77%);
+    }
+
+    &.lg-secure {
+      background: linear-gradient(48deg, $green-5 0%, $green-7 77%);
+    }
   }
 }
 
 .input-multiline {
-  @extend .input__wrapper;
-  // padding-top: set in the `element.style` attribute
-  padding: 0px;
   height: auto;
-  width: auto;
-  gap: 0;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: em(56);
 
-  .input {
-    height: auto;
-    border: none;
-    align-self: stretch;
-    padding: 0 em(12) em(12) em(12) !important;
-    resize: vertical;
+  &:not([placeholder]) {
+    padding-top: rem(22);
   }
 
-  + .input__floating-label {
-    top: 12px;
-
-    @include focus-within-classNames() {
-      top: 8px;
-    }
-
-    &.active {
-      top: 8px;
-    }
+  @include focus-classNames() {
+    padding-bottom: em(10) !important;
   }
 
-  @include focus-within-classNames() {
-    @include input--focus;
+  @extend .scrollbar;
+
+  + .input__floating-placeholder {
+    width: calc(100% - (1.5rem + 0.5rem));
+  }
+
+  + .input__floating-placeholder::before {
+    @extend .input__floating-placeholder--pseudo-element;
+    top: rem(-4);
+    height: rem(4);
+  }
+
+  + .input__floating-placeholder::after {
+    @extend .input__floating-placeholder--pseudo-element;
+    left: 0;
+    bottom: rem(-6);
+    height: rem(6);
   }
 }
 
 .input-digit {
-  background-color: $grey-1;
-  height: em(80);
-  width: em(70);
-  border-radius: 10px;
-  border-color: $grey-1;
   font-size: rem(36);
-  line-height: rem(42);
-  text-align: center;
+  line-height: 150%;
+  height: rem(70);
+  border-radius: $input-border-radius * 1.5;
+  border-width: $input-border-width * 2;
+  background-color: $grey-1;
+  padding: rem(4);
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $grey-10;
 
-  @include disabled-classNames {
-    box-shadow: none;
+  @include focus-classNames() {
+    padding-bottom: rem(4);
+  }
+
+  @include disabled-classNames() {
+    border: $input-border-width * 2 solid darken($input-disabled-bg, 24) !important;
   }
 
   &-sequence {
     @extend .flex-column-center-center;
     flex: none;
-    width: auto;
-    gap: 24px;
+    width: 100%;
+    gap: em(24);
 
-    &__wrapper {
+    &__container {
       @extend .input-digit-sequence;
-      @extend .input-digit-sequence__wrapper;
       flex-direction: row;
-      gap: 20px;
+      gap: em(40);
     }
 
-    .input__label-container {
-      align-self: center;
-    }
-  }
-}
-
-.input-incr-dcr {
-  @extend .flex-row-space-between-center;
-  text-align: center;
-  margin: 8px;
-  width: em(120);
-  gap: 8px;
-  height: em(28);
-
-  .input {
-    height: em(28);
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    padding: 0 !important;
-    background-color: $grey-2;
-    border-color: $grey-2;
-
-    @include focus-classNames() {
-      background-color: $grey-3;
-      border-color: $grey-3;
-    }
-  }
-
-  &__icon {
-    @extend .flex-column-center-center;
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 0 !important;
-    width: 28px;
-    height: 28px;
-    background-color: lighten($primary, 40);
-    border-color: lighten($primary, 40);
-    stroke: $primary;
-
-    @include hover-classNames() {
-      @include input-incr-dcr__icon--state();
-    }
-
-    @include focus-visible-classNames() {
-      @include input-incr-dcr__icon--state();
-      @include accessibility-3dp;
-    }
-
-    &.grey {
-      background-color: $input-disabled-bg;
-      border: none;
-      cursor: default;
-      stroke: $grey-7;
-    }
-  }
-
-  @include disabled-classNames {
-    .input-incr-dcr__icon {
-      @extend .grey;
+    .input__help-text__container {
+      @extend .body-16;
     }
   }
 }
 
 .input-number {
-  width: em(120);
+  -moz-appearance: textfield;
 
-  &__btn {
-    background-color: $grey-2;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[data-isbtnshown="true"] {
+    padding-right: 1.75em;
+  }
+
+  &__btn__container {
+    background-color: transparent;
     position: absolute;
     overflow: hidden;
-    top: 2px;
-    right: 2px;
-    height: em(44);
+    top: rem(1);
+    right: rem(1);
+    height: calc(100% - 0.125rem);
     border-radius: 0px 2px 2px 0px;
     border-left: 2px solid $grey-5;
+    border-radius: 0 $input-border-radius $input-border-radius 0;
 
     .btn {
       @extend .flex-column-center-center;
       cursor: pointer;
-      padding: 0 !important;
-      width: em(22) !important;
+      background-color: transparent;
+      padding: 0;
+      width: em(24);
       height: em(22);
       border: none;
       box-shadow: none;
       stroke: $grey-6;
 
       @include hover-classNames() {
-        background-color: transparent;
+        @include input--hover();
         stroke: $primary;
       }
 
@@ -292,14 +349,53 @@
       }
     }
   }
+
+  @include disabled-classNames() {
+    + .input-number__btn__container {
+      border-color: $grey-6;
+
+      .btn:nth-of-type(2) {
+        border-color: $grey-6;
+      }
+    }
+  }
 }
 
-.input-number,
 .input-incr-dcr {
-  .input {
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+  padding: em(4);
+  height: em(28);
+  text-align: center;
+
+  &__container {
+    @extend .flex-row-center-center;
+    padding: 0;
+    width: auto;
+    height: auto;
+    gap: em(16);
+  }
+
+  &__btn {
+    width: rem(32);
+    height: rem(32);
+    padding: em(8);
+    background-color: lighten($primary, 40);
+
+    @include path-classNames() {
+      stroke: $primary;
+    }
+
+    @include disabled-classNames() {
+      background-color: $grey-4 !important;
+
+      @include path-classNames() {
+        stroke: $grey-7 !important;
+      }
+    }
+
+    &:not([disabled]) {
+      @include hover-classNames() {
+        background-color: lighten($primary, 30);
+      }
     }
   }
 }

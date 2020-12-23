@@ -1,98 +1,40 @@
-@mixin input-base {
+.input__floating-placeholder--pseudo-element {
+  content: "";
+  background-color: inherit;
+  position: absolute;
   width: 100%;
-  box-sizing: border-box;
-  height: em(48);
-  background-color: $input-bg;
-  padding: 12px;
-  border: 1.5px solid $grey-5;
-  border-radius: 6px;
-  align-self: stretch;
-  outline: none;
-  transition: all 0.3s;
+}
 
-  &:not([class*="select"]) {
-    &:not([class*="disabled"]) {
-      @include hover-classNames() {
-        background-color: $grey-1;
+@mixin input-background($color: $input-bg) {
+  background-color: $color;
+
+&.input-multiline {
+    &:not([disabled]):not(.disabled) {
+      + .input__floating-placeholder {
+        background-color: $color;
       }
     }
-
-    @include focus-classNames() {
-      @include input--focus;
-    }
   }
 }
 
-@mixin input-placeholder($color) {
-  &::placeholder {
-    color: $color;
-    opacity: 1;
-  }
+@mixin input--hover {
+  @include input-background($grey-1);
 }
 
-@mixin input-placeholder-color($color: $grey-7) {
-  @include input-placeholder($color);
+@mixin input__floating-placeholder--focus {
+  top: em(8);
+  font-size: em(10);
 }
 
-@mixin input-floating-label-state($color: $primary) {
-  + .input__floating-label,
-  .input__floating-label.active {
-    color: $color;
-  }
-}
-
-@mixin input--focus {
-  background-color: $grey-1;
-  border-color: $primary;
-
-  @include input-floating-label-state;
-}
-
-@mixin input-state-color($color) {
+@mixin input--state($color) {
+  @include input--hover();
   border-color: $color;
 
-  @if $color == $red-6 {
-    background-color: $red-1;
-  } @else if $color == $green-7 {
-    background-color: $green-1;
-  }
-
-  + .input__help-text__icon {
-    color: $color;
-  }
-
-  // https://stackoverflow.com/questions/7115959/adding-important-using-a-compass-mixin
-  @include input-floating-label-state($color !important);
-
-  @include input-placeholder-color($color);
-
   @include focus-classNames() {
-    border-color: $color;
-
-    + .input__help-text__icon {
-      color: $color;
-    }
+    border-color: $color !important;
   }
 
-  @include focus-within-classNames() {
-    border-color: $color;
-
-    + .input__help-text__icon {
-      color: $color;
-    }
+  + .input__floating-placeholder {
+    color: $color !important;
   }
-}
-
-@mixin input-incr-dcr__icon--state {
-  background-color: lighten($primary, 30);
-  border-color: lighten($primary, 30);
-}
-
-@mixin input--focus-within {
-  @extend .input__floating-label;
-  @include body;
-  top: 8px;
-  font-size: rem(10);
-  line-height: 100%;
-  height: 10px;
 }
