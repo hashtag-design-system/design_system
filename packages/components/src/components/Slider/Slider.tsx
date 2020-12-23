@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
-import Input from "../Input";
+import Input from "../PrevInput";
 import { ReactProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar } from "./__helpers__/Bar";
@@ -228,7 +228,7 @@ const Slider: React.FC<FProps> & SubComponents = ({
         calcValue,
       }}
     >
-      <div className={`slider__wrapper flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
+      <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
         <Chart value={value} style={{ right: `${calcPercentage(max - value)}%` }} />
         <div className="slider__field" onMouseLeave={() => handleHover(false)} onKeyDown={e => handleKeyDown(e)}>
           <Input.BaseInput

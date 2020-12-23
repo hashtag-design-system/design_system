@@ -1,9 +1,9 @@
 import { AnimateSharedLayout, motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
-import { useAnimateCheckmark, useClassnames, useInputId } from "../../utils/hooks";
+import React, { useEffect, useMemo, useState } from "react";
+import { useAnimateCheckmark, useClassnames, useDisabled, useInputId } from "../../utils/hooks";
 import { Animated, Base } from "../__helpers__";
 import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
-import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
+import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/SelectionInput/Base";
 
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
@@ -14,56 +14,64 @@ const boxVariants = {
   pressed: (isIndeterminate: boolean) => ({ scale: !isIndeterminate ? 0.75 : 1, borderColor: "var(--primary)" }),
 };
 
-export type CheckboxState = SelectionInputState | "indeterminate";
+export const CheckboxStates = [...SelectionInputStates, "indeterminate"] as const;
+export type CheckboxState = typeof CheckboxStates[number];
 
 export type FProps = SelectionInputFProps<CheckboxState>;
 
 const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
-  ({ defaultChecked = false, checked, state = "default", label, groupName, ...props }, ref) => {
+  ({ defaultChecked = false, label, groupName, onChange, onClick, incheck, ...props }, ref) => {
+    const { state = "default" } = props;
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
+    const isDisabled = useDisabled(props) || state.includes("disabled");
     const [classNames, rest] = useClassnames(
-      `checkbox selection-input__box ${state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"} ${
-        state === "focus-visible" ? "focus-visible" : ""
-      }`,
+      `checkbox selection-input__box ${
+        state !== "disabled|checked" && state !== "disabled|unchecked" && !isDisabled ? "shadow-sm" : "disabled"
+      } ${state === "focus-visible" ? "focus-visible" : ""}`,
       props
     );
 
     const [pathLength, opacity] = useAnimateCheckmark();
 
-    const handleChange = () => {
-      if (checked !== undefined) {
-        checked = isChecked;
+    const handleClick = (e?: React.MouseEvent<HTMLLabelElement>) => {
+      if (!state.includes("disabled") && !isDisabled) {
+        setIsChecked(!isChecked);
+        if (onClick && e) onClick(e);
       }
     };
 
-    const handleClick = () => {
-      if (!state.includes("disabled")) {
-        setIsChecked(!isChecked);
+    useEffect(() => {
+      if (incheck) {
+        incheck(isChecked);
       }
-    };
+    }, [incheck, isChecked]);
 
     const isIndeterminate = useMemo(() => state === "indeterminate", [state]);
 
-    const whileTap = !state.includes("disabled") && state !== "checked" ? "pressed" : undefined;
+    const whileTap = !state.includes("disabled") && !isDisabled && state !== "checked" ? "pressed" : undefined;
 
     return (
-      <Base type="checkbox" label={label} id={id} onChange={() => handleChange()} checked={isChecked} ref={ref}>
+      <Base type="checkbox" label={label} id={id} checked={isChecked} ref={ref} className="flex-row-center-center">
         <AnimateSharedLayout>
           <motion.label
             htmlFor={id}
             animate={isChecked || (isIndeterminate && state !== "pressed") ? "checked" : state === "pressed" ? "pressed" : "initial"}
             whileTap={whileTap}
             className={classNames}
+            ischecked={isChecked}
             variants={boxVariants}
             transition={{ duration: 0.15 }}
             custom={isIndeterminate}
             role="checkbox"
-            tabIndex={state.includes("disabled") ? -1 : 0}
+            tabIndex={isDisabled ? -1 : 0}
             ref={ref}
-            onChange={() => handleChange()}
-            onClick={e => handleClick()}
-            aria-checked={isChecked}
+            onClick={e => {
+              e.preventDefault();
+              handleClick(e);
+            }}
+            onKeyDownCapture={e => e.code === "Space" && handleClick()}
+            aria-checked={state === "indeterminate" ? "mixed" : isChecked}
             aria-labelledby={id}
             {...rest}
           >

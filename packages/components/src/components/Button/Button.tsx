@@ -1,5 +1,5 @@
 import React from "react";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useDisabled } from "../../utils/hooks";
 
 // const variants = {
 //   checked: { pathLength: 1 },
@@ -22,6 +22,7 @@ export type FProps = Props & Omit<React.ComponentPropsWithRef<"button">, "type">
 
 const Button: React.FC<FProps> = ({ type = "primary", state = "default", block = false, pill = false, children, ...props }) => {
   let [classNames, rest] = useClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
+  const isDisabled = useDisabled(props, state);
 
   // Animation state
   // const pathLength = useMotionValue(0);
@@ -37,7 +38,7 @@ const Button: React.FC<FProps> = ({ type = "primary", state = "default", block =
   }
   return (
     // <div className="flex">
-    <button className={classNames} {...rest}>
+    <button className={classNames} disabled={isDisabled ? true : false} {...rest}>
       {children}
     </button>
     /* {state === "loading" && (
