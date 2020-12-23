@@ -1,98 +1,93 @@
 import React, { useState } from "react";
-import errors from "../../config/errors";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { InputFProps } from "./index";
-import FloatingLabel from "./__helpers__/FloatingLabel";
-import HelpTextContainer from "./__helpers__/HelpTextContainer";
+import { ComponentProps } from "../__helpers__";
+import { InputSBProps } from "./index";
+import { InputContainer, OuterFieldContainer } from "./__helpers__";
 
-export type FProps = Omit<InputFProps, "type" | "icon" | "ref"> & React.ComponentPropsWithoutRef<"textarea">;
+export type FProps = Omit<InputSBProps, "type" | "prefix" | "suffix"> & Omit<ComponentProps<"textarea">, "value" | "type" | "prefix">;
 
 const Multiline = React.forwardRef<HTMLTextAreaElement, FProps>(
-  ({ placeholder, floatingplaceholder = true, defaultValue, cols = 28, rows = 5, ...props }, ref) => {
-    const {
-      label,
-      // allowClear = false,
-    } = props;
-
+  (
+    {
+      placeholder = "Placeholder",
+      floatingplaceholder = true,
+      defaultValue,
+      state = "default",
+      cols = 28,
+      rows = 5,
+      forwardref,
+      characterLimit,
+      maxLength,
+      allowClear,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
     const id = useInputId(props.id);
-    const [value, setValue] = useState(defaultValue || "");
-    const [isActive, setIsActive] = useState(defaultValue === "");
-    const isDisabled = useDisabled(props);
-    let [classNames, rest] = useClassnames(`input input-multiline`, props, {
-      stateToRemove: { state: props.state },
-    });
-
-    const { onChange, onFocus, onBlur } = props;
+    const [value, setValue] = useState<React.ReactText>(defaultValue || "");
+    const [classNames, rest] = useClassnames("input input-multiline", props, { stateToRemove: { state } });
+    const isDisabled = useDisabled(props, state);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const target = e.target;
-      const text = target.value;
-      setValue(text);
-      setIsActive(true);
+      const newVal = e.target.value;
+
+      if (characterLimit && maxLength && String(newVal).length > maxLength) {
+        return;
+      }
+
+      setValue(newVal);
 
       if (onChange) {
         onChange(e);
       }
     };
 
-    const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      setIsActive(true);
-      if (onFocus) {
-        onFocus(e);
-      }
-    };
-
-    const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      if (e.target.value === "") {
-        setIsActive(false);
-      }
-      if (onBlur) {
-        onBlur(e);
-      }
-    };
-
-    // Check and change (re-validate) Props
-    if (floatingplaceholder && label) {
-      throw new Error(errors.floatingPlaceholderAndLabel);
-    }
-    if (!placeholder) {
-      throw new Error(errors.placeholderOrLabel);
+    // TODO: Replace with <Icon /> component
+    if (allowClear) {
+      // suffix = <>
     }
 
     return (
-      <div className="input__wrapper" style={{ width: props.style?.width }}>
-        <HelpTextContainer value={value} {...props}>
-          <div className="input__wrapper__base">
-            <div className={classNames} style={{ paddingTop: `${label || !floatingplaceholder ? "12px" : "20px"}` }}>
-              <textarea
-                ref={ref}
-                id={id}
-                className={`input ${floatingplaceholder ? "floating" : ""} input-placeholder-font`}
-                placeholder={!floatingplaceholder ? placeholder : undefined}
-                onChange={e => handleChange(e)}
-                onFocus={e => handleFocus(e)}
-                onBlur={e => handleBlur(e)}
-                value={value}
-                // * Enable / disabled the Grammarly extension
-                // data-gramm="false"
-                cols={cols}
-                rows={rows}
-                disabled={isDisabled}
-                aria-disabled={isDisabled}
-                {...rest}
-              />
-            </div>
-            <FloatingLabel
+      <InputContextProvider
+        value={{
+          ...rest,
+          value,
+          id,
+          onChange: handleChange,
+          placeholder,
+          floatingplaceholder,
+          defaultValue,
+          state,
+          characterLimit,
+          maxLength,
+          allowClear,
+        }}
+      >
+        <InputContainer>
+          <OuterFieldContainer>
+            <textarea
               id={id}
-              floatingplaceholder={floatingplaceholder}
-              defaultValue={defaultValue ? true : false}
-              isActive={isActive}
-            >
-              {placeholder}
-            </FloatingLabel>
-          </div>
-        </HelpTextContainer>
-      </div>
+              className={classNames}
+              value={value || ""}
+              placeholder={floatingplaceholder === false && placeholder ? placeholder : undefined}
+              disabled={isDisabled}
+              aria-disabled={isDisabled}
+              aria-label={placeholder}
+              onChange={e => handleChange(e)}
+              ref={ref}
+              data-hasfloatingplaceholder={floatingplaceholder}
+              // * Enable / disabled the Grammarly extension
+              // data-gramm="false"
+              cols={cols}
+              rows={rows}
+              data-testid="input-multiline"
+              {...rest}
+            />
+          </OuterFieldContainer>
+        </InputContainer>
+      </InputContextProvider>
     );
   }
 );

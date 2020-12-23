@@ -1,39 +1,57 @@
-import React, { useEffect, useRef } from "react";
-import keys from "../../config/keys";
+import React, { useEffect, useRef, useState } from "react";
+import { listKeys } from "../../config";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
 import { useClassnames } from "../../utils/hooks";
-import { InputFProps } from "./index";
-import Input from "./Input";
-import LabelContainer from "./__helpers__/LabelContainer";
+import Input, { InputFProps } from "./index";
+import { HelpTextContainer } from "./__helpers__";
 
 export type Props = {
-  digits: number;
+  numberOfDigits?: number;
   error?: boolean;
+  focusOnRender?: boolean;
+  onChange?: (text: string) => void;
 };
 
-export type FProps = Props & Pick<InputFProps, "helptext">;
+export type FProps = Props & Pick<InputFProps, "defaultValue" | "helptext" | "maxLength">;
 
-const DigitSequence: React.FunctionComponent<FProps> = ({ digits = 4, helptext, error, ...props }) => {
-  const initialRef = useRef<HTMLInputElement>(null);
-  const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
-
-  let [classNames, rest] = useClassnames("input-digit-sequence", props);
+const DigitSequence: React.FunctionComponent<FProps> = ({
+  error = false,
+  focusOnRender = true,
+  defaultValue = "",
+  numberOfDigits = String(defaultValue).length || 4,
+  helptext,
+  maxLength,
+  onChange,
+  ...props
+}) => {
+  const [value, setValue] = useState<string[]>([...String(defaultValue)]);
+  const [classNames, rest] = useClassnames("input-digit-sequence", props);
   const state = error ? "error" : "default";
 
-  useEffect(() => {
-    if (initialRef.current) {
-      initialRef.current.focus();
-    }
-  }, []);
+  const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
-    if (e.target.value.length >= 1) {
-      focus(i);
+  const handleChange = (i: number, val: string, curVal: string) => {
+    const newVal: string = val;
+
+    if (newVal.length >= 1) {
+      [...newVal].forEach((letter, index) => {
+        const idx = i + index;
+        const last = idx === numberOfDigits - 1;
+        setValue(prevState => [...prevState, letter]);
+        if (!last && curVal.length >= 1) {
+          focus(idx + 1);
+        } else {
+          blur(idx);
+        }
+      });
+    } else {
+      setValue(prevState => [...prevState.filter((_, index) => index !== i)]);
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, i: number) => {
-    if (e.currentTarget.value.length >= 1) {
-      focus(i);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, i: number) => {
+    if (e.key === "Backspace" && e.currentTarget.value.length === 0) {
+      focus(i - 1);
     }
   };
 
@@ -43,43 +61,52 @@ const DigitSequence: React.FunctionComponent<FProps> = ({ digits = 4, helptext, 
     }
   };
 
+  const blur = (i: number) => {
+    if (inputRefs.current[i]) {
+      inputRefs.current[i]?.blur();
+    }
+  };
+
+  useEffect(() => {
+    if (focusOnRender) {
+      focus(0);
+    }
+  }, [focusOnRender]);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(value.join(""));
+    }
+  }, [value, onChange]);
+
   return (
-    <div className={classNames} {...rest}>
-      <div className="input-digit-sequence__wrapper" style={{ width: "auto" }}>
-        {/* 
+    <div className={classNames} data-testid="input-digit-sequence" {...rest}>
+      <InputContextProvider value={{ state: error ? "error" : "default" }}>
+        <div className="input-digit-sequence__container" style={{ width: "auto" }}>
+          {/* 
             Separated the components, so that no confusion is made in the browser 
-            • 1st component should not have the same ref as the others, because it the first displayed & we set it by default to be focused on componentDidMount
-            • All the other components, up to the LAST one, should have the same onChange and ref attributes
-            • The last component should not have an onChange function, because it does not have a next component (ref) to focus on
+            • First component should not have a `ref` Prop as the others, because it is the first displayed & we set it by default to be focused on useEffect()
+            • All the other components, up to the LAST one, should have the same `onChange` and `ref` attributes
+            • The last component should not have an `onChange` function, because it does not have a next component (ref) to focus on
           */}
-        {[...Array(digits)].map((_, i) =>
-          i === 0 ? (
+          {[...Array(numberOfDigits)].map((_, i) => (
             <Input.Digit
-              ref={initialRef}
-              onChange={e => handleChange(e, i)}
-              onKeyPress={e => handleKeyPress(e, i)}
+              value={value[i]}
+              onChange={e => {
+                // e.preventDefault();
+                handleChange(i, e.target.value, e.currentTarget.value);
+              }}
+              onKeyDown={e => handleKeyDown(e, i)}
+              forwardref={ref => (inputRefs.current[i] = ref)}
               state={state}
-              key={`${keys.digitInput}${i}`}
+              overrideOnChange
+              maxLength={maxLength}
+              key={(listKeys.DIGIT_INPUT, i)}
             />
-          ) : i === digits ? (
-            <Input.Digit ref={ref => (inputRefs.current[i - 1] = ref)} state={state} key={`${keys.digitInput}${i}`} />
-          ) : (
-            <Input.Digit
-              onChange={e => handleChange(e, i)}
-              onKeyPress={e => handleKeyPress(e, i)}
-              ref={ref => (inputRefs.current[i - 1] = ref)}
-              state={state}
-              key={`${keys.digitInput}${i}`}
-            />
-          )
-        )}
-      </div>
-      {helptext && (
-        <LabelContainer className="body-14" withHelpText>
-          {helptext.icon}
-          {helptext.value}
-        </LabelContainer>
-      )}
+          ))}
+        </div>
+        <HelpTextContainer second helptext={helptext} data-testid="input-digit-sequence-help-text" />
+      </InputContextProvider>
     </div>
   );
 };

@@ -1,106 +1,127 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
+import { useClassnames, useDisabled } from "../../utils/hooks";
+import { ACTIONS, reducer, ReducerInitialStateType } from "../../utils/reducers/inputNumber";
 import Button from "../Button";
-import { ReactProps } from "../__helpers__";
-import Input from "./index";
-import HelpTextContainer from "./__helpers__/HelpTextContainer";
+import { ComponentProps } from "../__helpers__";
+import { InputNumberFProps } from "./index";
+import { InputBaseState } from "./Input";
+import { BaseNumber } from "./__helpers__";
+import { AddIcon } from "./__icons__/AddIcon";
+import { SubtractIcon } from "./__icons__/SubtractIcon";
 
-const IncrDcrInputStates = [
-  "default",
-  "focus_visible|left",
-  "focus-visible|right",
+// 11 states in total
+const IncrDcrStates = [
+  "focus-visible|increase",
+  "focus-visible|decrease",
+  "hover",
+  "hover|increase",
+  "hover|decrease",
   "active",
   "active|increase",
   "active|decrease",
-  "disabled",
 ] as const;
-export type IncrDcrInputState = typeof IncrDcrInputStates[number];
+export type IncrDcrState = typeof IncrDcrStates[number] | InputBaseState;
 
-export type FProps = Omit<ReactProps<IncrDcrInputState>["number_input"], "prefix">;
+export const initialState: ReducerInitialStateType = {
+  min: 1,
+  max: 9999,
+  value: 1,
+  defaultValue: 1,
+  isDisabled: false,
+  hasShiftKey: false,
+};
 
-const IncrDcr = React.forwardRef<HTMLInputElement, FProps>(
-  ({ min = 0, max = 1000, count = 0, step = 1, state = "default", ...props }, ref) => {
-    const [value, setValue] = useState<string>(String(count));
+export type FProps = Omit<
+  InputNumberFProps,
+  "state" | "helptext" | "secondhelptext" | "floatingplaceholder" | "label" | "optional" | "prefix" | "suffix"
+> &
+  Pick<ComponentProps<"input", false, IncrDcrState>, "state">;
 
-    // TODO: Replace with <Icon /> components
-
-    const increment = () => {
-      if (!(parseFloat(value) + step > max)) {
-        setValue(value => String(parseFloat(value) + step));
-      }
+const IncrDcr: React.FunctionComponent<FProps> = ({
+  min = 1,
+  max = 9999,
+  step = 1,
+  value: propsValue,
+  defaultValue = min,
+  width = "3rem",
+  overrideOnChange,
+  state = "default",
+  ...props
+}) => {
+  const [classNames, rest] = useClassnames("input-incr-dcr", props);
+  const isDisabled = useDisabled(props, state);
+  const [{ value }, dispatch] = useReducer(reducer, initialState, (): typeof initialState => {
+    return {
+      ...initialState,
+      value: propsValue || defaultValue || min,
+      isDisabled,
+      min,
+      max,
     };
+  });
 
-    const decrement = () => {
-      if (!(parseFloat(value) - step < min)) {
-        setValue(value => String(parseFloat(value) - step));
-      }
-    };
+  const increment = (stepNumber = step) => {
+    dispatch({ type: ACTIONS.INCREMENT, payload: { step: stepNumber } });
+  };
 
-    const { className, onChange, onFocus, onBlur, ...rest } = props;
+  const decrement = (stepNumber = step) => {
+    dispatch({ type: ACTIONS.DECREMENT, payload: { step: stepNumber } });
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const text = e.target.value;
+  const active = state === "active";
+  const leftActive =
+    (parseFloat(value.toString()) > min || state === "active|decrease" || state === "hover|decrease" || active) &&
+    state !== "active|increase" &&
+    !isDisabled;
 
-      if (text.length > String(max).length || state === "disabled" || parseFloat(text) > max || parseFloat(text) < min) {
-        e.preventDefault();
-      } else {
-        setValue(text);
-      }
+  const rightActive =
+    (parseFloat(value.toString()) < max || !value || state === "active|increase" || state === "hover|increase" || active) &&
+    state !== "active|decrease" &&
+    !isDisabled;
 
-      if (onChange) {
-        onChange(e);
-      }
-    };
-
-    return (
-      <HelpTextContainer state={state} {...props}>
-        <div className="input-incr-dcr">
-          <Button
-            type="secondary"
-            className={`input-incr-dcr__icon ${parseFloat(value) > min ? "" : "grey"}`}
-            onClick={() => decrement()}
-          >
-            <svg width="14" height="2" viewBox="0 0 20 2" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1H19" strokeWidth={2} strokeLinecap="round" />
-            </svg>
-          </Button>
-          <Input.BaseField
-            type="number"
-            className={className}
-            value={value}
-            ref={ref}
-            onChange={e => handleChange(e)}
-            onFocus={e => {
-              if (String(value) === String(count)) {
-                setValue("");
-              }
-              if (onFocus) {
-                onFocus(e);
-              }
-            }}
-            onBlur={e => {
-              if (!value) {
-                setValue(String(count));
-              }
-              if (onBlur) {
-                onBlur(e);
-              }
-            }}
-            {...rest}
-          />
-          <Button
-            type="secondary"
-            className={`input-incr-dcr__icon ${parseFloat(value) < max || !value ? "" : "grey"}`}
-            onClick={() => increment()}
-          >
-            <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 10H19M10 19V1" strokeWidth={2} strokeLinecap="round" />
-            </svg>
-          </Button>
-        </div>
-      </HelpTextContainer>
-    );
-  }
-);
+  return (
+    <div className="input-incr-dcr__container">
+      <Button
+        disabled={!leftActive ? true : false}
+        className={`input-incr-dcr__btn ${state === "hover|decrease" ? "hover" : ""} ${
+          state === "focus-visible|decrease" ? "focus-visible" : ""
+        }`}
+        onClick={() => decrement()}
+        data-testid="input-incr-dcr-decrease"
+      >
+        <SubtractIcon />
+      </Button>
+      <InputContextProvider
+        value={{
+          ...rest,
+          value,
+          dispatch,
+          defaultValue,
+          state,
+          min,
+          max,
+          step,
+          className: classNames,
+          width,
+          overrideOnChange,
+        }}
+      >
+        <BaseNumber data-testid="input-incr-dcr" />
+        <Button
+          disabled={!rightActive ? true : false}
+          className={`input-incr-dcr__btn ${state === "hover|increase" ? "hover" : ""} ${
+            state === "focus-visible|increase" ? "focus-visible" : ""
+          }`}
+          onClick={() => increment()}
+          data-testid="input-incr-dcr-increase"
+        >
+          <AddIcon />
+        </Button>
+      </InputContextProvider>
+    </div>
+  );
+};
 
 IncrDcr.displayName = "InputIncrDcr";
 
