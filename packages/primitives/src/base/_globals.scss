@@ -6,3 +6,24 @@
 }
 
 @include generate-flex();
+
+.scrollbar {
+  // http://jsfiddle.net/6KprJ/1/
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-top-width: 3px;
+    border-left-width: 0.5px;
+    background-clip: padding-box;
+    border-radius: 100%;
+    -webkit-border-radius: 5px;
+    background-color: $grey-5;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+}

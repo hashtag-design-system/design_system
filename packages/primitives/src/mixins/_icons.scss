@@ -1,0 +1,13 @@
+@mixin icon-classNames() {
+  .icon {
+    @content;
+  }
+}
+
+@mixin path-classNames() {
+  @include icon-classNames() {
+    path {
+      @content;
+    }
+  }
+}

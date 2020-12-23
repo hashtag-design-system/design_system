@@ -7,16 +7,15 @@
 @import "utils/generate";
 
 // Mixins
-@import "mixins/button";
 @import "mixins/index";
 @import "mixins/typography";
 @import "mixins/at-rules";
+@import "mixins/icons";
 
 // Base
+@import "base/colors";
+@import "./variables";
 @import "base/globals";
 @import "base/shadows";
 @import "base/typography";
-@import "base/colors";
 @import "base/animations";
-
-@import "./variables";
