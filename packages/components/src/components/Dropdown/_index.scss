@@ -1,4 +1,4 @@
-@import "./__helpers__/mixins";
+@import "./mixins";
 
 .dropdown {
   &.disabled {
@@ -70,23 +70,7 @@
     width: max-content;
     max-width: em(220);
 
-    // http://jsfiddle.net/6KprJ/1/
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border: 3.5px solid $grey-1;
-      border-left-width: 0.5px;
-      background-clip: padding-box;
-      border-radius: 100%;
-      -webkit-border-radius: 50px;
-      background-color: $grey-5;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background-color: transparent;
-    }
+    @extend .scrollbar;
   }
 }
 

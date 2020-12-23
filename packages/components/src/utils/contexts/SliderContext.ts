@@ -6,4 +6,4 @@ export type SliderContextType = Pick<SliderFProps, "min" | "max" | "zeroPercenta
   calcPercentage: (number: number) => number;
 };
 
-export const [useSliderContext, SliderContextProvider] = createCtx<SliderContextType>();
+export const [SliderContextProvider, useSliderContext] = createCtx<SliderContextType>();

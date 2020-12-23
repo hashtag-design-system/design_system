@@ -13,7 +13,7 @@
 }
 
 @mixin disabled-state {
-  cursor: default;
+  cursor: not-allowed !important;
 }
 
 @mixin disabled-classNames {

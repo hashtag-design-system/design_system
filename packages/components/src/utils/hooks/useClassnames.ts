@@ -6,7 +6,11 @@ type useClassnamesConfig = {
   stateToRemove?: { defaultState?: string } & ReactProps<string>["input_state_prop"];
 };
 
-export const useClassnames = <T extends AllProps>(defaultClassname: string, props: T, options?: useClassnamesConfig): any[] => {
+export const useClassnames = <T extends AllProps>(
+  defaultClassname: string,
+  props: T,
+  options?: useClassnamesConfig
+): [string, any] => {
   const { className, ...rest } = props;
   let classNames = addClassnames(defaultClassname, props);
   if (options) {
@@ -15,7 +19,7 @@ export const useClassnames = <T extends AllProps>(defaultClassname: string, prop
       const { state, defaultState = "default" } = stateToRemove;
 
       if (state && state !== defaultState) {
-        classNames += state;
+        classNames += ` ${state}`;
       }
     }
   }

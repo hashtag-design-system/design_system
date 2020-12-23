@@ -1,8 +1,7 @@
 import { tuple, tupleNum } from "../utils/type";
 
+export { listKeys } from "./lists";
 
-// TODO: Improve and add more
-export const InputComponentStates = tuple("default", "focus-visible", "hover", "disabled");
 
 export const IconPositions = tuple("left", "right");
 export type IconPosition = typeof IconPositions[number];

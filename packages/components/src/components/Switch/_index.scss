@@ -1,10 +1,8 @@
 .switch {
   gap: 6px;
   padding: rem(4) rem(3);
-  width: auto;
-  min-width: em(48);
+  width: em(48);
   height: em(27);
-  // Inner shadow
   box-shadow: inset 0px 2px 2px -1px rgba(0, 4, 97, 0.2);
   border-radius: 16px;
   border: none;
