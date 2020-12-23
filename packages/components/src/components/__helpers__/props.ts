@@ -61,7 +61,7 @@ const InputAutocompleteTypes = [
 ] as const;
 export type InputAutocompleteType = typeof InputAutocompleteTypes[number];
 
-const InputTypes = ["text", "email", "hidden", "number", "password", "checkbox", "radio", "range", "search", "button", "url"] as const;
+const InputTypes = ["text", "textarea", "email", "hidden", "number", "password", "checkbox", "radio", "range", "search", "button", "url"] as const;
 export type InputType = typeof InputTypes[number];
 
 type BaseInput<S extends string | undefined = undefined, Ref extends boolean = false, T extends React.ElementType = "input"> = {
@@ -101,9 +101,23 @@ export type ReactProps<
 };
 
 // ------------------------------- //
+
 export type SelectionInputProps = {
-  checked?: boolean;
   defaultChecked?: boolean;
   label?: string | SelectionInputLabelType;
   groupName?: string;
+  incheck?: (isChecked: boolean) => void;
 };
+
+export type ComponentProps<
+  T extends React.ElementType<any>,
+  R extends boolean | undefined = undefined,
+  S extends string | undefined = undefined
+> = (R extends false | undefined
+  ? Omit<React.ComponentPropsWithoutRef<T>, "defaultValue">
+  : Omit<React.ComponentPropsWithRef<T>, "defaultValue">) &
+  (S extends undefined
+    ? {}
+    : {
+        state?: S;
+      });

@@ -4,11 +4,6 @@ import { ReactProps } from "./components/__helpers__";
 
 export type IconPropType = React.ReactNode;
 
-export type InputHelpTextType = {
-  value: string;
-  icon?: React.ReactNode;
-};
-
 export interface GenerateIdParams {
   length: number;
   specialCharacters?: string;
@@ -28,9 +23,9 @@ export type AtLeastOneFrom<T> = { [K in keyof T]: Pick<T, K> }[keyof T];
 // https://stackoverflow.com/a/58903847/13142787
 export type ReducerActionType<
   T extends string,
-  P extends {} | undefined,
-  E = boolean | undefined,
-  M = Record<string, unknown> | undefined
+  P extends {} | undefined = undefined,
+  E extends boolean | undefined = undefined,
+  M extends Record<string, unknown> | undefined = undefined
 > = {
   type: T;
 } & (P extends undefined

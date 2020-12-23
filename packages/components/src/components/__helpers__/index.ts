@@ -1,4 +1,5 @@
 export { Animated } from "./Animated/Animated";
-export type { ReactProps, SelectionInputProps } from "./props";
-export { Base } from "./SelectionInput/Base";
+export type { ComponentProps, InputAutocompleteType, ReactProps, SelectionInputProps } from "./props";
+export { Base, SelectionInputStates } from "./SelectionInput/Base";
+export type { SelectionInputFProps, SelectionInputState } from "./SelectionInput/Base";
 export { LabelContainer } from "./SelectionInput/LabelContainer";

@@ -1,25 +1,58 @@
 /* spell-checker: disable */
 // TODO: Remove afterwards removing the <Checkbox /> label Prop
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./App.scss";
+import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
-import Slider from "./components/Slider";
+import { OpenEye } from "./components/Input/__icons__";
+import RadioButton from "./components/RadioButton";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (ref && ref.current) {
+      ref.current.focus();
+    }
+  });
+
   return (
     <div className="App">
-      {/* TODO: Configure the Todo Tree extension */}
+      <Button pill>Button</Button>
       <Checkbox
+        incheck={isChecked => console.log(isChecked)}
         label={{
           value:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Input placeholder="Placeholder" onChange={e => console.log(e.target.value)} />
-      <Slider.Double
+      <RadioButton label={{ value: "Label" }} />
+      <Input
+        label="Label"
+        helptext={{ value: "Help text" }}
+        secondhelptext={{ value: "2nd Help text" }}
+        characterLimit
+        maxLength={30}
+        // state="disabled"
+        placeholder="Placeholder"
+        floatingplaceholder={true}
+        // defaultValue="georgekraxt@gmail.com"
+        // prefix="€"
+        // prefix={<OpenEye />}
+        // suffix="€"
+        // suffix={<OpenEye />}
+        // forwardref={ref}
+      />
+      <Input.Password label="Label" placeholder="Password" />
+      {/* <Input.Multiline label="Label" placeholder="Multiline" onChange={e => console.log(e.target.value)} /> */}
+      <Input.Digit state="error" />
+      <Input.DigitSequence numberOfDigits={6} helptext={{ value: "george", icon: <OpenEye /> }} />
+      <Input.Number state="default" />
+      <Input.IncrDcr state="default" />
+      {/* <Slider.Double
         marks={[
           { value: 0 },
           { value: 10 },
@@ -83,7 +116,7 @@ function App() {
             { value: 10 },
           ],
         }}
-      />
+      /> */}
     </div>
   );
 }

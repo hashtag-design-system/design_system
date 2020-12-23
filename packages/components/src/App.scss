@@ -2,29 +2,29 @@
 @import "styles/css/colors";
 @import "components/__helpers__/index";
 @import "components/Button/index";
-@import "components/Input/index";
 @import "components/Checkbox/index";
 @import "components/RadioButton/index";
 @import "components/Switch/index";
 @import "components/Select/index";
 @import "components/Dropdown/index";
 @import "components/Slider/index";
+@import "components/Input/index";
 
 html,
 body {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
   font-family: "Roboto";
+  box-sizing: border-box;
 }
 
 .App {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   align-items: flex-start;
   gap: em(48);
-  padding: em(32);
+  padding: 25px 50px;
 }
 
 .App > * {
@@ -34,4 +34,21 @@ body {
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.storybook__container {
+  padding: em(16);
+  font-family: "Roboto";
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: em(48);
+}
+
+@include icon-classNames() {
+  stroke: $grey-10;
+  fill: $grey-10;
 }

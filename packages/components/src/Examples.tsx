@@ -6,7 +6,7 @@ import Select from "./components/Select";
 import Slider from "./components/Slider";
 
 const options = [
-  { value: "amsterdam", label: "George Krachtopoulos frff rwf rfw rfwrff r frf f rrf fwrf f ff ffjdkfjjfkdsjfk" },
+  { value: "amsterdam", label: "Amsterdam" },
   { value: "colombia", label: "Colombia" },
   { value: "sweden", label: "Sweden" },
 ];
@@ -38,7 +38,7 @@ const Examples: React.FC = () => {
               {option.label}
             </Dropdown.Item>
           ))}
-          <Dropdown.ItemGroup value="Group name">
+          <Dropdown.ItemGroup title="Group name">
             <Dropdown.Item id="hey">hey</Dropdown.Item>
             <Dropdown.Item id="hey">hey</Dropdown.Item>
           </Dropdown.ItemGroup>

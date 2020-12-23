@@ -43,6 +43,7 @@ export const Checkmark: React.FC<FProps> = ({ width, whileTap, initial = false, 
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
+          animate={custom ? "checked" : undefined}
           variants={checkmarkVariants}
           style={{ pathLength, opacity }}
           custom={custom}

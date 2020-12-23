@@ -14,8 +14,8 @@ export type Props = {
 };
 
 export type FProps = Props &
-  Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown"> &
-  ReactProps<DropdownItemState>["input_state_prop"];
+  ReactProps<DropdownItemState>["input_state_prop"] &
+  Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown">;
 
 const Item: React.FC<FProps> = ({ id, state, leftIcon, rightIcon, children, ...props }) => {
   const [classNames, rest] = useClassnames("dropdown__item body-16 flex-row-flex-start-stretch", props, {
