@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconPropType } from "../../typings";
-import { useClassnames, useInputId } from "../../utils/hooks";
-import { Base, ReactProps } from "../__helpers__";
+import { error, isError } from "../../utils";
+import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
+import { Base } from "../__helpers__";
 import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
 
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
@@ -42,46 +43,53 @@ export type Props = {
 export type FProps = Props & SelectionInputFProps<SwitchState>;
 
 const Switch = React.forwardRef<HTMLLabelElement, FProps>(
-  ({ defaultChecked = false, checked, state = "off", label, groupName, icon, insideText, ...props }, ref) => {
+  ({ defaultChecked = false, label, groupName, icon, insideText, onClick, incheck, ...props }, ref) => {
+    const { state = "off" } = props;
     const id = useInputId(props.id);
+    const isDisabled = useDisabled(props) || state.includes("disabled");
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));
     const [classNames, rest] = useClassnames(
-      `switch selection-input__box flex-row-flex-start-center ${state.includes("disabled") ? "disabled" : ""} ${
+      `switch selection-input__box flex-row-flex-start-center ${state.includes("disabled") || isDisabled ? "disabled" : ""} ${
         state === "focus-visible" ? "focus-visible" : ""
       }`,
       props
     );
 
-    if (icon && insideText) {
-      throw new Error("You can only pass an Icon or a text inside the <Switch /> component");
+    if (isError() && icon && insideText) {
+      error("You can only pass an Icon or a text inside the <Switch /> component");
+      return null;
     }
 
-    const handleChange = () => {
-      if (checked !== undefined) {
-        checked = isOn;
+    const handleClick = (e?: React.MouseEvent<HTMLLabelElement>) => {
+      if (state !== "on" && !state.includes("disabled") && !isDisabled) {
+        setIsOn(!isOn);
+
+        if (onClick && e) {
+          onClick(e);
+        }
       }
     };
 
-    const handleClick = () => {
-      if (state !== "on" && !state.includes("disabled")) {
-        setIsOn(!isOn);
+    useEffect(() => {
+      if (incheck) {
+        incheck(isOn);
       }
-    };
+    }, [incheck, isOn]);
 
     return (
-      <Base type="checkbox" id={id} label={label} checked={isOn} ref={ref} onChange={() => handleChange()}>
+      <Base type="checkbox" id={id} label={label} checked={isOn} ref={ref}>
         <motion.label
           id={id}
           className={classNames}
           role="radio"
-          tabIndex={state.includes("disabled") ? -1 : 0}
+          tabIndex={isDisabled ? -1 : 0}
           initial={boxVariants.initial}
           animate={isOn ? "on" : "initial"}
           variants={boxVariants}
           transition={{ duration: 0.2 }}
           ref={ref}
-          onClick={() => handleClick()}
-          onChange={() => handleChange()}
+          onClick={e => handleClick(e)}
+          onKeyDownCapture={e => e.code === "Space" && handleClick()}
           data-state={state}
           data-ison={isOn}
           aria-checked={isOn}

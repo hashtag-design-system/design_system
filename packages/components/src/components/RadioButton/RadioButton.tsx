@@ -80,6 +80,7 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
               e.preventDefault();
               handleClick();
             }}
+            onKeyDownCapture={e => e.code === "Space" && handleClick()}
             data-state={state}
             aria-checked={isChecked}
             {...rest}

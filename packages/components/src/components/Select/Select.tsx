@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
-import Input, { InputFProps } from "../Input";
+import Input, { InputFProps } from "../PrevInput";
 import { DividerIcon } from "./__helpers__/DividerIcon";
 import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
@@ -28,11 +28,11 @@ const Select: React.FC<FProps> = props => {
     children,
     ...rest
   } = props;
-  let { ref: listBoxRef, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
+  let { ref: optionsBox, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
   const [value, setValue] = useState(defaultValue || "");
   const isDisabled = useDisabled<typeof props>(props);
   let [classNames, restProps] = useClassnames(
-    `dropdown select__wrapper flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`,
+    `dropdown select__container flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`,
     rest
   );
 
@@ -75,11 +75,11 @@ const Select: React.FC<FProps> = props => {
       setIsVisible,
       helptext: helptext ? true : false,
       label: label ? true : false,
-      ref: listBoxRef,
+      ref: optionsBox,
       handleSelect,
       handleClick,
     }),
-    [isVisible, setIsVisible, helptext, label, listBoxRef, handleSelect, handleClick]
+    [isVisible, setIsVisible, helptext, label, optionsBox, handleSelect, handleClick]
   );
 
   // * Alternative approach to `useContext` hook
@@ -96,7 +96,7 @@ const Select: React.FC<FProps> = props => {
           floatingplaceholder={floatingplaceholder === true ? { now: isVisible || String(value).length > 0 } : false}
           helptext={helptext}
           secondhelptext={secondhelptext}
-          state={isVisible && !props.state ? "focus" : isDisabled ? "disabled" : props.state}
+          state={isVisible && (!props.state || props.state === "default") ? "focus" : isDisabled ? "disabled" : props.state}
           value={value}
           label={label}
           prefix={prefix}

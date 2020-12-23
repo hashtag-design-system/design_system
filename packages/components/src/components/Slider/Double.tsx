@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
-import Input from "../Input";
+import Input from "../PrevInput";
 import { SliderFProps } from "./index";
 import { SliderThumbProp } from "./Slider";
 import { Bar } from "./__helpers__/Bar";
@@ -236,11 +236,8 @@ const Double: React.FC<FProps> = ({
         calcValue,
       }}
     >
-      <div className={`slider__wrapper flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
-        <Chart
-          value={value}
-          style={{ right: `${calcPercentage(value.rThumb)}%`, left: `${calcPercentage(value.lThumb)}%` }}
-        />
+      <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
+        <Chart value={value} style={{ right: `${calcPercentage(value.rThumb)}%`, left: `${calcPercentage(value.lThumb)}%` }} />
         <div className="slider__field" onMouseLeave={() => handleHover(false)} onTouchEnd={() => handleHover(false)}>
           <Input.BaseInput
             type="range"
