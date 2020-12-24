@@ -14,8 +14,9 @@ describe("Input <Base />", () => {
     const input = screen.getByTestId("input");
 
     expect(input).toHaveAttribute("id");
-    expect(input).toHaveValue("");
     expect(input.id).toHaveLength(5);
+    expect(input).toHaveAttribute("class");
+    expect(input).toHaveValue("");
     expect(input).toHaveClass("input");
     expect(input).not.toBeDisabled();
     // expect(input).toMatchSnapshot({id: expect.any(String)})

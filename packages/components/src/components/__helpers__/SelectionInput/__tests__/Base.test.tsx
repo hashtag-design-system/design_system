@@ -8,6 +8,7 @@ describe("SelectionInput <Base />", () => {
 
     expect(selectionInput).toBeInTheDocument();
     expect(selectionInput).toHaveAttribute("value", "false");
+    expect(selectionInput.getAttribute("aria-labelledby")).toHaveLength(5);
   });
   test("defaultChecked={true}", () => {
     render(<Base defaultChecked />);

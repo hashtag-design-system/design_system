@@ -16,6 +16,7 @@
   text-align: center;
   height: em(36);
   appearance: none;
+  gap: em(8);
   transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
 
   @include focus-visible-classNames() {

@@ -7,6 +7,7 @@ import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
 import { OpenEye } from "./components/Input/__icons__";
 import RadioButton from "./components/RadioButton";
+import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -29,7 +30,8 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <RadioButton label={{ value: "Label", position: "top" }} />
+      <Switch state="disabled|off" />
+      <RadioButton state="disabled|unchecked" label={{ value: "Label", position: "top" }} />
       <Input
         label="Label"
         helptext={{ value: "Help text" }}

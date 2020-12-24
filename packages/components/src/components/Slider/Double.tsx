@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
-import Input from "../PrevInput";
+import Input from "../Input";
 import { SliderFProps } from "./index";
 import { SliderThumbProp } from "./Slider";
 import { Bar } from "./__helpers__/Bar";
@@ -242,53 +243,61 @@ const Double: React.FC<FProps> = ({
       <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
         <Chart value={value} style={{ right: `${calcPercentage(value.rThumb)}%`, left: `${calcPercentage(value.lThumb)}%` }} />
         <div className="slider__field" onMouseLeave={() => handleHover(false)} onTouchEnd={() => handleHover(false)}>
-          <Input.BaseInput
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value.lThumb}
-            className={classNames}
-            onChange={e => handleChange(e)}
-            ref={ref}
-            tabIndex={-1}
-            role="slider"
-            aria-valuemin={min}
-            aria-valuemax={max}
-            aria-valuenow={value.lThumb}
-            disabled={isDisabled}
-            name="lThumb"
-            onMouseEnter={e => handleHover(true, e)}
-            onTouchMove={e => handleHover(true, e)}
-            onMouseLeave={e => handleHover(false, e)}
-            onTouchEnd={e => handleHover(false, e)}
-            onKeyDown={e => handleKeyDown(e)}
-            {...rest}
-          />
+          <InputContextProvider
+            value={{
+              ...rest,
+              type: "range",
+              min,
+              max,
+              step,
+              value: value.lThumb,
+              className: classNames,
+              onChange: e => handleChange(e),
+              forwardref: ref,
+              tabIndex: -1,
+              role: "slider",
+              "aria-valuemin": min,
+              "aria-valuemax": max,
+              "aria-valuenow": value.lThumb,
+              disabled: isDisabled,
+              name: "lThumb",
+              onMouseEnter: e => handleHover(true, e),
+              onTouchMove: e => handleHover(true, e),
+              onMouseLeave: e => handleHover(false, e),
+              onTouchEnd: e => handleHover(false, e),
+              onKeyDown: e => handleKeyDown(e),
+            }}
+          >
+            <Input.Base />
+          </InputContextProvider>
           <Bar ref={progressRef} className="double" />
-          <Input.BaseInput
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value.rThumb}
-            className={classNames}
-            onChange={e => handleChange(e)}
-            ref={ref}
-            tabIndex={-1}
-            role="slider"
-            name="rThumb"
-            aria-valuemin={min}
-            aria-valuemax={max}
-            aria-valuenow={value.rThumb}
-            disabled={isDisabled}
-            onMouseEnter={e => handleHover(true, e)}
-            onTouchMove={e => handleHover(true, e)}
-            onMouseLeave={e => handleHover(false, e)}
-            onTouchEnd={e => handleHover(false, e)}
-            onKeyDown={e => handleKeyDown(e)}
-            {...rest}
-          />
+          <InputContextProvider
+            value={{
+              ...rest,
+              type: "range",
+              min,
+              max,
+              step,
+              value: value.rThumb,
+              className: classNames,
+              onChange: e => handleChange(e),
+              forwardref: ref,
+              tabIndex: -1,
+              role: "slider",
+              name: "rThumb",
+              "aria-valuemin": min,
+              "aria-valuemax": max,
+              "aria-valuenow": value.rThumb,
+              disabled: isDisabled,
+              onMouseEnter: e => handleHover(true, e),
+              onTouchMove: e => handleHover(true, e),
+              onMouseLeave: e => handleHover(false, e),
+              onTouchEnd: e => handleHover(false, e),
+              onKeyDown: e => handleKeyDown(e),
+            }}
+          >
+            <Input.Base/>
+          </InputContextProvider>
           <Thumb
             value={value.lThumb}
             onHover={onHover.lThumb}

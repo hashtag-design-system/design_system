@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { IconPropType } from "../../typings";
-import { error, isError } from "../../utils";
+import { error } from "../../utils";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
@@ -36,7 +36,7 @@ export type SwitchElementsType = {
 };
 
 export type Props = {
-  icon?: IconPropType & SwitchElementsType;
+  icon?: { component: IconPropType } & SwitchElementsType;
   insideText?: { value: string } & SwitchElementsType;
 };
 
@@ -49,22 +49,17 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
     const isDisabled = useDisabled(props) || state.includes("disabled");
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));
     const [classNames, rest] = useClassnames(
-      `switch selection-input__box flex-row-flex-start-center ${state.includes("disabled") || isDisabled ? "disabled" : ""} ${
+      `switch selection-input__box flex-row-flex-start-center ${isDisabled ? "disabled" : ""} ${
         state === "focus-visible" ? "focus-visible" : ""
       }`,
       props
     );
 
-    if (isError() && icon && insideText) {
-      error("You can only pass an Icon or a text inside the <Switch /> component");
-      return null;
-    }
-
-    const handleClick = (e?: React.MouseEvent<HTMLLabelElement>) => {
-      if (state !== "on" && !state.includes("disabled") && !isDisabled) {
+    const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+      if (state !== "on" && !isDisabled) {
         setIsOn(!isOn);
 
-        if (onClick && e) {
+        if (onClick) {
           onClick(e);
         }
       }
@@ -76,12 +71,17 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
       }
     }, [incheck, isOn]);
 
+    if (icon && insideText) {
+      error("You can only pass an Icon or a text inside the <Switch /> component");
+      return null;
+    }
+
     return (
       <Base type="checkbox" id={id} label={label} checked={isOn} ref={ref}>
         <motion.label
-          id={id}
+          htmlFor={id}
           className={classNames}
-          role="radio"
+          role="checkbox"
           tabIndex={isDisabled ? -1 : 0}
           initial={boxVariants.initial}
           animate={isOn ? "on" : "initial"}
@@ -89,7 +89,7 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
           transition={{ duration: 0.2 }}
           ref={ref}
           onClick={e => handleClick(e)}
-          onKeyDownCapture={e => e.code === "Space" && handleClick()}
+          onKeyDownCapture={e => e.code === "Space" && handleClick(e as any)}
           data-state={state}
           data-ison={isOn}
           aria-checked={isOn}
@@ -101,11 +101,23 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
             layout
             transition={insideText && insideText.value.length >= 5 ? longSpring : spring}
           />
-          {insideText && (
-            <motion.span className="switch__span body-14" data-position={insideText.position ? insideText.position : undefined}>
+          {insideText ? (
+            <span
+              className="switch__span body-14"
+              data-testid="switch-inside-text"
+              data-position={insideText.position ? insideText.position : undefined}
+            >
               {insideText.value}
-            </motion.span>
-          )}
+            </span>
+          ) : icon ? (
+            <span
+              className="switch__span body-14"
+              data-testid="switch-inside-icon"
+              data-position={icon.position ? icon.position : undefined}
+            >
+              {icon.component}
+            </span>
+          ) : null}
         </motion.label>
       </Base>
     );

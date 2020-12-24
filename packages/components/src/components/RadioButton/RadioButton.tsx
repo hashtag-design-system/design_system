@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
-import { useClassnames, useInputId } from "../../utils/hooks";
+import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
@@ -29,10 +29,9 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
     // * It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
     // * that the `state.includes("checked")` would
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
+    const isDisabled = useDisabled(props, state) || state.includes("disabled");
     const [classNames, rest] = useClassnames(
-      `radio-button selection-input__box ${
-        state !== "disabled|checked" && state !== "disabled|unchecked" ? "shadow-sm" : "disabled"
-      } ${state === "focus-visible" ? "focus-visible" : ""}`,
+      `radio-button selection-input__box ${!isDisabled ? "shadow-sm" : "disabled"} ${state === "focus-visible" ? state : ""}`,
       props
     );
 
@@ -43,12 +42,12 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
     };
 
     const handleClick = () => {
-      if (state !== "checked" && !state.includes("disabled")) {
+      if (state !== "checked" && !isDisabled) {
         setIsChecked(!isChecked);
       }
     };
 
-    const whileTap = !state.includes("disabled") && state !== "checked" ? "pressed" : undefined;
+    const whileTap = !isDisabled && state !== "checked" ? "pressed" : undefined;
 
     return (
       <Base
@@ -57,15 +56,16 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
         label={label}
         checked={isChecked}
         ref={ref}
+        groupName={groupName}
         onChange={() => handleChange()}
         onClick={() => handleClick()}
       >
         <AnimatePresence>
           <motion.label
-            id={id}
+            htmlFor={id}
             className={classNames}
             role="radio"
-            tabIndex={state.includes("disabled") ? -1 : 0}
+            tabIndex={isDisabled ? -1 : 0}
             // * It is a bug if we only check for wether the input `isChecked`
             // * Because it will have the check state if user clicks, while `state === "pressed"`
             // * The same applies to the `whileTap` property

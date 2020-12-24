@@ -79,7 +79,6 @@ const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
             }}
             onKeyDownCapture={e => e.code === "Space" && handleClick()}
             aria-checked={state === "indeterminate" ? "mixed" : isChecked}
-            aria-labelledby={id}
             data-testid="checkbox"
             {...rest}
           >

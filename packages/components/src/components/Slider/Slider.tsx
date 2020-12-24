@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue } from "../../utils";
+import { InputContextProvider } from "../../utils/contexts/InputContext";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
-import Input from "../PrevInput";
+import Input from "../Input";
 import { ComponentProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar } from "./__helpers__/Bar";
@@ -234,29 +235,32 @@ const Slider: React.FC<FProps> & SubComponents = ({
       <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
         <Chart value={value} style={{ right: `${calcPercentage(max - value)}%` }} />
         <div className="slider__field" onMouseLeave={() => handleHover(false)} onKeyDown={e => handleKeyDown(e)}>
-          <Input.BaseInput
-            type="range"
-            min={min}
-            max={max}
-            step={sliderStep}
-            value={value}
-            className={classNames}
-            onChange={e => handleChange(e)}
-            ref={ref}
-            tabIndex={-1}
-            role="slider"
-            aria-valuemin={min}
-            aria-valuemax={max}
-            aria-valuenow={value}
-            disabled={isDisabled}
-            onMouseOver={() => handleHover(true)}
-            onMouseOut={() => handleHover(false)}
-            onTouchMove={() => handleHover(true)}
-            onTouchEnd={() => handleHover(false)}
-            {...rest}
+          <InputContextProvider
+            value={{
+              ...rest,
+              type: "range",
+              min,
+              max,
+              step: sliderStep,
+              value,
+              className: classNames,
+              onChange: e => handleChange(e),
+              forwardref: ref,
+              tabIndex: -1,
+              role: "slider",
+              "aria-valuemin": min,
+              "aria-valuemax": max,
+              "aria-valuenow": value,
+              disabled: isDisabled,
+              onMouseOver: () => handleHover(true),
+              onMouseOut: () => handleHover(false),
+              onTouchMove: () => handleHover(true),
+              onTouchEnd: () => handleHover(false),
+            }}
           >
+            <Input.Base />
             <Bar ref={progressRef} />
-          </Input.BaseInput>
+          </InputContextProvider>
           <Thumb value={value} onHover={onHover} size={size} thumb={thumb} focusVisible={state === "focus-visible"} />
         </div>
         <Marks />

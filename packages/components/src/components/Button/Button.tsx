@@ -6,7 +6,7 @@ import { useClassnames, useDisabled } from "../../utils/hooks";
 //   initial: { pathLength: 0 },
 // };
 
-const ButtonTypes = ["primary", "secondary", "danger"] as const;
+export const ButtonTypes = ["primary", "secondary", "danger"] as const;
 export type ButtonType = typeof ButtonTypes[number];
 const ButtonStates = ["default", "disabled", "focus-visible", "hover"] as const;
 export type ButtonState = typeof ButtonStates[number];
@@ -21,24 +21,18 @@ export type Props = {
 export type FProps = Props & Omit<React.ComponentPropsWithRef<"button">, "type">;
 
 const Button: React.FC<FProps> = ({ type = "primary", state = "default", block = false, pill = false, children, ...props }) => {
-  let [classNames, rest] = useClassnames(`btn btn-${type} btn-default-font shadow__form-2`, props);
+  let [classNames, rest] = useClassnames(
+    `btn btn-${type} ${block ? "block" : ""} ${pill ? "pill" : ""} btn-default-font shadow__form-2`,
+    props,
+    { stateToRemove: { state } }
+  );
   const isDisabled = useDisabled(props, state);
 
   // Animation state
   // const pathLength = useMotionValue(0);
 
-  if (block) {
-    classNames += " block";
-  }
-  if (pill) {
-    classNames += " pill";
-  }
-  if (state !== "default") {
-    classNames += ` ${state}`;
-  }
   return (
-    // <div className="flex">
-    <button className={classNames} disabled={isDisabled ? true : false} {...rest}>
+    <button className={classNames} disabled={isDisabled} aria-disabled={isDisabled} data-testid="btn" {...rest}>
       {children}
     </button>
     /* {state === "loading" && (

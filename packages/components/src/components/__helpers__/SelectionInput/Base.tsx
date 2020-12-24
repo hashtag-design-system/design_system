@@ -59,6 +59,7 @@ export const Base: React.FC<FProps> = ({
           onChange={e => onChange && onChange(e)}
           name={groupName}
           disabled={state.includes("disabled")}
+          aria-labelledby={id}
           data-testid="selection-input-base"
           {...rest}
         />

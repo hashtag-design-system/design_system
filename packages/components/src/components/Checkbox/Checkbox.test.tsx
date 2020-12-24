@@ -15,13 +15,12 @@ describe("<Checkbox />", () => {
     expect(checkbox).toHaveAttribute("aria-checked", "false");
     expect(checkbox).toHaveAttribute("tabindex", "0");
     expect(checkbox.getAttribute("for")).toHaveLength(5);
-    expect(checkbox.getAttribute("aria-labelledby")).toHaveLength(5);
     expect(checkbox.getAttribute("ischecked")).toBeFalsy();
     expect(checkbox.onclick).toBeDefined();
     expect(checkbox.children).toHaveLength(1);
     expect(screen.getByTestId("animated-checkmark")).toBeVisible();
   });
-  test("onClick functionality", () => {
+  test("onClick functionality", async () => {
     render(<Checkbox />);
     const checkbox = screen.getByTestId("checkbox");
     const selectionInput = screen.getByTestId("selection-input-base");
@@ -68,7 +67,15 @@ describe("<Checkbox />", () => {
     const selectionInput = screen.getByTestId("selection-input-label");
 
     expect(selectionInput).toBeVisible();
+    
     expect(selectionInput).toHaveTextContent("Label");
+  });
+  test('state="indeterminate"', () => {
+    render(<Checkbox state="indeterminate" />);
+    const checkbox = screen.getByTestId("checkbox");
+
+    expect(checkbox.children).toHaveLength(1);
+    expect(checkbox).toHaveAttribute("aria-checked", "mixed");
   });
   test("disabled state", () => {
     const { rerender } = render(<Checkbox state="disabled|checked" />);
