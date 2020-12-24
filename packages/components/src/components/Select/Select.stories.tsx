@@ -39,7 +39,7 @@ const Template: Story<SelectFProps & DropdownOptionsBoxFProps & { options: typeo
   optionsBoxDisplayBlock,
   ...args
 }) => (
-  <Select placeholder="hey" floatingplaceholder={floatingplaceholder} {...args} onSelect={(_, key) => console.log(key)}>
+  <Select placeholder="hey" floatingplaceholder={floatingplaceholder} {...args}>
     <Dropdown.OptionsBox maxHeight={maxHeight} className={optionsBoxDisplayBlock ? "block" : ""}>
       {options.map((option, i) => (
         <Dropdown.Item key={i} id={option.value}>

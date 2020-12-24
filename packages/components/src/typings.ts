@@ -1,6 +1,6 @@
 import { HTMLMotionProps } from "framer-motion";
 import React from "react";
-import { ReactProps } from "./components/__helpers__";
+import { ComponentProps } from "./components/__helpers__";
 
 export type IconPropType = React.ReactNode;
 
@@ -15,7 +15,7 @@ export interface GenerateIdParams {
   underscore?: boolean;
 }
 
-export type AllProps = React.ComponentPropsWithoutRef<any> | ReactProps<string>["base_input"] | HTMLMotionProps<any>;
+export type AllProps = React.ComponentPropsWithoutRef<any> | ComponentProps<"input", true ,string> | HTMLMotionProps<any>;
 
 export type AtLeastOneFrom<T> = { [K in keyof T]: Pick<T, K> }[keyof T];
 

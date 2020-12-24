@@ -1,9 +1,9 @@
 import React from "react";
 import { InputFProps } from "../index";
-import { ReactProps } from "../../__helpers__";
+import { ComponentProps } from "../../__helpers__";
 import LabelContainer from "./LabelContainer";
 
-export type FProps = Omit<InputFProps, "state"> & ReactProps<string>["input_state_prop"];
+export type FProps = Omit<InputFProps, "state"> & Pick<ComponentProps<"div", false, string>, "state">
 
 const HelpTextContainer: React.FC<FProps> = ({
   label,

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { IconPropType } from "../../typings";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames } from "../../utils/hooks";
-import { ReactProps } from "../__helpers__";
+import { ComponentProps } from "../__helpers__";
 
 const DropdownItemStates = ["default", "hover"] as const;
 export type DropdownItemState = typeof DropdownItemStates[number];
@@ -14,7 +14,7 @@ export type Props = {
 };
 
 export type FProps = Props &
-  ReactProps<DropdownItemState>["input_state_prop"] &
+  Pick<ComponentProps<"li", false, DropdownItemState>, "state"> &
   Omit<React.ComponentPropsWithoutRef<"li">, "onClick" | "onKeyDown">;
 
 const Item: React.FC<FProps> = ({ id, state, leftIcon, rightIcon, children, ...props }) => {

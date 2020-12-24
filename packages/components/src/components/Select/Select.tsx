@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import DropdownContext from "../../utils/contexts/DropdownContext";
 import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
-import Input, { InputFProps } from "../PrevInput";
+import Input, { InputFProps } from "../Input";
 import { DividerIcon } from "./__helpers__/DividerIcon";
 import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
 
@@ -18,10 +18,10 @@ const Select: React.FC<FProps> = props => {
     label,
     placeholder,
     prefix,
-    defaultValue,
     defaultOpen = false,
     floatingplaceholder = false,
-    innerRef,
+    defaultValue,
+    forwardref,
     onClick,
     onSelect,
     style,
@@ -38,7 +38,7 @@ const Select: React.FC<FProps> = props => {
 
   const handleSelect = useCallback(
     (e: React.MouseEvent<HTMLLIElement>, key: string, children?: string) => {
-      if (onSelect) onSelect(e, key);
+      // if (onSelect) onSelect(e, key);
       setIsVisible(false);
       if (children) {
         setValue(children);
@@ -89,7 +89,7 @@ const Select: React.FC<FProps> = props => {
     <DropdownContext.Provider value={providerValue}>
       <div className={classNames} style={{ ...style, width: newWidth }} {...restProps}>
         <Input
-          icon={<DownArrowIcon />}
+          suffix={<DownArrowIcon />}
           width={newWidth}
           className={isVisible || props.state === "focus" ? undefined : "select"}
           placeholder={placeholder}
@@ -100,7 +100,7 @@ const Select: React.FC<FProps> = props => {
           value={value}
           label={label}
           prefix={prefix}
-          ref={() => innerRef}
+          ref={() => forwardref}
           style={style}
           onClick={e => {
             handleClick(e);

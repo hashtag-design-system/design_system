@@ -7,11 +7,11 @@ import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/Selec
 
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
-    backgroundColor: !isIndeterminate ? "var(--primary)" : undefined,
+    backgroundColor: !isIndeterminate ? "var(--primary)" : "",
     borderColor: "var(--primary)",
   }),
   initial: { backgroundColor: "var(--grey-1)", borderColor: "var(--grey-5)" },
-  pressed: (isIndeterminate: boolean) => ({ scale: !isIndeterminate ? 0.75 : 1, borderColor: "var(--primary)" }),
+  pressed: (isIndeterminate: boolean) => ({ scale: !isIndeterminate ? 0.8 : 1, borderColor: "var(--primary)" }),
 };
 
 export const CheckboxStates = [...SelectionInputStates, "indeterminate"] as const;
@@ -20,15 +20,14 @@ export type CheckboxState = typeof CheckboxStates[number];
 export type FProps = SelectionInputFProps<CheckboxState>;
 
 const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
-  ({ defaultChecked = false, label, groupName, onChange, onClick, incheck, ...props }, ref) => {
-    const { state = "default" } = props;
+  ({ defaultChecked = false, label, groupName, state = "default", onChange, onClick, incheck, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
-    const isDisabled = useDisabled(props) || state.includes("disabled");
+    const isDisabled = useDisabled(props, state) || state.includes("disabled");
     const [classNames, rest] = useClassnames(
       `checkbox selection-input__box ${
         state !== "disabled|checked" && state !== "disabled|unchecked" && !isDisabled ? "shadow-sm" : "disabled"
-      } ${state === "focus-visible" ? "focus-visible" : ""}`,
+      } ${state === "focus-visible" ? state : ""}`,
       props
     );
 
@@ -52,14 +51,22 @@ const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
     const whileTap = !state.includes("disabled") && !isDisabled && state !== "checked" ? "pressed" : undefined;
 
     return (
-      <Base type="checkbox" label={label} id={id} checked={isChecked} ref={ref} className="flex-row-center-center">
+      <Base
+        type="checkbox"
+        label={label}
+        id={id}
+        checked={isChecked}
+        ref={ref}
+        className="flex-row-center-center"
+        groupName={groupName}
+      >
         <AnimateSharedLayout>
           <motion.label
             htmlFor={id}
             animate={isChecked || (isIndeterminate && state !== "pressed") ? "checked" : state === "pressed" ? "pressed" : "initial"}
             whileTap={whileTap}
             className={classNames}
-            ischecked={isChecked}
+            ischecked={isChecked ? "true" : "false"}
             variants={boxVariants}
             transition={{ duration: 0.15 }}
             custom={isIndeterminate}
@@ -73,9 +80,10 @@ const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
             onKeyDownCapture={e => e.code === "Space" && handleClick()}
             aria-checked={state === "indeterminate" ? "mixed" : isChecked}
             aria-labelledby={id}
+            data-testid="checkbox"
             {...rest}
           >
-            <Animated.Checkmark width={14} whileTap={whileTap} initial={false} custom={isChecked}>
+            <Animated.Checkmark size={14} whileTap={whileTap} initial={false} custom={isChecked}>
               {isIndeterminate && (
                 <motion.path
                   d="M1.75 7.583h10.5"
@@ -87,6 +95,7 @@ const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
                   animate={checkmarkVariants.checked}
                   style={{ pathLength, opacity }}
                   transition={{ duration: 0.2 }}
+                  data-testid="animated-checkmark-children-prop"
                 />
               )}
             </Animated.Checkmark>

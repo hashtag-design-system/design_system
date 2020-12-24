@@ -16,6 +16,7 @@
   }
 
   &__container {
+    @extend .flex-row-center-center;
     width: fit-content;
     gap: 12px;
   }
@@ -30,11 +31,11 @@
   }
 
   &__box {
-    align-self: center !important;
-    width: 24px;
-    height: 24px;
+    align-self: center;
+    width: em(24);
+    height: em(24);
     background-color: $grey-1;
-    border: 2px solid;
+    border: $input-border-width * 2 solid;
     box-sizing: border-box;
     outline: none;
     cursor: pointer;

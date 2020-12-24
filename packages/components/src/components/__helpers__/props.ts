@@ -88,18 +88,6 @@ type NumberInput<S extends string | undefined = undefined, Ref extends boolean =
 
 type InputStateObjType<S extends string | undefined> = S extends undefined ? {} : { state?: S };
 
-export type ReactProps<
-  State extends string | undefined = undefined,
-  HasRef extends boolean = false,
-  ElementType extends React.ElementType = "input"
-> = {
-  input: Input<State, HasRef, ElementType>;
-  base_input: BaseInput<State, HasRef, ElementType>;
-  number_input: NumberInput<State, HasRef>;
-  inner_ref: { innerRef?: React.ComponentPropsWithRef<ElementType>["ref"] };
-  input_state_prop: InputStateObjType<State>;
-};
-
 // ------------------------------- //
 
 export type SelectionInputProps = {

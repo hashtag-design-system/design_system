@@ -209,6 +209,7 @@
     border-radius: calc(#{$input-border-radius} / 3);
     background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
     margin-left: em(6);
+    align-self: flex-end;
     opacity: 0;
     @include transition-3s("ease-out");
 

@@ -3,7 +3,7 @@ import errors from "../../../config/errors";
 import { IconPropType } from "../../../typings";
 import { error, isError } from "../../../utils";
 import { useInputId } from "../../../utils/hooks";
-import { ReactProps } from "../../__helpers__";
+import { ComponentProps } from "../../__helpers__";
 import BaseInput from "./BaseInput";
 import FloatingLabel from "./FloatingLabel";
 
@@ -19,7 +19,7 @@ export type Props = {
   prefix?: string;
 };
 
-export type FProps = Props & ReactProps<InputState>["base_input"];
+export type FProps = Props & ComponentProps<"input", false, InputState>;
 
 const FieldContainer = React.forwardRef<HTMLInputElement, FProps>(
   (
@@ -30,8 +30,6 @@ const FieldContainer = React.forwardRef<HTMLInputElement, FProps>(
       label,
       value,
       className,
-      allowTyping: typing = true,
-      defaultValue,
       icon,
       allowclear = false,
       children,
@@ -103,8 +101,6 @@ const FieldContainer = React.forwardRef<HTMLInputElement, FProps>(
           type={type}
           label={label}
           value={value}
-          allowTyping={typing}
-          defaultValue={defaultValue}
           icon={icon}
           allowclear={allowclear}
           prefix={prefix}
@@ -123,7 +119,7 @@ const FieldContainer = React.forwardRef<HTMLInputElement, FProps>(
         <FloatingLabel
           id={id}
           floatingplaceholder={floatingplaceholder}
-          defaultValue={defaultValue ? true : false}
+          defaultValue={true}
           isActive={isActive || prefix !== undefined || state === "focus"}
         >
           {placeholder}

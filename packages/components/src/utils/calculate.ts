@@ -9,7 +9,7 @@ export const calculatePercentage = (number: number, min: number, max: number, op
   if (!options) {
     return percentage;
   }
-  const { returnRounded } = options;
+  const { returnRounded = true } = options;
   if (returnRounded) {
     return round(percentage);
   } else {

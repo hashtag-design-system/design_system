@@ -16,8 +16,8 @@ type ThumbNumberStateType = { lThumb: number; rThumb: number };
 export type ThumbStringLiteralType = "lThumb" | "rThumb";
 
 export type Props = {
-  lThumb?: SliderThumbProp;
-  rThumb?: SliderThumbProp;
+  lThumb: SliderThumbProp;
+  rThumb: SliderThumbProp;
 };
 
 export type FProps = Props & Omit<SliderFProps, "lockOnMarks" | "thumb">;
@@ -25,11 +25,11 @@ export type FProps = Props & Omit<SliderFProps, "lockOnMarks" | "thumb">;
 const DEFAULT_SIZE = 0.875;
 
 const Double: React.FC<FProps> = ({
-  min = 0,
-  max = 100,
-  rThumb = { defaultValue: max / 4, state: "default" },
-  lThumb = { defaultValue: max / 4, state: "default" },
-  step = 1,
+  min: propsMin = 0,
+  max: propsMax = 100,
+  step: propsStep = 1,
+  rThumb,
+  lThumb,
   marks,
   zeroPercentageOnEdgeMarks = false,
   onChange,
@@ -37,6 +37,9 @@ const Double: React.FC<FProps> = ({
   ref,
   ...props
 }) => {
+  const min = parseFloat(propsMin.toString());
+  const max = parseFloat(propsMax.toString());
+  const step = parseFloat(propsStep.toString());
   const { defaultValue: lThumbDefaultValue = max / 4, state: lThumbState = "default" } = lThumb;
   const { defaultValue: rThumbDefaultValue = max / 4, state: rThumbState = "default" } = rThumb;
 

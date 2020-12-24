@@ -83,6 +83,7 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
             onKeyDownCapture={e => e.code === "Space" && handleClick()}
             data-state={state}
             aria-checked={isChecked}
+            data-testid="radio-btn"
             {...rest}
           />
         </AnimatePresence>

@@ -14,13 +14,13 @@ type FProps = Props & Required<Pick<SliderFProps, "thumb">> & Pick<SliderFProps,
 export const Thumb: React.FunctionComponent<FProps> = ({ onHover, size, thumb, value, focusVisible, className }) => {
   const { formatRegExp } = thumb;
   const { max, calcPercentage } = useSliderContext();
-  const newVal = className?.includes("right") && max !== undefined ? max - value : value;
+  const newVal = className?.includes("right") && max !== undefined ? parseFloat(max.toString()) - value : value;
 
   return (
     <div
       className={`slider__thumb ${className} ${focusVisible ? "focus-visible" : ""} ${onHover ? "hover" : ""}`}
       style={{
-        [className|| "left"]: `${calcPercentage(value)}%`,
+        [className || "left"]: `${calcPercentage(value)}%`,
         width: `${size}em`,
         height: `${size}em`,
       }}

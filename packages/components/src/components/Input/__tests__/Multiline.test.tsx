@@ -68,7 +68,7 @@ describe("<Input.Multiline />", () => {
   //   userEvent.type(textarea, newVal);
 
   //   expect(textarea).toHaveValue("");
-  //   // The value will not change, but the function `onChange` will be called each time
+  // The value will not change, but the function `onChange` will be called each time
   //   expect(onChange).toHaveBeenCalledTimes(newVal.length);
   // });
   describe("disabled", () => {

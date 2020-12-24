@@ -31,12 +31,6 @@ describe("Input <Base />", () => {
     expect(input.getAttribute("placeholder")).toBe("Placeholder");
     expect(input.getAttribute("data-hasfloatingplaceholder")).toBe("false");
   });
-  test("custom className", async () => {
-    inputCustomRender(<Base />, { providerProps: { className: "custom-className" } });
-    const input = screen.getByTestId("input");
-
-    expect(input).toHaveClass("custom-className");
-  });
   test.each(InputStates)("state", state => {
     if (state !== "default") {
       inputCustomRender(<Base />, { providerProps: { state } });
@@ -87,30 +81,5 @@ describe("Input <Base />", () => {
     userEvent.type(input, "Ab");
 
     expect(input).toHaveValue("A");
-  });
-
-  describe("disabled", () => {
-    test('state="disabled"', () => {
-      inputCustomRender(<Base />, { providerProps: { state: "disabled" } });
-      const input = screen.getByTestId("input");
-
-      expect(input).toHaveClass("disabled");
-      expect(input).toBeDisabled();
-      expect(input.getAttribute("aria-disabled")).toBeTruthy();
-    });
-    test('aria-disabled="true"', () => {
-      inputCustomRender(<Base />, { providerProps: { "aria-disabled": true } });
-      const input = screen.getByTestId("input");
-
-      expect(input).toBeDisabled();
-      expect(input.getAttribute("aria-disabled")).toBeTruthy();
-    });
-    test("disabled={true}", () => {
-      inputCustomRender(<Base />, { providerProps: { disabled: true } });
-      const input = screen.getByTestId("input");
-
-      expect(input).toBeDisabled();
-      expect(input.getAttribute("aria-disabled")).toBeTruthy();
-    });
   });
 });

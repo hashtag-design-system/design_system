@@ -1,14 +1,8 @@
 import React from "react";
-import { ReactProps } from "../__helpers__";
-import Digit from "./Digit";
-import DigitSequence from "./DigitSequence";
-import IncrDcr from "./IncrDcr";
+import { ComponentProps } from "../__helpers__";
 import { InputBaseFProps } from "./index";
-import Multiline from "./Multiline";
-import Number from "./Number";
-import Password from "./Password";
-import FieldContainer from "./__helpers__/FieldContainer";
 import BaseInput from "./__helpers__/BaseInput";
+import FieldContainer from "./__helpers__/FieldContainer";
 import HelpTextContainer from "./__helpers__/HelpTextContainer";
 
 // React allows custom Props to be passed only when they are spelled in lowercase
@@ -18,7 +12,7 @@ export type Props = {
   characterLimit?: boolean;
 };
 
-export type FProps = Props & InputBaseFProps & ReactProps["inner_ref"];
+export type FProps = Props & InputBaseFProps & ComponentProps<"input", true>;
 
 type State = {
   id: string;
@@ -30,18 +24,6 @@ export default class Input extends React.Component<FProps, State> {
   public static BaseField: typeof FieldContainer;
 
   public static BaseInput: typeof BaseInput;
-
-  public static Multiline: typeof Multiline;
-
-  public static Number: typeof Number;
-
-  public static Password: typeof Password;
-
-  public static Digit: typeof Digit;
-
-  public static DigitSequence: typeof DigitSequence;
-
-  public static IncrDcr: typeof IncrDcr;
 
   static displayName = "Input";
 
@@ -69,17 +51,11 @@ export default class Input extends React.Component<FProps, State> {
   render() {
     return (
       <HelpTextContainer value={this.state.value} {...this.props}>
-        <FieldContainer ref={this.props.innerRef} onChange={e => this.handleChange(e)} {...this.props} />
+        <FieldContainer ref={this.props.ref} onChange={e => this.handleChange(e)} {...this.props} />
       </HelpTextContainer>
     );
   }
 }
 
-Input.Multiline = Multiline;
-Input.Number = Number;
-Input.Password = Password;
 Input.BaseField = FieldContainer;
 Input.BaseInput = BaseInput;
-Input.Digit = Digit;
-Input.DigitSequence = DigitSequence;
-Input.IncrDcr = IncrDcr;

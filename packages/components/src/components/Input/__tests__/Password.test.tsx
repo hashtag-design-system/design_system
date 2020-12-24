@@ -75,5 +75,11 @@ describe("<Input.Password />", () => {
       expect(input).toHaveValue(password);
       expect(queryStrengthBoxes(strength)).toHaveLength(length);
     });
+    test("helptext container style", () => {
+      render(<Input.Password />);
+      const container = screen.getByTestId("help-text-container");
+
+      expect(container.style.gap).toBeDefined();
+    });
   });
 });

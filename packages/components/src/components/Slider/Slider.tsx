@@ -3,7 +3,7 @@ import { calculatePercentage, calculateValue } from "../../utils";
 import { SliderContextProvider } from "../../utils/contexts/SliderContext";
 import { useClassnames, useDisabled } from "../../utils/hooks";
 import Input from "../PrevInput";
-import { ReactProps } from "../__helpers__";
+import { ComponentProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar } from "./__helpers__/Bar";
 import { Chart } from "./__helpers__/Chart";
@@ -23,7 +23,7 @@ export type SliderThumbProp = {
     searchValue: string | RegExp;
     replaceValue: string;
   };
-} & ReactProps<SliderState>["input_state_prop"];
+} & Pick<ComponentProps<any, false, SliderState>, "state">;
 export type SliderMarkProp = { value: number; label?: string };
 export type SliderChartDataProp = { value: number };
 
@@ -39,7 +39,7 @@ export type Props = {
   };
 };
 
-export type FProps = Props & Omit<ReactProps<undefined, true>["number_input"], "defaultValue">;
+export type FProps = Props & Omit<ComponentProps<"input", true>, "defaultValue">;
 
 interface SubComponents {
   Double: typeof Double;
@@ -47,10 +47,10 @@ interface SubComponents {
 const DEFAULT_SIZE = 0.875;
 
 const Slider: React.FC<FProps> & SubComponents = ({
-  min = 0,
-  max = 100,
-  thumb = { defaultValue: max / 2, state: "default" },
-  step = 1,
+  min: propsMin = 0,
+  max: propsMax = 100,
+  step: propsStep = 1,
+  thumb = { defaultValue: parseFloat(propsMax.toString()) / 2, state: "default" },
   marks,
   lockOnMarks = false,
   zeroPercentageOnEdgeMarks = false,
@@ -59,6 +59,9 @@ const Slider: React.FC<FProps> & SubComponents = ({
   ref,
   ...props
 }) => {
+  const min = parseFloat(propsMin.toString());
+  const max = parseFloat(propsMax.toString());
+  const step = parseFloat(propsStep.toString());
   const { defaultValue = max / 2, state = "default" } = thumb;
 
   const [classNames, rest] = useClassnames("slider shadow__inset-sm", props, { stateToRemove: { state } });

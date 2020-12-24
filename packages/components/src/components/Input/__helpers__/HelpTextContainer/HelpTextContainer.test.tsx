@@ -35,7 +35,7 @@ describe("Input <HelpTextContainer />", () => {
   test("second=true", () => {
     inputCustomRender(<HelpTextContainer helptext={TEST_HELP_TEXT} second />);
     const element = screen.getByTestId("help-text-container");
-
+    
     expect(element).toBeInTheDocument();
     expect(element).toHaveClass("second");
   });

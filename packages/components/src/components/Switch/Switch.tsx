@@ -93,6 +93,7 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
           data-state={state}
           data-ison={isOn}
           aria-checked={isOn}
+          data-testid="switch-btn"
           {...rest}
         >
           <motion.div

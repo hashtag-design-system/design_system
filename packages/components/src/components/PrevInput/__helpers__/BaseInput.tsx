@@ -3,16 +3,15 @@ import { useClassnames, useDisabled, useInputId } from "../../../utils/hooks";
 import { InputBaseFProps } from "../index";
 
 const BaseInput = React.forwardRef<HTMLInputElement, InputBaseFProps>(
-  ({ placeholder, value, defaultValue, type, floatingplaceholder, allowTyping: typing, allowclear, children, ...props }, ref) => {
+  ({ placeholder, value, type, floatingplaceholder, allowclear, children, ...props }, ref) => {
     const { state = "default" } = props;
 
     const id = useInputId(props.id);
     let [classNames, rest] = useClassnames(`input input-placeholder-font ${floatingplaceholder ? "floating" : ""}`, props);
-    const isDisabled = useDisabled(props) || typing === false;
-
+    const isDisabled = useDisabled(props);
     // Change and revalidate Props
     // Set related to the <Select /> component
-    if (state !== "default" && (typing || state === "focus")) {
+    if (state !== "default" && state === "focus") {
       classNames += ` ${state}`;
     }
 
@@ -24,7 +23,6 @@ const BaseInput = React.forwardRef<HTMLInputElement, InputBaseFProps>(
           className={classNames}
           placeholder={!floatingplaceholder ? placeholder : undefined}
           value={value}
-          defaultValue={defaultValue}
           disabled={isDisabled}
           aria-disabled={isDisabled}
           aria-placeholder={placeholder}

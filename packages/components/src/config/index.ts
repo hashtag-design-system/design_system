@@ -1,10 +1,6 @@
-import { tuple, tupleNum } from "../utils/type";
-
 export { listKeys } from "./lists";
 
-
-export const IconPositions = tuple("left", "right");
+export const IconPositions = ["left", "right"] as const;
 export type IconPosition = typeof IconPositions[number];
 
-export const IconSizes = tupleNum(24, 36);
-export type IconSize = typeof IconSizes[number];
+export type IconSize = 24 | 36;
