@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider <Thumb /> default behaviour 1`] = `
+<div
+  class="slider__thumb   "
+  data-testid="slider-thumb"
+  style="left: 1%; width: 24em; height: 24em;"
+  tabindex="0"
+>
+  <span
+    class="slider__thumb__value body-16"
+    data-testid="slider-thumb-value"
+  >
+    30
+  </span>
+</div>
+`;
+
+exports[`Slider <Thumb /> with custom className 1`] = `
+<div
+  class="slider__thumb   "
+  data-testid="slider-thumb"
+  style="left: 1%; width: 24em; height: 24em;"
+  tabindex="0"
+>
+  <span
+    class="slider__thumb__value body-16"
+    data-testid="slider-thumb-value"
+  >
+    1
+  </span>
+</div>
+`;

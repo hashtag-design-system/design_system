@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePercentage } from "../../../utils";
-import { useSliderContext } from "../../../utils/contexts/SliderContext";
-import { useWindowDimensions } from "../../../utils/hooks";
-import { SliderChartDataProp } from "../Slider";
+import { calculatePercentage } from "../../../../utils";
+import { useSliderContext } from "../../../../utils/contexts/SliderContext";
+import { useWindowDimensions } from "../../../../utils/hooks";
+import { SliderChartDataProp } from "../../Slider";
+import { Bar } from "./Bar";
 
 type Props = {
   value: number | object;
@@ -52,21 +53,22 @@ export const Chart: React.FunctionComponent<FProps> = ({ value, style }) => {
   }, [windowDimensions.width, chartFrameRef, chartOverlayFrameRef]);
 
   return chart ? (
-    <div className="slider__chart flex-column-flex-start-flex-start">
+    <div className="slider__chart flex-column-flex-start-flex-start" data-testid="slider-chart-container">
       <div className="slider__chart__overlay" style={style} ref={chartOverlay}>
         <div
           className="slider__chart__frame slider__chart__frame__overlay"
           ref={chartOverlayFrameRef}
           style={{ left: `-${chartOverlayLeft}px` }}
+          data-testid="slider-chart-overlay"
         >
           {chart.data.map((datum, i) => {
-            return <div key={i} className="slider__chart__bar" style={{ height: `${calcBarHeight(datum)}%` }}></div>;
+            return <Bar key={i} height={calcBarHeight(datum)} />;
           })}
         </div>
       </div>
-      <div className="slider__chart__frame" ref={chartFrameRef}>
+      <div className="slider__chart__frame" ref={chartFrameRef} data-testid="slider-chart">
         {chart.data.map((datum, i) => {
-          return <div key={i} className="slider__chart__bar" style={{ height: `${calcBarHeight(datum)}%` }}></div>;
+          return <Bar key={i} height={calcBarHeight(datum)} />;
         })}
       </div>
     </div>

@@ -6,10 +6,7 @@ import { useClassnames, useDisabled } from "../../utils/hooks";
 import Input from "../Input";
 import { ComponentProps } from "../__helpers__";
 import Double from "./Double";
-import { Bar } from "./__helpers__/Bar";
-import { Chart } from "./__helpers__/Chart";
-import { Marks } from "./__helpers__/Marks";
-import { Thumb } from "./__helpers__/Thumb";
+import { Bar, Chart, Marks, Thumb } from "./__helpers__/";
 
 // See -> https://www.youtube.com/watch?v=zOA2vpx44Nw
 // See -> https://www.youtube.com/watch?v=mvq8uOGFqlc
@@ -30,7 +27,7 @@ export type SliderChartDataProp = { value: number };
 
 export type Props = {
   thumb?: SliderThumbProp;
-  marks: SliderMarkProp[];
+  marks?: SliderMarkProp[];
   lockOnMarks?: boolean;
   zeroPercentageOnEdgeMarks?: boolean;
   chart?: {
@@ -68,6 +65,7 @@ const Slider: React.FC<FProps> & SubComponents = ({
   const [classNames, rest] = useClassnames("slider shadow__inset-sm", props, { stateToRemove: { state } });
   const isDisabled = useDisabled(props) || state === "disabled";
   const [value, setValue] = useState<number>(defaultValue!);
+  // So if the user presses "1", "0", he / she will automaticalliy get to 100%
   const [prevKey, setPrevKey] = useState<string>("0");
   const [onHover, setOnHover] = useState<boolean>(false || (state === "hover" && !isDisabled));
   const [size, setSize] = useState<number>(DEFAULT_SIZE);
@@ -101,6 +99,9 @@ const Slider: React.FC<FProps> & SubComponents = ({
   );
 
   const setStep = (valueAsNumber: number) => {
+    if (!marks) {
+      return;
+    }
     const currentValueIdx = marks.map(mark => mark.value).indexOf(value);
     const nextValue = marks[currentValueIdx + 1];
     const prevValue = marks[currentValueIdx - 1];
@@ -127,6 +128,10 @@ const Slider: React.FC<FProps> & SubComponents = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!marks) {
+      return;
+    }
+    console.log(e.currentTarget);
     e.preventDefault();
     const { key } = e;
 
@@ -171,6 +176,9 @@ const Slider: React.FC<FProps> & SubComponents = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!marks) {
+      return;
+    }
     e.preventDefault();
     const { valueAsNumber } = e.target;
 
@@ -232,9 +240,14 @@ const Slider: React.FC<FProps> & SubComponents = ({
         calcValue,
       }}
     >
-      <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
+      <div className={`slider__container  ${isDisabled ? "disabled" : ""}`} data-testid="slider-container">
         <Chart value={value} style={{ right: `${calcPercentage(max - value)}%` }} />
-        <div className="slider__field" onMouseLeave={() => handleHover(false)} onKeyDown={e => handleKeyDown(e)}>
+        <div
+          className="slider__field"
+          data-testid="slider-field"
+          onMouseLeave={() => handleHover(false)}
+          onKeyDown={e => handleKeyDown(e)}
+        >
           <InputContextProvider
             value={{
               ...rest,
@@ -256,12 +269,20 @@ const Slider: React.FC<FProps> & SubComponents = ({
               onMouseOut: () => handleHover(false),
               onTouchMove: () => handleHover(true),
               onTouchEnd: () => handleHover(false),
+              "data-testid": "slider-input",
             }}
           >
             <Input.Base />
             <Bar ref={progressRef} />
           </InputContextProvider>
-          <Thumb value={value} onHover={onHover} size={size} thumb={thumb} focusVisible={state === "focus-visible"} />
+          <Thumb
+            value={value}
+            onHover={onHover}
+            size={size}
+            thumb={thumb}
+            focusVisible={state === "focus-visible"}
+            onMouseOver={() => handleHover(true)}
+          />
         </div>
         <Marks />
       </div>

@@ -6,10 +6,7 @@ import { useClassnames, useDisabled } from "../../utils/hooks";
 import Input from "../Input";
 import { SliderFProps } from "./index";
 import { SliderThumbProp } from "./Slider";
-import { Bar } from "./__helpers__/Bar";
-import { Chart } from "./__helpers__/Chart";
-import { Marks } from "./__helpers__/Marks";
-import { Thumb } from "./__helpers__/Thumb";
+import { Bar, Chart, Marks, Thumb } from "./__helpers__/";
 
 export type SliderMarkProp = { value: number; label?: string };
 
@@ -240,7 +237,7 @@ const Double: React.FC<FProps> = ({
         calcValue,
       }}
     >
-      <div className={`slider__container flex-column-flex-start-center ${isDisabled ? "disabled" : ""}`}>
+      <div className={`slider__container ${isDisabled ? "disabled" : ""}`}>
         <Chart value={value} style={{ right: `${calcPercentage(value.rThumb)}%`, left: `${calcPercentage(value.lThumb)}%` }} />
         <div className="slider__field" onMouseLeave={() => handleHover(false)} onTouchEnd={() => handleHover(false)}>
           <InputContextProvider
@@ -296,7 +293,7 @@ const Double: React.FC<FProps> = ({
               onKeyDown: e => handleKeyDown(e),
             }}
           >
-            <Input.Base/>
+            <Input.Base />
           </InputContextProvider>
           <Thumb
             value={value.lThumb}
@@ -305,6 +302,7 @@ const Double: React.FC<FProps> = ({
             thumb={lThumb}
             focusVisible={lThumbState === "focus-visible"}
             className="left"
+            onMouseOver={() => handleHover(true)}
           />
           <Thumb
             value={value.rThumb}
@@ -313,6 +311,7 @@ const Double: React.FC<FProps> = ({
             thumb={rThumb}
             focusVisible={rThumbState === "focus-visible"}
             className="right"
+            onMouseOver={() => handleHover(true)}
           />
         </div>
         <Marks />

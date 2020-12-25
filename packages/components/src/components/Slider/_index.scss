@@ -87,6 +87,7 @@
   }
 
   &__container {
+    @extend .flex-column-flex-start-center;
     position: relative;
     height: 100%;
     width: 100%;
@@ -127,6 +128,10 @@
       display: inline-block;
       user-select: none;
       position: absolute;
+
+      &:not(:first-child) {
+        transform: translateX(-50%);
+      }
     }
   }
 
