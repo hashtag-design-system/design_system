@@ -10,12 +10,13 @@
   align-self: center;
   border: none;
   outline: none;
+  transform: translateY(-25%);
   pointer-events: all;
   background-color: transparent;
   cursor: pointer;
 
   &::-webkit-slider-thumb {
-    -webkit-appearance: none;
+    // -webkit-appearance: none;
     pointer-events: all;
     width: em(40);
     height: em(40);
@@ -27,7 +28,7 @@
   }
 
   &[name="rThumb"] {
-    transform: rotate(180deg);
+    transform: rotate(180deg) translateY(25%);
   }
 
   &__thumb {

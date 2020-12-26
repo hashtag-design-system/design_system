@@ -8,6 +8,8 @@ describe("Slider <Bar />", () => {
 
     expect(bar).toBeVisible();
     expect(bar).toHaveAttribute("class");
+    expect(bar).toMatchSnapshot();
+    expect(bar.style.width).toBeDefined();
     expect(bar.children.length).toBe(1);
     expect(bar.children[0]).toHaveAttribute("class");
   });

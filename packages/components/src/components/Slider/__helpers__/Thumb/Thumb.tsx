@@ -22,7 +22,7 @@ export const Thumb: React.FunctionComponent<FProps> = ({
   onMouseOver,
 }) => {
   const { formatRegExp } = thumb;
-  const { max, calcPercentage } = useSliderContext();
+  const {  max, calcPercentage } = useSliderContext();
   const newVal = className?.includes("right") && max !== undefined ? parseFloat(max.toString()) - value : value;
 
   return (

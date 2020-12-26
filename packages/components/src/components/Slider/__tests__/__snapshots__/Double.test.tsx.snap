@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider <Chart /> with chart={true} 1`] = `
+<div
+  class="slider__chart__frame"
+  data-testid="slider-chart"
+>
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 10%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 20%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 30%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 40%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 50%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 60%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 70%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 80%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 90%;"
+  />
+  <div
+    class="slider__chart__bar"
+    data-testid="slider-chart-bar"
+    style="height: 100%;"
+  />
+</div>
+`;

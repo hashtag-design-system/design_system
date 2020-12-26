@@ -54,7 +54,7 @@ export const Chart: React.FunctionComponent<FProps> = ({ value, style }) => {
 
   return chart ? (
     <div className="slider__chart flex-column-flex-start-flex-start" data-testid="slider-chart-container">
-      <div className="slider__chart__overlay" style={style} ref={chartOverlay}>
+      <div className="slider__chart__overlay" data-testid="slider-chart-overlay-container" style={style} ref={chartOverlay}>
         <div
           className="slider__chart__frame slider__chart__frame__overlay"
           ref={chartOverlayFrameRef}

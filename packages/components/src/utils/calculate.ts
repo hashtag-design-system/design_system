@@ -7,7 +7,7 @@ export const calculateValue = (percentage: number, max: number): number => {
 export const calculatePercentage = (number: number, min: number, max: number, options?: { returnRounded?: boolean }): number => {
   const percentage = ((number - min) / (max - min)) * 100;
   if (!options) {
-    return percentage;
+    return round(percentage);
   }
   const { returnRounded = true } = options;
   if (returnRounded) {

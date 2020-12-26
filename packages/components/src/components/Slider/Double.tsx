@@ -14,8 +14,8 @@ type ThumbNumberStateType = { lThumb: number; rThumb: number };
 export type ThumbStringLiteralType = "lThumb" | "rThumb";
 
 export type Props = {
-  lThumb: SliderThumbProp;
-  rThumb: SliderThumbProp;
+  lThumb?: SliderThumbProp;
+  rThumb?: SliderThumbProp;
 };
 
 export type FProps = Props & Omit<SliderFProps, "lockOnMarks" | "thumb">;
@@ -26,8 +26,8 @@ const Double: React.FC<FProps> = ({
   min: propsMin = 0,
   max: propsMax = 100,
   step: propsStep = 1,
-  rThumb,
-  lThumb,
+  lThumb = { defaultValue: parseFloat(propsMax.toString()) / 4, state: "default" },
+  rThumb = { defaultValue: parseFloat(propsMax.toString()) / 4, state: "default" },
   marks,
   zeroPercentageOnEdgeMarks = false,
   onChange,
@@ -84,9 +84,8 @@ const Double: React.FC<FProps> = ({
     [max]
   );
 
-  const handleHover = (isHover: boolean, e?: React.MouseEvent<HTMLInputElement, MouseEvent> | React.TouchEvent<HTMLInputElement>) => {
-    if (e && !isDisabled) {
-      const name = e.currentTarget.name;
+  const handleHover = (isHover: boolean, name?: ThumbStringLiteralType) => {
+    if (name && !isDisabled) {
       if (name === "lThumb" && lThumbState !== "hover") {
         setOnHover({
           ...onHover,
@@ -237,9 +236,14 @@ const Double: React.FC<FProps> = ({
         calcValue,
       }}
     >
-      <div className={`slider__container ${isDisabled ? "disabled" : ""}`}>
+      <div className={`slider__container ${isDisabled ? "disabled" : ""}`} data-testid="slider-container">
         <Chart value={value} style={{ right: `${calcPercentage(value.rThumb)}%`, left: `${calcPercentage(value.lThumb)}%` }} />
-        <div className="slider__field" onMouseLeave={() => handleHover(false)} onTouchEnd={() => handleHover(false)}>
+        <div
+          className="slider__field"
+          data-testid="slider-field"
+          onMouseLeave={() => handleHover(false)}
+          onTouchEnd={() => handleHover(false)}
+        >
           <InputContextProvider
             value={{
               ...rest,
@@ -258,10 +262,11 @@ const Double: React.FC<FProps> = ({
               "aria-valuenow": value.lThumb,
               disabled: isDisabled,
               name: "lThumb",
-              onMouseEnter: e => handleHover(true, e),
-              onTouchMove: e => handleHover(true, e),
-              onMouseLeave: e => handleHover(false, e),
-              onTouchEnd: e => handleHover(false, e),
+              "data-testid": "slider-input",
+              onMouseEnter: () => handleHover(true, "lThumb"),
+              onTouchMove: () => handleHover(true, "lThumb"),
+              onMouseLeave: () => handleHover(false, "lThumb"),
+              onTouchEnd: () => handleHover(false, "lThumb"),
               onKeyDown: e => handleKeyDown(e),
             }}
           >
@@ -286,10 +291,11 @@ const Double: React.FC<FProps> = ({
               "aria-valuemax": max,
               "aria-valuenow": value.rThumb,
               disabled: isDisabled,
-              onMouseEnter: e => handleHover(true, e),
-              onTouchMove: e => handleHover(true, e),
-              onMouseLeave: e => handleHover(false, e),
-              onTouchEnd: e => handleHover(false, e),
+              "data-testid": "slider-input",
+              onMouseEnter: () => handleHover(true, "rThumb"),
+              onTouchMove: () => handleHover(true, "rThumb"),
+              onMouseLeave: () => handleHover(false, "rThumb"),
+              onTouchEnd: () => handleHover(false, "rThumb"),
               onKeyDown: e => handleKeyDown(e),
             }}
           >
@@ -302,7 +308,7 @@ const Double: React.FC<FProps> = ({
             thumb={lThumb}
             focusVisible={lThumbState === "focus-visible"}
             className="left"
-            onMouseOver={() => handleHover(true)}
+            onMouseOver={() => handleHover(true, "lThumb")}
           />
           <Thumb
             value={value.rThumb}
@@ -311,7 +317,7 @@ const Double: React.FC<FProps> = ({
             thumb={rThumb}
             focusVisible={rThumbState === "focus-visible"}
             className="right"
-            onMouseOver={() => handleHover(true)}
+            onMouseOver={() => handleHover(true, "rThumb")}
           />
         </div>
         <Marks />
@@ -319,7 +325,5 @@ const Double: React.FC<FProps> = ({
     </SliderContextProvider>
   );
 };
-
-Double.displayName = "SliderDouble";
 
 export default Double;

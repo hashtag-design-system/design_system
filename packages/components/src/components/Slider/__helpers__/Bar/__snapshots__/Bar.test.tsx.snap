@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider <Bar /> default behaviour 1`] = `
+<span
+  class="slider__bar shadow__inset-sm "
+  data-testid="slider-bar"
+>
+  <span
+    class="slider__bar__progress undefined"
+  />
+</span>
+`;

@@ -4,7 +4,7 @@ import { calculatePercentage } from "../../../../utils";
 import { defaultProps, sliderCustomRender } from "../utils";
 import { Chart } from "./Chart";
 
-const TEST_CHART_DATA: SliderFProps["chart"] = {
+export const TEST_CHART_DATA: SliderFProps["chart"] = {
   type: "bar",
   data: [
     { value: 1 },
@@ -22,7 +22,7 @@ const TEST_CHART_DATA: SliderFProps["chart"] = {
 
 describe("Slider <Chart />", () => {
   test("with chart={true}", () => {
-    sliderCustomRender(<Chart value={50} />, { providerProps: { chart: TEST_CHART_DATA } });
+    sliderCustomRender(<Chart value={parseFloat(defaultProps.max!.toString())} />, { providerProps: { chart: TEST_CHART_DATA, thumb: { defaultValue: 50 } } });
     const chart = screen.getByTestId("slider-chart");
     const chartOverlay = screen.getByTestId("slider-chart-overlay");
 
@@ -48,13 +48,13 @@ describe("Slider <Chart />", () => {
       });
   });
   test("with chart={false}", () => {
-    sliderCustomRender(<Chart value={50} />);
+    sliderCustomRender(<Chart value={parseFloat(defaultProps.max!.toString())} />);
     const chart = screen.queryByTestId("slider-chart");
 
     expect(chart).toBeNull();
   });
   test("with percentage={true}", () => {
-    sliderCustomRender(<Chart value={50} />, { providerProps: { chart: { ...TEST_CHART_DATA, percentage: true } } });
+    sliderCustomRender(<Chart value={parseFloat(defaultProps.max!.toString())} />, { providerProps: { chart: { ...TEST_CHART_DATA, percentage: true } } });
     const chartOverlay = screen.getByTestId("slider-chart-overlay");
 
     expect(chartOverlay.children).toHaveLength(TEST_CHART_DATA.data.length);

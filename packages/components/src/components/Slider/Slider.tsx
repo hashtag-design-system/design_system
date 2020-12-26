@@ -67,6 +67,7 @@ const Slider: React.FC<FProps> & SubComponents = ({
   const [value, setValue] = useState<number>(defaultValue!);
   // So if the user presses "1", "0", he / she will automaticalliy get to 100%
   const [prevKey, setPrevKey] = useState<string>("0");
+
   const [onHover, setOnHover] = useState<boolean>(false || (state === "hover" && !isDisabled));
   const [size, setSize] = useState<number>(DEFAULT_SIZE);
   const [sliderStep, setSliderStep] = useState<number>(step);
@@ -128,16 +129,16 @@ const Slider: React.FC<FProps> & SubComponents = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!marks) {
-      return;
-    }
-    console.log(e.currentTarget);
     e.preventDefault();
     const { key } = e;
 
-    const currentValueIdx = marks.map(mark => mark.value).indexOf(value);
+    let currentValueIdx: number = 0;
+    if (marks) {
+      currentValueIdx = marks.map(mark => mark.value).indexOf(value);
+    }
+
     if (key === "ArrowRight" || key === "ArrowUp") {
-      if (lockOnMarks && currentValueIdx !== -1) {
+      if (lockOnMarks && marks && currentValueIdx !== -1) {
         const nextValue = marks[currentValueIdx + 1];
 
         if (nextValue) {
@@ -149,7 +150,7 @@ const Slider: React.FC<FProps> & SubComponents = ({
         incr();
       }
     } else if (key === "ArrowLeft" || key === "ArrowDown") {
-      if (lockOnMarks && currentValueIdx !== -1) {
+      if (lockOnMarks && marks && currentValueIdx !== -1) {
         const prevValue = marks[currentValueIdx - 1];
 
         if (prevValue) {
@@ -176,13 +177,10 @@ const Slider: React.FC<FProps> & SubComponents = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!marks) {
-      return;
-    }
     e.preventDefault();
     const { valueAsNumber } = e.target;
 
-    if (lockOnMarks) {
+    if (lockOnMarks && marks) {
       const closest = marks
         .map(mark => mark.value)
         .reduce(function (prev, curr) {
