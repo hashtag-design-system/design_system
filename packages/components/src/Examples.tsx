@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import Checkbox from "./components/Checkbox";
-import Dropdown from "./components/Dropdown";
-import Select from "./components/PrevSelect";
 import RadioButton from "./components/RadioButton";
 import Slider from "./components/Slider";
 
@@ -93,19 +91,6 @@ const Examples: React.FC = () => {
         }}
       />
       <RadioButton label={{ value: "Label" }} />
-      <Select placeholder="Placeholder" floatingplaceholder={true}>
-        <Dropdown.OptionsBox maxHeight={150}>
-          {options.map((option, i) => (
-            <Dropdown.Item key={i} id={option.value}>
-              {option.label}
-            </Dropdown.Item>
-          ))}
-          <Dropdown.ItemGroup title="Group name">
-            <Dropdown.Item id="hey">hey</Dropdown.Item>
-            <Dropdown.Item id="hey">hey</Dropdown.Item>
-          </Dropdown.ItemGroup>
-        </Dropdown.OptionsBox>
-      </Select>
       <Slider
         marks={[
           { value: 0, label: "0" },

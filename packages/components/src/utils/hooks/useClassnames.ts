@@ -10,7 +10,7 @@ export const useClassnames = <T extends AllProps>(
   defaultClassname: string,
   props: T,
   options?: useClassnamesConfig
-): [string, any] => {
+): [string, Partial<T> | any] => {
   const { className, ...rest } = props;
   let classNames = addClassnames(defaultClassname, props);
   if (options) {

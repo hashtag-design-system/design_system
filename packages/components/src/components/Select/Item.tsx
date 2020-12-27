@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelectContext } from "../../utils/contexts";
+import { useClassnames } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 
 export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
-  Pick<ComponentProps<"input">, "defaultChecked" | "children" | "className">;
+  Pick<ComponentProps<"input">, "defaultChecked" | "children" | "className"> &
+  ComponentProps<"div", false>;
 
-export const Item: React.FC<FProps> = ({ id, className, defaultChecked = false, children }) => {
+export const Item: React.FC<FProps> = ({ id, defaultChecked = false, children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props);
 
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
@@ -55,12 +58,13 @@ export const Item: React.FC<FProps> = ({ id, className, defaultChecked = false, 
 
   return (
     <div
-      className={`select__item ${className ? className : ""}`}
+      className={classNames}
       ref={ref}
       tabIndex={0}
       onClick={e => handleClick(e)}
       // onDoubleClick={(e) => handleToggle(e)}
       aria-selected={isChecked}
+      {...rest}
     >
       <input type="checkbox" value={String(isChecked)} aria-checked={isChecked} id={id} className="select__item__input" />
       <label htmlFor={id} className="body-14">
