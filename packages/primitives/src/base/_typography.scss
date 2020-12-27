@@ -112,10 +112,3 @@ p,
 .input-password-font {
   letter-spacing: 0.05em !important;
 }
-
-.btn-default-font {
-  @include body;
-  font-size: 16px;
-  line-height: 19px;
-  letter-spacing: 0.025em;
-}

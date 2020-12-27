@@ -38,6 +38,7 @@
 @mixin body {
   @include font-base;
   font-weight: normal;
+  letter-spacing: 0.01em;
 }
 
 // Headings
