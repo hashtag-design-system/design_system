@@ -1,36 +1,143 @@
 .select {
-  &__container {
-    position: relative;
-    height: 100%;
+  &__btn {
+    height: auto;
+    justify-content: space-between;
+    border-color: $input-border-color;
+    border-width: $input-border-width / 2;
+    box-shadow: 0px 0px 2px rgba(194, 194, 194, 0.25);
 
-    .input__container__base {
-      cursor: pointer !important;
+    @include hover-classNames() {
+      background-color: $grey-2;
+      color: initial;
+      border-color: $input-border-color;
     }
 
-    .input:not(.disabled) {
-      caret-color: transparent;
-      cursor: pointer;
-    }
-
-    &.disabled {
-      .input__container__base {
-        cursor: default !important;
-      }
+    p {
+      text-align: left;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
-  &__input__divider {
-    align-self: flex-end;
+  &__modal {
     position: absolute;
-    right: 35px;
+    inset: auto;
+    padding: 0;
+    margin: em(6) 0 em(12) 0;
+    background-color: $grey-1;
+    z-index: 99;
+    border-radius: 6px;
+    pointer-events: auto;
+    border: $input-border-width / 2 solid $input-border-color;
+    max-height: em(240);
+    overflow-x: hidden;
+    overflow-y: hidden;
+    box-shadow: 0px 1px 4px rgba(194, 194, 194, 0.5);
+
+    &[data-isshown="true"] {
+      overflow-y: auto;
+    }
+
+    &::-webkit-scrollbar {
+      width: em(8);
+      background-color: transparent;
+      border-radius: inherit;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $input-border-color;
+      border-radius: 50px;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+      border-radius: inherit;
+      box-shadow: none;
+    }
+  }
+
+  &__item {
+    padding: em(8);
+    margin: em(6) em(8) em(6) em(8);
+    border-radius: em(4);
+    user-select: none;
+
+    @include hover-classNames() {
+      &:not(.select__header) {
+        background-color: $grey-4;
+        cursor: pointer;
+      }
+    }
+
+    @include focus-classNames() {
+      outline: none;
+
+      &:not(.select__header) {
+        background-color: $grey-4;
+        cursor: pointer;
+      }
+    }
+
+    &[aria-selected="true"] {
+      outline: none;
+
+      &:not(.select__header) {
+        background-color: $grey-4;
+        cursor: pointer;
+      }
+    }
+
+    label {
+      cursor: pointer;
+      color: $grey-9;
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  &__header {
+    @extend .select__item;
+    border-radius: 0;
+    padding: 0;
+    padding-top: em(4);
+    padding-bottom: em(4);
+
+    &[data-onlychild="false"] {
+      & ~ .select__item:not(.select__header) {
+        margin-left: em(28);
+      }
+    }
+
+    h6 {
+      font-size: em(12);
+      padding-left: em(8);
+    }
+  }
+
+  &__hr {
+    margin: em(6) em(8) em(6) em(8);
+    border-top: $input-border-width / 2 solid transparent;
+    background-color: $input-border-color;
   }
 
   &__icon {
-    right: 6px !important;
+    fill: none !important;
+    stroke: $grey-7 !important;
+  }
+}
+
+@include breakpoint("xs") {
+  .select__item {
+    padding-top: em(6);
+    padding-bottom: em(6);
+    margin-top: em(3);
+    margin-bottom: em(3);
   }
 
-  &__icon,
-  &__input__divider {
-    stroke: $grey-6;
+  .select__header {
+    margin-top: em(6);
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }

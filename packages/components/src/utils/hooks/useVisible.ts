@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 // https://www.cluemediator.com/detect-click-outside-a-react-component-using-react-hooks
 // https://codesandbox.io/s/989y0758np?file=/src/index.js
-export const useVisible = <T extends HTMLInputElement | HTMLUListElement>(initialIsVisible: boolean) => {
+export const useVisible = <T extends HTMLInputElement | HTMLUListElement | HTMLDivElement | HTMLDetailsElement>(initialIsVisible: boolean) => {
   const [isVisible, setIsVisible] = useState(initialIsVisible);
   const ref = useRef<T>(null);
 

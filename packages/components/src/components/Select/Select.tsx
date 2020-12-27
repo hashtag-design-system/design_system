@@ -1,121 +1,202 @@
-import React, { useCallback, useMemo, useState } from "react";
-import DropdownContext from "../../utils/contexts/DropdownContext";
-import { useClassnames, useDisabled, useVisible } from "../../utils/hooks";
-import Input, { InputFProps } from "../Input";
-import { DividerIcon } from "./__helpers__/DividerIcon";
-import { DownArrowIcon } from "./__helpers__/DownArrowIcon";
+import React, { useEffect, useRef, useState } from "react";
+import { SelectContextProvider } from "../../utils/contexts";
+import { useClassnames, useClickOutside, useDisabled } from "../../utils/hooks";
+import { InputFProps } from "../Input";
+import { ComponentProps } from "../__helpers__";
+import { Button } from "./Button";
+import { Header } from "./Header";
+import Hr from "./Hr";
+import { Item } from "./Item";
+import Modal from "./Modal";
+
+export type SelectedItems = { id: string; content: string | null };
 
 export type Props = {
   defaultOpen?: boolean;
+  paddingOnHeaderItems?: boolean;
+  multiSelectable?: boolean;
+  onSelect?: (selected: SelectedItems[]) => void;
 };
 
-export type FProps = Props & Omit<InputFProps, "type" | "icon" | "allowClear" | "characterLimit">;
+type SubComponents = {
+  Item: typeof Item;
+  Header: typeof Header;
+  Modal: typeof Modal;
+  Button: typeof Button;
+  Hr: typeof Hr;
+};
 
-const Select: React.FC<FProps> = props => {
-  const {
-    helptext,
-    secondhelptext,
-    label,
-    placeholder,
-    prefix,
-    defaultOpen = false,
-    floatingplaceholder = false,
-    defaultValue,
-    forwardref,
-    onClick,
-    onSelect,
-    style,
-    children,
-    ...rest
-  } = props;
-  let { ref: optionsBox, isVisible, setIsVisible } = useVisible<HTMLUListElement>(defaultOpen);
-  const [value, setValue] = useState(defaultValue || "");
-  const isDisabled = useDisabled<typeof props>(props);
-  let [classNames, restProps] = useClassnames(
-    `dropdown select__container flex-column-unset-stretch  ${isDisabled ? "disabled" : ""}`,
-    rest
-  );
+export type FProps = Props &
+  Required<Pick<InputFProps, "placeholder">> &
+  Omit<ComponentProps<"details", false>, "onSelect"> & {
+    forwardRef?: ComponentProps<"details", true>["ref"];
+  };
 
-  const handleSelect = useCallback(
-    (e: React.MouseEvent<HTMLLIElement>, key: string, children?: string) => {
-      // if (onSelect) onSelect(e, key);
-      setIsVisible(false);
-      if (children) {
-        setValue(children);
+const Select: React.FC<FProps> & SubComponents = ({
+  placeholder,
+  defaultOpen = false,
+  paddingOnHeaderItems = false,
+  multiSelectable = false,
+  children,
+  forwardRef,
+  onToggle,
+  onSelect,
+  ...props
+}) => {
+  const { ref: detailsRef, isOpen, setIsOpen } = useClickOutside<HTMLDetailsElement>(defaultOpen);
+  const [value, setValue] = useState<string>(placeholder);
+  const [onlyChild, setOnlyChild] = useState<boolean>(true);
+  const [selectedItems, setSelectedItems] = useState<SelectedItems[]>([]);
+  const [classNames, rest] = useClassnames("select__box__container", props);
+  const isDisabled = useDisabled<boolean>(props);
+
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = (e: React.SyntheticEvent<HTMLElement>, boolean = true) => {
+    e.preventDefault();
+    if (!isDisabled) {
+      if (boolean) {
+        // @ts-expect-error
+        setIsOpen(e.target.open);
+      } else {
+        setIsOpen(!isOpen);
       }
-    },
-    [setIsVisible, onSelect]
-  );
+    }
 
-  const newWidth = 168 || (style && style.width);
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { key } = e;
-    if (key === "Enter" || key === " ") {
-      setIsVisible(!isVisible);
+    if (onToggle) {
+      onToggle(e);
     }
   };
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => {
-      if (setIsVisible && !isDisabled) {
-        setIsVisible(!isVisible);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault();
+    const focusItem = (next: boolean) => {
+      if (divRef && divRef.current) {
+        const options = Array.from(divRef.current.getElementsByClassName("select__item"));
+        const selected = document.activeElement;
+
+        let item: Element = options[0];
+        if (selected && selected.tagName.toLowerCase() === "div") {
+          const idx = options.indexOf(selected);
+          if (next) {
+            const nextOpt = options[idx + 1];
+            if (nextOpt) {
+              item = nextOpt;
+              // (nextOpt as HTMLDivElement).focus();
+            }
+          } else {
+            const nextOpt = options[idx - 1];
+            if (nextOpt) {
+              item = nextOpt;
+              // (nextOpt as HTMLDivElement).focus();
+            } else {
+              item = options[options.length - 1];
+            }
+          }
+        }
+        return item;
       }
+    };
 
-      if (onClick) {
-        onClick(e as any);
+    const isSummaryFocused = e.target instanceof Element && e.target.tagName.toLowerCase() === "summary";
+    switch (e.code) {
+      case "Escape":
+        if (isOpen) {
+          handleToggle(e, false);
+        }
+        break;
+      case "Space":
+      case "Enter":
+        handleToggle(e, false);
+
+        const selected = document.activeElement;
+        if (!isSummaryFocused) {
+          if (selected && selected.className === "select__item") {
+            // @ts-expect-error
+            document.activeElement.click();
+            e.preventDefault();
+          }
+        }
+
+        break;
+      case "ArrowDown":
+        if (isSummaryFocused && !isOpen) {
+          handleToggle(e, false);
+        } else {
+          const target = focusItem(true);
+          if (target) {
+            (target as HTMLDivElement).focus();
+          }
+          e.preventDefault();
+        }
+        break;
+      case "ArrowUp":
+        if (isSummaryFocused && isOpen) {
+          handleToggle(e, false);
+        } else {
+          const target = focusItem(false);
+          if (target) {
+            (target as HTMLDivElement).focus();
+          }
+          e.preventDefault();
+        }
+        break;
+    }
+  };
+
+  useEffect(() => {
+    setValue(selectedItems.map(item => item.content).join(", "));
+    if (onSelect) {
+      onSelect(selectedItems);
+    }
+  }, [selectedItems, onSelect]);
+
+  useEffect(() => {
+    if (paddingOnHeaderItems) {
+      setOnlyChild(false);
+    } else {
+      if (divRef && divRef.current) {
+        const headers = divRef.current.getElementsByTagName("h6");
+        setOnlyChild(headers.length <= 1);
       }
-    },
-    [isVisible, setIsVisible, isDisabled, onClick]
-  );
-
-  const providerValue = useMemo(
-    () => ({
-      isVisible,
-      setIsVisible,
-      helptext: helptext ? true : false,
-      label: label ? true : false,
-      ref: optionsBox,
-      handleSelect,
-      handleClick,
-    }),
-    [isVisible, setIsVisible, helptext, label, optionsBox, handleSelect, handleClick]
-  );
-
-  // * Alternative approach to `useContext` hook
-  // const childrenWithExtraProps = React.Children.map(children, child => React.cloneElement(child as any, { onClick: onSelect });
+    }
+  }, [paddingOnHeaderItems, divRef]);
 
   return (
-    <DropdownContext.Provider value={providerValue}>
-      <div className={classNames} style={{ ...style, width: newWidth }} {...restProps}>
-        <Input
-          suffix={<DownArrowIcon />}
-          width={newWidth}
-          className={isVisible || props.state === "focus" ? undefined : "select"}
-          placeholder={placeholder}
-          floatingplaceholder={floatingplaceholder === true ? { now: isVisible || String(value).length > 0 } : false}
-          helptext={helptext}
-          secondhelptext={secondhelptext}
-          state={isVisible && (!props.state || props.state === "default") ? "focus" : isDisabled ? "disabled" : props.state}
-          value={value}
-          label={label}
-          prefix={prefix}
-          ref={() => forwardref}
-          style={style}
-          onClick={e => {
-            handleClick(e);
-            if (props.onClick) props.onClick(e);
-          }}
-          onKeyDown={e => handleKeyPress(e)}
-          aria-haspopup="true"
-          aria-expanded={isVisible}
+    <SelectContextProvider
+      value={{
+        isOpen,
+        ref: forwardRef,
+        setIsOpen,
+        onlyChild,
+        value,
+        multiSelectable,
+        selectedItems,
+        setSelectedItems,
+        handleToggle,
+      }}
+    >
+      <div className="select__container" ref={divRef}>
+        <details
+          ref={detailsRef}
+          className={classNames}
+          open={isOpen}
+          onToggle={e => handleToggle(e)}
+          onKeyDown={e => handleKeyDown(e)}
+          {...rest}
         >
-          <DividerIcon />
-        </Input>
-        {children}
+          {children}
+        </details>
       </div>
-    </DropdownContext.Provider>
+    </SelectContextProvider>
   );
 };
+
+Select.displayName = "Select";
+Select.Header = Header;
+Select.Item = Item;
+Select.Modal = Modal;
+Select.Button = Button;
+Select.Hr = Hr;
 
 export default Select;

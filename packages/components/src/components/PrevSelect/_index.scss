@@ -1,0 +1,36 @@
+.select {
+  &__container {
+    position: relative;
+    height: 100%;
+
+    .input__container__base {
+      cursor: pointer !important;
+    }
+
+    .input:not(.disabled) {
+      caret-color: transparent;
+      cursor: pointer;
+    }
+
+    &.disabled {
+      .input__container__base {
+        cursor: default !important;
+      }
+    }
+  }
+
+  &__input__divider {
+    align-self: flex-end;
+    position: absolute;
+    right: 35px;
+  }
+
+  &__icon {
+    right: 6px !important;
+  }
+
+  &__icon,
+  &__input__divider {
+    stroke: $grey-6;
+  }
+}

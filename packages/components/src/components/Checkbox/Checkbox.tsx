@@ -20,7 +20,10 @@ export type CheckboxState = typeof CheckboxStates[number];
 export type FProps = SelectionInputFProps<CheckboxState>;
 
 const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
-  ({ defaultChecked = false, label, groupName, state = "default", onChange, onClick, incheck, ...props }, ref) => {
+  (
+    { defaultChecked = false, label, groupName, state = "default", onChange, onClick, incheck, onKeyDownCapture, ...props },
+    ref
+  ) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const isDisabled = useDisabled(props, state) || state.includes("disabled");
@@ -66,7 +69,7 @@ const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
             animate={isChecked || (isIndeterminate && state !== "pressed") ? "checked" : state === "pressed" ? "pressed" : "initial"}
             whileTap={whileTap}
             className={classNames}
-            ischecked={isChecked ? "true" : "false"}
+            data-ischecked={isChecked ? "true" : "false"}
             variants={boxVariants}
             transition={{ duration: 0.15 }}
             custom={isIndeterminate}

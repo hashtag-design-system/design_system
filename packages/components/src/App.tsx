@@ -2,26 +2,29 @@
 // TODO: Remove afterwards removing the <Checkbox /> label Prop
 import React, { useEffect, useRef } from "react";
 import "./App.scss";
+import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
-import Slider from "./components/Slider";
+import Select from "./components/Select";
 import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
-  const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (ref && ref.current) {
+      console.log(ref.current);
+
       ref.current.focus();
     }
   });
 
   return (
     <div className="App">
-      {/* <Button pill>Button</Button> */}
+      <Button pill>Button</Button>
       <Checkbox
         incheck={isChecked => console.log(isChecked)}
         label={{
@@ -30,68 +33,26 @@ function App() {
         }}
       />
       <Switch state="disabled|off" />
-      <Slider
-        marks={[
-          { value: 0, label: "0" },
-          { value: 10, label: "10" },
-          { value: 20, label: "20" },
-          { value: 30, label: "30" },
-          { value: 40, label: "40" },
-          { value: 50, label: "50" },
-          { value: 60, label: "60" },
-          { value: 70, label: "70" },
-          { value: 80, label: "80" },
-          { value: 90, label: "90" },
-          { value: 100, label: "100" },
-        ]}
-        zeroPercentageOnEdgeMarks
-        chart={{
-          type: "bar",
-          data: [
-            { value: 1 },
-            { value: 2 },
-            { value: 3 },
-            { value: 4 },
-            { value: 5 },
-            { value: 6 },
-            { value: 7 },
-            { value: 8 },
-            { value: 9 },
-            { value: 10 },
-          ],
-        }}
-      />
-      <Slider.Double
-        marks={[
-          { value: 0 },
-          { value: 10 },
-          { value: 20 },
-          { value: 30 },
-          { value: 40 },
-          { value: 50 },
-          { value: 60 },
-          { value: 70 },
-          { value: 80 },
-          { value: 90 },
-          { value: 100 },
-        ]}
-        zeroPercentageOnEdgeMarks
-        chart={{
-          type: "bar",
-          data: [
-            { value: 1 },
-            { value: 2 },
-            { value: 3 },
-            { value: 4 },
-            { value: 5 },
-            { value: 6 },
-            { value: 7 },
-            { value: 8 },
-            { value: 9 },
-            { value: 10 },
-          ],
-        }}
-      />
+      <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}>
+        <Select.Button style={{ width: "200px" }}>Project</Select.Button>
+        <Select.Modal>
+          <Select.Header>Hey</Select.Header>
+          <Select.Item defaultChecked id="hey">
+            Hey
+          </Select.Item>
+          <Select.Item defaultChecked id="amsterdam">Amsterdam</Select.Item>
+          <Select.Item defaultChecked id="georgekrax">georgekrax</Select.Item>
+          <Select.Item id="hello1">hello</Select.Item>
+          <Select.Item id="hello2">hello</Select.Item>
+          <Select.Item id="hello3">hello</Select.Item>
+          <Select.Item id="hello4">hello</Select.Item>
+          <Select.Item id="hello5">dzfdfqfferfer</Select.Item>
+          <Select.Item id="hello6">hellrefrferfeo</Select.Item>
+          <Select.Item id="hello7">hello</Select.Item>
+          <Select.Item id="hello8">helrfrfewrlo</Select.Item>
+          <Select.Item id="hello9">wfwfwerf</Select.Item>
+        </Select.Modal>
+      </Select>
       <RadioButton state="disabled|unchecked" label={{ value: "Label", position: "top" }} />
       <Input
         label="Label"
@@ -109,7 +70,7 @@ function App() {
         // suffix={<OpenEye />}
         // forwardref={ref}
       />
-      <Input.Password label="Label" placeholder="Password" />
+      {/* <Input.Password label="Label" placeholder="Password" /> */}
       {/* <Input.Multiline label="Label" placeholder="Multiline" onChange={e => console.log(e.target.value)} /> */}
       {/* <Input.IncrDcr state="default" /> */}
       {/* <Input.Digit state="error" /> */}

@@ -15,8 +15,8 @@ export type SelectionInputState = typeof SelectionInputStates[number];
 
 // TODO: State
 export type SelectionInputFProps<S extends string | undefined = undefined> = SelectionInputProps &
-  Omit<ComponentProps<"input", false, S extends undefined ? SelectionInputState : S>, "onClick"> &
-  Pick<React.ComponentPropsWithoutRef<"label">, "onClick">;
+  Omit<ComponentProps<"input" | "label", false, S extends undefined ? SelectionInputState : S>, "onClick"> &
+  Pick<React.ComponentPropsWithoutRef<"label">, "onClick"> & { checked?: boolean; type?: ComponentProps<"input">["type"] };
 
 export type FProps = SelectionInputFProps &
   Pick<React.ComponentPropsWithoutRef<"div">, "onClick"> &
@@ -33,6 +33,7 @@ export const Base: React.FC<FProps> = ({
   onChange,
   className,
   children,
+  ref,
   ...props
 }) => {
   const id = useInputId(props.id);
@@ -44,7 +45,7 @@ export const Base: React.FC<FProps> = ({
     <div
       className={`selection-input__container ${className ? className : ""}`}
       style={{
-        width: props.style?.width || props.width,
+        width: props.style?.width,
         flexDirection: topOrBottom ? "column" : undefined,
         gap: label && typeof label === "object" && label.gap !== undefined ? label.gap : undefined,
       }}
@@ -55,8 +56,8 @@ export const Base: React.FC<FProps> = ({
           type={type}
           className={classNames}
           checked={checked}
-          value={checked}
-          onChange={e => onChange && onChange(e)}
+          value={String(checked)}
+          onChange={() => console.log()}
           name={groupName}
           disabled={state.includes("disabled")}
           aria-labelledby={id}

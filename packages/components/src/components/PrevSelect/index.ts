@@ -1,4 +1,4 @@
-import Select  from "./Select";
+import Select from "./Select";
 
 export type { Props as SelectProps, FProps as SelectFProps } from "./Select";
 

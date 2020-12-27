@@ -16,7 +16,7 @@
   cursor: pointer;
 
   &::-webkit-slider-thumb {
-    // -webkit-appearance: none;
+    -webkit-appearance: none;
     pointer-events: all;
     width: em(40);
     height: em(40);
@@ -225,7 +225,7 @@
   }
 }
 
-@include breakpoint("xs") {
+@include breakpoint("xs", "max-width") {
   .slider__chart {
     height: em(72);
   }
