@@ -51,3 +51,9 @@
     @content;
   }
 }
+
+@mixin modal-classNames($className: "") {
+  .modal.#{$className} {
+    @content;
+  }
+}
