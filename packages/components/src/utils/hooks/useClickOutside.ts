@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // https://github.com/primer/components/blob/main/src/SelectMenu/SelectMenu.js
 export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | HTMLDivElement | HTMLDetailsElement | HTMLElement>(
   initialIsOpen: boolean,
-  forwardRef?: ((instance: HTMLElement | null) => void) | React.RefObject<HTMLElement> | null | undefined
+  forwardRef?: ((instance: T | null) => void) | React.RefObject<T> | null | undefined
 ) => {
   const [isOpen, setIsOpen] = useState(initialIsOpen);
   const backupRef = useRef<T>(null);

@@ -1,3 +1,5 @@
+@import "./__helpers__/mixins";
+
 .select {
   &__btn {
     height: auto;
@@ -32,6 +34,7 @@
     border: $input-border-width / 2 solid $input-border-color;
     max-height: em(240);
     overflow-x: hidden;
+    box-sizing: border-box;
     overflow-y: hidden;
     box-shadow: 0px 1px 4px rgba(194, 194, 194, 0.5);
 
@@ -40,66 +43,62 @@
     }
 
     &::-webkit-scrollbar {
-      width: em(8);
+      width: em(6);
       background-color: transparent;
       border-radius: inherit;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $input-border-color;
-      border-radius: 50px;
+      background-color: $grey-6;
       background-clip: padding-box;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
+      border-top-width: 8px;
+      border-bottom-width: 8px;
       border-radius: inherit;
       box-shadow: none;
+    }
+
+    &--mobile {
+      @extend .flex-row-center-center;
     }
   }
 
   &__item {
-    padding: em(8);
-    margin: em(6) em(8) em(6) em(8);
-    border-radius: em(4);
+    padding: em(14);
+    border-radius: 0;
     user-select: none;
 
     @include hover-classNames() {
-      &:not(.select__header) {
-        background-color: $grey-4;
-        cursor: pointer;
-      }
+      @extend .select__item--hover;
     }
 
     @include focus-classNames() {
-      outline: none;
-
-      &:not(.select__header) {
-        background-color: $grey-4;
-        cursor: pointer;
-      }
+      @extend .select__item--hover;
     }
 
     &[aria-selected="true"] {
-      outline: none;
-
-      &:not(.select__header) {
-        background-color: $grey-4;
-        cursor: pointer;
-      }
+      @extend .select__item--hover;
     }
 
     label {
       cursor: pointer;
+      user-select: none;
       color: $grey-9;
     }
 
     input {
       display: none;
     }
+
+    + .select__hr {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 
   &__header {
     @extend .select__item;
     border-radius: 0;
-    padding: 0;
     padding-top: em(4);
     padding-bottom: em(4);
 
@@ -111,14 +110,19 @@
 
     h6 {
       font-size: em(12);
-      padding-left: em(8);
+    }
+
+    + .select__hr {
+      margin-top: 0;
     }
   }
 
   &__hr {
-    margin: em(6) em(8) em(6) em(8);
-    border-top: $input-border-width / 2 solid transparent;
-    background-color: $input-border-color;
+    display: block;
+    width: auto;
+    margin: em(4) em(0);
+    height: $input-border-width / 2;
+    background: $input-border-color;
   }
 
   &__icon {
@@ -127,17 +131,34 @@
   }
 }
 
-@include breakpoint("xs") {
+@include breakpoint("sm", "min-width") {
   .select__item {
-    padding-top: em(6);
-    padding-bottom: em(6);
-    margin-top: em(3);
-    margin-bottom: em(3);
+    padding: em(6) em(4);
+    margin: em(4);
+    border-radius: em(4);
   }
 
   .select__header {
-    margin-top: em(6);
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: em(2);
+    padding-bottom: em(2);
+  }
+
+  .select__hr {
+    margin: em(4);
+  }
+}
+
+@include modal-classNames("select__modal--mobile") {
+  .select__modal {
+    width: min(70%, 32em);
+    max-height: 80%;
+  }
+
+  .select__item:not(.select__header) {
+    &:last-of-type {
+      + .select__hr {
+        display: none;
+      }
+    }
   }
 }

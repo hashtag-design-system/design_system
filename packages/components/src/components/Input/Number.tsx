@@ -77,7 +77,7 @@ const Number: React.FunctionComponent<FProps> = ({
           value,
           dispatch,
           defaultValue,
-          state,
+          state: isBtnShown ? "focus" : state,
           min,
           max,
           step,

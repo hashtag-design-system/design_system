@@ -225,7 +225,7 @@
   }
 }
 
-@include breakpoint("xs", "max-width") {
+@include breakpoint("sm", "max-width") {
   .slider__chart {
     height: em(72);
   }

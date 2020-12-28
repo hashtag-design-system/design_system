@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SelectContextProvider } from "../../utils/contexts";
-import { useClassnames, useClickOutside, useDisabled } from "../../utils/hooks";
+import { useClassnames, useClickOutside, useDisabled, useIsMobile } from "../../utils/hooks";
 import { InputFProps } from "../Input";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
@@ -43,12 +43,13 @@ const Select: React.FC<FProps> & SubComponents = ({
   onSelect,
   ...props
 }) => {
-  const { ref: detailsRef, isOpen, setIsOpen } = useClickOutside<HTMLDetailsElement>(defaultOpen);
+  const { ref: modalRef, isOpen, setIsOpen } = useClickOutside<HTMLDivElement>(defaultOpen);
   const [value, setValue] = useState<string>(placeholder);
   const [onlyChild, setOnlyChild] = useState<boolean>(true);
   const [selectedItems, setSelectedItems] = useState<SelectedItems[]>([]);
   const [classNames, rest] = useClassnames("select__box__container", props);
   const isDisabled = useDisabled<boolean>(props);
+  const { isMobile } = useIsMobile();
 
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -167,18 +168,19 @@ const Select: React.FC<FProps> & SubComponents = ({
       value={{
         isOpen,
         ref: forwardRef,
-        setIsOpen,
         onlyChild,
         value,
         multiSelectable,
         selectedItems,
+        isMobile,
+        modalRef: modalRef,
         setSelectedItems,
         handleToggle,
       }}
     >
       <div className="select__container" ref={divRef}>
         <details
-          ref={detailsRef}
+          ref={isMobile ? undefined : modalRef}
           className={classNames}
           open={isOpen}
           onToggle={e => handleToggle(e)}

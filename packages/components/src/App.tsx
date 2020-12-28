@@ -7,6 +7,7 @@ import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
+import { ModalMobile } from "./components/Select/__helpers__/ModalMobile/ModalMobile";
 import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
@@ -26,22 +27,22 @@ function App() {
     <div className="App">
       <Button pill>Button</Button>
       <Checkbox
-        incheck={isChecked => console.log(isChecked)}
+        // incheck={isChecked => console.log(isChecked)}
         label={{
           value:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
       <Switch state="disabled|off" />
-      <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}>
+      {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
+      <Select defaultOpen multiSelectable={true} placeholder="Projects">
+        <ModalMobile />
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
           <Select.Header>Hey</Select.Header>
-          <Select.Item defaultChecked id="hey">
-            Hey
-          </Select.Item>
-          <Select.Item defaultChecked id="amsterdam">Amsterdam</Select.Item>
-          <Select.Item defaultChecked id="georgekrax">georgekrax</Select.Item>
+          <Select.Item id="hey">Hey</Select.Item>
+          <Select.Item id="amsterdam">Amsterdam</Select.Item>
+          <Select.Item id="georgekrax">georgekrax</Select.Item>
           <Select.Item id="hello1">hello</Select.Item>
           <Select.Item id="hello2">hello</Select.Item>
           <Select.Item id="hello3">hello</Select.Item>
@@ -75,6 +76,11 @@ function App() {
       {/* <Input.IncrDcr state="default" /> */}
       {/* <Input.Digit state="error" /> */}
       {/* <Input.DigitSequence numberOfDigits={6} helptext={{ value: "george", icon: <OpenEye /> }} /> */}
+      <Input.Number state="default" />
+      <Input.Number state="default" />
+      <Input.Number state="default" />
+      <Input.Number state="default" />
+      <Input.Number state="default" />
       <Input.Number state="default" />
     </div>
   );
