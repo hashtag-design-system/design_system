@@ -9,6 +9,21 @@ import Hr from "./Hr";
 import { Item } from "./Item";
 import Modal from "./Modal";
 
+// * Tests samples for later use
+// describe("<Select />", () => {
+//   test("default behaviour", () => {
+//      render(<Select />);
+//   });
+// });
+// describe("onClick functionality", () => {
+  //   test("default behaviour", () => {
+  //     selectCustomRender(<Select.Item id="test_id" />);
+  //     const item = screen.getByTestId("select-item");
+
+  //     userEvent.click(item);
+  //   });
+  // });
+
 export type SelectedItems = { id: string; content: string | null };
 
 export type Props = {
@@ -178,7 +193,7 @@ const Select: React.FC<FProps> & SubComponents = ({
         handleToggle,
       }}
     >
-      <div className="select__container" ref={divRef}>
+      <div className="flex-row-stretch-flex-start" ref={divRef}>
         <details
           ref={isMobile ? undefined : modalRef}
           className={classNames}

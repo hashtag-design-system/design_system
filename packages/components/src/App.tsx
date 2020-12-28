@@ -7,7 +7,6 @@ import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
-import { ModalMobile } from "./components/Select/__helpers__/ModalMobile/ModalMobile";
 import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
@@ -36,14 +35,13 @@ function App() {
       <Switch state="disabled|off" />
       {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
       <Select defaultOpen multiSelectable={true} placeholder="Projects">
-        <ModalMobile />
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
           <Select.Header>Hey</Select.Header>
           <Select.Item id="hey">Hey</Select.Item>
           <Select.Item id="amsterdam">Amsterdam</Select.Item>
           <Select.Item id="georgekrax">georgekrax</Select.Item>
-          <Select.Item id="hello1">hello</Select.Item>
+          <Select.Item id="hello1">helfrffsfsfedlo</Select.Item>
           <Select.Item id="hello2">hello</Select.Item>
           <Select.Item id="hello3">hello</Select.Item>
           <Select.Item id="hello4">hello</Select.Item>

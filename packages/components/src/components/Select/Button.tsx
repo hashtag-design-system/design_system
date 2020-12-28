@@ -15,7 +15,7 @@ export const Button: React.FC<FProps> = ({ className, showValue = true, children
   const { value, ref } = useSelectContext();
 
   return (
-    <summary ref={ref} className={classNames} {...rest}>
+    <summary ref={ref} className={classNames} data-testid="select-btn" {...rest}>
       <p style={{ width: rest.style?.width }}>{value && showValue ? value : children}</p>
       <DownArrowIcon />
     </summary>

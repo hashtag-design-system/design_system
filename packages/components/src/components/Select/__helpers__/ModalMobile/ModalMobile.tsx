@@ -1,4 +1,5 @@
 import React from "react";
+import { SelectModalProps } from "../..";
 import { useSelectContext } from "../../../../utils/contexts";
 import { Modal } from "../../../__helpers__";
 
@@ -11,9 +12,9 @@ const modalOpacityVariants = {
   },
 };
 
-export type Props = {};
+export type FProps = SelectModalProps;
 
-export const ModalMobile: React.FC = ({ children }) => {
+export const ModalMobile: React.FC<FProps> = ({ align, children }) => {
   const { isOpen, isMobile } = useSelectContext();
 
   return isMobile ? (
@@ -25,32 +26,18 @@ export const ModalMobile: React.FC = ({ children }) => {
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.25, when: "beforeChildren" }}
+      data-testid="select-modal--mobile"
     >
       {children}
     </Modal.Overlay>
   ) : (
-    <>{children}</>
+    <div
+      className={`flex-row-${
+        align === "left" ? "flex-start" : align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start"
+      }-stretch`}
+      data-testid="select-modal--mobile"
+    >
+      {children}
+    </div>
   );
 };
-
-// {/* <Modal.Overlay isShown={isOpen} bgColor="dark"> */}
-// {children}
-// {/* <Select.Modal>
-//   <Select.Header>Hey</Select.Header>
-//   <Select.Item id="hey">Hey</Select.Item>
-//   <Select.Item id="amsterdam">Amsterdam</Select.Item>
-//   <Select.Item id="georgekrax">georgekrax</Select.Item>
-//   <Select.Item id="hello1">hello</Select.Item>
-//   <Select.Item id="hello2">hello</Select.Item>
-//   <Select.Item id="hello3">hello</Select.Item>
-//   <Select.Item id="hello4">hello</Select.Item>
-//   <Select.Item id="hello5">dzfdfqfferfer</Select.Item>
-//   <Select.Item id="hello6">hellrefrferfeo</Select.Item>
-//   <Select.Item id="hello7">hello</Select.Item>
-//   <Select.Item id="hello8">helrfrfewrlo</Select.Item>
-//   <Select.Item id="hello9">wfwfwerf</Select.Item>
-// </Select.Modal> */}
-// {/* // </Modal.Overlay> */}
-// {/* // ) : (
-// //   <>{children}</>
-// // ); */}

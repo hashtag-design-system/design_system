@@ -8,7 +8,7 @@ export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
   Pick<ComponentProps<"input">, "defaultChecked" | "children" | "className"> &
   ComponentProps<"div", false>;
 
-export const Item: React.FC<FProps> = ({ id, defaultChecked = false, children, ...props }) => {
+export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props);
 
@@ -20,26 +20,27 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, children, .
     setSelectedItems(prevState => [...prevState, { id, content: children?.toString() || null }]);
   }, [id, children, setSelectedItems]);
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      if (!multiSelectable) {
-        handleToggle(e, false);
-      }
-      // state has not been updated yet, that is why the opposite is used
-      const content = e.currentTarget.textContent;
-      if (multiSelectable) {
-        if (!isChecked) {
-          addSelectItem();
-        } else {
-          setSelectedItems(prevState => prevState.filter(me => me.id !== id));
-        }
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (!multiSelectable) {
+      handleToggle(e, false);
+    }
+    // state has not been updated yet, that is why the opposite is used
+    const content = e.currentTarget.textContent;
+    if (multiSelectable) {
+      if (!isChecked) {
+        addSelectItem();
       } else {
-        setSelectedItems([{ id, content }]);
+        setSelectedItems(prevState => prevState.filter(me => me.id !== id));
       }
-    },
-    [id, multiSelectable, isChecked, handleToggle, setSelectedItems, addSelectItem]
-  );
+    } else {
+      setSelectedItems([{ id, content }]);
+    }
+    
+    if (onClick) {
+      onClick(e);
+    }
+  };
 
   useEffect(() => {
     if (defaultChecked) {
@@ -63,14 +64,20 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, children, .
         className={classNames}
         ref={ref}
         tabIndex={0}
-        onClick={e => handleClick(e)}
-        // TODO: For mobile
-        // onDoubleClick={e => handleToggle(e)}
+        onClickCapture={e => handleClick(e)}
         aria-selected={isChecked}
+        data-testid="select-item"
         {...rest}
       >
-        <input type="checkbox" value={String(isChecked)} aria-checked={isChecked} id={id} className="select__item__input" />
-        <label htmlFor={id} className="body-14">
+        <input
+          type="checkbox"
+          value={String(isChecked)}
+          aria-checked={isChecked}
+          id={id}
+          className="select__item__input"
+          data-testid="select-item-input"
+        />
+        <label unselectable="on" htmlFor={id} className="body-14" data-testid="select-item-label">
           {children}
         </label>
       </div>

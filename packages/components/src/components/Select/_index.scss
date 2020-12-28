@@ -26,7 +26,7 @@
     position: absolute;
     inset: auto;
     padding: 0;
-    margin: em(6) 0 em(12) 0;
+    margin: em(8) 0 em(12) 0;
     background-color: $grey-1;
     z-index: 99;
     border-radius: 6px;
@@ -52,6 +52,7 @@
       background-color: $grey-6;
       background-clip: padding-box;
       border: 1px solid transparent;
+      border-right-width: 2px;
       border-top-width: 8px;
       border-bottom-width: 8px;
       border-radius: inherit;
@@ -69,7 +70,9 @@
     user-select: none;
 
     @include hover-classNames() {
-      @extend .select__item--hover;
+      @include breakpoint("sm") {
+        @include select__item--hover();
+      }
     }
 
     @include focus-classNames() {

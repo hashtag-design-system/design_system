@@ -1,8 +1,12 @@
-.select__item--hover {
+@mixin select__item--hover() {
   outline: none;
 
   &:not(.select__header) {
     background-color: $grey-4;
     cursor: pointer;
   }
+}
+
+.select__item--hover {
+  @include select__item--hover();
 }
