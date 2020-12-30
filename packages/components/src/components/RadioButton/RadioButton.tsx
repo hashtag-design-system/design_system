@@ -1,3 +1,4 @@
+import { Color } from "framer";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
@@ -6,14 +7,17 @@ import { SelectionInputFProps, SelectionInputState } from "../__helpers__/Select
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
 
+const grey5 = Color("#d6d6d6").toValue();
+const primary = Color("#0303ff").toValue();
+
 const variants = {
   checked: (isDisabled: boolean) => ({
-    borderColor: isDisabled ? undefined : "var(--primary)",
+    borderColor: isDisabled ? grey5 : primary,
     borderWidth: "7px",
   }),
-  initial: { borderColor: "var(--grey-5)", borderWidth: "2px" },
+  initial: { borderColor: grey5, borderWidth: "2px" },
   pressed: {
-    borderColor: "var(--primary)",
+    borderColor: primary,
     borderWidth: "5px",
     scale: 0.75,
   },
@@ -24,7 +28,7 @@ export type RadioButtonState = SelectionInputState;
 export type Props = SelectionInputFProps;
 
 const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
-  ({ defaultChecked = false, checked, state = "default", label, groupName, ...props }, ref) => {
+  ({ defaultChecked = false, checked, state = "default", label, groupName, style, ...props }, ref) => {
     const id = useInputId(props.id);
     // * It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
     // * that the `state.includes("checked")` would
@@ -66,6 +70,7 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
             className={classNames}
             role="radio"
             tabIndex={isDisabled ? -1 : 0}
+            initial="initial"
             // * It is a bug if we only check for wether the input `isChecked`
             // * Because it will have the check state if user clicks, while `state === "pressed"`
             // * The same applies to the `whileTap` property
@@ -75,6 +80,7 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
             transition={{ duration: 0.15 }}
             custom={state === "disabled|checked"}
             ref={ref}
+            style={{ ...style, ...variants.initial }}
             onChange={() => handleChange()}
             onClick={e => {
               e.preventDefault();

@@ -20,13 +20,21 @@ export type Props = {
 
 export type FProps = Props & Omit<React.ComponentPropsWithRef<"button">, "type">;
 
-const Button: React.FC<FProps> = ({ type = "primary", state = "default", block = false, pill = false, children, ...props }) => {
-  let [classNames, rest] = useClassnames(
+const Button: React.FC<FProps> = ({
+  type = "primary",
+  state = "default",
+  block = false,
+  pill = false,
+  disabled,
+  children,
+  ...props
+}) => {
+  let [classNames, rest] = useClassnames<FProps>(
     `btn btn-${type} ${block ? "block" : ""} ${pill ? "pill" : ""} btn-default-font shadow__form-2`,
     props,
     { stateToRemove: { state } }
   );
-  const isDisabled = useDisabled(props, state);
+  const isDisabled = Boolean(useDisabled(props, state) || disabled);
 
   // Animation state
   // const pathLength = useMotionValue(0);

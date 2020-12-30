@@ -23,6 +23,7 @@
   }
 
   &__span {
+    user-select: none;
     height: 100%;
     width: auto;
     max-width: em(700);

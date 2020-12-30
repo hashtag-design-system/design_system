@@ -44,14 +44,9 @@ describe("SelectionInput <Base />", () => {
   });
   describe("input container", () => {
     test("with width Prop", () => {
-      const { rerender } = render(<Base width={56} />);
-      const selectionInputContainer = screen.getByTestId("selection-input__container");
+      render(<Base style={{ width: 56 }} />);
 
-      expect(selectionInputContainer.style.width).toBe("56px");
-
-      rerender(<Base style={{ width: 56 }} />);
-
-      expect(selectionInputContainer.style.width).toBe("56px");
+      expect(screen.getByTestId("selection-input__container").style.width).toBe("56px");
     });
     test('typeof label === "string"', () => {
       render(<Base label="Label" />);

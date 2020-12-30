@@ -1,6 +1,11 @@
 @import "./__helpers__/mixins";
 
 .select {
+  &__container {
+    @extend .flex-row-stretch-flex-start;
+    z-index: 1;
+  }
+
   &__btn {
     height: auto;
     justify-content: space-between;
@@ -22,25 +27,12 @@
     }
   }
 
-  &__modal {
-    position: absolute;
-    inset: auto;
-    padding: 0;
-    margin: em(8) 0 em(12) 0;
-    background-color: $grey-1;
-    z-index: 99;
-    border-radius: 6px;
-    pointer-events: auto;
-    border: $input-border-width / 2 solid $input-border-color;
-    max-height: em(240);
+  &__options {
+    max-height: em(480);
+    height: auto;
+    width: 100%;
     overflow-x: hidden;
-    box-sizing: border-box;
-    overflow-y: hidden;
-    box-shadow: 0px 1px 4px rgba(194, 194, 194, 0.5);
-
-    &[data-isshown="true"] {
-      overflow-y: auto;
-    }
+    overflow-y: auto;
 
     &::-webkit-scrollbar {
       width: em(6);
@@ -53,11 +45,29 @@
       background-clip: padding-box;
       border: 1px solid transparent;
       border-right-width: 2px;
-      border-top-width: 8px;
-      border-bottom-width: 8px;
+      border-top-width: 4px;
+      border-bottom-width: 4px;
       border-radius: inherit;
       box-shadow: none;
     }
+  }
+
+  &__modal {
+    position: absolute;
+    inset: auto;
+    padding: 0;
+    margin: em(8) 0 em(0) 0;
+    background-color: $grey-1;
+    z-index: 99;
+    border-radius: 6px;
+    pointer-events: auto;
+    border: $input-border-width / 2 solid $input-border-color;
+    height: auto;
+    width: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 99;
+    box-shadow: 0px 1px 4px rgba(194, 194, 194, 0.5);
 
     &--mobile {
       @extend .flex-row-center-center;
@@ -68,6 +78,7 @@
     padding: em(14);
     border-radius: 0;
     user-select: none;
+    z-index: 1;
 
     @include hover-classNames() {
       @include breakpoint("sm") {
@@ -102,12 +113,13 @@
   &__header {
     @extend .select__item;
     border-radius: 0;
-    padding-top: em(4);
-    padding-bottom: em(4);
+    padding-top: em(8);
+    padding-bottom: em(8);
 
-    &[data-onlychild="false"] {
-      & ~ .select__item:not(.select__header) {
-        margin-left: em(28);
+    &[data-children="true"] {
+      & ~ .select__item:not(.select__header),
+      & ~ .select__options .select__item:not(.select__header) {
+        margin-left: em(20);
       }
     }
 
@@ -135,19 +147,25 @@
 }
 
 @include breakpoint("sm", "min-width") {
-  .select__item {
-    padding: em(6) em(4);
-    margin: em(4);
-    border-radius: em(4);
-  }
+  .select {
+    &__item {
+      padding: em(6) em(4);
+      margin: em(4);
+      border-radius: em(4);
+    }
 
-  .select__header {
-    padding-top: em(2);
-    padding-bottom: em(2);
-  }
+    &__header {
+      padding-top: em(2);
+      padding-bottom: em(2);
+    }
 
-  .select__hr {
-    margin: em(4);
+    &__hr {
+      margin: em(4);
+    }
+
+    &__options {
+      max-height: em(200);
+    }
   }
 }
 

@@ -8,11 +8,17 @@ describe("<Select.Modal />", () => {
     const modal = screen.getByTestId("select-modal");
 
     expect(modal).toBeVisible();
+    expect(modal).toMatchSnapshot();
     expect(modal).toHaveAttribute("class");
+    expect(modal).toHaveAttribute("style");
     expect(modal).toHaveAttribute("role", "listbox");
-    expect(modal).toHaveAttribute("data-isshown", "false");
     expect(modal).toHaveAttribute("aria-multiselectable", "false");
     expect(modal.children).toHaveLength(0);
+  });
+  test("with multiSelectable={true}", () => {
+    selectCustomRender(<Select.Modal />, { providerProps: { multiSelectable: true } });
+
+    expect(screen.getByTestId("select-modal")).toHaveAttribute("aria-multiselectable", "true");
   });
   test("with children", () => {
     selectCustomRender(

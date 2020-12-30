@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Select.Modal /> default behaviour 1`] = `
+<div
+  aria-multiselectable="false"
+  class="select__modal"
+  data-testid="select-modal"
+  role="listbox"
+  style="height: 15%;"
+/>
+`;

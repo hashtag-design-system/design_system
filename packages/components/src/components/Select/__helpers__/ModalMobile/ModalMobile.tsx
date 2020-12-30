@@ -26,7 +26,6 @@ export const ModalMobile: React.FC<FProps> = ({ align, children }) => {
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.25, when: "beforeChildren" }}
-      data-testid="select-modal--mobile"
     >
       {children}
     </Modal.Overlay>

@@ -57,7 +57,7 @@ export const Base: React.FC<FProps> = ({
           className={classNames}
           checked={checked}
           value={String(checked)}
-          onChange={() => console.log()}
+          onChange={e => void e}
           name={groupName}
           disabled={state.includes("disabled")}
           aria-labelledby={id}

@@ -1,8 +1,30 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
+import { isInViewport } from "../../utils";
 import { useSelectContext } from "../../utils/contexts";
-import { useClassnames, useWindowDimensions } from "../../utils/hooks";
+import { useClassnames } from "../../utils/hooks";
 import { ModalMobile } from "./__helpers__";
+
+const variants = {
+  initial: ({ isMobile }: { isMobile: boolean }) =>
+    isMobile
+      ? {
+          scale: 0.75,
+          opacity: 0,
+        }
+      : {
+          height: "15%",
+        },
+  open: ({ isMobile, isOpen }: { isMobile: boolean; isOpen: boolean }) =>
+    isMobile
+      ? {
+          scale: 1,
+          opacity: 1,
+        }
+      : {
+          height: isOpen ? "auto" : "",
+        },
+};
 
 export type Props = {
   align?: "left" | "center" | "right";
@@ -10,45 +32,49 @@ export type Props = {
 
 export type FProps = Props & HTMLMotionProps<"div">;
 
-const Modal: React.FunctionComponent<FProps> = ({ align = "left", children, ...props }) => {
+export const Modal: React.FunctionComponent<FProps> = ({ align = "left", initial, animate, children, ...props }) => {
   const { isOpen, multiSelectable, isMobile, modalRef } = useSelectContext();
 
-  const [isShown, setIsShown] = useState(isOpen);
   const [classNames, rest] = useClassnames("select__modal", props);
-  const windowDimensions = useWindowDimensions();
   const initialRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (initialRef && initialRef.current && !isMobile) {
+  // useEffect(() => {
+  if (initialRef && initialRef.current && !isMobile) {
+    if (!isInViewport(initialRef.current)) {
       const { current } = initialRef;
       const rects = current.getBoundingClientRect();
 
       const { style } = current;
-      const { offsetWidth } = document.body;
 
       if (rects.x < 0) {
         style.left = String(Math.abs(rects.x)) + "px";
-      } else if (rects.right > offsetWidth) {
-        const diff = offsetWidth - rects.right;
-        style.right = String(-diff) + "px";
+      }
+      const { clientWidth, clientHeight } = document.documentElement;
+      if (rects.right > clientWidth) {
+        const diff = clientWidth - rects.right;
+        style.left = String(diff) + "px";
+      }
+      if (!isInViewport(current.parentElement?.parentElement!)) {
+        if (rects.bottom > clientHeight) {
+          style.bottom = String(-(clientHeight - (current.parentElement?.getBoundingClientRect().bottom || 0))) + "px";
+        }
       }
     }
-  }, [isMobile, windowDimensions.width, windowDimensions.height]);
+  }
+  // }, [initialRef, isOpen, isMobile, windowDimensions.width, windowDimensions.height]);
 
   return (
     <ModalMobile align={align}>
       <motion.div
         ref={isMobile ? modalRef : initialRef}
-        initial={{ height: "15%" }}
-        animate={{ height: isOpen && !isMobile ? "auto" : !isMobile ? 0 : "100%" }}
-        transition={{ type: "tween", duration: 0.2, delay: isMobile ? 0.1 : 0 }}
+        variants={variants}
+        initial="initial"
+        animate={isOpen ? "open" : "initial"}
+        custom={{ isMobile, isOpen }}
+        transition={{ type: "tween", duration: 0.35 }}
         className={classNames}
         role="listbox"
-        data-isshown={isShown}
         aria-multiselectable={multiSelectable}
-        onAnimationComplete={() => {
-          setIsShown(isOpen);
-        }}
         data-testid="select-modal"
         {...rest}
       >
@@ -59,5 +85,3 @@ const Modal: React.FunctionComponent<FProps> = ({ align = "left", children, ...p
 };
 
 Modal.displayName = "SelectModal";
-
-export default Modal;

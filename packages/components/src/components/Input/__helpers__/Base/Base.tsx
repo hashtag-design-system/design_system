@@ -31,12 +31,13 @@ export const Base: React.FunctionComponent = () => {
     // ! Not to be included in the HTML element
     forwardref,
     maxLength,
+    disabled,
     ...props
   } = useInputContext();
 
   const id = useInputId(propsId);
   const [classNames, rest] = useClassnames("input", props, { stateToRemove: { state } });
-  const isDisabled = useDisabled(props, state);
+  const isDisabled = useDisabled(props, state) || disabled;
 
   // return type === "textarea" ? (
   //   <textarea
@@ -74,7 +75,7 @@ export const Base: React.FunctionComponent = () => {
       className={classNames}
       value={value}
       placeholder={!floatingplaceholder ? placeholder : undefined}
-      disabled={isDisabled}
+      disabled={Boolean(isDisabled)}
       aria-disabled={isDisabled}
       aria-label={placeholder}
       ref={forwardref}

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Select.Hr /> with className="custom-className" 1`] = `
+<span
+  class="select__hr custom-className"
+  data-testid="select-hr"
+/>
+`;

@@ -10,6 +10,7 @@ describe("<Select.Button />", () => {
     expect(btn).toBeVisible();
     expect(btn.tagName.toLowerCase()).toBe("summary");
     expect(btn).toHaveAttribute("class");
+    expect(btn).toMatchSnapshot();
 
     const children = btn.children;
 

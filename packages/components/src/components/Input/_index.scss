@@ -84,7 +84,6 @@
   &__floating-placeholder {
     @extend .body-16;
     order: 2;
-    z-index: 1;
     position: absolute;
     top: rem(14);
     left: rem(12);

@@ -33,6 +33,7 @@ const Double: React.FC<FProps> = ({
   onChange,
   chart,
   ref,
+  disabled,
   ...props
 }) => {
   const min = parseFloat(propsMin.toString());
@@ -42,7 +43,7 @@ const Double: React.FC<FProps> = ({
   const { defaultValue: rThumbDefaultValue = max / 4, state: rThumbState = "default" } = rThumb;
 
   const [classNames, rest] = useClassnames("slider double shadow__inset-sm", props);
-  const isDisabled = useDisabled(props) || lThumbState === "disabled" || rThumbState === "disabled";
+  const isDisabled = useDisabled(props) || lThumbState === "disabled" || rThumbState === "disabled" || disabled;
   const [value, setValue] = useState<ThumbNumberStateType>({
     lThumb: lThumbDefaultValue,
     rThumb: rThumbDefaultValue,
@@ -260,6 +261,7 @@ const Double: React.FC<FProps> = ({
               "aria-valuemin": min,
               "aria-valuemax": max,
               "aria-valuenow": value.lThumb,
+              "aria-disabled": isDisabled,
               disabled: isDisabled,
               name: "lThumb",
               "data-testid": "slider-input",

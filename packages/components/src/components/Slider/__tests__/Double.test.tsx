@@ -20,7 +20,7 @@ describe("<Slider.Double />", () => {
       expect(input).toHaveAttribute("type", "range");
       expect(input).toHaveAttribute("class");
       expect(input).not.toBeDisabled();
-      expect(input).toHaveAttribute("aria-disabled", "false");
+      expect(input).not.toHaveAttribute("aria-disabled");
       expect(input).toHaveValue("25");
       expect(input).toHaveAttribute("min", "0");
       expect(input).toHaveAttribute("max", "100");

@@ -1,35 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SelectContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside, useDisabled, useIsMobile } from "../../utils/hooks";
-import { InputFProps } from "../Input";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
 import { Header } from "./Header";
-import Hr from "./Hr";
+import { Hr } from "./Hr";
 import { Item } from "./Item";
-import Modal from "./Modal";
+import { Modal } from "./Modal";
+import { Options } from "./Options";
 
-// * Tests samples for later use
-// describe("<Select />", () => {
-//   test("default behaviour", () => {
-//      render(<Select />);
-//   });
-// });
-// describe("onClick functionality", () => {
-  //   test("default behaviour", () => {
-  //     selectCustomRender(<Select.Item id="test_id" />);
-  //     const item = screen.getByTestId("select-item");
-
-  //     userEvent.click(item);
-  //   });
-  // });
-
-export type SelectedItems = { id: string; content: string | null };
+export type SelectedItems = { id: string; content: string | null; selected: boolean };
 
 export type Props = {
   defaultOpen?: boolean;
-  paddingOnHeaderItems?: boolean;
   multiSelectable?: boolean;
+  mobileView?: boolean;
   onSelect?: (selected: SelectedItems[]) => void;
 };
 
@@ -39,19 +24,18 @@ type SubComponents = {
   Modal: typeof Modal;
   Button: typeof Button;
   Hr: typeof Hr;
+  Options: typeof Options;
 };
 
 export type FProps = Props &
-  Required<Pick<InputFProps, "placeholder">> &
   Omit<ComponentProps<"details", false>, "onSelect"> & {
     forwardRef?: ComponentProps<"details", true>["ref"];
   };
 
 const Select: React.FC<FProps> & SubComponents = ({
-  placeholder,
   defaultOpen = false,
-  paddingOnHeaderItems = false,
   multiSelectable = false,
+  mobileView = false,
   children,
   forwardRef,
   onToggle,
@@ -59,17 +43,17 @@ const Select: React.FC<FProps> & SubComponents = ({
   ...props
 }) => {
   const { ref: modalRef, isOpen, setIsOpen } = useClickOutside<HTMLDivElement>(defaultOpen);
-  const [value, setValue] = useState<string>(placeholder);
-  const [onlyChild, setOnlyChild] = useState<boolean>(true);
-  const [selectedItems, setSelectedItems] = useState<SelectedItems[]>([]);
+  const [value, setValue] = useState<string>("");
+  const [items, setItems] = useState<SelectedItems[]>([]);
   const [classNames, rest] = useClassnames("select__box__container", props);
   const isDisabled = useDisabled<boolean>(props);
-  const { isMobile } = useIsMobile();
+  const { isMobile } = useIsMobile(mobileView);
 
   const divRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = (e: React.SyntheticEvent<HTMLElement>, boolean = true) => {
     e.preventDefault();
+
     if (!isDisabled) {
       if (boolean) {
         // @ts-expect-error
@@ -161,45 +145,40 @@ const Select: React.FC<FProps> & SubComponents = ({
   };
 
   useEffect(() => {
-    setValue(selectedItems.map(item => item.content).join(", "));
-    if (onSelect) {
-      onSelect(selectedItems);
-    }
-  }, [selectedItems, onSelect]);
+    setValue(
+      items
+        .filter(item => item.selected)
+        .map(item => item.content)
+        .join(", ")
+    );
 
-  useEffect(() => {
-    if (paddingOnHeaderItems) {
-      setOnlyChild(false);
-    } else {
-      if (divRef && divRef.current) {
-        const headers = divRef.current.getElementsByTagName("h6");
-        setOnlyChild(headers.length <= 1);
-      }
+    if (onSelect && items.length > 0) {
+      onSelect(items);
     }
-  }, [paddingOnHeaderItems, divRef]);
+  }, [items, onSelect]);
 
   return (
     <SelectContextProvider
       value={{
         isOpen,
         ref: forwardRef,
-        onlyChild,
         value,
         multiSelectable,
-        selectedItems,
+        items,
         isMobile,
         modalRef: modalRef,
-        setSelectedItems,
+        setItems: setItems,
         handleToggle,
       }}
     >
-      <div className="flex-row-stretch-flex-start" ref={divRef}>
+      <div className="select__container" ref={divRef} data-testid="select-container">
         <details
           ref={isMobile ? undefined : modalRef}
           className={classNames}
           open={isOpen}
           onToggle={e => handleToggle(e)}
           onKeyDown={e => handleKeyDown(e)}
+          data-testid="select"
           {...rest}
         >
           {children}
@@ -215,5 +194,6 @@ Select.Item = Item;
 Select.Modal = Modal;
 Select.Button = Button;
 Select.Hr = Hr;
+Select.Options = Options;
 
 export default Select;

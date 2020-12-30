@@ -4,12 +4,11 @@ import { createCtx } from "../createCtx";
 
 export type SelectContextType = Pick<SelectProps, "multiSelectable"> & {
   isOpen: boolean;
-  onlyChild: boolean;
   value: string;
-  selectedItems: SelectedItems[];
+  items: SelectedItems[];
   isMobile: boolean;
   modalRef: React.RefObject<HTMLDivElement> | ((instance: HTMLDivElement | null) => void);
-  setSelectedItems: React.Dispatch<React.SetStateAction<SelectedItems[]>>;
+  setItems: React.Dispatch<React.SetStateAction<SelectedItems[]>>;
   handleToggle: (e: React.SyntheticEvent<HTMLElement>, boolean?: boolean) => void;
   ref: ((instance: HTMLElement | null) => void) | React.RefObject<HTMLElement> | null | undefined;
 };

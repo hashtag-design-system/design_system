@@ -2,7 +2,7 @@ import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 import { useClassnames } from "../../../utils/hooks";
 import { ComponentProps } from "../index";
-import { Portal } from "./Portal";
+import { Portal, Props as PortalProps } from "./Portal";
 
 export type Props = {
   isShown: boolean;
@@ -14,10 +14,10 @@ export type Props = {
   children: React.ReactNode;
 };
 
-export type FProps = Props & ComponentProps<"div", false> & HTMLMotionProps<"div">;
+export type FProps = Props & ComponentProps<"div", false> & HTMLMotionProps<"div"> & PortalProps;
 
 export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
-  ({ isShown = false, blur = 0, grayscale = 0, opacity = 1, bgColor = "dark", style, children, ...props }, ref) => {
+  ({ root, isShown = false, blur = 0, grayscale = 0, opacity = 1, bgColor = "dark", style, children, ...props }, ref) => {
     const [classNames, rest] = useClassnames<Partial<FProps>>("modal", props);
 
     const backdropFilter = [
@@ -29,7 +29,7 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
     const backgroundColor = bgColor === "white" ? "rgba(255, 255, 255, 0.85)" : "rgba(0, 0, 0, 0.5)";
 
     return isShown ? (
-      <Portal>
+      <Portal root={root}>
         <motion.div
           className={classNames}
           style={{
@@ -38,6 +38,7 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
             backgroundColor: style?.backgroundColor ?? backgroundColor,
           }}
           ref={ref}
+          data-testid="modal"
           {...rest}
         >
           {children}

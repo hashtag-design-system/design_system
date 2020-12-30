@@ -24,6 +24,7 @@ function App() {
 
   return (
     <div className="App">
+      <RadioButton label={{ value: "Label" }} />
       <Button pill>Button</Button>
       <Checkbox
         // incheck={isChecked => console.log(isChecked)}
@@ -32,24 +33,30 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Switch state="disabled|off" />
+      <Switch />
       {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
-      <Select defaultOpen multiSelectable={true} placeholder="Projects">
+      <Select defaultOpen multiSelectable placeholder="Projects">
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
-          <Select.Header>Hey</Select.Header>
-          <Select.Item id="hey">Hey</Select.Item>
-          <Select.Item id="amsterdam">Amsterdam</Select.Item>
-          <Select.Item id="georgekrax">georgekrax</Select.Item>
-          <Select.Item id="hello1">helfrffsfsfedlo</Select.Item>
-          <Select.Item id="hello2">hello</Select.Item>
-          <Select.Item id="hello3">hello</Select.Item>
-          <Select.Item id="hello4">hello</Select.Item>
-          <Select.Item id="hello5">dzfdfqfferfer</Select.Item>
-          <Select.Item id="hello6">hellrefrferfeo</Select.Item>
-          <Select.Item id="hello7">hello</Select.Item>
-          <Select.Item id="hello8">helrfrfewrlo</Select.Item>
-          <Select.Item id="hello9">wfwfwerf</Select.Item>
+          <Select.Header value="header" />
+          <Select.Options>
+            <Select.Item id="hey">Hey</Select.Item>
+            <Select.Item id="amsterdam">Amsterdam</Select.Item>
+            <Select.Item id="georgekrax">georgekrax</Select.Item>
+            <Select.Item id="hello1">helfrffsfsfedlo</Select.Item>
+            <Select.Item id="hello8">helrfrfewrlo</Select.Item>
+            <Select.Item id="hello9">wfwfwerf</Select.Item>
+            <Select.Item id="hello2">hello</Select.Item>
+            <Select.Item id="hello3">hello</Select.Item>
+            <Select.Item id="hello4">hello</Select.Item>
+            <Select.Item id="hello5">dzfdfqfferfer</Select.Item>
+            <Select.Item id="hello6">hellrefrferfeo</Select.Item>
+            <Select.Item id="hello7">hello</Select.Item>
+            <Select.Item id="hello8">hello</Select.Item>
+            <Select.Item id="hello9">hello</Select.Item>
+            <Select.Item id="hello10">hello</Select.Item>
+          </Select.Options>
+          {/* </Select.Header> */}
         </Select.Modal>
       </Select>
       <RadioButton state="disabled|unchecked" label={{ value: "Label", position: "top" }} />

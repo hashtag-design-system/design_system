@@ -1,3 +1,4 @@
+import { Color } from "framer";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { IconPropType } from "../../typings";
@@ -6,13 +7,16 @@ import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
 import { Base } from "../__helpers__";
 import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
 
+const grey5 = Color("#d6d6d6").toValue();
+const primary = Color("#0303ff").toValue();
+
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
 const boxVariants = {
   on: {
-    backgroundColor: "var(--primary)",
+    backgroundColor: primary,
   },
   initial: {
-    backgroundColor: "var(--grey-5)",
+    backgroundColor: grey5,
   },
 };
 
@@ -83,7 +87,7 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
           className={classNames}
           role="checkbox"
           tabIndex={isDisabled ? -1 : 0}
-          initial={boxVariants.initial}
+          initial="initial"
           animate={isOn ? "on" : "initial"}
           variants={boxVariants}
           transition={{ duration: 0.2 }}

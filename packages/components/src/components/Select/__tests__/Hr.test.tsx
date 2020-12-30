@@ -16,5 +16,6 @@ describe("<Select.Hr />", () => {
     const hr = screen.getByTestId("select-hr");
 
     expect(hr).toHaveClass("custom-className");
+    expect(hr).toMatchSnapshot();
   });
 });

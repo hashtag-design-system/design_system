@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Select.Header /> default behaviour 1`] = `
+<div
+  class="select__header"
+  data-children="false"
+  data-testid="select-header"
+>
+  <h6>
+    Test header
+  </h6>
+</div>
+`;
+
+exports[`<Select.Header /> with children 1`] = `
+<div
+  class="select__header"
+  data-children="true"
+  data-testid="select-header"
+>
+  <h6>
+    Test header
+  </h6>
+</div>
+`;

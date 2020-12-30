@@ -2,6 +2,7 @@
 
 exports[`<Button /> default behaviour 1`] = `
 <button
+  aria-disabled="false"
   class="btn btn-primary   btn-default-font shadow__form-2"
   data-testid="btn"
 />

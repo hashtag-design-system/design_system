@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Select.Item /> with defaultChecked={true} 1`] = `
+<div
+  aria-selected="false"
+  class="select__item"
+  data-testid="select-item"
+  tabindex="0"
+>
+  <input
+    aria-checked="false"
+    class="select__item__input"
+    data-testid="select-item-input"
+    id="test_id"
+    type="checkbox"
+    value="false"
+  />
+  <label
+    class="body-14"
+    data-testid="select-item-label"
+    for="test_id"
+    unselectable="on"
+  />
+</div>
+`;

@@ -3,9 +3,9 @@ import { SelectContextType } from "../../../utils/contexts";
 import Select from "../index";
 import { selectCustomRender } from "../__helpers__/utils";
 
-const TEST_SELECTED_MULTIPLE_ITEMS: SelectContextType["selectedItems"] = [
-  { id: "test_id0", content: "Test 1" },
-  { id: "test_id1", content: "Test 2" },
+const TEST_SELECTED_MULTIPLE_ITEMS: SelectContextType["items"] = [
+  { id: "test_id0", content: "Test 1", selected: true },
+  { id: "test_id1", content: "Test 2", selected: false },
 ];
 
 describe("<Select.Item />", () => {
@@ -46,6 +46,7 @@ describe("<Select.Item />", () => {
     const itemInput = screen.getByTestId("select-item-input");
 
     expect(item).toHaveAttribute("aria-selected", "false");
+    expect(item).toMatchSnapshot();
 
     expect(itemInput).toHaveAttribute("value", "false");
     expect(itemInput).toHaveAttribute("type", "checkbox");
@@ -70,9 +71,19 @@ describe("<Select.Item />", () => {
 
     expect(screen.getByTestId("select-hr")).toBeVisible();
   });
+  test("with disabled={true}", () => {
+    selectCustomRender(<Select.Item id="test_id" aria-disabled="true" />);
+
+    const selectInput = screen.getByTestId("select-item-input");
+
+    expect(screen.getByTestId("select-item")).toHaveAttribute("aria-disabled", "true");
+    expect(selectInput).toBeDisabled();
+    expect(selectInput).toHaveAttribute("aria-disabled", "true");
+  });
   test("with one selectedItems", () => {
-    selectCustomRender(<Select.Item id="test_id">Test</Select.Item>, {
-      providerProps: { selectedItems: [{ id: "test_id", content: "Test" }] },
+    selectCustomRender(<Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[0].id}>{TEST_SELECTED_MULTIPLE_ITEMS[0].content}</Select.Item>, {
+      // Pass for document - screen render, otherwise it will not be displayed, so we won't have access to it
+      providerProps: { items: TEST_SELECTED_MULTIPLE_ITEMS.slice(0, 1) },
     });
     const item = screen.getByTestId("select-item");
     const itemInput = screen.getByTestId("select-item-input");
@@ -81,27 +92,29 @@ describe("<Select.Item />", () => {
 
     expect(itemInput).toHaveAttribute("value", "true");
     expect(itemInput).toHaveAttribute("aria-checked", "true");
-    expect(itemInput).toHaveAttribute("id", "test_id");
+    expect(itemInput).toHaveAttribute("id", TEST_SELECTED_MULTIPLE_ITEMS[0].id);
   });
-  test("with multiple selectedItems", () => {
+  test("with multiple selectedItems", async () => {
     selectCustomRender(
       <>
-        {TEST_SELECTED_MULTIPLE_ITEMS.map(({ id, content }) => {
+        {/* {TEST_SELECTED_MULTIPLE_ITEMS.map(({ id, content }) => {
           <Select.Item id={id}>{content}</Select.Item>;
-        })}
+        })} */}
+        <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[0].id}>{TEST_SELECTED_MULTIPLE_ITEMS[0].content}</Select.Item>
+        <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[1].id}>{TEST_SELECTED_MULTIPLE_ITEMS[1].content}</Select.Item>
       </>,
       {
-        providerProps: { selectedItems: TEST_SELECTED_MULTIPLE_ITEMS },
+        providerProps: { items: TEST_SELECTED_MULTIPLE_ITEMS },
       }
     );
 
-    screen.queryAllByTestId("select-item").forEach(item => {
-      const checked = TEST_SELECTED_MULTIPLE_ITEMS.map(item => item.id).includes(item.id);
+    screen.getAllByTestId("select-item").forEach((item, i) => {
+      const checked = TEST_SELECTED_MULTIPLE_ITEMS[i].selected;
       expect(item.getAttribute("aria-selected")).toBe(checked.toString());
     });
 
-    screen.queryAllByTestId("select-item-input").forEach((input, i) => {
-      const checked = TEST_SELECTED_MULTIPLE_ITEMS.map(item => item.id).includes(input.id);
+    screen.getAllByTestId("select-item-input").forEach((input, i) => {
+      const checked = TEST_SELECTED_MULTIPLE_ITEMS[i].selected;
       expect(input).toHaveAttribute("value", checked.toString());
       expect(input).toHaveAttribute("aria-checked", checked.toString());
       expect(input).toHaveAttribute("id", `test_id${i}`);

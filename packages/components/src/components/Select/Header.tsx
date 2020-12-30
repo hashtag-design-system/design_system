@@ -1,22 +1,24 @@
 import React from "react";
-import { useSelectContext } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import Select from "./index";
 
-export type FProps = ComponentProps<"div">;
+export type Props = {
+  value: React.ReactNode;
+};
 
-export const Header: React.FunctionComponent<FProps> = ({ children, ...props }) => {
-  const [classNames, rest] = useClassnames<FProps>("select__header", props);
+export type FProps = Props & ComponentProps<"div">;
 
-  const { onlyChild } = useSelectContext();
-  
+export const Header: React.FunctionComponent<FProps> = ({ value, children, ...props }) => {
+  const [classNames, rest] = useClassnames<Partial<FProps>>("select__header", props);
+
   return (
     <>
-      <div className={classNames} data-onlychild={onlyChild} data-testid="select-header" {...rest}>
-        <h6>{children}</h6>
+      <div className={classNames} data-testid="select-header" data-children={children ? true : false} {...rest}>
+        <h6>{value}</h6>
       </div>
       <Select.Hr />
+      {children}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { Color } from "framer";
 import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAnimateCheckmark, useClassnames, useDisabled, useInputId } from "../../utils/hooks";
@@ -5,13 +6,17 @@ import { Animated, Base } from "../__helpers__";
 import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
 import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/SelectionInput/Base";
 
+const grey1 = Color("#ffffff").toValue();
+const grey5 = Color("#d6d6d6").toValue();
+const primary = Color("#0303ff").toValue();
+
 const boxVariants = {
   checked: (isIndeterminate: boolean) => ({
-    backgroundColor: !isIndeterminate ? "var(--primary)" : "",
-    borderColor: "var(--primary)",
+    backgroundColor: !isIndeterminate ? primary : undefined,
+    borderColor: primary,
   }),
-  initial: { backgroundColor: "var(--grey-1)", borderColor: "var(--grey-5)" },
-  pressed: (isIndeterminate: boolean) => ({ scale: !isIndeterminate ? 0.8 : 1, borderColor: "var(--primary)" }),
+  initial: { backgroundColor: grey1, borderColor: grey5 },
+  pressed: (isIndeterminate: boolean) => ({ scale: !isIndeterminate ? 0.8 : 1, borderColor: primary }),
 };
 
 export const CheckboxStates = [...SelectionInputStates, "indeterminate"] as const;
@@ -20,10 +25,7 @@ export type CheckboxState = typeof CheckboxStates[number];
 export type FProps = SelectionInputFProps<CheckboxState>;
 
 const Checkbox = React.forwardRef<HTMLLabelElement, FProps>(
-  (
-    { defaultChecked = false, label, groupName, state = "default", onChange, onClick, incheck, onKeyDownCapture, ...props },
-    ref
-  ) => {
+  ({ defaultChecked = false, label, groupName, state = "default", onChange, onClick, incheck, onKeyDownCapture, ...props }, ref) => {
     const id = useInputId(props.id);
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const isDisabled = useDisabled(props, state) || state.includes("disabled");

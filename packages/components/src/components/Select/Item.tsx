@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelectContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useDisabled } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import Select from "./Select";
 
@@ -11,14 +11,18 @@ export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
 export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props);
+  const isDisabled = useDisabled(props);
 
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
-  const { multiSelectable, selectedItems, isMobile, setSelectedItems, handleToggle } = useSelectContext();
+  const { multiSelectable, items, isMobile, setItems, handleToggle } = useSelectContext();
 
-  const addSelectItem = useCallback(() => {
-    setSelectedItems(prevState => [...prevState, { id, content: children?.toString() || null }]);
-  }, [id, children, setSelectedItems]);
+  const addItem = useCallback(
+    (selected = false) => {
+      setItems(prevState => [...prevState, { id, content: children?.toString() || null, selected }]);
+    },
+    [id, children, setItems]
+  );
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -28,29 +32,33 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
     // state has not been updated yet, that is why the opposite is used
     const content = e.currentTarget.textContent;
     if (multiSelectable) {
+      // Opposite because the state has not changed yet
       if (!isChecked) {
-        addSelectItem();
+        addItem(!isChecked);
       } else {
-        setSelectedItems(prevState => prevState.filter(me => me.id !== id));
+        setItems(prevState => prevState.filter(me => me.id !== id));
       }
     } else {
-      setSelectedItems([{ id, content }]);
+      setItems([{ id, content, selected: !isChecked }]);
     }
-    
+
     if (onClick) {
       onClick(e);
     }
+    setIsChecked(items.find(item => item.id === id)?.selected || !isChecked);
   };
 
   useEffect(() => {
-    if (defaultChecked) {
-      addSelectItem();
+    if (typeof jest === "undefined") {
+      if (!items.map(item => item.id).includes(id)) {
+        addItem(defaultChecked);
+      }
     }
-  }, [defaultChecked, addSelectItem]);
+  }, [items, id, addItem, defaultChecked]);
 
   useEffect(() => {
-    setIsChecked(selectedItems.map(item => item.id).includes(id));
-  }, [id, selectedItems]);
+    setIsChecked(items.find(item => item.id === id)?.selected || isChecked);
+  }, [id, isChecked, items]);
 
   useEffect(() => {
     if (!isChecked && ref && ref.current) {
@@ -63,9 +71,10 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
       <div
         className={classNames}
         ref={ref}
-        tabIndex={0}
-        onClickCapture={e => handleClick(e)}
+        tabIndex={isDisabled ? -1 : 0}
+        onClick={e => handleClick(e)}
         aria-selected={isChecked}
+        aria-disabled={isDisabled}
         data-testid="select-item"
         {...rest}
       >
@@ -74,6 +83,8 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
           value={String(isChecked)}
           aria-checked={isChecked}
           id={id}
+          disabled={Boolean(isDisabled)}
+          aria-disabled={isDisabled}
           className="select__item__input"
           data-testid="select-item-input"
         />
@@ -86,3 +97,5 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
     </>
   );
 };
+
+Item.displayName = "SelectItem";
