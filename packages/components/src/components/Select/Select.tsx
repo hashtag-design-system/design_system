@@ -3,13 +3,14 @@ import { SelectContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside, useDisabled, useIsMobile } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
+import { Filter } from "./Filter";
 import { Header } from "./Header";
 import { Hr } from "./Hr";
 import { Item } from "./Item";
 import { Modal } from "./Modal";
 import { Options } from "./Options";
 
-export type SelectedItems = { id: string; content: string | null; selected: boolean };
+export type SelectedItems = { id: string; content: string | null; selected: boolean; isShown: boolean };
 
 export type Props = {
   defaultOpen?: boolean;
@@ -25,6 +26,7 @@ type SubComponents = {
   Button: typeof Button;
   Hr: typeof Hr;
   Options: typeof Options;
+  Filter: typeof Filter;
 };
 
 export type FProps = Props &
@@ -69,7 +71,11 @@ const Select: React.FC<FProps> & SubComponents = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.target instanceof HTMLInputElement) {
+      return;
+    }
     e.preventDefault();
+
     const focusItem = (next: boolean) => {
       if (divRef && divRef.current) {
         const options = Array.from(divRef.current.getElementsByClassName("select__item"));
@@ -152,7 +158,7 @@ const Select: React.FC<FProps> & SubComponents = ({
         .join(", ")
     );
 
-    if (onSelect && items.length > 0) {
+    if (onSelect && items.length >= 1) {
       onSelect(items);
     }
   }, [items, onSelect]);
@@ -162,7 +168,7 @@ const Select: React.FC<FProps> & SubComponents = ({
       value={{
         isOpen,
         ref: forwardRef,
-        value,
+        btnValue: value,
         multiSelectable,
         items,
         isMobile,
@@ -188,12 +194,12 @@ const Select: React.FC<FProps> & SubComponents = ({
   );
 };
 
-Select.displayName = "Select";
 Select.Header = Header;
 Select.Item = Item;
 Select.Modal = Modal;
 Select.Button = Button;
 Select.Hr = Hr;
 Select.Options = Options;
+Select.Filter = Filter;
 
 export default Select;

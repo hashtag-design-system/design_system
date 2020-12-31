@@ -1,6 +1,6 @@
 import React from "react";
 import { IconPropType } from "../../typings";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
+import { InputContextProvider } from "../../utils/contexts";
 import { generateInputId } from "../../utils/hooks/useInputId";
 import { InputAutocompleteType } from "../__helpers__";
 import Digit from "./Digit";
@@ -93,6 +93,7 @@ export default class Input extends React.Component<FProps, State> {
     const { id, value } = this.state;
 
     const { value: propsValue, overrideOnChange } = this.props;
+    // console.log(id);
 
     return (
       <InputContextProvider

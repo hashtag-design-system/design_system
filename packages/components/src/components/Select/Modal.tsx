@@ -33,7 +33,7 @@ export type Props = {
 export type FProps = Props & HTMLMotionProps<"div">;
 
 export const Modal: React.FunctionComponent<FProps> = ({ align = "left", initial, animate, children, ...props }) => {
-  const { isOpen, multiSelectable, isMobile, modalRef } = useSelectContext();
+  const { isOpen, isMobile, modalRef } = useSelectContext();
 
   const [classNames, rest] = useClassnames("select__modal", props);
   const initialRef = useRef<HTMLDivElement>(null);
@@ -71,10 +71,8 @@ export const Modal: React.FunctionComponent<FProps> = ({ align = "left", initial
         initial="initial"
         animate={isOpen ? "open" : "initial"}
         custom={{ isMobile, isOpen }}
-        transition={{ type: "tween", duration: 0.35 }}
+        transition={{ type: "tween", duration: 0.25 }}
         className={classNames}
-        role="listbox"
-        aria-multiselectable={multiSelectable}
         data-testid="select-modal"
         {...rest}
       >

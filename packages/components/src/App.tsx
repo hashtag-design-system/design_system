@@ -35,40 +35,35 @@ function App() {
       />
       <Switch />
       {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
-      <Select defaultOpen multiSelectable placeholder="Projects">
+      <Select defaultOpen multiSelectable mobileView placeholder="Projects" onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
           <Select.Header value="header" />
+          <Select.Filter placeholder="Filter" floatingplaceholder={false} />
           <Select.Options>
-            <Select.Item id="hey">Hey</Select.Item>
-            <Select.Item id="amsterdam">Amsterdam</Select.Item>
+            <Select.Item id="hey_george">Hey george</Select.Item>
+            <Select.Item id="amsterda,">
+              Amsterdam<p>george</p>
+            </Select.Item>
             <Select.Item id="georgekrax">georgekrax</Select.Item>
-            <Select.Item id="hello1">helfrffsfsfedlo</Select.Item>
-            <Select.Item id="hello8">helrfrfewrlo</Select.Item>
-            <Select.Item id="hello9">wfwfwerf</Select.Item>
-            <Select.Item id="hello2">hello</Select.Item>
-            <Select.Item id="hello3">hello</Select.Item>
-            <Select.Item id="hello4">hello</Select.Item>
-            <Select.Item id="hello5">dzfdfqfferfer</Select.Item>
-            <Select.Item id="hello6">hellrefrferfeo</Select.Item>
-            <Select.Item id="hello7">hello</Select.Item>
-            <Select.Item id="hello8">hello</Select.Item>
-            <Select.Item id="hello9">hello</Select.Item>
-            <Select.Item id="hello10">hello</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="test_id">
+              <strong>NL</strong>Amsterdam
+            </Select.Item>
           </Select.Options>
           {/* </Select.Header> */}
         </Select.Modal>
       </Select>
       <RadioButton state="disabled|unchecked" label={{ value: "Label", position: "top" }} />
       <Input
-        label="Label"
-        helptext={{ value: "Help text" }}
-        secondhelptext={{ value: "2nd Help text" }}
-        characterLimit
-        maxLength={30}
+        // label="Label"
+        // helptext={{ value: "Help text" }}
+        // secondhelptext={{ value: "2nd Help text" }}
+        // characterLimit
+        // maxLength={30}
         // state="disabled"
         placeholder="Placeholder"
-        floatingplaceholder={true}
+        floatingplaceholder={false}
         // defaultValue="georgekraxt@gmail.com"
         // prefix="€"
         // prefix={<OpenEye />}
@@ -81,11 +76,6 @@ function App() {
       {/* <Input.IncrDcr state="default" /> */}
       {/* <Input.Digit state="error" /> */}
       {/* <Input.DigitSequence numberOfDigits={6} helptext={{ value: "george", icon: <OpenEye /> }} /> */}
-      <Input.Number state="default" />
-      <Input.Number state="default" />
-      <Input.Number state="default" />
-      <Input.Number state="default" />
-      <Input.Number state="default" />
       <Input.Number state="default" />
     </div>
   );

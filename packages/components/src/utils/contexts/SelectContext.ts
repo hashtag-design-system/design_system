@@ -4,7 +4,7 @@ import { createCtx } from "../createCtx";
 
 export type SelectContextType = Pick<SelectProps, "multiSelectable"> & {
   isOpen: boolean;
-  value: string;
+  btnValue: string;
   items: SelectedItems[];
   isMobile: boolean;
   modalRef: React.RefObject<HTMLDivElement> | ((instance: HTMLDivElement | null) => void);

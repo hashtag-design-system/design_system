@@ -2,18 +2,18 @@
 
 exports[`<Select.Item /> with defaultChecked={true} 1`] = `
 <div
-  aria-selected="false"
+  aria-selected="true"
   class="select__item"
   data-testid="select-item"
   tabindex="0"
 >
   <input
-    aria-checked="false"
+    aria-checked="true"
     class="select__item__input"
     data-testid="select-item-input"
     id="test_id"
     type="checkbox"
-    value="false"
+    value="true"
   />
   <label
     class="body-14"

@@ -65,16 +65,4 @@ describe("Input <InputContainer />", () => {
       expect(screen.getByTestId("second-help-text-container").style.justifyContent).toBe("flex-end");
     });
   });
-  describe("`width` from Props", () => {
-    test("width", () => {
-      inputCustomRender(<InputContainer />, { providerProps: { width: "120px" } });
-
-      expect(screen.getByTestId("input-container").style.width).toBe("120px");
-    });
-    test("style.width", () => {
-      inputCustomRender(<InputContainer />, { providerProps: { style: { width: "120px" } } });
-
-      expect(screen.getByTestId("input-container").style.width).toBe("120px");
-    });
-  });
 });

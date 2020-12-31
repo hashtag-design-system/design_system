@@ -3,7 +3,7 @@ import { useInputContext } from "../../../../utils/contexts/InputContext";
 import { HelpTextContainer } from "../HelpTextContainer/HelpTextContainer";
 
 export const InputContainer: React.FC = ({ children }) => {
-  const { value, id, maxLength, secondhelptext, label, characterLimit, optional, passwordboxes, style, width } = useInputContext();
+  const { value, id, maxLength, secondhelptext, label, characterLimit, optional, passwordboxes } = useInputContext();
   let { helptext } = useInputContext();
 
   const isAllowedMoreCharacters = String(value).length === maxLength;
@@ -13,7 +13,7 @@ export const InputContainer: React.FC = ({ children }) => {
   }
 
   return (
-    <div className="input__container" style={{ ...style, width: style?.width || width }} data-testid="input-container">
+    <div className="input__container" data-testid="input-container">
       {(label || helptext || passwordboxes || optional) && (
         <div
           className="input__label__container input__padding-container"

@@ -8233,6 +8233,11 @@ framer-motion@^2.9.4:
   optionalDependencies:
     "@emotion/is-prop-valid" "^0.8.2"
 
+framer@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.npmjs.org/framer/-/framer-1.2.12.tgz#44302d591bd514772089099376e0f8521bd949a8"
+  integrity sha512-n/oq4U5yphBPD6FvEQdMC4YZxoXJwxIfGpl7wjpFPqFG3cRi1ULkURG2dHX1XmzvR5O726tBRSOcJy5V/yTa/A==
+
 framesync@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/framesync/-/framesync-4.1.0.tgz#69a8db3ca432dc70d6a76ba882684a1497ef068a"

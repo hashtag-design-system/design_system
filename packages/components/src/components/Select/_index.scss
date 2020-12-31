@@ -3,7 +3,6 @@
 .select {
   &__container {
     @extend .flex-row-stretch-flex-start;
-    z-index: 1;
   }
 
   &__btn {
@@ -33,6 +32,10 @@
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+
+    @supports (overflow-y: overlay) {
+      overflow-y: overlay;
+    }
 
     &::-webkit-scrollbar {
       width: em(6);
@@ -71,6 +74,11 @@
 
     &--mobile {
       @extend .flex-row-center-center;
+    }
+
+    .input__container {
+      margin: em(8);
+      margin-bottom: em(4);
     }
   }
 
@@ -144,12 +152,16 @@
     fill: none !important;
     stroke: $grey-7 !important;
   }
+
+  &__filter {
+    width: 100% !important;
+  }
 }
 
 @include breakpoint("sm", "min-width") {
   .select {
     &__item {
-      padding: em(6) em(4);
+      padding: em(6) em(8);
       margin: em(4);
       border-radius: em(4);
     }

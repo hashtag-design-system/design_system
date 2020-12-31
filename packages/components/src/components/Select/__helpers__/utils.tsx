@@ -2,11 +2,11 @@ import { render, RenderOptions } from "@testing-library/react";
 import React from "react";
 import { SelectContextProvider, SelectContextType } from "../../../utils/contexts";
 
-export const defaultProps: Pick<SelectContextType, "isOpen" | "isMobile" | "multiSelectable" | "items" | "value"> = {
+export const defaultProps: Pick<SelectContextType, "isOpen" | "isMobile" | "multiSelectable" | "items" | "btnValue"> = {
   isOpen: false,
   isMobile: false,
   multiSelectable: false,
-  value: "",
+  btnValue: "",
   items: [],
 };
 

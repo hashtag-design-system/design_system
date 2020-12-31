@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { generateId } from "../generateId";
 
 export const generateInputId = () => {
@@ -9,13 +8,5 @@ export const generateInputId = () => {
 };
 
 export const useInputId = (identifier?: string): string => {
-  const [id, setId] = useState(identifier || "");
-
-  useEffect(() => {
-    if (!id) {
-      setId(generateInputId());
-    }
-  }, [id]);
-
-  return id;
+  return identifier || generateInputId();
 };

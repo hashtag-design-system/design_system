@@ -21,7 +21,7 @@ describe("<Select.Button />", () => {
     expect(children[1]).toHaveClass("icon");
   });
   test("with value", () => {
-    selectCustomRender(<Select.Button />, { providerProps: { value: "Placeholder" } });
+    selectCustomRender(<Select.Button />, { providerProps: { btnValue: "Placeholder" } });
 
     expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Placeholder");
   });
@@ -37,7 +37,7 @@ describe("<Select.Button />", () => {
     expect(pChild.style.width).toBe("5px");
   });
   test("with showValue={false} & value", () => {
-    selectCustomRender(<Select.Button showValue={false}>Test</Select.Button>, { providerProps: { value: "Placeholder" } });
+    selectCustomRender(<Select.Button showValue={false}>Test</Select.Button>, { providerProps: { btnValue: "Placeholder" } });
 
     expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Test");
   });

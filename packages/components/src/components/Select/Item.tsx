@@ -17,12 +17,21 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
 
   const { multiSelectable, items, isMobile, setItems, handleToggle } = useSelectContext();
 
-  const addItem = useCallback(
-    (selected = false) => {
-      setItems(prevState => [...prevState, { id, content: children?.toString() || null, selected }]);
-    },
-    [id, children, setItems]
-  );
+  let newChildren = children?.toString() || null;
+  if (children) {
+    newChildren = React.Children.toArray(children)
+      .map(child => {
+        if (typeof child === "object") {
+          return (child as React.ReactElement).props.children;
+        }
+        return child;
+      })
+      .join(" ");
+  }
+
+  const addItem = useCallback(() => {
+    setItems(prevState => [...prevState, { id, content: newChildren, selected: defaultChecked, isShown: true }]);
+  }, [id, defaultChecked, newChildren, setItems]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -30,34 +39,41 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
       handleToggle(e, false);
     }
     // state has not been updated yet, that is why the opposite is used
-    const content = e.currentTarget.textContent;
-    if (multiSelectable) {
-      // Opposite because the state has not changed yet
-      if (!isChecked) {
-        addItem(!isChecked);
-      } else {
-        setItems(prevState => prevState.filter(me => me.id !== id));
+    const newItems = items.map(item => {
+      if (item.id === id) {
+        const newItem = {
+          ...item,
+          // Opposite because the state has not changed yet
+          selected: !isChecked,
+        };
+        return newItem;
       }
-    } else {
-      setItems([{ id, content, selected: !isChecked }]);
-    }
+
+      if (multiSelectable) {
+        return item;
+      } else {
+        return { ...item, selected: false };
+      }
+    });
+    setItems(newItems);
 
     if (onClick) {
       onClick(e);
     }
-    setIsChecked(items.find(item => item.id === id)?.selected || !isChecked);
   };
 
   useEffect(() => {
-    if (typeof jest === "undefined") {
+    // if (typeof jest === "undefined") {
       if (!items.map(item => item.id).includes(id)) {
-        addItem(defaultChecked);
+        // if (items.length === 0) {
+        addItem();
+        // }
       }
-    }
-  }, [items, id, addItem, defaultChecked]);
+    // }
+  }, [id, items, addItem]);
 
   useEffect(() => {
-    setIsChecked(items.find(item => item.id === id)?.selected || isChecked);
+    setIsChecked(items.find(item => item.id === id)?.selected!);
   }, [id, isChecked, items]);
 
   useEffect(() => {
@@ -66,6 +82,15 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
     }
   }, [isChecked]);
 
+  if (
+    items
+      .filter(item => item.isShown === false)
+      .map(item => item.id)
+      .includes(id)
+  ) {
+    return null;
+  }
+
   return (
     <>
       <div
@@ -73,15 +98,15 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
         ref={ref}
         tabIndex={isDisabled ? -1 : 0}
         onClick={e => handleClick(e)}
-        aria-selected={isChecked}
+        aria-selected={isChecked || defaultChecked}
         aria-disabled={isDisabled}
         data-testid="select-item"
         {...rest}
       >
         <input
           type="checkbox"
-          value={String(isChecked)}
-          aria-checked={isChecked}
+          value={String(isChecked || defaultChecked)}
+          aria-checked={isChecked || defaultChecked}
           id={id}
           disabled={Boolean(isDisabled)}
           aria-disabled={isDisabled}
@@ -97,5 +122,3 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
     </>
   );
 };
-
-Item.displayName = "SelectItem";

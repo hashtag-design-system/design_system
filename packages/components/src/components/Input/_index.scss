@@ -5,8 +5,8 @@
   @extend .body-16;
   color: $grey-10;
   padding: em(10) em(12);
-  width: 100%;
-  height: em(48);
+  width: auto;
+  height: em(40);
   box-sizing: border-box;
   border: $input-border-width solid $input-border-color;
   border-radius: $input-border-radius;
@@ -49,7 +49,6 @@
 
   &__container {
     @extend .flex-column-stretch-flex-start;
-    width: em(280);
     gap: em(4);
 
     &__field {
@@ -85,7 +84,9 @@
     @extend .body-16;
     order: 2;
     position: absolute;
-    top: rem(14);
+    // top: calc(50% - 1rem);
+    top: 50%;
+    transform: translateY(-50%);
     left: rem(12);
     color: $grey-7;
     overflow: hidden;

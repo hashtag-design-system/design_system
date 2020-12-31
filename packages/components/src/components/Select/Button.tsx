@@ -12,7 +12,7 @@ export type FProps = Props & ComponentProps<"summary", false>;
 
 export const Button: React.FC<FProps> = ({ className, showValue = true, children, ...props }) => {
   const [classNames, rest] = useClassnames<FProps>("select__btn btn btn-secondary", props);
-  const { value, ref } = useSelectContext();
+  const { btnValue: value, ref } = useSelectContext();
 
   return (
     <summary ref={ref} className={classNames} data-testid="select-btn" {...rest}>

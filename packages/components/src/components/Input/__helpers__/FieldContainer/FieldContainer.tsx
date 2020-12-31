@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { InputContextProvider, useInputContext } from "../../../../utils/contexts/InputContext";
+import { InputContextProvider, useInputContext } from "../../../../utils/contexts";
 import { Base } from "../Base/Base";
 import { FixGroup } from "../FixGroup/FixGroup";
 import { OuterFieldContainer } from "../OuterFieldContainer/OuterFieldContainer";
@@ -10,6 +10,7 @@ export const EM_REM_MULTIPLIER = 16;
 export const FieldContainer: React.FunctionComponent = () => {
   const {
     value: propsValue,
+    id,
     type,
     label,
     defaultValue,
@@ -68,6 +69,7 @@ export const FieldContainer: React.FunctionComponent = () => {
       <InputContextProvider
         value={{
           ...rest,
+          id,
           value: overrideOnChange ? propsValue : value,
           placeholder: floatingplaceholder === false && placeholder ? placeholder : undefined,
           onChange: e => handleChange(e),

@@ -8,7 +8,7 @@
 @mixin input-background($color: $input-bg) {
   background-color: $color;
 
-&.input-multiline {
+  &.input-multiline {
     &:not([disabled]):not(.disabled) {
       + .input__floating-placeholder {
         background-color: $color;
@@ -24,6 +24,7 @@
 @mixin input__floating-placeholder--focus {
   top: em(8);
   font-size: em(10);
+  transform: none;
 }
 
 @mixin input--state($color) {

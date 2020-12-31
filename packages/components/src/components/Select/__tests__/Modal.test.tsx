@@ -11,30 +11,7 @@ describe("<Select.Modal />", () => {
     expect(modal).toMatchSnapshot();
     expect(modal).toHaveAttribute("class");
     expect(modal).toHaveAttribute("style");
-    expect(modal).toHaveAttribute("role", "listbox");
-    expect(modal).toHaveAttribute("aria-multiselectable", "false");
     expect(modal.children).toHaveLength(0);
-  });
-  test("with multiSelectable={true}", () => {
-    selectCustomRender(<Select.Modal />, { providerProps: { multiSelectable: true } });
-
-    expect(screen.getByTestId("select-modal")).toHaveAttribute("aria-multiselectable", "true");
-  });
-  test("with children", () => {
-    selectCustomRender(
-      <Select.Modal>
-        <Select.Item id="test_id0">Test 1</Select.Item>
-        <Select.Item id="test_id1">Test 2</Select.Item>
-      </Select.Modal>
-    );
-    const children = screen.getByTestId("select-modal").children;
-
-    expect(children).toHaveLength(2);
-    Array.from(children).forEach((child, i) => {
-      expect(child).toBeVisible();
-      expect(child.children[0].id).toBe(`test_id${i}`);
-      expect(child.children[1].textContent).toBe(child.textContent);
-    });
   });
   // test("overflow viewport", () => {
   //   selectCustomRender(
