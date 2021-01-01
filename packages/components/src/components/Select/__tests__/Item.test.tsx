@@ -62,6 +62,34 @@ describe("<Select.Item />", () => {
     expect(itemInput).toHaveAttribute("type", "checkbox");
     expect(itemInput).toHaveAttribute("aria-checked", "true");
   });
+  test('state="disabled"', () => {
+    render(
+      <Select defaultOpen>
+        <Select.Button style={{ width: "200px" }}>Project</Select.Button>
+        <Select.Item id="test_id" state="disabled">
+          Test
+        </Select.Item>
+      </Select>
+    );
+    const item = screen.getByTestId("select-item");
+    const itemInput = screen.getByTestId("select-item-input");
+
+    expect(item).toHaveClass("disabled");
+    expect(item).toHaveAttribute("aria-selected", "false");
+    expect(item).toHaveAttribute("aria-disabled", "true");
+    expect(item).toMatchSnapshot();
+
+    userEvent.click(item);
+
+    expect(itemInput).toBeDisabled();
+    expect(itemInput).toHaveAttribute("value", "false");
+    expect(itemInput).toHaveAttribute("aria-checked", "false");
+    expect(itemInput).toHaveAttribute("aria-disabled", "true");
+
+    const btnTextContent = screen.getByTestId("select-btn").children[0].textContent;
+    expect(btnTextContent).not.toBe("Test");
+    expect(btnTextContent).toBe("Project");
+  });
   test("with children", () => {
     render(
       <Select defaultOpen>

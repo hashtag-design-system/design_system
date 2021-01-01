@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames, useDisabled } from "../../utils/hooks";
-import { ComponentProps } from "../__helpers__";
+import { ComponentProps, ComponentState } from "../__helpers__";
 import Select from "./Select";
 
 export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
   Pick<ComponentProps<"input">, "defaultChecked" | "children" | "className"> &
-  ComponentProps<"div", false>;
+  ComponentProps<"div", false> &
+  ComponentState<"default" | "hover" | "focus" | "disabled">;
 
-export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, children, ...props }) => {
+export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onClick, children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props);
-  const isDisabled = useDisabled(props);
+  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props, { stateToRemove: { state } });
+  const isDisabled = useDisabled(props, state);
 
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
@@ -30,8 +31,10 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
   }
 
   const addItem = useCallback(() => {
-    setItems(prevState => [...prevState, { id, content: newChildren, selected: defaultChecked, isShown: true }]);
-  }, [id, defaultChecked, newChildren, setItems]);
+    if (!isDisabled) {
+      setItems(prevState => [...prevState, { id, content: newChildren, selected: defaultChecked, isShown: true }]);
+    }
+  }, [isDisabled, id, defaultChecked, newChildren, setItems]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -55,7 +58,9 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
         return { ...item, selected: false };
       }
     });
-    setItems(newItems);
+    if (!isDisabled) {
+      setItems(newItems);
+    }
 
     if (onClick) {
       onClick(e);
@@ -64,11 +69,11 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
 
   useEffect(() => {
     // if (typeof jest === "undefined") {
-      if (!items.map(item => item.id).includes(id)) {
-        // if (items.length === 0) {
-        addItem();
-        // }
-      }
+    if (!items.map(item => item.id).includes(id)) {
+      // if (items.length === 0) {
+      addItem();
+      // }
+    }
     // }
   }, [id, items, addItem]);
 
@@ -77,10 +82,10 @@ export const Item: React.FC<FProps> = ({ id, defaultChecked = false, onClick, ch
   }, [id, isChecked, items]);
 
   useEffect(() => {
-    if (!isChecked && ref && ref.current) {
+    if ((!isChecked || isDisabled) && ref && ref.current) {
       ref.current.blur();
     }
-  }, [isChecked]);
+  }, [isDisabled, isChecked]);
 
   if (
     items

@@ -23,7 +23,7 @@
   }
 
   @include disabled-classNames {
-    @include disabled-state;
+    @extend .state--disabled;
     @extend .input__disabled--bg;
     color: $grey-8;
   }

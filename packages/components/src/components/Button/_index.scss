@@ -28,6 +28,10 @@
     @include accessibility-5dp;
   }
 
+  @include disabled-classNames() {
+    opacity: 0.5;
+  }
+
   // Pill button
   &.pill {
     border-radius: 24px !important;
@@ -56,7 +60,7 @@
   }
 
   @include disabled-classNames {
-    @include disabled-state;
+    @extend .state--disabled;
     background-color: $grey-7;
     border-color: $grey-7;
     color: $grey-10;
@@ -77,10 +81,11 @@
   }
 
   @include disabled-classNames {
-    @include disabled-state;
+    @extend .state--disabled;
     background-color: inherit;
     border-color: $grey-8;
     color: $grey-8;
+    stroke: $grey-8;
   }
 }
 
@@ -98,10 +103,11 @@
   }
 
   @include disabled-classNames {
-    @include disabled-state;
+    @extend .state--disabled;
     background-color: inherit;
     border-color: $red-6;
     color: $red-6;
+    stroke: $red-6;
   }
 
   @include focus-visible-classNames() {

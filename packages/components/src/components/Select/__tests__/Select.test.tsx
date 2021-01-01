@@ -1,11 +1,18 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Select, { SelectFilterProps } from "../index";
+import Select, { SelectButtonFProps, SelectFilterProps } from "../index";
 
-const TestChildren: React.FunctionComponent<SelectFilterProps> = ({ filterById = false, children }) => {
+const TestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFProps> = ({
+  state,
+  showValue,
+  filterById = false,
+  children,
+}) => {
   return (
     <>
-      <Select.Button style={{ width: "200px" }}>Project</Select.Button>
+      <Select.Button state={state} showValue={showValue} style={{ width: "200px" }}>
+        Project
+      </Select.Button>
       <Select.Modal>
         <Select.Header value="Header" />
         <Select.Options>
@@ -46,6 +53,21 @@ describe("<Select />", () => {
     expect(container.children).toHaveLength(1);
     expect(container.children[0].tagName.toLowerCase()).toBe("details");
   });
+  test('state="disabled"', () => {
+    render(
+      <Select>
+        <TestChildren state="disabled" />
+      </Select>
+    );
+    const btn = screen.getByTestId("select-btn");
+
+    expect(btn).toHaveClass("disabled");
+
+    userEvent.click(btn);
+
+    expect(screen.getByTestId("select-modal")).not.toBeVisible();
+    expect(screen.getByTestId("select")).not.toHaveAttribute("open");
+  });
   describe("with children", () => {
     test("with defaultOpen={true}", () => {
       render(
@@ -62,6 +84,46 @@ describe("<Select />", () => {
 
       expect(modal).toBeVisible();
       expect(modal.children).toBeDefined();
+
+      expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Project");
+    });
+    test("with showValue={true}", () => {
+      render(
+        <Select defaultOpen multiSelectable>
+          <TestChildren showValue />
+        </Select>
+      );
+
+      const items = screen.getAllByTestId("select-item");
+      items.slice(0, 2).forEach(item => {
+        userEvent.click(item);
+      });
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "false");
+
+      // Do not change value with showValue={false}, and keep the default one
+      expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Hey, Amsterdam");
+    });
+    test("with showValue={false} & value", () => {
+      render(
+        <Select defaultOpen multiSelectable>
+          <TestChildren showValue={false} />
+        </Select>
+      );
+
+      const items = screen.getAllByTestId("select-item");
+      items.slice(0, 2).forEach(item => {
+        userEvent.click(item);
+      });
+
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+      expect(items[2]).toHaveAttribute("aria-selected", "false");
+
+      // Do not change value with showValue={false}, and keep the default one
+      expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Project");
     });
     test("with mobileView={true}", () => {
       render(

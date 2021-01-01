@@ -61,7 +61,20 @@ const InputAutocompleteTypes = [
 ] as const;
 export type InputAutocompleteType = typeof InputAutocompleteTypes[number];
 
-const InputTypes = ["text", "textarea", "email", "hidden", "number", "password", "checkbox", "radio", "range", "search", "button", "url"] as const;
+const InputTypes = [
+  "text",
+  "textarea",
+  "email",
+  "hidden",
+  "number",
+  "password",
+  "checkbox",
+  "radio",
+  "range",
+  "search",
+  "button",
+  "url",
+] as const;
 export type InputType = typeof InputTypes[number];
 
 type BaseInput<S extends string | undefined = undefined, Ref extends boolean = false, T extends React.ElementType = "input"> = {
@@ -109,3 +122,7 @@ export type ComponentProps<
     : {
         state?: S;
       });
+
+export type ComponentState<T extends string> = {
+  state?: T;
+};

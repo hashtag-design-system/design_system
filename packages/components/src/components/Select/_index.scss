@@ -13,9 +13,15 @@
     box-shadow: 0px 0px 2px rgba(194, 194, 194, 0.25);
 
     @include hover-classNames() {
-      background-color: $grey-2;
+      background-color: $grey-3;
       color: initial;
       border-color: $input-border-color;
+    }
+
+    @include disabled-classNames() {
+      background-color: initial;
+      color: initial;
+      border-color: $grey-7;
     }
 
     p {
@@ -90,16 +96,33 @@
 
     @include hover-classNames() {
       @include breakpoint("sm") {
-        @include select__item--hover();
+        @include select__item--focus();
+
+        &:not(.select__header) {
+          background-color: $grey-3;
+        }
       }
     }
 
     @include focus-classNames() {
-      @extend .select__item--hover;
+      outline: none;
+
+      &:not([aria-disabled="true"]) {
+        @extend .select__item--focus;
+      }
     }
 
     &[aria-selected="true"] {
-      @extend .select__item--hover;
+      @extend .select__item--focus;
+    }
+
+    @include disabled-classNames() {
+      @extend .state--disabled;
+      opacity: 0.5;
+
+      & > * {
+        @extend .state--disabled;
+      }
     }
 
     label {

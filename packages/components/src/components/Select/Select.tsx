@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SelectContextProvider } from "../../utils/contexts";
-import { useClassnames, useClickOutside, useDisabled, useIsMobile } from "../../utils/hooks";
+import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
 import { Filter } from "./Filter";
@@ -47,11 +47,17 @@ const Select: React.FC<FProps> & SubComponents = ({
   const { ref: modalRef, isOpen, setIsOpen } = useClickOutside<HTMLDivElement>(defaultOpen);
   const [value, setValue] = useState<string>("");
   const [items, setItems] = useState<SelectedItems[]>([]);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [classNames, rest] = useClassnames("select__box__container", props);
-  const isDisabled = useDisabled<boolean>(props);
   const { isMobile } = useIsMobile(mobileView);
 
   const divRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (isDisabled) {
+      e.preventDefault();
+    }
+  };
 
   const handleToggle = (e: React.SyntheticEvent<HTMLElement>, boolean = true) => {
     e.preventDefault();
@@ -168,13 +174,14 @@ const Select: React.FC<FProps> & SubComponents = ({
       value={{
         isOpen,
         ref: forwardRef,
-        btnValue: value,
+        value,
         multiSelectable,
         items,
         isMobile,
-        modalRef: modalRef,
-        setItems: setItems,
+        modalRef,
+        setItems,
         handleToggle,
+        setIsDisabled,
       }}
     >
       <div className="select__container" ref={divRef} data-testid="select-container">
@@ -182,6 +189,7 @@ const Select: React.FC<FProps> & SubComponents = ({
           ref={isMobile ? undefined : modalRef}
           className={classNames}
           open={isOpen}
+          onClick={e => handleClick(e)}
           onToggle={e => handleToggle(e)}
           onKeyDown={e => handleKeyDown(e)}
           data-testid="select"

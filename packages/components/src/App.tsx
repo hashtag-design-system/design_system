@@ -16,8 +16,6 @@ function App() {
 
   useEffect(() => {
     if (ref && ref.current) {
-      console.log(ref.current);
-
       ref.current.focus();
     }
   });
@@ -35,21 +33,25 @@ function App() {
       />
       <Switch />
       {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
-      <Select defaultOpen multiSelectable mobileView placeholder="Projects" onSelect={items => console.log(items)}>
+      <Select multiSelectable placeholder="Projects" onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
           <Select.Header value="header" />
           <Select.Filter placeholder="Filter" floatingplaceholder={false} />
           <Select.Options>
-            <Select.Item id="hey_george">Hey george</Select.Item>
-            <Select.Item id="amsterda,">
+            <Select.Item state="hover" id="hey_george">
+              Hey george
+            </Select.Item>
+            <Select.Item state="focus" id="amsterda,">
               Amsterdam<p>george</p>
             </Select.Item>
-            <Select.Item id="georgekrax">georgekrax</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="test_id">
-              <strong>NL</strong>Amsterdam
+            <Select.Item state="disabled" id="georgekrax">
+              georgekrax
             </Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            {/* <Select.Item id="test_id">
+              <strong>NL</strong>Amsterdam
+            </Select.Item> */}
           </Select.Options>
           {/* </Select.Header> */}
         </Select.Modal>

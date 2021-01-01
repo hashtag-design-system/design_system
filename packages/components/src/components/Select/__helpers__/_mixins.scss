@@ -1,4 +1,4 @@
-@mixin select__item--hover() {
+@mixin select__item--focus() {
   outline: none;
 
   &:not(.select__header) {
@@ -7,6 +7,6 @@
   }
 }
 
-.select__item--hover {
-  @include select__item--hover();
+.select__item--focus {
+  @include select__item--focus();
 }
