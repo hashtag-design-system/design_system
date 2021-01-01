@@ -11,6 +11,8 @@ export type Props = {
 
 export type FProps = Props & ComponentProps<"summary", false> & Pick<ButtonProps, "state">;
 
+export type SBProps = Props & Pick<FProps, "state" | "className">
+
 export const Button: React.FC<FProps> = ({ state, className, showValue = true, children, ...props }) => {
   const [classNames, rest] = useClassnames<FProps>("select__btn btn btn-secondary", props, { stateToRemove: { state } });
   const { value, ref, setIsDisabled } = useSelectContext();

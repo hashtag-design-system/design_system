@@ -9,6 +9,8 @@ export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
   ComponentProps<"div", false> &
   ComponentState<"default" | "hover" | "focus" | "disabled">;
 
+export type SBProps = Pick<FProps, "id" | "state" | "defaultChecked" | "children" | "onClick">;
+
 export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onClick, children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props, { stateToRemove: { state } });

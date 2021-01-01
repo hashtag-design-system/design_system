@@ -26,8 +26,10 @@ const variants = {
         },
 };
 
+export const SelectModalAligns = ["left", "center", "right"] as const;
+
 export type Props = {
-  align?: "left" | "center" | "right";
+  align?: typeof SelectModalAligns[number];
 };
 
 export type FProps = Props & HTMLMotionProps<"div">;
