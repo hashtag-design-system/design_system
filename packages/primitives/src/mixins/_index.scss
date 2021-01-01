@@ -12,10 +12,6 @@
   box-shadow: 0px 0px 1px 5px rgba(5, 115, 249, 0.25);
 }
 
-@mixin disabled-state {
-  cursor: not-allowed !important;
-}
-
 @mixin disabled-classNames {
   &:disabled,
   &.disabled,
@@ -48,6 +44,13 @@
 @mixin focus-within-classNames {
   &:focus-within,
   &.focus-within {
+    @content;
+  }
+}
+
+@mixin not-disabled {
+  &:not(:disabled),
+  &:not(.disabled) {
     @content;
   }
 }

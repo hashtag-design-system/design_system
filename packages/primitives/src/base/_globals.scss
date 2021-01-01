@@ -7,6 +7,10 @@
 
 @include generate-flex();
 
+.state--disabled {
+  cursor: not-allowed !important;
+}
+
 .scrollbar {
   // http://jsfiddle.net/6KprJ/1/
   &::-webkit-scrollbar {
