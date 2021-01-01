@@ -7,8 +7,8 @@ import Button from "../Button";
 import { InputFProps } from "./index";
 import { BaseNumber } from "./__helpers__";
 
-const IS_UP_HEIGHT = "1.55rem";
-const IS_DOWN_HEIGHT = "1.2rem";
+const IS_UP_HEIGHT = "57.5%";
+const IS_DOWN_HEIGHT = "42.5%";
 
 const initialState: ReducerInitialStateType = {
   min: 0,

@@ -7,7 +7,7 @@ type SubComponents = {
   Overlay: typeof Overlay;
 };
 
-export const Modal: React.FC & SubComponents = ({ ...props }) => {
+export const Modal: React.FC & SubComponents = () => {
   return <div></div>;
 };
 

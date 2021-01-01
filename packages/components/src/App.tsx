@@ -5,9 +5,8 @@ import "./App.scss";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
-import RadioButton from "./components/RadioButton";
-import Select from "./components/Select";
 import Switch from "./components/Switch";
+import { Modal } from "./components/__helpers__";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -22,7 +21,9 @@ function App() {
 
   return (
     <div className="App">
-      <RadioButton label={{ value: "Label" }} />
+      <Modal.Overlay grayscale isShown={true}>
+        Hey
+      </Modal.Overlay>
       <Button pill>Button</Button>
       <Checkbox
         // incheck={isChecked => console.log(isChecked)}
@@ -32,52 +33,7 @@ function App() {
         }}
       />
       <Switch />
-      {/* <Select multiSelectable={false} placeholder="Projects" onSelect={e => console.log(e)}> */}
-      <Select multiSelectable placeholder="Projects" onSelect={items => console.log(items)}>
-        <Select.Button style={{ width: "200px" }}>Project</Select.Button>
-        <Select.Modal>
-          <Select.Header value="header">
-            <Select.Options>
-              <Select.Filter placeholder="Filter" floatingplaceholder={false} />
-              <Select.Item state="hover" id="hey_george">
-                Hey george
-              </Select.Item>
-              <Select.Item state="focus" id="amsterda,">
-                Amsterdam<p>george</p>
-              </Select.Item>
-              <Select.Item state="disabled" id="georgekrax">
-                georgekrax
-              </Select.Item>
-              <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-              <Select.Item id="test_id">
-                <strong>NL</strong> Amsterdam
-              </Select.Item>
-            </Select.Options>
-          </Select.Header>
-        </Select.Modal>
-      </Select>
-      <RadioButton state="disabled|unchecked" label={{ value: "Label", position: "top" }} />
-      <Input
-        // label="Label"
-        // helptext={{ value: "Help text" }}
-        // secondhelptext={{ value: "2nd Help text" }}
-        // characterLimit
-        // maxLength={30}
-        // state="disabled"
-        placeholder="Placeholder"
-        floatingplaceholder={false}
-        // defaultValue="georgekraxt@gmail.com"
-        // prefix="€"
-        // prefix={<OpenEye />}
-        // suffix="€"
-        // suffix={<OpenEye />}
-        // forwardref={ref}
-      />
-      {/* <Input.Password label="Label" placeholder="Password" /> */}
-      {/* <Input.Multiline label="Label" placeholder="Multiline" onChange={e => console.log(e.target.value)} /> */}
-      {/* <Input.IncrDcr state="default" /> */}
-      {/* <Input.Digit state="error" /> */}
-      {/* <Input.DigitSequence numberOfDigits={6} helptext={{ value: "george", icon: <OpenEye /> }} /> */}
+      <Input placeholder="Placeholder" floatingplaceholder={false} />
       <Input.Number state="default" />
     </div>
   );
