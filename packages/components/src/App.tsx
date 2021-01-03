@@ -5,8 +5,8 @@ import "./App.scss";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
+import Pagination from "./components/Pagination";
 import Switch from "./components/Switch";
-import { Modal } from "./components/__helpers__";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -21,9 +21,6 @@ function App() {
 
   return (
     <div className="App">
-      <Modal.Overlay grayscale isShown={true}>
-        Hey
-      </Modal.Overlay>
       <Button pill>Button</Button>
       <Checkbox
         // incheck={isChecked => console.log(isChecked)}
@@ -33,6 +30,19 @@ function App() {
         }}
       />
       <Switch />
+      <Pagination
+        totalPages={1}
+        hideIfOne={false}
+        // currentPage={2}
+        // surroundingPageCount={3}
+        // hrefBuilder={page => `https://georgekrax.com/${page}`}
+        // onPageChanged={(_, page) => {
+        //   console.log(page);
+
+        //   // e.preventDefault();
+        //   // console.log(page);
+        // }}
+      />
       <Input placeholder="Placeholder" floatingplaceholder={false} />
       <Input.Number state="default" />
     </div>

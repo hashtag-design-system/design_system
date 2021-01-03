@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pagination <Icon /> default behaviour 1`] = `
+<svg
+  class="icon pagination__btn__icon"
+  data-testid="icon"
+  fill="none"
+  height="1em"
+  viewBox="0 0 24 24"
+  width="1em"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="1.5"
+  />
+</svg>
+`;
+
+exports[`Pagination <Icon /> with d 1`] = `
+<svg
+  class="icon pagination__btn__icon"
+  data-testid="icon"
+  fill="none"
+  height="1em"
+  viewBox="0 0 24 24"
+  width="1em"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M17 21L7 12l10-9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="1.5"
+  />
+</svg>
+`;

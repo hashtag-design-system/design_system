@@ -1,0 +1,77 @@
+.pagination {
+  &__nav {
+    @extend .flex-row-flex-start-center;
+    margin: em(16) em(8);
+    min-width: 100%;
+    flex-wrap: wrap;
+
+    & > * {
+      margin-bottom: em(8);
+    }
+  }
+
+  &__btn {
+    border-color: $grey-1;
+    color: $primary;
+    margin: 0 em(8);
+
+    @include hover-classNames() {
+      @include not-disabled() {
+        .pagination__btn__icon {
+          stroke: $grey-1;
+        }
+      }
+    }
+
+    @include disabled-classNames() {
+      border-color: transparent;
+    }
+
+    &__body {
+      @extend .flex-row-center-center;
+    }
+
+    &__icon {
+      stroke: $primary;
+    }
+  }
+
+  &__link {
+    $content-clr: $grey-9;
+    $default-padding: 0.375em 0.625em;
+    display: inline-block;
+    height: auto;
+    padding: $default-padding;
+    margin-right: em(4);
+    margin-left: em(4);
+    text-decoration: none;
+    border-color: transparent;
+    color: $content-clr;
+    text-align: center;
+
+    @include hover-classNames() {
+      color: $content-clr;
+      background-color: transparent;
+    }
+
+    @include focus-visible-classNames() {
+      @extend .btn-secondary;
+    }
+
+    &.active {
+      color: $grey-1;
+      background-color: $primary;
+      padding: $default-padding;
+    }
+  }
+}
+
+@include breakpoint("md") {
+  .pagination__nav {
+    justify-content: center;
+
+    & > * {
+      margin-bottom: 0;
+    }
+  }
+}
