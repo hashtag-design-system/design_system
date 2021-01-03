@@ -48,6 +48,13 @@
   }
 }
 
+@mixin active-classNames {
+  &:active,
+  &.active {
+    @content;
+  }
+}
+
 @mixin not-disabled {
   &:not(:disabled),
   &:not(.disabled) {

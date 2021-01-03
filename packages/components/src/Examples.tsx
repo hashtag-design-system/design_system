@@ -5,6 +5,7 @@ import { OpenEye } from "./components/Input/__icons__";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
 import Slider from "./components/Slider";
+import { Modal } from "./components/__helpers__";
 
 const options = [
   { value: "amsterdam", label: "Amsterdam" },
@@ -151,6 +152,9 @@ const Examples: React.FC = () => {
         }}
       />
       <RadioButton label={{ value: "Label" }} />
+      <Modal.Overlay grayscale isShown={true}>
+        Hey
+      </Modal.Overlay>
       <Input
         // label="Label"
         // helptext={{ value: "Help text" }}

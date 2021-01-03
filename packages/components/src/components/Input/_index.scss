@@ -1,6 +1,7 @@
 @import "./__helpers__/mixins";
 
 .input {
+  $input-placeholder-clr: $grey-7;
   @extend .flex-row-center-center;
   @extend .body-16;
   color: $grey-10;
@@ -19,7 +20,7 @@
   @include input-background();
 
   &::placeholder {
-    color: $grey-7;
+    color: $input-placeholder-clr;
   }
 
   @include disabled-classNames {
@@ -88,7 +89,7 @@
     top: 50%;
     transform: translateY(-50%);
     left: rem(12);
-    color: $grey-7;
+    color: $input-placeholder-clr;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: clip;

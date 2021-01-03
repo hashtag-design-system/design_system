@@ -23,5 +23,6 @@ export const useClassnames = <T extends AllProps>(
       }
     }
   }
+
   return [classNames, rest];
 };

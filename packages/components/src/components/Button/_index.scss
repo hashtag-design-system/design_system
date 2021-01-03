@@ -85,7 +85,9 @@
     background-color: inherit;
     border-color: $grey-8;
     color: $grey-8;
-    stroke: $grey-8;
+    & > * {
+      stroke: $grey-8 !important;
+    }
   }
 }
 
@@ -107,7 +109,9 @@
     background-color: inherit;
     border-color: $red-6;
     color: $red-6;
-    stroke: $red-6;
+    & > * {
+      stroke: $red-6 !important;
+    }
   }
 
   @include focus-visible-classNames() {

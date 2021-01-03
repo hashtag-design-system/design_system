@@ -16,3 +16,15 @@ export const calculatePercentage = (number: number, min: number, max: number, op
     return percentage;
   }
 };
+
+export const range = (from: number, to: number, step = 1) => {
+  let i = from;
+  const range = [];
+
+  while (i <= to) {
+    range.push(i);
+    i += step;
+  }
+
+  return range;
+};
