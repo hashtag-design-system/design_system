@@ -159,7 +159,7 @@ const Pagination: React.FC<Props> = ({
     <nav aria-label="Pagination" className={classNames} data-testid="pagination" {...rest}>
       {(showBtn === "previous" || showBtn === true) && totalPages !== 1 && (
         <Button
-          type="secondary"
+          variant="secondary"
           state={page === 1 ? "disabled" : "default"}
           className="pagination__btn previous"
           data-testid="pagination-btn-previous"
@@ -208,7 +208,7 @@ const Pagination: React.FC<Props> = ({
         })}
       {(showBtn === "next" || showBtn === true) && totalPages !== 1 && (
         <Button
-          type="secondary"
+          variant="secondary"
           state={page === totalPages ? "disabled" : "default"}
           className="pagination__btn next"
           data-testid="pagination-btn-next"

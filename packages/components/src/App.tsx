@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from "react";
 import "./App.scss";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import Form from "./components/Form";
 import Input from "./components/Input";
-import Pagination from "./components/Pagination";
 import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
@@ -30,21 +30,17 @@ function App() {
         }}
       />
       <Switch />
-      <Pagination
-        totalPages={1}
-        hideIfOne={false}
-        // currentPage={2}
-        // surroundingPageCount={3}
-        // hrefBuilder={page => `https://georgekrax.com/${page}`}
-        // onPageChanged={(_, page) => {
-        //   console.log(page);
-
-        //   // e.preventDefault();
-        //   // console.log(page);
-        // }}
-      />
-      <Input placeholder="Placeholder" floatingplaceholder={false} />
-      <Input.Number state="default" />
+      <Form onSubmit={d => console.log(d)} defaultValues={{ text: "georgerkax", number: 5 }}>
+        <Input name="text" placeholder="Placeholder" floatingplaceholder={true} />
+        <Input.Number name="number" state="default" />
+        <Button type="submit">Submit</Button>
+      </Form>
+      <div>
+        <Form.Header withBorder={false}>HEADER</Form.Header>
+        <Form.Group>
+          <Input.Number label="Label" state="default" />
+        </Form.Group>
+      </div>
     </div>
   );
 }
