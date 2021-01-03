@@ -19,10 +19,10 @@ export const Default = Template.bind({});
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  type: "secondary",
+  variant: "secondary",
 };
 
 export const Danger = Template.bind({});
 Danger.args = {
-  type: "danger",
+  variant: "danger",
 };

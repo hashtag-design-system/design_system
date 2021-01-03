@@ -18,6 +18,7 @@ export const Base: React.FunctionComponent = () => {
   const {
     id: propsId,
     value,
+    defaultValue,
     placeholder,
     type,
     floatingplaceholder,

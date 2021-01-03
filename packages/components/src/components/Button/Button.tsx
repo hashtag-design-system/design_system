@@ -6,22 +6,22 @@ import { useClassnames, useDisabled } from "../../utils/hooks";
 //   initial: { pathLength: 0 },
 // };
 
-export const ButtonTypes = ["primary", "secondary", "danger"] as const;
-export type ButtonType = typeof ButtonTypes[number];
+export const ButtonVariants = ["primary", "secondary", "danger"] as const;
+export type ButtonVariant = typeof ButtonVariants[number];
 const ButtonStates = ["default", "disabled", "focus-visible", "hover"] as const;
 export type ButtonState = typeof ButtonStates[number];
 
 export type Props = {
-  type?: ButtonType;
+  variant?: ButtonVariant;
   state?: ButtonState;
   block?: boolean;
   pill?: boolean;
 };
 
-export type FProps = Props & Omit<React.ComponentPropsWithRef<"button">, "type">;
+export type FProps = Props & React.ComponentPropsWithRef<"button">;
 
 const Button: React.FC<FProps> = ({
-  type = "primary",
+  variant = "primary",
   state = "default",
   block = false,
   pill = false,
@@ -30,7 +30,7 @@ const Button: React.FC<FProps> = ({
   ...props
 }) => {
   let [classNames, rest] = useClassnames<FProps>(
-    `btn btn-${type} ${block ? "block" : ""} ${pill ? "pill" : ""} btn-default-font shadow__form-2`,
+    `btn btn-${variant} ${block ? "block" : ""} ${pill ? "pill" : ""} btn-default-font shadow__form-2`,
     props,
     { stateToRemove: { state } }
   );

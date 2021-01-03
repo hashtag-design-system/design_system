@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
 import { OpenEye } from "./components/Input/__icons__";
+import Pagination from "./components/Pagination";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
 import Slider from "./components/Slider";
@@ -119,6 +120,19 @@ const Examples: React.FC = () => {
         }}
       />
       <RadioButton label={{ value: "Label" }} />
+      <Pagination
+        totalPages={1}
+        hideIfOne={false}
+        // currentPage={2}
+        // surroundingPageCount={3}
+        // hrefBuilder={page => `https://georgekrax.com/${page}`}
+        // onPageChanged={(_, page) => {
+        //   console.log(page);
+
+        // e.preventDefault();
+        // console.log(page);
+        // }}
+      />
       <Slider
         marks={[
           { value: 0, label: "0" },

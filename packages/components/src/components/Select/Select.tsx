@@ -29,13 +29,12 @@ type SubComponents = {
   Filter: typeof Filter;
 };
 
-
 export type FProps = Props &
-Omit<ComponentProps<"details", false>, "onSelect"> & {
-  forwardRef?: ComponentProps<"details", true>["ref"];
-};
+  Omit<ComponentProps<"details", false>, "onSelect"> & {
+    forwardRef?: ComponentProps<"details", true>["ref"];
+  };
 
-export type SBProps = Props & Pick<FProps, "defaultOpen" | "onToggle" | "onSelect">
+export type SBProps = Props & Pick<FProps, "defaultOpen" | "onToggle" | "onSelect">;
 
 const Select: React.FC<FProps> & SubComponents = ({
   defaultOpen = false,

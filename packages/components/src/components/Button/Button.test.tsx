@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { OpenEye } from "../Input/__icons__";
-import Button, { ButtonTypes } from "./index";
+import Button, { ButtonVariants } from "./index";
 
 describe("<Button />", () => {
   test("default behaviour", () => {
@@ -15,10 +15,10 @@ describe("<Button />", () => {
     expect(btn.children).toHaveLength(0);
     expect(btn).toMatchSnapshot();
   });
-  test.each(ButtonTypes)("btn type", type => {
-    render(<Button type={type} />);
+  test.each(ButtonVariants)("btn type", variant => {
+    render(<Button variant={variant} />);
 
-    expect(screen.getByTestId("btn").className).toContain(type);
+    expect(screen.getByTestId("btn").className).toContain(variant);
   });
   test("block={true}", () => {
     render(<Button block />);

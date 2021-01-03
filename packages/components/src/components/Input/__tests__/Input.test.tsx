@@ -11,8 +11,8 @@ describe("<Input />", () => {
 
     userEvent.type(input, newVal);
 
-    expect(input).toHaveValue("");
     // The value will not change, but the function `onChange` will be called each time
+    expect(input).toHaveValue("");
     expect(onChange).toHaveBeenCalledTimes(newVal.length);
   });
 });

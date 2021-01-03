@@ -25,7 +25,7 @@ describe("Input <Base />", () => {
     expect(input.getAttribute("data-hasfloatingplaceholder")).toBeTruthy();
     expect(input.getAttribute("aria-label")).toBe("Placeholder");
   });
-  test("have placeholder, with floatingplaceholder=true", () => {
+  test("with placeholder & floatingplaceholder=true", () => {
     inputCustomRender(<Base />, { providerProps: { floatingplaceholder: false } });
     const input = screen.getByTestId("input");
 
@@ -38,13 +38,14 @@ describe("Input <Base />", () => {
       expect(screen.getByTestId("input").className).toContain(state);
     }
   });
-  test("defaultValue Prop", () => {
+  test("with defaultValue", () => {
     inputCustomRender(<Base />, { providerProps: { defaultValue: "test" } });
     const input = screen.getByTestId("input");
 
-    expect(input).toHaveValue("test");
+    // See also controlled React.js input console warning
+    expect(input).not.toHaveValue("test");
   });
-  test("floatingplaceholder={false}", () => {
+  test("with floatingplaceholder={false}", () => {
     inputCustomRender(<Base />, { providerProps: { floatingplaceholder: false } });
     const input = screen.getByTestId("input");
 

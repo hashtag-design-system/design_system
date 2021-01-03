@@ -116,7 +116,7 @@ const Number: React.FunctionComponent<FProps> = ({
                 data-testid="input-number-btn-container"
               >
                 <Button
-                  type="secondary"
+                  variant="secondary"
                   style={{ height: isUp ? IS_UP_HEIGHT : isDown ? IS_DOWN_HEIGHT : undefined }}
                   onMouseEnter={() => setIsUp(true)}
                   onMouseLeave={() => setIsUp(false)}
@@ -128,7 +128,7 @@ const Number: React.FunctionComponent<FProps> = ({
                   </svg>
                 </Button>
                 <Button
-                  type="secondary"
+                  variant="secondary"
                   style={{ height: isDown ? IS_UP_HEIGHT : isUp ? IS_DOWN_HEIGHT : undefined }}
                   onMouseEnter={() => setIsDown(true)}
                   onMouseLeave={() => setIsDown(false)}
