@@ -108,6 +108,7 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
         aria-selected={isChecked || defaultChecked}
         aria-disabled={isDisabled}
         data-testid="select-item"
+        role="option"
         {...rest}
       >
         <input

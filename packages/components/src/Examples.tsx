@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
+import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import Form from "./components/Form";
 import Input from "./components/Input";
 import { OpenEye } from "./components/Input/__icons__";
 import Pagination from "./components/Pagination";
 import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
 import Slider from "./components/Slider";
+import Switch from "./components/Switch";
 import { Modal } from "./components/__helpers__";
 
 const options = [
@@ -133,6 +136,42 @@ const Examples: React.FC = () => {
         // console.log(page);
         // }}
       />
+      <Select multiSelectable mobileView onSelect={items => console.log(items)}>
+        <Select.Button style={{ width: "200px" }}>Project</Select.Button>
+        <Select.Modal>
+          <Select.Header value="header" />
+          <Select.Filter placeholder="Filter" floatingplaceholder={false} />
+          <Select.Options>
+            <Select.Item id="hey_george">Hey george</Select.Item>
+            <Select.Item id="amsterda,">
+              Amsterdam<p>george</p>
+            </Select.Item>
+            <Select.Item id="georgekrax">georgekrax</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
+            <Select.Item id="test_id">
+              <strong>NL</strong> Amsterdam
+            </Select.Item>
+          </Select.Options>
+        </Select.Modal>
+      </Select>
+      <Form onSubmit={d => console.log(d)} defaultValues={{ text: "georgerkax", number: 5 }}>
+        <Input name="text" placeholder="Placeholder" floatingplaceholder={true} />
+        <Input.Number name="number" />
+        <Button type="submit">Submit</Button>
+      </Form>
+      <div>
+        <Form.Header withBorder={false}>HEADER</Form.Header>
+        <Form.Group>
+          <Input.Number label="Label" />
+        </Form.Group>
+      </div>
       <Slider
         marks={[
           { value: 0, label: "0" },
@@ -169,10 +208,11 @@ const Examples: React.FC = () => {
       <Modal.Overlay grayscale isShown={true}>
         Hey
       </Modal.Overlay>
+      <Switch />
       <Input
         // label="Label"
         // helptext={{ value: "Help text" }}
-        // secondhelptext={{ value: "2nd Help text" }}
+        // secondhelptext={{ value: "2nd Help text", error: true }}
         // characterLimit
         // maxLength={30}
         // state="disabled"

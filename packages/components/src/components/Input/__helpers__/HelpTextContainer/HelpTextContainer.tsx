@@ -9,11 +9,13 @@ type Props = {
 type FProps = Props & Pick<InputFProps, "helptext">;
 
 export const HelpTextContainer: React.FC<FProps> = ({ helptext, second = false, children, ...props }) => {
-  const { passwordboxes, state = "default" } = useInputContext();
+  const { passwordboxes } = useInputContext();
 
   return helptext || children ? (
     <div
-      className={`input__help-text__container body-12 ${state === "error" ? "error" : ""} ${second ? "second" : ""}`}
+      className={`input__help-text__container body-12 ${helptext?.error ? "error" : ""} ${
+        helptext?.transparent ? "transparent" : ""
+      } ${second ? "second" : ""}`}
       data-testid="help-text-container"
       style={{ gap: passwordboxes ? "0.15em" : "" }}
       {...props}

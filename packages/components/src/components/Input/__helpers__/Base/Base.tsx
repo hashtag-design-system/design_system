@@ -29,6 +29,8 @@ export const Base: React.FunctionComponent = () => {
     characterLimit,
     overrideOnChange,
     allowClear,
+    helptext,
+    secondhelptext,
     // ! Not to be included in the HTML element
     forwardref,
     maxLength,

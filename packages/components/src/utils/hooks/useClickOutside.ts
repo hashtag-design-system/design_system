@@ -8,6 +8,7 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
   forwardRef?: ((instance: T | null) => void) | React.RefObject<T> | null | undefined
 ) => {
   const [isOpen, setIsOpen] = useState(initialIsOpen);
+  const [outsideClick, setOutsideClick] = useState(false);
   const backupRef = useRef<T>(null);
   const ref = forwardRef ? forwardRef : backupRef;
 
@@ -16,6 +17,7 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
       if (typeof ref !== "function" && ref.current && ref.current !== null) {
         if (!ref.current.contains(event.target)) {
           setIsOpen(false);
+          setOutsideClick(true);
         }
       }
     },
@@ -27,9 +29,15 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
     return () => {
       document.removeEventListener("click", handleClickOutside, !isOpen);
     };
-  }, [handleClickOutside, isOpen]);
+  }, [initialIsOpen, isOpen, handleClickOutside]);
 
-  return { ref, isOpen, setIsOpen };
+  useEffect(() => {
+    if (isOpen === false && outsideClick === true) {
+      setOutsideClick(false);
+    }
+  }, [isOpen, outsideClick]);
+
+  return { ref, isOpen, setIsOpen, outsideClick };
 };
 
 export default useClickOutside;

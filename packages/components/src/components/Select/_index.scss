@@ -76,7 +76,7 @@
     box-sizing: border-box;
     overflow: hidden;
     z-index: 99;
-    box-shadow: 0px 1px 4px rgba(194, 194, 194, 0.5);
+    box-shadow: $modal-shadow;
 
     &--mobile {
       @extend .flex-row-center-center;
@@ -84,6 +84,7 @@
 
     .input__container {
       margin: em(8);
+      margin-top: em(12);
       margin-bottom: em(4);
     }
   }
@@ -181,7 +182,7 @@
   }
 }
 
-@include breakpoint("sm", "min-width") {
+@include breakpoint("sm") {
   .select {
     &__item {
       padding: em(6) em(8);
@@ -199,7 +200,7 @@
     }
 
     &__options {
-      max-height: em(200);
+      max-height: em(240);
     }
   }
 }

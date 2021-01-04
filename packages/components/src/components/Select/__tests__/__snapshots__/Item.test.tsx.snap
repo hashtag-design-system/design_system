@@ -6,6 +6,7 @@ exports[`<Select.Item /> state="disabled" 1`] = `
   aria-selected="false"
   class="select__item disabled"
   data-testid="select-item"
+  role="option"
   tabindex="-1"
 >
   <input
@@ -34,6 +35,7 @@ exports[`<Select.Item /> with defaultChecked={true} 1`] = `
   aria-selected="true"
   class="select__item"
   data-testid="select-item"
+  role="option"
   tabindex="0"
 >
   <input

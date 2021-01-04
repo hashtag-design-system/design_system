@@ -5,7 +5,7 @@
   @extend .flex-row-center-center;
   @extend .body-16;
   color: $grey-10;
-  padding: em(10) em(12);
+  padding: em(12);
   width: auto;
   height: em(44);
   box-sizing: border-box;
@@ -142,14 +142,23 @@
       max-width: 82.5%;
       flex-grow: 1;
       text-align: left;
+    }
 
-      &.error {
-        color: $error-color;
+    &.error {
+      color: $error-color;
 
-        @include icon-classNames() {
-          stroke: $error-color;
-          fill: $error-color;
-        }
+      @include icon-classNames() {
+        stroke: $error-color;
+        fill: $error-color;
+      }
+    }
+
+    &.transparent {
+      color: transparent;
+
+      @include icon-classNames() {
+        stroke: transparent;
+        fill: transparent;
       }
     }
 

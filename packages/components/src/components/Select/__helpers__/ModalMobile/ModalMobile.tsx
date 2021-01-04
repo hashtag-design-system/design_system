@@ -3,30 +3,13 @@ import { SelectModalProps } from "../..";
 import { useSelectContext } from "../../../../utils/contexts";
 import { Modal } from "../../../__helpers__";
 
-const modalOpacityVariants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-  },
-};
-
 export type FProps = SelectModalProps;
 
 export const ModalMobile: React.FC<FProps> = ({ align, children }) => {
   const { isOpen, isMobile } = useSelectContext();
 
   return isMobile ? (
-    <Modal.Overlay
-      isShown={isOpen}
-      bgColor="dark"
-      className="select__modal--mobile"
-      variants={modalOpacityVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{ duration: 0.25, when: "beforeChildren" }}
-    >
+    <Modal.Overlay isShown={isOpen} bgColor="dark" className="select__modal--mobile">
       {children}
     </Modal.Overlay>
   ) : (

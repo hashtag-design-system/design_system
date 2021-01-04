@@ -26,6 +26,7 @@ describe("<Select.Item />", () => {
     expect(item.tagName.toLowerCase()).toBe("div");
     expect(item).toHaveAttribute("class");
     expect(item).toHaveAttribute("tabindex", "0");
+    expect(item).toHaveAttribute("role", "option");
     expect(item).toHaveAttribute("aria-selected", "false");
     expect(item.children).toHaveLength(2);
     expect(item.onclick).toBeDefined();

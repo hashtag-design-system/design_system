@@ -49,13 +49,13 @@ describe("<Input.DigitSequence />", () => {
     expect(helptext.childElementCount).toBe(1);
     expect(screen.getByTestId("icon")).toBeVisible();
   });
-  test("error={true}", () => {
+  test("with error={true}", () => {
     render(<Input.DigitSequence error />);
 
     screen.queryAllByTestId("input-digit").forEach(input => expect(input).toHaveClass("error"));
   });
-  test("error={true}, with helptext", () => {
-    render(<Input.DigitSequence error helptext={{ value: "Test" }} />);
+  test("with error={true} & helptext", () => {
+    render(<Input.DigitSequence error helptext={{ value: "Test", error: true }} />);
 
     screen.queryAllByTestId("input-digit").forEach(input => expect(input).toHaveClass("error"));
     expect(screen.getByTestId("input-digit-sequence-help-text")).toHaveClass("error");

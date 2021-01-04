@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const FloatingPlaceholder: React.FunctionComponent<Props> = ({ prefixWidth = 0 }) => {
-  const { id, placeholder, floatingplaceholder, prefix } = useInputContext();
+  const { id, placeholder, floatingplaceholder = true, prefix } = useInputContext();
 
   return floatingplaceholder ? (
     <label

@@ -2,7 +2,7 @@
 
 exports[`<Input.DigitSequence /> with helptext(+ icon) 1`] = `
 <div
-  class="input__help-text__container body-12  second"
+  class="input__help-text__container body-12   second"
   data-testid="input-digit-sequence-help-text"
 >
   Test

@@ -4,6 +4,15 @@ import { useClassnames } from "../../../utils/hooks";
 import { ComponentProps } from "../index";
 import { Portal, Props as PortalProps } from "./Portal";
 
+const modalOpacityVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+  },
+};
+
 export type Props = {
   isShown: boolean;
   blur?: boolean | string;
@@ -39,6 +48,10 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
           }}
           ref={ref}
           data-testid="modal"
+          variants={modalOpacityVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.25, when: "beforeChildren" }}
           {...rest}
         >
           {children}

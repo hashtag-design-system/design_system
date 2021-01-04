@@ -1,10 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Modal } from "../Modal";
 
-const checkStyle = (toContain: string): void => {
+const checkStyle = async (toContain: string): Promise<void> => {
   const modal = screen.getByTestId("modal");
 
-  expect(modal).toBeVisible();
+  // Wait due to animation from `opacity: 0` to `opacity: 1`
+  await waitFor(() => {
+    expect(modal).toBeVisible();
+  });
+
   expect(modal).toHaveAttribute("style");
   if (toContain.includes("rgba")) {
     expect(modal.style.backgroundColor).toContain(toContain);
@@ -23,7 +27,7 @@ describe("<Modal.Overlay />", () => {
     expect(modalRoot).toBeVisible();
     expect(modalRoot.children).toHaveLength(0);
   });
-  test("with isShown={true}", () => {
+  test("with isShown={true}", async () => {
     render(
       <Modal.Overlay isShown>
         <div>Test</div>
@@ -37,7 +41,9 @@ describe("<Modal.Overlay />", () => {
     // Only inside a HTMLElement it is considered a children
     expect(modalRoot.children).toHaveLength(1);
 
-    expect(modal).toBeVisible();
+    await waitFor(() => {
+      expect(modal).toBeVisible();
+    });
     expect(modal).toHaveAttribute("style");
     expect(modal.style.backgroundColor).toBeDefined();
     expect(modal.children).toHaveLength(1);
@@ -47,73 +53,73 @@ describe("<Modal.Overlay />", () => {
     expect(firstChild).toHaveTextContent("Test");
     expect(firstChild.tagName.toLowerCase()).toBe("div");
   });
-  test("with opacity={0.5}", () => {
+  test("with opacity={0.5}", async () => {
     render(
       <Modal.Overlay isShown opacity={0.5}>
         Test
       </Modal.Overlay>
     );
 
-    checkStyle("opacity(0.5)");
+    await checkStyle("opacity(0.5)");
   });
   describe("with blur", () => {
-    test("with blur={true}", () => {
+    test("with blur={true}", async () => {
       render(
         <Modal.Overlay isShown blur>
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("blur");
+      await checkStyle("blur");
     });
-    test('with blur="5px"', () => {
+    test('with blur="5px"', async () => {
       render(
         <Modal.Overlay isShown blur="5px">
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("blur(5px)");
+      await checkStyle("blur(5px)");
     });
   });
   describe("with grayscale", () => {
-    test("with grayscale={true}", () => {
+    test("with grayscale={true}", async () => {
       render(
         <Modal.Overlay isShown grayscale>
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("grayscale");
+      await checkStyle("grayscale");
     });
-    test('with grayscale="50%"', () => {
+    test('with grayscale="50%"', async () => {
       render(
         <Modal.Overlay isShown grayscale="50%">
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("grayscale(50%)");
+      await checkStyle("grayscale(50%)");
     });
   });
   describe("with bgColor", () => {
-    test('with bgColor="light"', () => {
+    test('with bgColor="light"', async () => {
       render(
         <Modal.Overlay isShown bgColor="light">
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("rgba(255, 255, 255, 0.85)");
+      await checkStyle("rgba(255, 255, 255, 0.85)");
     });
-    test('with bgColor="dark"', () => {
+    test('with bgColor="dark"', async () => {
       render(
         <Modal.Overlay isShown bgColor="dark">
           Test
         </Modal.Overlay>
       );
 
-      checkStyle("rgba(0, 0, 0, 0.5)");
+      await checkStyle("rgba(0, 0, 0, 0.5)");
     });
   });
 });

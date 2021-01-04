@@ -21,6 +21,8 @@ export type InputState = typeof InputStates[number];
 export type InputHelpTextType = {
   value: string;
   icon?: IconPropType;
+  error?: boolean;
+  transparent?: boolean;
 };
 
 type State = {

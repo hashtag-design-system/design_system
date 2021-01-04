@@ -11,8 +11,11 @@ describe("Input <HelpTextContainer />", () => {
     inputCustomRender(<HelpTextContainer helptext={TEST_HELP_TEXT} />);
     const element = screen.getByTestId("help-text-container");
 
-    expect(element).toBeInTheDocument();
+    expect(element).toBeVisible();
     expect(element).toHaveTextContent("Help text");
+    expect(element).toHaveAttribute("class");
+    expect(element).not.toHaveClass("error");
+    expect(element).not.toHaveClass("transparent");
   });
   test("with children", () => {
     inputCustomRender(
@@ -22,21 +25,36 @@ describe("Input <HelpTextContainer />", () => {
     );
     const element = screen.getByTestId("help-text-container");
 
-    expect(element).toBeInTheDocument();
+    expect(element).toBeVisible();
     expect(element.children).toHaveLength(3);
   });
-  test('state="error"', () => {
-    inputCustomRender(<HelpTextContainer helptext={TEST_HELP_TEXT} />, { providerProps: { state: "error" } });
+  test("with error={true}", () => {
+    inputCustomRender(<HelpTextContainer helptext={{ ...TEST_HELP_TEXT, error: true }} />);
     const element = screen.getByTestId("help-text-container");
 
-    expect(element).toBeInTheDocument();
+    expect(element).toBeVisible();
     expect(element).toHaveClass("error");
   });
-  test("second=true", () => {
+  test("with transparent={true}", () => {
+    inputCustomRender(<HelpTextContainer helptext={{ ...TEST_HELP_TEXT, transparent: true }} />);
+    const element = screen.getByTestId("help-text-container");
+
+    expect(element).toBeVisible();
+    expect(element).toHaveClass("transparent");
+  });
+  test("with transparent={true} & error={true}", () => {
+    inputCustomRender(<HelpTextContainer helptext={{ ...TEST_HELP_TEXT, error: true, transparent: true }} />);
+    const element = screen.getByTestId("help-text-container");
+
+    expect(element).toBeVisible();
+    expect(element).toHaveClass("error");
+    expect(element).toHaveClass("transparent");
+  });
+  test("with second={true}", () => {
     inputCustomRender(<HelpTextContainer helptext={TEST_HELP_TEXT} second />);
     const element = screen.getByTestId("help-text-container");
-    
-    expect(element).toBeInTheDocument();
+
+    expect(element).toBeVisible();
     expect(element).toHaveClass("second");
   });
 });

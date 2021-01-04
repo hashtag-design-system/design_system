@@ -9,7 +9,18 @@ type Props = {
 };
 
 export const OuterFieldContainer: React.FunctionComponent<Props> = ({ prefixWidth = 0, children }) => {
-  let { value, defaultValue, maxLength, label, type, placeholder, floatingplaceholder, prefix, suffix, className } = useInputContext();
+  let {
+    value,
+    defaultValue,
+    maxLength,
+    label,
+    type,
+    placeholder,
+    floatingplaceholder = true,
+    prefix,
+    suffix,
+    className,
+  } = useInputContext();
 
   useEffect(() => {
     if (typeof floatingplaceholder === "object") {
