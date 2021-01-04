@@ -1,0 +1,78 @@
+.dialog {
+  @extend .flex-row-center-center;
+  background-color: $grey-1;
+  border-radius: 20px;
+  height: auto;
+  width: min(75%, 32em);
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+  &__content {
+    padding: em(44) em(36) em(36) em(36);
+
+    &.confirm {
+      text-align: center;
+    }
+  }
+
+  &__btn {
+    padding: 0.5em;
+    height: auto;
+    position: absolute;
+    top: em(12);
+    right: em(12);
+    background-color: lighten($primary, 40);
+
+    @include icon-classNames() {
+      stroke: $grey-9;
+    }
+
+    @include hover-classNames() {
+      background-color: lighten($primary, 30);
+    }
+
+    &__group {
+      @extend .flex-row-center-center;
+      gap: em(12);
+      background-color: $grey-2;
+      padding: em(12) em(16);
+      box-shadow: inset 1px 1px 2px rgba(194, 194, 194, 0.25);
+
+      .btn {
+        align-self: stretch;
+        width: auto;
+        flex-grow: 1;
+      }
+
+      .btn-secondary {
+        border-color: transparent;
+
+        @include hover-classNames() {
+          background-color: $red-3;
+        }
+      }
+    }
+  }
+
+  &__title {
+    display: block;
+    width: 100%;
+    color: $grey-9;
+    margin: em(8) 0;
+  }
+}
+
+@include breakpoint("lg") {
+  .dialog {
+    &__btn {
+      &__group {
+        justify-content: flex-end;
+
+        .btn {
+          flex-grow: 0;
+        }
+      }
+    }
+  }
+}

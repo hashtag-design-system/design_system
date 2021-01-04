@@ -11,12 +11,16 @@
 @import "components/Input/index";
 @import "components/Pagination/index";
 @import "components/Form/index";
+@import "components/Dialog/index";
+
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
   @extend .body-16;
   overflow: auto;
-  box-sizing: border-box;
 }
 
 #modal-root {
