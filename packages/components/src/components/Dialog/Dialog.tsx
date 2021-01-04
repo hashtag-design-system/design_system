@@ -19,7 +19,7 @@ const scaleVariants = {
 
 export type Props = {
   confirm?: boolean;
-  onDismiss?: () => void;
+  onDismiss?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 export type FProps = Props & ModalOverlayFProps;
@@ -31,18 +31,19 @@ type SubComponents = {
 };
 
 const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, onDismiss, children, ...props }) => {
-  const { ref: modalRef, outsideClick, setIsOpen } = useClickOutside<HTMLDivElement>(isShown);
+  const { ref: modalRef, setIsOpen } = useClickOutside<HTMLDivElement>(isShown, undefined, onDismiss);
   const [classNames, rest] = useClassnames("dialog", props);
 
   const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>, onClick?: ButtonFProps["onClick"]) => {
     if (onDismiss) {
-      onDismiss();
+      onDismiss(e);
     }
 
     if (onClick) {
       onClick(e);
     }
   };
+
   const hasBtnGroup =
     children &&
     (React.Children.toArray(children) as React.ReactElement[]).filter(
@@ -53,12 +54,6 @@ const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, on
   useEffect(() => {
     setIsOpen(isShown);
   }, [isShown, setIsOpen]);
-
-  useEffect(() => {
-    if (outsideClick && onDismiss) {
-      onDismiss();
-    }
-  }, [outsideClick, onDismiss]);
 
   return (
     <DialogContextProvider value={{ confirm, hasBtnGroup: hasBtnGroup || false, handleDismiss }}>

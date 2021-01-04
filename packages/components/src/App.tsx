@@ -30,7 +30,14 @@ function App() {
         }}
       />
       <Button onClick={() => setIsShown(true)}>Click me</Button>
-      <Dialog isShown={isShown} bgColor="light" onDismiss={() => setIsShown(false)}>
+      <Dialog
+        isShown={isShown}
+        bgColor="light"
+        onDismiss={e => {
+          console.log(e.target);
+          setIsShown(false);
+        }}
+      >
         <Dialog.Btn.Close />
         <Dialog.Content>
           {/* <Dialog.Title>Are you sure you want to cancel your reservation?</Dialog.Title> */}

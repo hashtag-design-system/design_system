@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // https://github.com/primer/components/blob/main/src/SelectMenu/SelectMenu.js
 export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | HTMLDivElement | HTMLDetailsElement | HTMLElement>(
   initialIsOpen: boolean,
-  forwardRef?: ((instance: T | null) => void) | React.RefObject<T> | null | undefined
+  forwardRef?: ((instance: T | null) => void) | React.RefObject<T> | null | undefined,
+  onDismiss?: (e: any) => void
 ) => {
   const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [outsideClick, setOutsideClick] = useState(false);
@@ -18,10 +19,14 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
         if (!ref.current.contains(event.target)) {
           setIsOpen(false);
           setOutsideClick(true);
+
+          if (onDismiss) {
+            onDismiss(event);
+          }
         }
       }
     },
-    [ref]
+    [ref, onDismiss]
   );
 
   useEffect(() => {
