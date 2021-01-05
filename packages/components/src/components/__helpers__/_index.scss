@@ -72,3 +72,46 @@
     text-align: center;
   }
 }
+
+.fireworks {
+  --width: 4px;
+  --height: 80px;
+  --bg-clr: #{$yellow-3};
+  --animation-delay: 3s;
+  --animation-timing: ease-in-out;
+  --animation-duration: infinite;
+  position: relative;
+
+  &__explosion {
+    position: absolute;
+    left: -2px;
+    bottom: 0;
+    width: var(--width);
+    height: var(--height);
+    // background-color: rgba(0, 0, 0, 0.2);
+    transform-origin: 50% 100%;
+    overflow: hidden;
+    z-index: 99;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: 40px;
+      background-color: var(--bg-clr);
+      animation: explosion var(--animation-delay) var(--animation-timing) var(--animation-duration);
+    }
+  }
+}
+
+@keyframes explosion {
+  0% {
+    top: 100%;
+  }
+  33%,
+  100% {
+    top: -50%;
+  }
+}

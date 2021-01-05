@@ -1,4 +1,13 @@
-import { motion, MotionAdvancedProps, MotionProps, SVGMotionProps, TapHandlers } from "framer-motion";
+import {
+  motion,
+  MotionAdvancedProps,
+  MotionProps,
+  Orchestration,
+  SVGMotionProps,
+  TapHandlers,
+  Transition,
+  Tween,
+} from "framer-motion";
 import { useAnimateCheckmark } from "../../../utils/hooks";
 
 // See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
@@ -15,13 +24,26 @@ export type Props = {
   size?: number;
 };
 
-export type FProps = Props &
+export type SBProps = Props &
   Pick<TapHandlers, "whileTap"> &
   Pick<MotionProps, "initial"> &
   Pick<MotionAdvancedProps, "custom"> &
-  Pick<SVGMotionProps<SVGSVGElement>, "stroke">;
+  Pick<SVGMotionProps<SVGSVGElement>, "stroke"> & {
+    transition?: Transition & Orchestration & Tween;
+  };
 
-export const Checkmark: React.FC<FProps> = ({ size = 14, whileTap, initial = false, custom, stroke = "var(--grey-1)", children }) => {
+export type FProps = SBProps & Omit<SVGMotionProps<SVGSVGElement>, "css">;
+
+export const Checkmark: React.FC<FProps> = ({
+  size = 14,
+  whileTap,
+  initial = false,
+  custom,
+  stroke = "var(--grey-1)",
+  transition,
+  children,
+  ...props
+}) => {
   // Animation state
   const [pathLength, opacity] = useAnimateCheckmark();
 
@@ -34,6 +56,7 @@ export const Checkmark: React.FC<FProps> = ({ size = 14, whileTap, initial = fal
       viewBox="0 0 14 14"
       xmlns="http://www.w3.org/2000/svg"
       data-testid="animated-checkmark"
+      {...props}
     >
       {!children ? (
         <motion.path
@@ -47,7 +70,7 @@ export const Checkmark: React.FC<FProps> = ({ size = 14, whileTap, initial = fal
           variants={checkmarkVariants}
           style={{ pathLength, opacity }}
           custom={custom}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.2, ...transition }}
           data-testid="icon-path"
         />
       ) : (

@@ -21,7 +21,7 @@ describe("<Animated.Checkmark />", () => {
     expect(path).toHaveAttribute("fill");
     expect(path).toHaveAttribute("d");
   });
-  test("with custom width", () => {
+  test("with custom size", () => {
     render(<Animated.Checkmark size={6} />);
     const svg = screen.getByTestId("animated-checkmark");
 

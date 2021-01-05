@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import Dialog from "./components/Dialog";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import { OpenEye } from "./components/Input/__icons__";
@@ -18,6 +19,8 @@ const options = [
 ];
 
 const Examples: React.FC = () => {
+  const [isShown, setIsShown] = useState(false);
+
   const loadData = async () => {
     const res = await fetch("http://ip-api.com/json/");
     const data = await res.json();
@@ -172,6 +175,27 @@ const Examples: React.FC = () => {
           <Input.Number label="Label" />
         </Form.Group>
       </div>
+      <Button onClick={() => setIsShown(true)}>Click me</Button>
+      <Dialog
+        isShown={isShown}
+        bgColor="light"
+        onDismiss={() => {
+          setIsShown(false);
+        }}
+      >
+        <Dialog.Btn.Close />
+        <Dialog.Content>
+          {/* <Dialog.Title>Are you sure you want to cancel your reservation?</Dialog.Title> */}
+          <Dialog.Title>
+            Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content
+            here. Dialog content here. Dialog content here. Dialog content here.
+          </Dialog.Title>
+        </Dialog.Content>
+        <Dialog.Btn.Group>
+          <Dialog.Btn variant="secondary">Cancel</Dialog.Btn>
+          <Dialog.Btn>Confirm</Dialog.Btn>
+        </Dialog.Btn.Group>
+      </Dialog>
       <Slider
         marks={[
           { value: 0, label: "0" },

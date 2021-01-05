@@ -1,8 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 import { titleGroups } from "../../../../config/storybook";
-import { ButtonSBProps } from "../../../Button";
 import Dialog, { DialogProps } from "../../index";
-
 export default {
   title: `${titleGroups.FEEDBACK}/Btn`,
   component: Dialog.Btn,

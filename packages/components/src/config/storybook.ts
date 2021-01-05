@@ -5,4 +5,5 @@ export const titleGroups = {
   FORM_SELECT: "Form/Select",
   FORM_PAGINATION: "Form/Pagination",
   FEEDBACK: "Feedback",
+  ANIMATED: "Animated",
 };
