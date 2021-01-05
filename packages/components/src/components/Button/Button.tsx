@@ -20,6 +20,8 @@ export type Props = {
 
 export type FProps = Props & React.ComponentPropsWithRef<"button">;
 
+export type SBProps = Props & Pick<FProps, "disabled" | "type" | "onClick" | "children">
+
 const Button: React.FC<FProps> = ({
   variant = "primary",
   state = "default",

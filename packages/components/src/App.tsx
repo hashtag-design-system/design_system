@@ -33,8 +33,7 @@ function App() {
       <Dialog
         isShown={isShown}
         bgColor="light"
-        onDismiss={e => {
-          console.log(e.target);
+        onDismiss={() => {
           setIsShown(false);
         }}
       >

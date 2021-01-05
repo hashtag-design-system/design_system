@@ -62,7 +62,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, on
           variants={scaleVariants}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.35, delay: 0.05 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
           className={classNames}
           ref={modalRef}
           data-testid="dialog"

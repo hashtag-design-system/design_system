@@ -1,19 +1,19 @@
 import { Meta, Story } from "@storybook/react";
-import Button, { ButtonFProps } from "./index";
+import Button, { ButtonSBProps } from "./index";
 
 export default {
   title: "Button",
   component: Button,
-  args: {
-    children: "Button",
+  argTypes: {
+    children: {
+      defaultValue: "Button",
+      control: "text",
+    },
+    onClick: { action: "clicked" },
   },
 } as Meta;
 
-const Template: Story<ButtonFProps> = ({ children, ...args }) => (
-  <Button onClick={() => console.log("clicked")} {...args}>
-    {children}
-  </Button>
-);
+const Template: Story<ButtonSBProps> = ({ children, ...args }) => <Button {...args}>{children}</Button>;
 
 export const Default = Template.bind({});
 

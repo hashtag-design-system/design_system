@@ -2,6 +2,7 @@
   @extend .flex-row-center-center;
   background-color: $grey-1;
   border-radius: 20px;
+  min-height: 56px;
   height: auto;
   width: min(75%, 32em);
   display: block;
