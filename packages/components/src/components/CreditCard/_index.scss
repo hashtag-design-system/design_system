@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+.credit-card {
+  @extend .flex-column-flex-start-flex-start;
+  position: relative;
+  width: em(240);
+  height: em(140);
+  transform-style: preserve-3d;
+  perspective: 500px;
+  border: 1px solid $grey-1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  background: linear-gradient(46.66deg, rgba(0, 0, 0, 0.3) 21.19%, rgba(0, 0, 0, 0) 150.55%);
+  backdrop-filter: blur(10px);
+  transform-style: preserve-3d;
+  transition: 1s;
+  padding: em(16);
+  padding-top: em(12);
+
+  &__icon {
+    position: absolute;
+    top: em(16);
+    right: em(16);
+    stroke: $grey-1;
+  }
+
+  &__brand {
+    @extend .shadow-lg;
+    width: em(48);
+    max-width: em(64);
+    height: initial;
+    max-height: em(48);
+    object-fit: cover;
+    border-radius: 4px;
+    padding: 0;
+    margin: 0;
+
+    &.VISA {
+      border: 1px solid $grey-9;
+    }
+  }
+
+  &__num {
+    @extend .body-12;
+    font-style: normal;
+    color: $grey-1;
+    letter-spacing: 0.1em;
+    justify-content: center;
+
+    span {
+      @extend .body-14;
+      @extend .bold;
+      font-weight: 900;
+      font-family: "Orbitron", sans-serif;
+      letter-spacing: 0.2em;
+    }
+  }
+
+  &__owner {
+    @extend .body-14;
+    color: $grey-1;
+    margin: em(4) 0;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+    max-height: 38px;
+
+    &-container {
+      @extend .flex-row-space-between-center;
+      gap: 8px;
+      width: 100%;
+    }
+  }
+
+  &__expiration {
+    @extend .body-12;
+    color: $grey-1;
+  }
+
+  &__info-container {
+    @extend .flex-column-flex-end-flex-start;
+    height: 100%;
+    width: 100%;
+    gap: 6px;
+  }
+}

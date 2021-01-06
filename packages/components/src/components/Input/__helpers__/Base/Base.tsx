@@ -70,6 +70,7 @@ export const Base: React.FunctionComponent = () => {
       onChange(e);
     }
   };
+  
 
   return (
     <input

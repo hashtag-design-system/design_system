@@ -12,6 +12,7 @@
 @import "components/Pagination/index";
 @import "components/Form/index";
 @import "components/Dialog/index";
+@import "components/CreditCard/index";
 
 * {
   box-sizing: border-box;
@@ -58,6 +59,11 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: em(48);
+
+  &.credit-card {
+    background-image: url(./credit-card-bg.jfif);
+    background-size: cover;
+  }
 }
 
 // @include icon-classNames() {

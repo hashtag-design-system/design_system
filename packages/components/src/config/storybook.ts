@@ -6,4 +6,5 @@ export const titleGroups = {
   FORM_PAGINATION: "Form/Pagination",
   FEEDBACK: "Feedback",
   ANIMATED: "Animated",
+  DATA: "Data",
 };

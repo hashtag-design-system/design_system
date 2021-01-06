@@ -24,6 +24,7 @@ export const FieldContainer: React.FunctionComponent = () => {
     onChange,
     children,
     overrideOnChange,
+    style,
     ...rest
   } = useInputContext();
 
@@ -74,6 +75,7 @@ export const FieldContainer: React.FunctionComponent = () => {
           placeholder: floatingplaceholder === false && placeholder ? placeholder : undefined,
           onChange: e => handleChange(e),
           style: {
+            ...style,
             paddingLeft: prefix ? `${(prefixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : "",
             paddingRight: suffix ? `${(suffixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : "",
           },

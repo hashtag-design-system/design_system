@@ -5,9 +5,11 @@ export const parameters = {
 };
 
 export const decorators = [
-  (Story) => (
-    <div className="storybook__container">
-      <Story />
-    </div>
-  )
-]
+  Story => {
+    return (
+      <div className="storybook__container">
+        <Story />
+      </div>
+    );
+  },
+];

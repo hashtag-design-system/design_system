@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from "react";
 import "./App.scss";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import CreditCard from "./components/CreditCard";
 import Input from "./components/Input";
-import { Animated } from "./components/__helpers__";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -28,7 +28,7 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Animated.Fireworks />
+      <CreditCard ownerName="george Krachtopoulos" brand="MasterCard" creditNum="0586" expirationDate={new Date(2022, 5)} />
       <Input
         // label="Label"
         secondhelptext={{ value: "2nd Help text", error: true }}
