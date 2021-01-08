@@ -6,7 +6,10 @@ import RadioButton, { RadioButtonState } from "../RadioButton";
 import { ComponentState } from "../__helpers__";
 import Table from "./index";
 
-export type FProps = React.ComponentProps<"tr"> & ComponentState<"default" | "hover">;
+export const TrStates = ["default", "hover"] as const;
+export type TrStateType = typeof TrStates[number];
+
+export type FProps = React.ComponentProps<"tr"> & ComponentState<TrStateType>;
 
 // TODO: <Pagination /> onClick different from onPageChange
 const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
