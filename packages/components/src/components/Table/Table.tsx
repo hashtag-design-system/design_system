@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TableContextProvider } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
 import TBody from "./TBody";
@@ -7,13 +7,16 @@ import Th from "./Th";
 import THead from "./THead";
 import Tr from "./Tr";
 
-export type SelectionInputsTableType = { id: string; isChecked: boolean };
-export type SelectionInputsLiteralType = "checkbox" | "radio";
+export const TableSelectionInputs = ["checkbox", "radio"] as const;
+
+export type TableSelectionInputsTableType = { id: string; isChecked: boolean; header: boolean };
+export type TableSelectionInputType = typeof TableSelectionInputs[number];
 
 export type Props = {
   extraColumn?: {
+    component: TableSelectionInputType;
     withBorderRight?: boolean;
-    component: SelectionInputsLiteralType;
+    selectedRows?: (row: TableSelectionInputsTableType[]) => void;
   };
 };
 
@@ -28,7 +31,7 @@ type SubComponents = {
 };
 
 const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...props }) => {
-  const [selectionInputs, setSelectionInputs] = useState<SelectionInputsTableType[]>([]);
+  const [selectionInputs, setSelectionInputs] = useState<TableSelectionInputsTableType[]>([]);
   const [classNames, rest] = useClassnames("table", props);
   const ref = useRef<HTMLTableElement>(null);
 
@@ -77,9 +80,18 @@ const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...pro
     }
   };
 
+  useEffect(() => {
+    if (extraColumn && selectionInputs.length > 0) {
+      const { selectedRows } = extraColumn;
+      if (selectedRows) {
+        selectedRows(selectionInputs);
+      }
+    }
+  }, [extraColumn, selectionInputs]);
+
   return (
     <TableContextProvider value={{ extraColumn, selectionInputs, setSelectionInputs, handleClick }}>
-      <table ref={ref} className={classNames} {...rest}>
+      <table ref={ref} className={classNames} data-testid="table" {...rest}>
         {children}
       </table>
     </TableContextProvider>

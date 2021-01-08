@@ -30,7 +30,13 @@ const Th: React.FC<FProps> = ({ sort, onClick, children, ...props }) => {
   };
 
   return (
-    <th className={classNames} data-sort={sort} onClick={e => handleClick(e)} {...rest}>
+    <th
+      className={classNames}
+      aria-sort={!sort ? "none" : sortDirection === "desc" || sortDirection === "" ? "descending" : "ascending"}
+      onClick={e => handleClick(e)}
+      data-testid="table-th"
+      {...rest}
+    >
       <div>
         {children}
         {sort && (sortDirection === "" ? <ChevronUpAndDown /> : sortDirection === "asc" ? <ChevronUp /> : <ChevronDown />)}

@@ -11,6 +11,8 @@ import { AnchorLink, Icon } from "./__helpers__";
 const LEFT_PAGE = "LEFT";
 const RIGHT_PAGE = "RIGHT";
 
+type fType = (e: React.MouseEvent<HTMLElement>, page: number) => void;
+
 export type Props = {
   totalPages: number;
   currentPage?: number;
@@ -19,13 +21,14 @@ export type Props = {
   showPageCount?: boolean;
   showBtn?: boolean | "previous" | "next";
   hideIfOne?: boolean;
-  onPageChanged?: (e: React.MouseEvent<HTMLElement>, page: number) => void;
+  onPageChange?: fType;
   hrefBuilder?: (page: number) => string;
+  onClick?: fType;
 };
 
-export type FProps = Props & ComponentProps<"nav">;
+export type FProps = Props & Omit<ComponentProps<"nav">, "onClick">;
 
-const Pagination: React.FC<Props> = ({
+const Pagination: React.FC<FProps> = ({
   totalPages,
   currentPage = 1,
   marginPageCount = 1,
@@ -33,8 +36,9 @@ const Pagination: React.FC<Props> = ({
   showPageCount = true,
   showBtn = true,
   hideIfOne = true,
-  onPageChanged,
+  onPageChange,
   hrefBuilder,
+  onClick,
   ...props
 }) => {
   const [page, setPage] = useState<number>(currentPage);
@@ -44,13 +48,19 @@ const Pagination: React.FC<Props> = ({
     (page: number, e?: React.MouseEvent<HTMLElement>) => {
       const nextPage = Math.max(0, Math.min(page, totalPages));
 
-      if (onPageChanged && e) {
-        return onPageChanged(e, nextPage);
+      if (e) {
+        if (onPageChange) {
+          onPageChange(e, page);
+        }
+
+        if (onClick) {
+          return onClick(e, page);
+        }
       }
 
       setPage(nextPage);
     },
-    [totalPages, onPageChanged]
+    [totalPages, onPageChange, onClick]
   );
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, page: React.ReactText) => {
@@ -146,8 +156,8 @@ const Pagination: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    goToPage(page);
-  }, [page, goToPage]);
+    goToPage(currentPage || 1);
+  }, [currentPage, goToPage]);
 
   if (hideIfOne && totalPages === 1) {
     return null;
@@ -182,7 +192,6 @@ const Pagination: React.FC<Props> = ({
                 onClick={e => handleMoveLeft(e)}
               />
             );
-
           if (pageNum === RIGHT_PAGE)
             return (
               <AnchorLink
@@ -193,7 +202,6 @@ const Pagination: React.FC<Props> = ({
                 onClick={e => handleMoveRight(e)}
               />
             );
-
           return (
             <AnchorLink
               key={listKeys.PAGINATION_LINK + i}

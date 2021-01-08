@@ -15,7 +15,7 @@ export const useSortableData = <T extends Record<string, any>>(data: T[], config
       setItems(prevData =>
         prevData.slice().sort((a, b) => {
           if (a[key] < b[key]) {
-            return direction === "asc" ? -1 : 1;
+            return direction === "desc" ? 1 : -1;
           }
           if (a[key] > b[key]) {
             return direction === "asc" ? 1 : -1;

@@ -126,18 +126,32 @@ const Examples: React.FC = () => {
         }}
       />
       <RadioButton label={{ value: "Label" }} />
+      <RadioButton state="disabled|checked" />
+      <Pagination
+        totalPages={10}
+        // currentPage={page}
+        // surroundingPageCount={3}
+        // hrefBuilder={page => `https://georgekrax.com/${page}`}
+        // onPageChange={(e, page) => {
+        //   e.preventDefault();
+        //   console.log(e);
+        // }}
+        // onClick={(e, page) => {
+        //   // e.preventDefault();
+        //   setPage(page);
+        //   console.log(page);
+        // }}
+      />
       <Pagination
         totalPages={1}
         hideIfOne={false}
         // currentPage={2}
         // surroundingPageCount={3}
         // hrefBuilder={page => `https://georgekrax.com/${page}`}
-        // onPageChanged={(_, page) => {
-        //   console.log(page);
-
-        // e.preventDefault();
-        // console.log(page);
-        // }}
+        onPageChange={(e, page) => {
+          e.preventDefault();
+          console.log(page);
+        }}
       />
       <Select multiSelectable mobileView onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>

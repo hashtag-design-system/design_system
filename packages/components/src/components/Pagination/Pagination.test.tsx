@@ -27,6 +27,10 @@ describe("<Pagination />", () => {
       expect(child.onclick).toBeDefined();
     });
 
+    // Due to initial render, the <body /> is the one that has focus
+    expect(children[1]).not.toHaveFocus();
+    expect(children[1]).toHaveClass("active");
+
     expect(children[0]).toContainElement(screen.getAllByTestId("icon")[0]);
     expect(children[0]).toHaveTextContent("Previous");
     expect(children[0]).toBeDisabled();
@@ -249,38 +253,48 @@ describe("<Pagination />", () => {
       expect(largestPageNum).toHaveClass("active");
       expect(nextBtn).toBeDisabled();
     });
-    test("onPageChanged", () => {
-      let onPageChanged: any = jest.fn(e => e.target);
-      const { rerender } = render(<Pagination totalPages={10} onPageChanged={e => onPageChanged(e)} />);
+    test.each(["onPageChange", "onClick"])("onPageChange", type => {
+      let onPageChange: any = jest.fn((e, page) => ({ target: e.target, page }));
+      let onClick: any = jest.fn((e, page) => ({ target: e.target, page }));
+      render(
+        <Pagination
+          totalPages={10}
+          onPageChange={(e, page) => type === "onPageChange" && onPageChange(e, page)}
+          onClick={(e, page) => type === "onClick" && onClick(e, page)}
+        />
+      );
       const children = Array.from(screen.getByTestId("pagination").children);
 
       userEvent.click(children[3]);
 
-      expect(children[3]).not.toHaveClass("active");
       expect(children[3]).toHaveFocus();
 
-      expect(onPageChanged).toHaveBeenCalledTimes(1);
-      expect(onPageChanged.mock.results[0].value.tagName.toLowerCase()).toBe("a");
-
-      onPageChanged = jest.fn((_, page) => page);
-      rerender(<Pagination totalPages={10} onPageChanged={(_, page) => onPageChanged(_, page)} />);
-
-      userEvent.click(children[3]);
-
-      expect(children[3]).not.toHaveClass("active");
-      expect(children[3]).toHaveFocus();
-
-      expect(onPageChanged).toHaveBeenCalledTimes(1);
-      expect(onPageChanged.mock.results[0].value).toBe(3);
+      if (type === "onPageChange") {
+        expect(onPageChange).toHaveBeenCalledTimes(1);
+        expect(onPageChange.mock.results[0].value["target"].tagName.toLowerCase()).toBe("a");
+        expect(onPageChange.mock.results[0].value["page"]).toBe(3);
+      } else {
+        expect(onClick).toHaveBeenCalledTimes(1);
+        expect(onClick.mock.results[0].value["target"].tagName.toLowerCase()).toBe("a");
+        expect(onClick.mock.results[0].value["page"]).toBe(3);
+      }
 
       // Click on spread page box
       userEvent.click(children[8]);
 
+      // if (type === "onPageChange") {
+      expect(children[3]).not.toHaveClass("active");
+      // } else {
+      //   expect(children[3]).not.toHaveClass("active");
+      // }
       expect(children[8]).not.toHaveClass("active");
       expect(children[8]).not.toHaveFocus();
 
-      expect(onPageChanged).toHaveBeenCalledTimes(2);
-      expect(onPageChanged.mock.results[1].value).toBe(6);
+      if (type === "onPageChange") {
+        expect(onPageChange.mock.results[1].value["page"]).toBe(6);
+      } else {
+        expect(onClick.mock.results[1].value["page"]).toBe(6);
+      }
     });
   });
 });

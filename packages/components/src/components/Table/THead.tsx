@@ -7,7 +7,7 @@ const THead: React.FC<FProps> = ({ children, ...props }) => {
   const [classNames, rest] = useClassnames("table__thead", props);
 
   return (
-    <thead className={classNames} {...rest}>
+    <thead className={classNames} data-testid="table-thead" {...rest}>
       {children}
     </thead>
   );

@@ -5,8 +5,7 @@ import "./App.scss";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
-import RadioButton from "./components/RadioButton";
-import Switch from "./components/Switch";
+import Pagination from "./components/Pagination";
 import Table from "./components/Table";
 import { useSortableData } from "./utils/hooks";
 
@@ -43,8 +42,8 @@ function App() {
       <Button pill onClick={() => setIsChecked(!isChecked)}>
         Button
       </Button>
-      <Switch insideText={{ value: "hedcsdfsdffsfdsdy", position: "toggle" }} />
-      <Switch />
+      {/* <Switch insideText={{ value: "hedcsdfsdffsfdsdy", position: "toggle" }} />
+      <Switch /> */}
       <Checkbox
         // state="disabled|checked"
         // defaultChecked={true}
@@ -55,8 +54,22 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <RadioButton state="disabled|checked" />
-      <Table extraColumn={{ component: "radio", withBorderRight: true }}>
+      <Pagination
+        totalPages={10}
+        // currentPage={page}
+        // surroundingPageCount={3}
+        // hrefBuilder={page => `https://georgekrax.com/${page}`}
+        onPageChange={(e, page) => {
+          e.preventDefault();
+          console.log(page);
+        }}
+        // onClick={(e, page) => {
+        // e.preventDefault();
+        // setPage(page);
+        // console.log(page);
+        // }}
+      />
+      <Table extraColumn={{ component: "radio", withBorderRight: true, selectedRows: e => console.log(e) }}>
         <Table.THead>
           <Table.Tr>
             <Table.Th

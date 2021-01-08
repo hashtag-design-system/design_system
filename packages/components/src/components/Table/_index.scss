@@ -36,7 +36,7 @@
         border-top-right-radius: var(--border-radius);
       }
 
-      &[data-sort="true"] {
+      &:not([aria-sort="none"]) {
         cursor: pointer;
 
         div {
@@ -54,10 +54,6 @@
 
     .table__tr {
       height: em(40);
-    }
-
-    input[type="radio"] {
-      display: none;
     }
   }
 
@@ -90,7 +86,7 @@
       box-shadow: none;
     }
 
-    &.bottom-right {
+    &.border-right {
       td,
       th {
         &:first-child {

@@ -8,7 +8,6 @@ import Table from "./index";
 
 export type FProps = React.ComponentProps<"tr"> & ComponentState<"default" | "hover">;
 
-// TODO: State
 // TODO: <Pagination /> onClick different from onPageChange
 const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
   const { extraColumn, selectionInputs, setSelectionInputs, handleClick } = useTableContext();
@@ -18,7 +17,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
     body: boolean;
   }>({ header: extraColumn !== undefined, body: extraColumn !== undefined });
 
-  const [classNames, rest] = useClassnames(`table__tr ${extraColumn?.withBorderRight ? "bottom-right" : ""}`, props, {
+  const [classNames, rest] = useClassnames(`table__tr ${extraColumn?.withBorderRight ? "border-right" : ""}`, props, {
     stateToRemove: { state },
   });
   const ref = useRef<HTMLTableRowElement>(null);
@@ -41,7 +40,8 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
   const newExtraColumn = extraColumn
     ? {
         ...extraColumn,
-        component: extraColumn.component === "checkbox" ? <Checkbox /> : <RadioButton />,
+        component:
+          extraColumn.component === "checkbox" ? <Checkbox /> : <RadioButton style={{ display: header ? "none" : undefined }} />,
       }
     : undefined;
 
@@ -63,7 +63,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
         const { id, isChecked } = res;
         if (id && !selectionInputs.map(input => input.id).includes(id)) {
           // ! if Boolean(input.value || false) is used it will return always true, which is not true
-          setSelectionInputs(prevData => [...prevData, { id, isChecked }]);
+          setSelectionInputs(prevData => [...prevData, { id, isChecked, header }]);
         }
       }
     }
@@ -85,7 +85,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
           state = "indeterminate";
           checked = false;
 
-          if (selectionInputs.filter(input => !input.isChecked).every(input => input.id === id)) {
+          if (selectionInputs.filter(input => input.id !== id).every(input => input.isChecked)) {
             state = "checked";
             checked = true;
           }
@@ -116,7 +116,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
   );
 
   return (
-    <tr ref={ref} className={classNames} {...rest}>
+    <tr ref={ref} className={classNames} data-testid="table-tr" {...rest}>
       {extraColumn?.component &&
         newExtraColumn &&
         (header ? (
