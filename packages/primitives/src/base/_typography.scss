@@ -23,12 +23,16 @@ span {
   @include font-bold;
 }
 
-.uppercase {
-  @include font-uppercase;
+.upper {
+  @include font-upper;
 }
 
-.lowercase {
-  @include font-lowercase;
+.lower {
+  @include font-lower;
+}
+
+.caps {
+  @include font-caps;
 }
 
 // Headings
@@ -84,7 +88,7 @@ p,
 // Other
 .pre-header {
   @include font-base;
-  @include font-uppercase;
+  @include font-upper;
   font-size: 10px;
   line-height: 12px;
   letter-spacing: 0.04em;

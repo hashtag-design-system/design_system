@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { stringifyChildren } from "../../utils";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames, useDisabled } from "../../utils/hooks";
 import { ComponentProps, ComponentState } from "../__helpers__";
@@ -22,14 +23,7 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
 
   let newChildren = children?.toString() || null;
   if (children) {
-    newChildren = React.Children.toArray(children)
-      .map(child => {
-        if (typeof child === "object") {
-          return (child as React.ReactElement).props.children;
-        }
-        return child;
-      })
-      .join(" ");
+    newChildren = stringifyChildren(children);
   }
 
   const addItem = useCallback(() => {

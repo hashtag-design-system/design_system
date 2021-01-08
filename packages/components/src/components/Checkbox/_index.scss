@@ -1,6 +1,20 @@
 .checkbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @extend .flex-row-center-center;
   border-radius: 8px;
+  appearance: none;
+  width: rem(22);
+  height: rem(22);
+
+  &__label__container {
+    position: relative;
+  }
+
+  + .icon {
+    display: inline;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
 }

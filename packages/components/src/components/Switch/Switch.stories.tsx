@@ -10,4 +10,4 @@ export default {
   },
 } as Meta;
 
-export const Default: Story = args => <Switch incheck={isChecked => console.log(isChecked)} {...args} />;
+export const Default: Story = args => <Switch {...args} />;

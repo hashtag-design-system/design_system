@@ -1,42 +1,36 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent, { specialChars } from "@testing-library/user-event";
+import { checkSelectionInputDisabled, checkSelectionInputValue } from "../Checkbox/Checkbox.test";
 import RadioButton from "./index";
 
 describe("<RadioButton />", () => {
   test("default behaviour", () => {
     render(<RadioButton />);
     const radioBtn = screen.getByTestId("radio-btn");
-    const selectionInput = screen.getByTestId("selection-input-base");
 
     expect(radioBtn).toBeVisible();
-    expect(selectionInput).toBeInTheDocument();
-    expect(selectionInput).toHaveAttribute("type", "radio");
-    expect(selectionInput).toHaveAttribute("value", "false");
-    expect(radioBtn).toHaveAttribute("aria-checked", "false");
+    expect(radioBtn.id).toHaveLength(5);
+    expect(radioBtn).toHaveAttribute("type", "radio");
     expect(radioBtn).toHaveAttribute("tabindex", "0");
-    expect(radioBtn.getAttribute("for")).toHaveLength(5);
-    expect(radioBtn.getAttribute("ischecked")).toBeFalsy();
     expect(radioBtn.onclick).toBeDefined();
+
+    checkSelectionInputValue(radioBtn, false, true);
   });
   test("onClick functionality", () => {
     render(<RadioButton />);
     const radioBtn = screen.getByTestId("radio-btn");
-    const selectionInput = screen.getByTestId("selection-input-base");
 
     userEvent.click(radioBtn);
 
-    expect(radioBtn).toHaveAttribute("aria-checked", "true");
-    expect(selectionInput.getAttribute("value")).toBeTruthy();
+    checkSelectionInputValue(radioBtn, true, true);
 
     userEvent.click(radioBtn);
 
-    expect(radioBtn).toHaveAttribute("aria-checked", "false");
-    expect(selectionInput.getAttribute("value")).toBe("false");
+    checkSelectionInputValue(radioBtn, false, true);
 
     userEvent.click(radioBtn);
 
-    expect(radioBtn).toHaveAttribute("aria-checked", "true");
-    expect(selectionInput.getAttribute("value")).toBeTruthy();
+    checkSelectionInputValue(radioBtn, true, true);
   });
   test("double click functionality", () => {
     render(<RadioButton />);
@@ -44,7 +38,7 @@ describe("<RadioButton />", () => {
 
     userEvent.dblClick(radioBtn);
 
-    expect(radioBtn).toHaveAttribute("aria-checked", "false");
+    checkSelectionInputValue(radioBtn, false, true);
   });
   test("hit spacebar", () => {
     render(<RadioButton />);
@@ -52,12 +46,12 @@ describe("<RadioButton />", () => {
 
     userEvent.type(radioBtn, specialChars.space);
 
-    expect(radioBtn).toHaveAttribute("aria-checked", "true");
+    checkSelectionInputValue(radioBtn, "true ", true);
   });
   test("defaultChecked={true}", () => {
     render(<RadioButton defaultChecked />);
 
-    expect(screen.getByTestId("radio-btn")).toHaveAttribute("aria-checked", "true");
+    checkSelectionInputValue(screen.getByTestId("radio-btn"), true, true);
   });
   // Check aslo the SelectionInput <LabelContainer /> helper component
   test("with label", () => {
@@ -71,22 +65,27 @@ describe("<RadioButton />", () => {
     const { rerender } = render(<RadioButton state="disabled|checked" />);
     const radioBtn = screen.getByTestId("radio-btn");
 
-    expect(radioBtn).toHaveClass("disabled");
+    checkSelectionInputDisabled(radioBtn);
 
     rerender(<RadioButton state="disabled|unchecked" />);
-    expect(radioBtn).toHaveClass("disabled");
+
+    checkSelectionInputDisabled(radioBtn);
 
     rerender(<RadioButton aria-disabled="true" />);
-    expect(radioBtn).toHaveClass("disabled");
+
+    checkSelectionInputDisabled(radioBtn);
 
     rerender(<RadioButton disabled />);
-    expect(radioBtn).toHaveClass("disabled");
+
+    checkSelectionInputDisabled(radioBtn);
     expect(radioBtn).toHaveAttribute("tabindex", "-1");
   });
   test("disabled state, with isChecked={false}", () => {
     render(<RadioButton state="disabled|unchecked" />);
+    const radioBtn = screen.getByTestId("radio-btn");
 
-    expect(screen.getByTestId("radio-btn")).toHaveAttribute("aria-checked", "false");
+    expect(radioBtn).toHaveAttribute("aria-checked", "false");
+    checkSelectionInputDisabled(radioBtn);
   });
   test("disabled state, with isChecked={true}", () => {
     render(<RadioButton state="disabled|checked" />);

@@ -8,13 +8,13 @@ import {
   Transition,
   Tween,
 } from "framer-motion";
-import { useAnimateCheckmark } from "../../../utils/hooks";
+import { useAnimateCheckmark, useClassnames } from "../../../utils/hooks";
 
 // See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
 
 export const checkmarkVariants = {
   pressed: (isChecked: boolean) => ({
-    pathLength: isChecked ? 0.75 : 0.3,
+    pathLength: isChecked ? 0.8 : 0.3,
   }),
   checked: { pathLength: 1 },
   initial: { pathLength: 0 },
@@ -22,6 +22,7 @@ export const checkmarkVariants = {
 
 export type Props = {
   size?: number;
+  isPressed?: boolean;
 };
 
 export type SBProps = Props &
@@ -42,8 +43,10 @@ export const Checkmark: React.FC<FProps> = ({
   stroke = "var(--grey-1)",
   transition,
   children,
+  isPressed,
   ...props
 }) => {
+  const [classNames, rest] = useClassnames("icon", props);
   // Animation state
   const [pathLength, opacity] = useAnimateCheckmark();
 
@@ -53,10 +56,11 @@ export const Checkmark: React.FC<FProps> = ({
       initial={initial}
       width={size}
       height={size}
+      className={classNames}
       viewBox="0 0 14 14"
       xmlns="http://www.w3.org/2000/svg"
       data-testid="animated-checkmark"
-      {...props}
+      {...rest}
     >
       {!children ? (
         <motion.path
@@ -66,7 +70,7 @@ export const Checkmark: React.FC<FProps> = ({
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          animate={custom ? "checked" : undefined}
+          animate={isPressed ? "pressed" : custom ? "checked" : "initial"}
           variants={checkmarkVariants}
           style={{ pathLength, opacity }}
           custom={custom}

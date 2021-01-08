@@ -4,6 +4,8 @@ import { ComponentProps } from "./components/__helpers__";
 
 export type IconPropType = React.ReactNode;
 
+export type SortDirection = "asc" | "desc";
+
 export interface GenerateIdParams {
   length: number;
   specialCharacters?: string;
@@ -15,7 +17,7 @@ export interface GenerateIdParams {
   underscore?: boolean;
 }
 
-export type AllProps = React.ComponentPropsWithoutRef<any> | ComponentProps<"input", true ,string> | HTMLMotionProps<any>;
+export type AllProps = React.ComponentPropsWithoutRef<any> | ComponentProps<"input", true, string> | HTMLMotionProps<any>;
 
 export type AtLeastOneFrom<T> = { [K in keyof T]: Pick<T, K> }[keyof T];
 

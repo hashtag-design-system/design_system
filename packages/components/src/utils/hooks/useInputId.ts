@@ -1,12 +1,29 @@
+import { useEffect, useState } from "react";
 import { generateId } from "../generateId";
 
 export const generateInputId = () => {
-  return generateId({
+  const res = generateId({
     length: 5,
     specialCharacters: "-_",
   });
+  try {
+    if (document.getElementById(res) !== null) {
+      generateInputId();
+    }
+  } catch {
+    generateInputId();
+  }
+  return res;
 };
 
 export const useInputId = (identifier?: string): string => {
-  return identifier || generateInputId();
+  const [res, setRes] = useState(identifier || "");
+
+  useEffect(() => {
+    if (!res || res === "") {
+      setRes(generateInputId());
+    }
+  }, [res]);
+
+  return res;
 };

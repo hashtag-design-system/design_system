@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import { titleGroups } from "../../config/storybook";
 import { SelectionInputStates } from "../__helpers__";
-import RadioButton, { RadioButtonProps } from "./index";
+import RadioButton, { RadioButtonFProps } from "./index";
 
 export default {
   title: `${titleGroups.FORM}/RadioButton`,
@@ -17,7 +17,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<RadioButtonProps> = args => <RadioButton incheck={isChecked => console.log(isChecked)} {...args} />;
+const Template: Story<RadioButtonFProps> = args => <RadioButton {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

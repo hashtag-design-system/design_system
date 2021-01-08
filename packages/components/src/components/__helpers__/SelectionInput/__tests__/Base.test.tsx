@@ -4,43 +4,10 @@ import { Base } from "../Base";
 describe("SelectionInput <Base />", () => {
   test("default behaviour", () => {
     render(<Base />);
-    const selectionInput = screen.getByTestId("selection-input-base");
+    const inputContainer = screen.getByTestId("selection-input__container");
 
-    expect(selectionInput).toBeInTheDocument();
-    expect(selectionInput).toHaveAttribute("value", "false");
-    expect(selectionInput.getAttribute("aria-labelledby")).toHaveLength(5);
-  });
-  test("defaultChecked={true}", () => {
-    render(<Base defaultChecked />);
-
-    expect(screen.getByTestId("selection-input-base").getAttribute("value")).toBeTruthy();
-  });
-  test("with groupName", () => {
-    render(<Base groupName="test_group" />);
-
-    expect(screen.getByTestId("selection-input-base")).toHaveAttribute("name", "test_group");
-  });
-  test("with type", () => {
-    const { rerender } = render(<Base type="checkbox" />);
-    const selectionInput = screen.getByTestId("selection-input-base");
-
-    expect(selectionInput).toHaveAttribute("type", "checkbox");
-
-    rerender(<Base type="radio" />);
-
-    expect(selectionInput).toHaveAttribute("type", "radio");
-  });
-  test('state="disabled|unchecked" && state="disabled|checked"', () => {
-    const { rerender } = render(<Base state="disabled|unchecked" />);
-    const selectionInput = screen.getByTestId("selection-input-base");
-
-    expect(selectionInput).toBeDisabled();
-    expect(selectionInput.getAttribute("value")).toBe("false");
-
-    rerender(<Base state="disabled|checked" />);
-
-    expect(selectionInput).toBeDisabled();
-    expect(selectionInput.getAttribute("value")).toBeTruthy();
+    expect(inputContainer).toBeInTheDocument();
+    expect(inputContainer.children).toHaveLength(0);
   });
   describe("input container", () => {
     test("with width Prop", () => {
@@ -52,6 +19,7 @@ describe("SelectionInput <Base />", () => {
       render(<Base label="Label" />);
       const selectionInputContainer = screen.getByTestId("selection-input__container");
 
+      expect(selectionInputContainer.children).toHaveLength(1);
       expect(selectionInputContainer.style.flexDirection).toBe("");
       expect(selectionInputContainer.style.gap).toBe("");
     });
@@ -59,6 +27,7 @@ describe("SelectionInput <Base />", () => {
       const { rerender } = render(<Base label={{ value: "Label" }} />);
       const selectionInputContainer = screen.getByTestId("selection-input__container");
 
+      expect(selectionInputContainer.children).toHaveLength(1);
       expect(selectionInputContainer.style.flexDirection).toBe("");
       expect(selectionInputContainer.style.gap).toBe("");
 

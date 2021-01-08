@@ -1,48 +1,59 @@
 import { render, screen } from "@testing-library/react";
 import userEvent, { specialChars } from "@testing-library/user-event";
+import { checkSelectionInputDisabled } from "../Checkbox/Checkbox.test";
 import { OpenEye } from "../Input/__icons__";
 import Switch from "./index";
+
+const checkValue = (switchBtn: HTMLElement, bool: boolean | string) => {
+  const strBool = String(bool);
+  expect(switchBtn).toHaveAttribute("value", strBool);
+  expect(switchBtn).toHaveAttribute("aria-checked", strBool.trim());
+};
 
 describe("<Switch />", () => {
   test("default behaviour", () => {
     render(<Switch />);
     const switchBtn = screen.getByTestId("switch-btn");
-    const selectionInput = screen.getByTestId("selection-input-base");
+
+    const handlerContainer = screen.getByTestId("switch-handler-container");
+    expect(handlerContainer).toBeVisible();
+    expect(handlerContainer).toHaveAttribute("class");
+    expect(handlerContainer.children).toHaveLength(1);
+    expect(handlerContainer).toMatchSnapshot();
+
+    const container = screen.getByTestId("switch-container");
+    expect(container).toBeVisible();
+    expect(container).toHaveAttribute("class");
+    expect(container.children).toHaveLength(2);
+    expect(container).toContainElement(switchBtn);
+    expect(container).toContainElement(handlerContainer);
 
     expect(switchBtn).toBeVisible();
-    expect(selectionInput).toBeInTheDocument();
-    expect(selectionInput).toHaveAttribute("type", "checkbox");
-    expect(selectionInput).toHaveAttribute("value", "false");
-    expect(switchBtn).toHaveAttribute("aria-checked", "false");
-    expect(switchBtn).toHaveAttribute("data-ison", "false");
+    expect(switchBtn.id).toHaveLength(5);
     expect(switchBtn).toHaveAttribute("tabindex", "0");
-    expect(switchBtn.getAttribute("for")).toHaveLength(5);
-    expect(switchBtn.getAttribute("ischecked")).toBeFalsy();
+    expect(switchBtn).toHaveAttribute("value", "false");
+    expect(switchBtn).toHaveAttribute("type", "checkbox");
+    expect(switchBtn).toHaveAttribute("aria-checked", "false");
+    expect(switchBtn).toHaveAttribute("data-state", "default");
+    expect(switchBtn).toHaveAttribute("data-insidetext", "false");
     expect(switchBtn.onclick).toBeDefined();
     expect(screen.queryByTestId("switch-inside-text")).toBeNull();
   });
   test("onClick functionality", () => {
     render(<Switch />);
     const switchBtn = screen.getByTestId("switch-btn");
-    const selectionInput = screen.getByTestId("selection-input-base");
 
     userEvent.click(switchBtn);
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "true");
-    expect(switchBtn).toHaveAttribute("data-ison", "true");
-    expect(selectionInput.getAttribute("value")).toBeTruthy();
+    checkValue(switchBtn, true);
 
     userEvent.click(switchBtn);
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "false");
-    expect(switchBtn).toHaveAttribute("data-ison", "false");
-    expect(selectionInput.getAttribute("value")).toBe("false");
+    checkValue(switchBtn, false);
 
     userEvent.click(switchBtn);
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "true");
-    expect(switchBtn).toHaveAttribute("data-ison", "true");
-    expect(selectionInput.getAttribute("value")).toBeTruthy();
+    checkValue(switchBtn, true);
   });
   test("double click functionality", () => {
     render(<Switch />);
@@ -50,8 +61,7 @@ describe("<Switch />", () => {
 
     userEvent.dblClick(switchBtn);
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "false");
-    expect(switchBtn).toHaveAttribute("data-ison", "false");
+    checkValue(switchBtn, false);
   });
   test("hit spacebar", () => {
     render(<Switch />);
@@ -59,17 +69,15 @@ describe("<Switch />", () => {
 
     userEvent.type(switchBtn, specialChars.space);
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "true");
-    expect(switchBtn).toHaveAttribute("data-ison", "true");
+    checkValue(switchBtn, "true ");
   });
-  test("defaultChecked={true}", () => {
+  test("with defaultChecked={true}", () => {
     render(<Switch defaultChecked />);
     const switchBtn = screen.getByTestId("switch-btn");
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "true");
-    expect(switchBtn).toHaveAttribute("data-ison", "true");
+    checkValue(switchBtn, true);
   });
-  // Check aslo the SelectionInput <LabelContainer /> helper component
+  // Check also the SelectionInput <LabelContainer /> helper component
   test("with label", () => {
     render(<Switch label={{ value: "Label" }} />);
     const selectionInput = screen.getByTestId("selection-input-label");
@@ -112,34 +120,35 @@ describe("<Switch />", () => {
       expect(screen.getByTestId("switch-inside-icon")).toMatchSnapshot();
     });
   });
-  test("disabled state", async () => {
-    const { rerender } = render(<Switch state="disabled|on" />);
-    const switchBtn = screen.getByTestId("switch-btn");
+  describe("disabled state", () => {
+    test("with state Prop", async () => {
+      const { rerender } = render(<Switch state="disabled|on" />);
+      const switchBtn = screen.getByTestId("switch-btn");
 
-    expect(switchBtn).toHaveClass("disabled");
+      expect(switchBtn).toBeDisabled();
+      checkSelectionInputDisabled(switchBtn);
 
-    render(<Switch state="disabled|off" />);
-    expect(switchBtn).toHaveClass("disabled");
+      render(<Switch state="disabled|off" />);
+      checkSelectionInputDisabled(switchBtn);
 
-    rerender(<Switch aria-disabled="true" />);
-    expect(switchBtn).toHaveClass("disabled");
+      rerender(<Switch aria-disabled="true" />);
+      checkSelectionInputDisabled(switchBtn);
 
-    rerender(<Switch disabled />);
-    expect(switchBtn).toHaveClass("disabled");
-    expect(switchBtn).toHaveAttribute("tabindex", "-1");
-  });
-  test("disabled state, with isChecked={false}", () => {
-    render(<Switch state="disabled|off" />);
-    const switchBtn = screen.getByTestId("switch-btn");
+      rerender(<Switch disabled />);
+      checkSelectionInputDisabled(switchBtn);
+      expect(switchBtn).toHaveAttribute("tabindex", "-1");
+    });
+    test('with state="disabled|off", with isChecked={false}', () => {
+      render(<Switch state="disabled|off" />);
+      const switchBtn = screen.getByTestId("switch-btn");
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "false");
-    expect(switchBtn).toHaveAttribute("data-ison", "false");
-  });
-  test("disabled state, with isChecked={true}", () => {
-    render(<Switch state="disabled|on" />);
-    const switchBtn = screen.getByTestId("switch-btn");
+      checkValue(switchBtn, false);
+    });
+    test('with state="disabled|on", with isChecked={true}', () => {
+      render(<Switch state="disabled|on" />);
+      const switchBtn = screen.getByTestId("switch-btn");
 
-    expect(switchBtn).toHaveAttribute("aria-checked", "true");
-    expect(switchBtn).toHaveAttribute("data-ison", "true");
+      checkValue(switchBtn, true);
+    });
   });
 });

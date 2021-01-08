@@ -1,8 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Switch /> default behaviour 1`] = `
+<div
+  class="switch__handler__container"
+  data-testid="switch-handler-container"
+>
+  <div
+    class="switch__handler__container--second"
+  >
+    <div
+      class="switch__handler shadow__form-4"
+      style="left: 6px; transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+    />
+  </div>
+</div>
+`;
+
 exports[`<Switch /> with inside values with icon & position 1`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
   data-position="right"
   data-testid="switch-inside-icon"
 >
@@ -29,7 +45,7 @@ exports[`<Switch /> with inside values with icon & position 1`] = `
 
 exports[`<Switch /> with inside values with icon & position 2`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
   data-position="toggle"
   data-testid="switch-inside-icon"
 >
@@ -56,7 +72,8 @@ exports[`<Switch /> with inside values with icon & position 2`] = `
 
 exports[`<Switch /> with inside values with icon 1`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
+  data-position="right"
   data-testid="switch-inside-icon"
 >
   <svg
@@ -82,7 +99,7 @@ exports[`<Switch /> with inside values with icon 1`] = `
 
 exports[`<Switch /> with inside values with insideText & position 1`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
   data-position="right"
   data-testid="switch-inside-text"
 >
@@ -92,7 +109,7 @@ exports[`<Switch /> with inside values with insideText & position 1`] = `
 
 exports[`<Switch /> with inside values with insideText & position 2`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
   data-position="toggle"
   data-testid="switch-inside-text"
 >
@@ -102,7 +119,8 @@ exports[`<Switch /> with inside values with insideText & position 2`] = `
 
 exports[`<Switch /> with inside values with insideText 1`] = `
 <span
-  class="switch__span body-14"
+  class="switch__span"
+  data-position="right"
   data-testid="switch-inside-text"
 >
   test

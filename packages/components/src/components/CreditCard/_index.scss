@@ -58,9 +58,9 @@
 
   &__owner {
     @extend .body-14;
+    @extend .upper;
     color: $grey-1;
     margin: em(4) 0;
-    text-transform: uppercase;
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;

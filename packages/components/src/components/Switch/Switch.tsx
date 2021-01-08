@@ -1,11 +1,10 @@
 import { Color } from "framer";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IconPropType } from "../../typings";
 import { error } from "../../utils";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { Base } from "../__helpers__";
-import { SelectionInputFProps } from "../__helpers__/SelectionInput/Base";
+import { Base, ComponentProps, SelectionInputFProps } from "../__helpers__";
 
 const grey5 = Color("#d6d6d6").toValue();
 const primary = Color("#0303ff").toValue();
@@ -20,9 +19,20 @@ const boxVariants = {
   },
 };
 
+const circleVariants = {
+  on: {
+    left: "auto",
+    right: "5px",
+  },
+  initial: {
+    left: "6px",
+    right: "auto",
+  },
+};
+
 const spring = {
   type: "spring",
-  stiffness: 700,
+  stiffness: 400,
   damping: 30,
 };
 
@@ -32,7 +42,7 @@ const longSpring = {
   damping: 30,
 };
 
-const SwitchStates = ["off", "focus-visible", "on", "disabled|off", "disabled|on"] as const;
+const SwitchStates = ["default", "focus-visible", "on", "disabled|off", "disabled|on"] as const;
 export type SwitchState = typeof SwitchStates[number];
 
 export type SwitchElementsType = {
@@ -44,36 +54,27 @@ export type Props = {
   insideText?: { value: string } & SwitchElementsType;
 };
 
-export type FProps = Props & SelectionInputFProps<SwitchState>;
+export type FProps = Props & ComponentProps<"input", false, SwitchState> & Pick<SelectionInputFProps, "label">;
 
-const Switch = React.forwardRef<HTMLLabelElement, FProps>(
-  ({ defaultChecked = false, label, groupName, icon, insideText, onClick, incheck, ...props }, ref) => {
-    const { state = "off" } = props;
+const Switch = React.forwardRef<HTMLInputElement, FProps>(
+  ({ defaultChecked = false, label, icon, insideText, state = "default", onClick, ...props }, ref) => {
     const id = useInputId(props.id);
-    const isDisabled = useDisabled(props) || state.includes("disabled");
+    const isDisabled = useDisabled(props, state) || state.includes("disabled");
     const [isOn, setIsOn] = useState(defaultChecked || state.includes("on"));
     const [classNames, rest] = useClassnames(
-      `switch selection-input__box flex-row-flex-start-center ${isDisabled ? "disabled" : ""} ${
-        state === "focus-visible" ? "focus-visible" : ""
-      }`,
+      `switch selection-input__box ${isDisabled ? "disabled" : ""} ${state === "focus-visible" ? "focus-visible" : ""}`,
       props
     );
 
-    const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
       if (state !== "on" && !isDisabled) {
         setIsOn(!isOn);
+      }
 
-        if (onClick) {
-          onClick(e);
-        }
+      if (onClick) {
+        onClick(e);
       }
     };
-
-    useEffect(() => {
-      if (incheck) {
-        incheck(isOn);
-      }
-    }, [incheck, isOn]);
 
     if (icon && insideText) {
       error("You can only pass an Icon or a text inside the <Switch /> component");
@@ -81,48 +82,59 @@ const Switch = React.forwardRef<HTMLLabelElement, FProps>(
     }
 
     return (
-      <Base type="checkbox" id={id} label={label} checked={isOn} ref={ref}>
-        <motion.label
-          htmlFor={id}
-          className={classNames}
-          role="checkbox"
-          tabIndex={isDisabled ? -1 : 0}
-          initial="initial"
-          animate={isOn ? "on" : "initial"}
-          variants={boxVariants}
-          transition={{ duration: 0.2 }}
-          ref={ref}
-          onClick={e => handleClick(e)}
-          onKeyDownCapture={e => e.code === "Space" && handleClick(e as any)}
-          data-state={state}
-          data-ison={isOn}
-          aria-checked={isOn}
-          data-testid="switch-btn"
-          {...rest}
-        >
-          <motion.div
-            className="switch__handler shadow__form-4"
-            layout
-            transition={insideText && insideText.value.length >= 5 ? longSpring : spring}
+      <Base id={id} label={label}>
+        <div className="switch__container" data-testid="switch-container">
+          <motion.input
+            id={id}
+            type="checkbox"
+            value={isOn}
+            className={classNames}
+            role="checkbox"
+            tabIndex={isDisabled ? -1 : 0}
+            initial="initial"
+            animate={isOn ? "on" : "initial"}
+            variants={boxVariants}
+            transition={{ duration: 0.2 }}
+            ref={ref}
+            onClick={e => handleClick(e)}
+            aria-checked={isOn}
+            aria-disabled={isDisabled}
+            data-state={state}
+            data-insidetext={insideText ? true : false}
+            data-testid="switch-btn"
+            disabled={isDisabled === true ? true : false}
+            {...rest}
           />
-          {insideText ? (
-            <span
-              className="switch__span body-14"
-              data-testid="switch-inside-text"
-              data-position={insideText.position ? insideText.position : undefined}
-            >
-              {insideText.value}
-            </span>
-          ) : icon ? (
-            <span
-              className="switch__span body-14"
-              data-testid="switch-inside-icon"
-              data-position={icon.position ? icon.position : undefined}
-            >
-              {icon.component}
-            </span>
-          ) : null}
-        </motion.label>
+          <div className="switch__handler__container" data-testid="switch-handler-container">
+            <div className="switch__handler__container--second">
+              <motion.div
+                className="switch__handler shadow__form-4"
+                layout
+                variants={circleVariants}
+                initial="initial"
+                animate={isOn ? "on" : "initial"}
+                transition={insideText && insideText.value.length >= 5 ? longSpring : spring}
+              />
+              {insideText ? (
+                <span
+                  className="switch__span"
+                  data-testid="switch-inside-text"
+                  data-position={insideText.position ? insideText.position : "right"}
+                >
+                  {insideText.value}
+                </span>
+              ) : icon ? (
+                <span
+                  className="switch__span"
+                  data-testid="switch-inside-icon"
+                  data-position={icon.position ? icon.position : "right"}
+                >
+                  {icon.component}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </div>
       </Base>
     );
   }

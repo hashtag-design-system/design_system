@@ -1,5 +1,4 @@
 import React from "react";
-import { useClassnames, useInputId } from "../../../utils/hooks";
 import { ComponentProps, SelectionInputProps } from "../index";
 import { LabelContainer } from "./LabelContainer";
 
@@ -15,31 +14,15 @@ export type SelectionInputState = typeof SelectionInputStates[number];
 
 // TODO: State
 export type SelectionInputFProps<S extends string | undefined = undefined> = SelectionInputProps &
-  Omit<ComponentProps<"input" | "label", false, S extends undefined ? SelectionInputState : S>, "onClick"> &
-  Pick<React.ComponentPropsWithoutRef<"label">, "onClick"> & { checked?: boolean; type?: ComponentProps<"input">["type"] };
+  Omit<ComponentProps<"input" | "label", false, S extends undefined ? SelectionInputState : S>, "onClick" | "onKeyDownCapture"> &
+  Pick<React.ComponentPropsWithoutRef<"label">, "onClick" | "onKeyDownCapture"> & {
+    checked?: boolean;
+    type?: ComponentProps<"input">["type"];
+  };
 
-export type FProps = SelectionInputFProps &
-  Pick<React.ComponentPropsWithoutRef<"div">, "onClick"> &
-  Omit<React.ComponentPropsWithRef<"label">, "onClick">;
-
-export const Base: React.FC<FProps> = ({
-  defaultChecked = false,
-  checked = defaultChecked,
-  state = "default",
-  label,
-  groupName,
-  type,
-  onClick,
-  onChange,
-  className,
-  children,
-  ref,
-  ...props
-}) => {
-  const id = useInputId(props.id);
+export type FProps = Pick<SelectionInputFProps, "label"> & React.ComponentPropsWithoutRef<"div">;
+export const Base: React.FC<FProps> = ({ id, defaultChecked = false, label, onClick, onChange, className, children, ...props }) => {
   const topOrBottom = label && typeof label === "object" && label.position ? ["top", "bottom"].includes(label.position) : false;
-
-  const [classNames, rest] = useClassnames("selection-input__hidden-input", props);
 
   return (
     <div
@@ -50,20 +33,9 @@ export const Base: React.FC<FProps> = ({
         gap: label && typeof label === "object" && label.gap !== undefined ? label.gap : undefined,
       }}
       data-testid="selection-input__container"
+      {...props}
     >
       <LabelContainer label={label} id={id}>
-        <input
-          type={type}
-          className={classNames}
-          checked={checked}
-          value={String(checked)}
-          onChange={e => void e}
-          name={groupName}
-          disabled={state.includes("disabled")}
-          aria-labelledby={id}
-          data-testid="selection-input-base"
-          {...rest}
-        />
         {children}
       </LabelContainer>
     </div>

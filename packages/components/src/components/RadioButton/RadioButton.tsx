@@ -1,8 +1,8 @@
 import { Color } from "framer";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { Base } from "../__helpers__";
+import { Base, ComponentProps } from "../__helpers__";
 import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
@@ -25,13 +25,13 @@ const variants = {
 
 export type RadioButtonState = SelectionInputState;
 
-export type Props = SelectionInputFProps;
+export type FProps = ComponentProps<"input", false, RadioButtonState> & Pick<SelectionInputFProps, "label">;
 
-const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
-  ({ defaultChecked = false, checked, state = "default", label, groupName, style, ...props }, ref) => {
+const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
+  ({ defaultChecked = false, state = "default", checked, label, style, onClick, ...props }, ref) => {
     const id = useInputId(props.id);
-    // * It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
-    // * that the `state.includes("checked")` would
+    // It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
+    // that the `state.includes("checked")` would
     const [isChecked, setIsChecked] = useState(defaultChecked || state === "checked" || state === "disabled|checked");
     const isDisabled = useDisabled(props, state) || state.includes("disabled");
     const [classNames, rest] = useClassnames(
@@ -39,57 +39,54 @@ const RadioButton = React.forwardRef<HTMLLabelElement, Props>(
       props
     );
 
-    const handleChange = () => {
-      if (checked !== undefined) {
-        checked = isChecked;
+    const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+      if (!isDisabled) {
+        setIsChecked(!isChecked);
+      }
+
+      if (onClick) {
+        onClick(e);
       }
     };
 
-    const handleClick = () => {
-      if (state !== "checked" && !isDisabled) {
-        setIsChecked(!isChecked);
+    useEffect(() => {
+      if (checked !== undefined) {
+        setIsChecked(checked);
       }
-    };
+    }, [checked]);
 
     const whileTap = !isDisabled && state !== "checked" ? "pressed" : undefined;
 
     return (
-      <Base
-        type="radio"
-        id={id}
-        label={label}
-        checked={isChecked}
-        ref={ref}
-        groupName={groupName}
-        onChange={() => handleChange()}
-        onClick={() => handleClick()}
-      >
+      <Base id={id} label={label} className="radio-button">
         <AnimatePresence>
-          <motion.label
-            htmlFor={id}
-            className={classNames}
+          <motion.input
+            id={id}
+            type="radio"
+            value={isChecked}
             role="radio"
+            className={classNames}
             tabIndex={isDisabled ? -1 : 0}
             initial="initial"
-            // * It is a bug if we only check for wether the input `isChecked`
-            // * Because it will have the check state if user clicks, while `state === "pressed"`
-            // * The same applies to the `whileTap` property
-            animate={isChecked && state !== "pressed" ? "checked" : state === "pressed" ? "pressed" : "initial"}
+            // It is a bug if we only check for wether the input `isChecked`
+            // Because it will have the check state if user clicks, while `state === "pressed"`
+            // The same applies to the `whileTap` property
+            animate={isChecked ? "checked" : !isDisabled && state === "pressed" ? "pressed" : "initial"}
             whileTap={whileTap}
             variants={variants}
             transition={{ duration: 0.15 }}
             custom={state === "disabled|checked"}
             ref={ref}
             style={{ ...style, ...variants.initial }}
-            onChange={() => handleChange()}
             onClick={e => {
               e.preventDefault();
-              handleClick();
+              handleClick(e);
             }}
-            onKeyDownCapture={e => e.code === "Space" && handleClick()}
-            data-state={state}
             aria-checked={isChecked}
+            aria-disabled={isDisabled}
+            data-state={state}
             data-testid="radio-btn"
+            disabled={isDisabled === true ? true : false}
             {...rest}
           />
         </AnimatePresence>

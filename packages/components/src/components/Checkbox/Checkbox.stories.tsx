@@ -17,7 +17,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<CheckboxFProps> = args => <Checkbox incheck={isChecked => console.log(isChecked)} {...args} />;
+const Template: Story<CheckboxFProps> = args => <Checkbox {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

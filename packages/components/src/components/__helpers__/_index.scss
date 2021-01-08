@@ -20,6 +20,15 @@
     @extend .flex-row-center-center;
     width: fit-content;
     gap: 12px;
+    position: relative;
+    cursor: pointer;
+
+    &.switch,
+    &.radio-button {
+      .selection-input__span {
+        text-align: center;
+      }
+    }
   }
 
   &__span {
@@ -34,10 +43,10 @@
 
   &__box {
     align-self: center;
-    width: em(24);
-    height: em(24);
+    width: rem(20);
+    height: rem(20);
     background-color: $grey-1;
-    border: $input-border-width * 2 solid;
+    border: $input-border-width * 2 solid $grey-5;
     box-sizing: border-box;
     outline: none;
     cursor: pointer;
@@ -52,7 +61,7 @@
     }
 
     @include disabled-classNames {
-      cursor: default;
+      @extend .state--disabled;
 
       &.checkbox,
       &.radio-button[data-state="disabled|unchecked"] {
@@ -63,13 +72,6 @@
         @extend .input__disabled--border;
       }
     }
-  }
-}
-
-.radio-button,
-.switch {
-  + .selection-input__span {
-    text-align: center;
   }
 }
 

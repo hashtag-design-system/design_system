@@ -16,18 +16,22 @@
   font-weight: bold !important;
 }
 
-@mixin font-uppercase {
+@mixin font-upper {
   text-transform: uppercase !important;
 }
 
-@mixin font-lowercase {
+@mixin font-lower {
   text-transform: lowercase !important;
+}
+
+@mixin font-caps {
+  text-transform: capitalize !important;
 }
 
 @mixin header {
   @include font-base;
   @include font-bold;
-  @include font-uppercase;
+  @include font-upper;
 }
 
 @mixin subheader {

@@ -3664,6 +3664,13 @@
   resolved "https://registry.npmjs.org/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"
   integrity sha512-FvUupuM3rlRsRtCN+fDudtmytGO6iHJuuRKS1Ss0pG5z8oX0diNEw94UEL7hgDbpN94rgaK5R7sWm6RrSkZuAQ==
 
+"@types/vanilla-tilt@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.npmjs.org/@types/vanilla-tilt/-/vanilla-tilt-1.6.2.tgz#1b49b1c0027ed3a664fb3683427d9d4f05f316c3"
+  integrity sha512-KQRqLG1/5G768y3EYiwuiRqU+dpmxB8QuYdOqpd+4HM+E4RMGh2/xKfRUz7N38Al981ul0Km2vsb7CuxgLHBww==
+  dependencies:
+    vanilla-tilt "*"
+
 "@types/webpack-env@^1.15.3":
   version "1.16.0"
   resolved "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.16.0.tgz#8c0a9435dfa7b3b1be76562f3070efb3f92637b4"
@@ -16680,6 +16687,11 @@ validate-npm-package-name@^3.0.0:
   integrity sha1-X6kS2B630MdK/BQN5zF/DKffQ34=
   dependencies:
     builtins "^1.0.3"
+
+vanilla-tilt@*, vanilla-tilt@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.npmjs.org/vanilla-tilt/-/vanilla-tilt-1.7.0.tgz#4e6d3c6442c6fa2b45c958c9c2013f31686ab461"
+  integrity sha512-u9yUhpSasFeqQCuiTon+RSb0aHzcj9stvWVXQIswzKL5oG491lkYk7U1GmhOAEZt7yPT6EiYZRJhIh2MFBncOA==
 
 vary@~1.1.2:
   version "1.1.2"
