@@ -1,5 +1,5 @@
 export { calculatePercentage, calculateValue, range } from "./calculate";
-export { snakeCase } from "./caseStyles";
+export { kebabCase, snakeCase, stringifyChildren } from "./caseStyles";
 export { error, isError } from "./error";
 export { generateId } from "./generateId";
 export { round } from "./round";

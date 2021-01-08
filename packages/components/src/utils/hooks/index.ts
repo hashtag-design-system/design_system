@@ -5,3 +5,4 @@ export { useDisabled } from "./useDisabled";
 export { useInputId } from "./useInputId";
 export { useWindowDimensions } from "./useWindowDimensions";
 export { useIsMobile } from "./useIsMobile";
+export { useSortableData } from "./useSortableData";

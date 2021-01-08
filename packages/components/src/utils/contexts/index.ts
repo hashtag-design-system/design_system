@@ -3,3 +3,4 @@ export * from "./InputContext";
 export * from "./SelectContext";
 export * from "./SliderContext";
 export * from "./DialogContext";
+export * from "./TableContext";

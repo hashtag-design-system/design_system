@@ -1,0 +1,102 @@
+.table {
+  --border-radius: 8px;
+  $border: 1px solid $grey-4;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: min(100%, 75vw);
+  text-align: left;
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  &-border {
+    border-bottom: $border;
+  }
+
+  &__thead {
+    @extend .body-12;
+    @extend .table-border;
+    border-width: 2px;
+    width: 100%;
+    height: auto;
+    background-color: $grey-3;
+
+    &__th {
+      @extend .bold;
+      @extend .upper;
+      height: 100%;
+      padding: 1.25em 1.25em;
+      color: $grey-9;
+
+      &:first-of-type {
+        border-top-left-radius: var(--border-radius);
+      }
+
+      &:last-of-type {
+        border-top-right-radius: var(--border-radius);
+      }
+
+      &[data-sort="true"] {
+        cursor: pointer;
+
+        div {
+          justify-content: space-between;
+        }
+      }
+
+      div {
+        @extend .flex-row-flex-start-center;
+        gap: 8px;
+        height: 50px;
+        height: 100%;
+      }
+    }
+
+    .table__tr {
+      height: em(40);
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+  }
+
+  &__tbody {
+    @extend .body-14;
+    // Due to <Checkbox />'s height
+    line-height: em(24) !important;
+
+    &__td {
+      padding: 0.75em 1em;
+      text-align: left;
+    }
+
+    .table__tr {
+      @include hover-classNames() {
+        background-color: lighten($secondary, 47.5);
+      }
+    }
+  }
+
+  &__tr {
+    @extend .table-border;
+    height: em(36);
+    will-change: background-color;
+    border-spacing: 0;
+
+    // Capture both in <thead /> and <tbody />
+    input[type="checkbox"],
+    input[type="radio"] {
+      box-shadow: none;
+    }
+
+    &.bottom-right {
+      td,
+      th {
+        &:first-child {
+          border-right: $border;
+        }
+      }
+    }
+  }
+}
