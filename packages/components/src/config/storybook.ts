@@ -7,4 +7,5 @@ export const titleGroups = {
   FEEDBACK: "Feedback",
   ANIMATED: "Animated",
   DATA: "Data",
+  DATA_TABLE: "Data/Table",
 };
