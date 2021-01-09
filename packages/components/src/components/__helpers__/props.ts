@@ -126,3 +126,11 @@ export type ComponentProps<
 export type ComponentState<T extends string> = {
   state?: T;
 };
+
+export type ComponentLoading<isUndefined extends boolean = true> = isUndefined extends true
+  ? {
+      loading?: boolean;
+    }
+  : {
+      loading: boolean;
+    };

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { DialogContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside } from "../../utils/hooks";
 import { ButtonFProps } from "../Button";
-import { Modal, ModalOverlayFProps } from "../__helpers__";
+import { ComponentLoading, Modal, ModalOverlayFProps } from "../__helpers__";
 import Btn from "./Btn/Btn";
 import Content from "./Content";
 import Title from "./Title";
@@ -19,10 +19,11 @@ const scaleVariants = {
 
 export type Props = {
   confirm?: boolean;
-  onDismiss?: (e: React.MouseEvent<HTMLElement>) => void;
+  allowDismissOnLoading?: boolean;
+  onDismiss?: (e: React.MouseEvent<HTMLElement>, info: { cancel: boolean }) => void;
 };
 
-export type FProps = Props & ModalOverlayFProps;
+export type FProps = Props & ModalOverlayFProps & ComponentLoading;
 
 type SubComponents = {
   Btn: typeof Btn;
@@ -30,17 +31,29 @@ type SubComponents = {
   Content: typeof Content;
 };
 
-const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, onDismiss, children, ...props }) => {
-  const { ref: modalRef, setIsOpen } = useClickOutside<HTMLDivElement>(isShown, undefined, onDismiss);
+const Dialog: React.FC<FProps> & SubComponents = ({
+  isShown,
+  confirm = false,
+  loading,
+  allowDismissOnLoading = true,
+  onDismiss,
+  children,
+  ...props
+}) => {
+  const { ref: modalRef, setIsOpen } = useClickOutside<HTMLDivElement>(
+    isShown,
+    undefined,
+    e => onDismiss && onDismiss(e, { cancel: true })
+  );
   const [classNames, rest] = useClassnames("dialog", props);
 
-  const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>, onClick?: ButtonFProps["onClick"]) => {
-    if (onDismiss) {
-      onDismiss(e);
-    }
-
+  const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>, info: { cancel: boolean }, onClick?: ButtonFProps["onClick"]) => {
     if (onClick) {
       onClick(e);
+    }
+
+    if (onDismiss) {
+      onDismiss(e, { cancel: info.cancel });
     }
   };
 
@@ -51,18 +64,34 @@ const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, on
       child => child && child.type && child.type.displayName === Btn.Group.displayName
     ).length >= 1;
 
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (onDismiss && e.code === "Escape") {
+        onDismiss(e as any, { cancel: true });
+      }
+    },
+    [onDismiss]
+  );
+
   useEffect(() => {
     setIsOpen(isShown);
   }, [isShown, setIsOpen]);
 
+  useEffect(() => {
+    document.addEventListener("keydown", e => handleKeyDown(e));
+    return () => {
+      document.removeEventListener("keydown", e => handleKeyDown(e));
+    };
+  }, [handleKeyDown]);
+
   return (
-    <DialogContextProvider value={{ confirm, hasBtnGroup: hasBtnGroup || false, handleDismiss }}>
+    <DialogContextProvider value={{ confirm, loading, allowDismissOnLoading, hasBtnGroup: hasBtnGroup || false, handleDismiss }}>
       <Modal.Overlay isShown={isShown}>
         <motion.div
           variants={scaleVariants}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.2, delay: 0.1 }}
+          transition={{ duration: 0.2 }}
           className={classNames}
           ref={modalRef}
           data-testid="dialog"
@@ -75,7 +104,6 @@ const Dialog: React.FC<FProps> & SubComponents = ({ isShown, confirm = false, on
   );
 };
 
-Dialog.displayName = "Dialog";
 Dialog.Btn = Btn;
 Dialog.Title = Title;
 Dialog.Content = Content;

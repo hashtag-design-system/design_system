@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 import { titleGroups } from "../../../../config/storybook";
-import Dialog, { DialogProps } from "../../index";
+import Dialog, { DialogBtnFProps, DialogProps } from "../../index";
 export default {
   title: `${titleGroups.FEEDBACK}/Btn`,
   component: Dialog.Btn,
@@ -9,17 +9,18 @@ export default {
   },
 } as Meta;
 
-const Children: React.FC = () => {
+const Children: React.FC<Pick<DialogBtnFProps, "confirm">> = ({ confirm }) => {
   return (
     <>
-      <Dialog.Btn variant="secondary">Cancel</Dialog.Btn>
-      <Dialog.Btn>Confirm</Dialog.Btn>
+      <Dialog.Btn>Cancel</Dialog.Btn>
+      <Dialog.Btn confirm={confirm}>Confirm</Dialog.Btn>
     </>
   );
 };
 
-const Template: Story<Pick<DialogProps, "onDismiss"> & { insideGroup?: boolean }> = ({
+const Template: Story<Pick<DialogProps, "onDismiss"> & { insideGroup?: boolean } & Pick<DialogBtnFProps, "confirm">> = ({
   insideGroup = false,
+  confirm,
   onDismiss,
 }) => (
   <Dialog isShown bgColor="light" onDismiss={onDismiss}>
@@ -28,17 +29,22 @@ const Template: Story<Pick<DialogProps, "onDismiss"> & { insideGroup?: boolean }
     </Dialog.Content>
     {insideGroup ? (
       <Dialog.Btn.Group>
-        <Children />
+        <Children confirm={confirm} />
       </Dialog.Btn.Group>
     ) : (
       <div className="flex-row-center-center" style={{ gap: "8px", marginBottom: "2em" }}>
-        <Children />
+        <Children confirm={confirm} />
       </div>
     )}
   </Dialog>
 );
 
 export const Default = Template.bind({});
+
+export const Confirm = Template.bind({});
+Confirm.args = {
+  confirm: true,
+};
 
 export const InsideGroup = Template.bind({});
 InsideGroup.args = {

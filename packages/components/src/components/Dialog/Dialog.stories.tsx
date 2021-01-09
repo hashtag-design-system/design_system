@@ -1,8 +1,8 @@
 import { Meta, Story } from "@storybook/react";
 import { useState } from "react";
 import { titleGroups } from "../../config/storybook";
-import Dialog, { DialogFProps } from "./index";
 import Button from "../Button";
+import Dialog, { DialogFProps } from "./index";
 
 export default {
   title: titleGroups.FEEDBACK,
@@ -12,8 +12,9 @@ export default {
   },
 } as Meta;
 
-const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, bgColor, onDismiss, ...args }) => {
+const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, loading, allowDismissOnLoading = true, bgColor, onDismiss, ...args }) => {
   const [isShown, setIsShown] = useState(isOpen);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -22,9 +23,34 @@ const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, bgColor, onDi
         isShown={isShown}
         bgColor={bgColor}
         confirm={confirm}
-        onDismiss={e => {
-          if (onDismiss) onDismiss(e);
-          setIsShown(false);
+        loading={isLoading}
+        allowDismissOnLoading={allowDismissOnLoading}
+        onDismiss={(e, { cancel }) => {
+          if (loading !== undefined) {
+            if (onDismiss) onDismiss(e, { cancel });
+            if (!cancel) {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsShown(false);
+                setIsLoading(false);
+              }, 2000);
+            } else {
+              if (!cancel) {
+                setIsLoading(true);
+                setTimeout(() => {
+                  setIsShown(false);
+                  setIsLoading(false);
+                }, 2000);
+              } else {
+                if (allowDismissOnLoading) {
+                  setIsShown(false);
+                }
+              }
+            }
+          } else {
+            if (onDismiss) onDismiss(e, { cancel });
+            setIsShown(false);
+          }
         }}
         {...args}
       >
@@ -40,8 +66,8 @@ const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, bgColor, onDi
           )}
         </Dialog.Content>
         <Dialog.Btn.Group>
-          <Dialog.Btn variant="secondary">Cancel</Dialog.Btn>
-          <Dialog.Btn>Confirm</Dialog.Btn>
+          <Dialog.Btn>Cancel</Dialog.Btn>
+          <Dialog.Btn confirm>Confirm</Dialog.Btn>
         </Dialog.Btn.Group>
       </Dialog>
     </>
@@ -59,3 +85,17 @@ export const Confirm = Template.bind({});
 Confirm.args = {
   confirm: true,
 };
+
+export const Loading = Template.bind({});
+Loading.args = {
+  isShown: true,
+  loading: true,
+};
+
+export const LoadingWithAllowDismissFalse = Template.bind({});
+LoadingWithAllowDismissFalse.args = {
+  isShown: true,
+  loading: true,
+  allowDismissOnLoading: false,
+};
+LoadingWithAllowDismissFalse.storyName = "Loading with allowDismissOnLoading={false}";

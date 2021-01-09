@@ -1,21 +1,41 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import Dialog, { DialogFProps } from "../index";
 
 const TestChildren: React.FC<Partial<DialogFProps> & { hasBtnGroup?: boolean }> = ({
   isShown = true,
   hasBtnGroup = false,
+  loading,
+  allowDismissOnLoading = true,
   onDismiss,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(isShown);
+  const [isLoading, setIsLoading] = useState(loading || false);
 
   return (
     <Dialog
       isShown={isOpen}
-      onDismiss={() => {
-        if (onDismiss) onDismiss();
-        setIsOpen(false);
+      loading={isLoading}
+      allowDismissOnLoading={allowDismissOnLoading}
+      onDismiss={(e, { cancel }) => {
+        if (loading !== undefined) {
+          if (!cancel) {
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsOpen(false);
+              setIsLoading(false);
+            }, 2000);
+          } else {
+            if (allowDismissOnLoading) {
+              setIsOpen(false);
+            }
+          }
+        } else {
+          if (onDismiss) onDismiss(e, { cancel });
+          setIsOpen(false);
+        }
       }}
       {...props}
     >
@@ -28,8 +48,8 @@ const TestChildren: React.FC<Partial<DialogFProps> & { hasBtnGroup?: boolean }> 
       </Dialog.Content>
       {hasBtnGroup && (
         <Dialog.Btn.Group>
-          <Dialog.Btn variant="secondary">Cancel</Dialog.Btn>
-          <Dialog.Btn>Confirm</Dialog.Btn>
+          <Dialog.Btn>Cancel</Dialog.Btn>
+          <Dialog.Btn confirm>Confirm</Dialog.Btn>
         </Dialog.Btn.Group>
       )}
     </Dialog>
@@ -101,10 +121,10 @@ describe("<Dialog />", () => {
       expect(screen.getByTestId("dialog-btn-group").children).toHaveLength(2);
     });
   });
-  describe("functionality", () => {
+  describe("basic functionality", () => {
     test.each(["dialog-btn-close", "modal-root"])("onDismiss default functionality & click outside", testId => {
-      const onDismiss = jest.fn();
-      render(<TestChildren onDismiss={() => onDismiss()} />);
+      const onDismiss = jest.fn((_, { cancel }) => cancel);
+      render(<TestChildren onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} />);
 
       act(() => {
         screen.getByTestId(testId).click();
@@ -112,10 +132,13 @@ describe("<Dialog />", () => {
 
       expect(screen.queryByTestId("dialog")).toBeNull();
       expect(onDismiss).toHaveBeenCalledTimes(1);
+      const results = onDismiss.mock.results;
+      expect(results).toHaveLength(1);
+      expect(results[0].value).toBeTruthy();
     });
     test.each([0, 1])("click cancel / confirm button", i => {
-      const onDismiss = jest.fn();
-      render(<TestChildren hasBtnGroup onDismiss={() => onDismiss()} />);
+      const onDismiss = jest.fn((_, { cancel }) => cancel);
+      render(<TestChildren hasBtnGroup onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} />);
 
       act(() => {
         screen.getAllByTestId("dialog-btn")[i].click();
@@ -123,6 +146,127 @@ describe("<Dialog />", () => {
 
       expect(screen.queryByTestId("dialog")).toBeNull();
       expect(onDismiss).toHaveBeenCalledTimes(1);
+      const results = onDismiss.mock.results;
+      expect(results).toHaveLength(1);
+      if (i === 0) {
+        expect(results[0].value).toBeTruthy();
+      } else {
+        expect(results[0].value).toBeFalsy();
+      }
+    });
+  });
+  describe("with loading", () => {
+    describe("with loading={true}", () => {
+      beforeEach(() => {
+        render(<TestChildren loading hasBtnGroup />);
+      });
+      test("basic functionality", async () => {
+        const btnGroup = screen.getByTestId("dialog-btn-group");
+        const children = btnGroup.children;
+        expect(children).toHaveLength(2);
+        // Confirm btn
+        expect(children[1]).toHaveClass("dismiss-onloading");
+        expect(children[0]).not.toHaveClass("dismiss-onloading");
+        expect(screen.getByTestId("dialog-btn-close")).not.toHaveClass("dismiss-onloading");
+
+        act(() => {
+          userEvent.click(children[1]);
+        });
+
+        expect(screen.queryByTestId("dialog")).not.toBeNull();
+
+        await waitFor(
+          () => {
+            expect(screen.queryByTestId("dialog")).toBeNull();
+          },
+          { timeout: 2000 }
+        );
+      });
+      test.each(["cancel btn", "close btn", "modal-root"])("and dismiss", btn => {
+        const btnGroup = screen.getByTestId("dialog-btn-group");
+        const children = btnGroup.children;
+        expect(children).toHaveLength(2);
+        expect(children[0]).toHaveClass("loading");
+        expect(children[1]).toHaveClass("dismiss-onloading");
+
+        act(() => {
+          userEvent.click(children[1]);
+        });
+
+        expect(screen.queryByTestId("dialog")).not.toBeNull();
+
+        if (btn === "cancel btn") {
+          act(() => {
+            userEvent.click(children[0]);
+          });
+        } else if (btn === "modal-root") {
+          act(() => {
+            userEvent.click(screen.getByTestId(btn));
+          });
+        } else {
+          act(() => {
+            userEvent.click(screen.getByTestId("dialog-btn-close"));
+          });
+        }
+
+        expect(screen.queryByTestId("dialog")).toBeNull();
+      });
+    });
+    describe("with loading={true} & allowDismissOnLoading={false}", () => {
+      beforeEach(() => {
+        render(<TestChildren loading allowDismissOnLoading={false} hasBtnGroup />);
+      });
+      test("basic functionality", async () => {
+        const btnGroup = screen.getByTestId("dialog-btn-group");
+        const children = btnGroup.children;
+        expect(children).toHaveLength(2);
+        // Confirm btn
+        expect(children[1]).toHaveClass("dismiss-onloading");
+        expect(children[0]).toHaveClass("dismiss-onloading");
+        expect(screen.getByTestId("dialog-btn-close")).toHaveClass("dismiss-onloading");
+
+        act(() => {
+          userEvent.click(children[1]);
+        });
+
+        expect(screen.queryByTestId("dialog")).not.toBeNull();
+
+        await waitFor(
+          () => {
+            expect(screen.queryByTestId("dialog")).not.toBeNull();
+          },
+          { timeout: 2000 }
+        );
+      });
+      test.each(["cancel btn", "close btn", "modal-root"])("and dismiss", btn => {
+        const btnGroup = screen.getByTestId("dialog-btn-group");
+        const children = btnGroup.children;
+        expect(children).toHaveLength(2);
+        expect(children[0]).toHaveClass("loading");
+        expect(children[1]).toHaveClass("dismiss-onloading");
+
+        act(() => {
+          userEvent.click(children[1]);
+        });
+
+        expect(screen.queryByTestId("dialog")).not.toBeNull();
+
+        if (btn === "cancel btn") {
+          act(() => {
+            userEvent.click(children[0]);
+          });
+        } else if (btn === "modal-root") {
+          act(() => {
+            userEvent.click(screen.getByTestId(btn));
+          });
+        } else {
+          act(() => {
+            userEvent.click(screen.getByTestId("dialog-btn-close"));
+          });
+        }
+
+        expect(screen.queryByTestId("dialog")).not.toBeNull();
+      });
     });
   });
 });

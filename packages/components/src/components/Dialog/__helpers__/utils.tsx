@@ -5,6 +5,8 @@ import { DialogContextProvider, DialogContextType } from "../../../utils/context
 export const defaultProps: Omit<DialogContextType, "handleDismiss"> = {
   hasBtnGroup: false,
   confirm: false,
+  loading: false,
+  allowDismissOnLoading: true,
 };
 
 type DialogCustomRenderOptions = {

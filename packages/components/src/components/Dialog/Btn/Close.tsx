@@ -6,11 +6,11 @@ import Button, { ButtonFProps } from "../../Button";
 export type FProps = ButtonFProps;
 
 const Close: React.FC<FProps> = ({ onClick, ...props }) => {
-  const [classNames, rest] = useClassnames("dialog__btn", props);
-  const { handleDismiss } = useDialogContext();
+  const { loading, allowDismissOnLoading, handleDismiss } = useDialogContext();
+  const [classNames, rest] = useClassnames(`dialog__btn ${loading && !allowDismissOnLoading ? "dismiss-onloading" : ""}`, props);
 
   return (
-    <Button className={classNames} onClick={e => handleDismiss(e, onClick)} data-testid="dialog-btn-close" {...rest}>
+    <Button className={classNames} onClick={e => handleDismiss(e, { cancel: true }, onClick)} data-testid="dialog-btn-close" {...rest}>
       <svg
         width="1em"
         height="1em"
