@@ -2,40 +2,34 @@
 // TODO: Remove afterwards removing the <Checkbox /> label Prop
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
+import Animated from "./components/Animated";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import Dialog from "./components/Dialog";
 import Input from "./components/Input";
-import Pagination from "./components/Pagination";
-import Table from "./components/Table";
-import { useSortableData } from "./utils/hooks";
+import Switch from "./components/Switch";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
-type InitialDataType = {
-  id: number;
-  amount: number;
-  hey: string;
-  test: boolean;
-  username: string;
-};
-const initialData: InitialDataType[] = [
-  { id: 1, amount: 0.75, hey: "hey", test: true, username: "georgekrax" },
-  { id: 2, amount: 1.0, hey: "hey", test: false, username: "me" },
-  { id: 3, amount: 0.65, hey: "hey", test: false, username: "skg" },
-  { id: 4, amount: 1.5, hey: "hey", test: true, username: "spoon" },
-];
-
 function App() {
   const [isChecked, setIsChecked] = useState(false);
-  const { data, setSort } = useSortableData<InitialDataType>(initialData);
+  const [isLoading, setIsLoading] = useState(false);
   const ref = useRef<HTMLElement>(null);
+  const [isShown, setIsShown] = useState(false);
+
+  // const handleDismiss = (e: React.MouseEvent<HTMLElement>) => {
+  //   setTimeout(() => {
+  //     setIsShown(false);
+  //     setIsLoading(false);
+  //   }, 2000);
+  //   console.log(isLoading);
+  // };
 
   useEffect(() => {
     if (ref && ref.current) {
       ref.current.focus();
     }
   });
-  console.log(isChecked);
 
   return (
     <div className="App">
@@ -54,80 +48,49 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      <Pagination
-        totalPages={10}
-        // currentPage={page}
-        // surroundingPageCount={3}
-        // hrefBuilder={page => `https://georgekrax.com/${page}`}
-        onPageChange={(e, page) => {
-          e.preventDefault();
-          console.log(page);
+      <Switch />
+      <Button onClick={() => setIsShown(true)}>Click me</Button>
+      <Dialog
+        loading={isLoading}
+        allowDismissOnLoading={true}
+        isShown={isShown}
+        bgColor="light"
+        onDismiss={(e, { cancel }) => {
+          if (!cancel) {
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsShown(false);
+              setIsLoading(false);
+            }, 2000);
+          } else {
+            if (!cancel) {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsShown(false);
+                setIsLoading(false);
+              }, 2000);
+            } else {
+              if (true) {
+                setIsShown(false);
+              }
+            }
+          }
         }}
-        // onClick={(e, page) => {
-        // e.preventDefault();
-        // setPage(page);
-        // console.log(page);
-        // }}
-      />
-      <Table extraColumn={{ component: "radio", withBorderRight: true, selectedRows: e => console.log(e) }}>
-        <Table.THead>
-          <Table.Tr>
-            <Table.Th
-              sort
-              onClick={(_, { direction }) => {
-                setSort({ direction, key: "id" });
-              }}
-            >
-              ID
-            </Table.Th>
-            <Table.Th
-              sort
-              onClick={(_, { direction }) => {
-                setSort({ direction, key: "amount" });
-              }}
-            >
-              Amount
-            </Table.Th>
-            <Table.Th
-              sort
-              onClick={(_, { direction }) => {
-                setSort({ direction, key: "hey" });
-              }}
-            >
-              Hey
-            </Table.Th>
-            <Table.Th
-              sort
-              onClick={(_, { direction }) => {
-                setSort({ direction, key: "test" });
-              }}
-            >
-              Test
-            </Table.Th>
-            <Table.Th
-              sort
-              onClick={(_, { direction }) => {
-                setSort({ direction, key: "username" });
-              }}
-            >
-              Username
-            </Table.Th>
-          </Table.Tr>
-        </Table.THead>
-        <Table.TBody>
-          {data.map(({ id, amount, hey, test, username }, i) => {
-            return (
-              <Table.Tr key={i}>
-                <Table.Td>{id}</Table.Td>
-                <Table.Td>{amount}</Table.Td>
-                <Table.Td>{hey}</Table.Td>
-                <Table.Td>{String(test).toUpperCase()}</Table.Td>
-                <Table.Td>{username}</Table.Td>
-              </Table.Tr>
-            );
-          })}
-        </Table.TBody>
-      </Table>
+      >
+        <Dialog.Btn.Close />
+        <Dialog.Content>
+          {/* <Dialog.Title>Are you sure you want to cancel your reservation?</Dialog.Title> */}
+          <Dialog.Title>
+            Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content
+            here. Dialog content here. Dialog content here. Dialog content here.
+          </Dialog.Title>
+        </Dialog.Content>
+        <Dialog.Btn.Group>
+          <Dialog.Btn>Cancel</Dialog.Btn>
+          <Dialog.Btn confirm>Confirm</Dialog.Btn>
+        </Dialog.Btn.Group>
+      </Dialog>
+      <Animated.Loading.Spinner color="black" />
       <Input
         // label="Label"
         secondhelptext={{ value: "2nd Help text", error: true }}

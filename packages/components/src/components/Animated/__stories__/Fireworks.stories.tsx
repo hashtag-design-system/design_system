@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../../config/storybook";
-import { Animated, AnimatedFireworksProps } from "../../index";
+import { titleGroups } from "../../../config/storybook";
+import Animated, { AnimatedFireworksProps } from "../index";
 
 export default {
   title: `${titleGroups.ANIMATED}/Fireworks`,
@@ -28,13 +28,13 @@ export default {
 } as Meta;
 
 const Template: Story<
-  Omit<AnimatedFireworksProps, "animation"> & { animationDelay?: string; animationTiming?: string; animationDuration?: string }
-> = ({ animationDelay, animationDuration, animationTiming, ...args }) => (
+  Omit<AnimatedFireworksProps, "animation"> & { animationDuration?: string; animationTiming?: string; animationIteration?: string }
+> = ({ animationDuration, animationIteration, animationTiming, ...args }) => (
   <Animated.Fireworks
     animation={{
-      delay: animationDelay,
       duration: animationDuration,
       timing: animationTiming,
+      iteration: animationIteration,
     }}
     style={{ position: "absolute", top: "50%", left: "50%" }}
     {...args}
@@ -45,7 +45,7 @@ export const Default = Template.bind({});
 
 export const Faster = Template.bind({});
 Faster.args = {
-  animationDelay: "1s",
+  animationDuration: "1s",
 };
 
 export const WithDifferentColor = Template.bind({});

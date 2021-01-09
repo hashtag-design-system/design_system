@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { Animated } from "../index";
+import Animated from "../index";
+import { checkChildStyle } from "../__helpers__";
 
 const checkChildren = (fireworks: HTMLElement, totalFireworks = 12) => {
   const children = fireworks.children;
@@ -10,12 +11,6 @@ const checkChildren = (fireworks: HTMLElement, totalFireworks = 12) => {
     expect(child).toHaveStyle(`transform: rotate(${i * (360 / totalFireworks)}deg) translateY(-15px)`);
     expect(child.children).toHaveLength(0);
   });
-};
-
-const checkChildStyle = (styleValue: { name: string; value: string }) => {
-  const { name, value } = styleValue;
-  // @ts-expect-error
-  expect(screen.getByTestId("fireworks").style["_values"][`--${name}`]).toBe(value);
 };
 
 describe("<Animated.Fireworks />", () => {
@@ -31,11 +26,11 @@ describe("<Animated.Fireworks />", () => {
     // @ts-expect-error
     expect(fireworks.style["1"]).toBe("--height");
     // @ts-expect-error
-    expect(fireworks.style["2"]).toBe("--animation-delay");
+    expect(fireworks.style["2"]).toBe("--animation-duration");
     // @ts-expect-error
     expect(fireworks.style["3"]).toBe("--animation-timing");
     // @ts-expect-error
-    expect(fireworks.style["4"]).toBe("--animation-duration");
+    expect(fireworks.style["4"]).toBe("--animation-iteration");
 
     checkChildren(fireworks);
   });
@@ -50,38 +45,38 @@ describe("<Animated.Fireworks />", () => {
     const width = "8px";
     render(<Animated.Fireworks width={width} />);
 
-    checkChildStyle({ name: "width", value: width });
+    checkChildStyle("fireworks", { name: "width", value: width });
   });
   test("with height", () => {
     const height = "80px";
     render(<Animated.Fireworks height={height} />);
 
-    checkChildStyle({ name: "height", value: height });
+    checkChildStyle("fireworks", { name: "height", value: height });
   });
   test("with color", () => {
     const color = "red";
     render(<Animated.Fireworks color={color} />);
 
-    checkChildStyle({ name: "bg-clr", value: color });
+    checkChildStyle("fireworks", { name: "bg-clr", value: color });
   });
-  describe("with animtion", () => {
-    test("with animationDelay", () => {
-      const delay = "1s";
-      render(<Animated.Fireworks animation={{ delay }} />);
+  describe("with animαtion", () => {
+    test("with animation.duration", () => {
+      const duration = "1s";
+      render(<Animated.Fireworks animation={{ duration }} />);
 
-      checkChildStyle({ name: "animation-delay", value: delay });
+      checkChildStyle("fireworks", { name: "animation-duration", value: duration });
     });
-    test("with animationTiming", () => {
+    test("with animation.timing", () => {
       const timing = "ease-in";
       render(<Animated.Fireworks animation={{ timing }} />);
 
-      checkChildStyle({ name: "animation-timing", value: timing });
+      checkChildStyle("fireworks", { name: "animation-timing", value: timing });
     });
-    test("with animationDuration", () => {
-      const duration = "5s";
-      render(<Animated.Fireworks animation={{ duration }} />);
+    test("with animation.iteration", () => {
+      const iteration = "5s";
+      render(<Animated.Fireworks animation={{ iteration }} />);
 
-      checkChildStyle({ name: "animation-duration", value: duration });
+      checkChildStyle("fireworks", { name: "animation-iteration", value: iteration });
     });
   });
 });

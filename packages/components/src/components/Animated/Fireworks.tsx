@@ -1,21 +1,16 @@
 import React from "react";
-import { listKeys } from "../../../config";
-import { range } from "../../../utils";
-import { useClassnames } from "../../../utils/hooks";
-import { ComponentProps } from "../index";
+import { listKeys } from "../../config";
+import { range } from "../../utils";
+import { useClassnames } from "../../utils/hooks";
+import { ComponentProps } from "../__helpers__/index";
+import { AnimationType, CSSProperties } from "./__helpers__";
 
 // Big thanks to -> https://www.youtube.com/watch?v=K4K7HNavK4U
-
-type CSSProperties = React.CSSProperties;
 
 export type Props = {
   totalFireworks?: number;
   color?: CSSProperties["backgroundColor"];
-  animation?: {
-    delay?: CSSProperties["animationDelay"];
-    timing?: CSSProperties["animationTimingFunction"];
-    duration?: CSSProperties["animationDuration"];
-  };
+  animation?: AnimationType;
 } & Pick<CSSProperties, "width" | "height">;
 
 export type FProps = Props & ComponentProps<"div">;
@@ -31,7 +26,7 @@ const Fireworks: React.FC<FProps> = ({
 }) => {
   const [classNames, rest] = useClassnames("fireworks", props);
 
-  const { delay = "3s", timing = "ease-in-out", duration = "infinite" } = animation;
+  const { duration = "3s", timing = "ease-in-out", iteration = "infinite" } = animation;
 
   return (
     <div
@@ -42,9 +37,9 @@ const Fireworks: React.FC<FProps> = ({
           "--width": width,
           "--height": height,
           "--bg-clr": color,
-          "--animation-delay": delay,
-          "--animation-timing": timing,
           "--animation-duration": duration,
+          "--animation-timing": timing,
+          "--animation-iteration": iteration,
         } as any
       }
       data-testid="fireworks"

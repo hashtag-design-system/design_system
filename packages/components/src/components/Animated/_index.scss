@@ -1,0 +1,106 @@
+.fireworks {
+  --width: 4px;
+  --height: 80px;
+  --bg-clr: #{$yellow-3};
+  --animation-duration: 3s;
+  --animation-timing: ease-in-out;
+  --animation-iteration: infinite;
+  position: relative;
+
+  &__explosion {
+    position: absolute;
+    left: -2px;
+    bottom: 0;
+    width: var(--width);
+    height: var(--height);
+    // background-color: rgba(0, 0, 0, 0.2);
+    transform-origin: 50% 100%;
+    overflow: hidden;
+    z-index: 99;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: 40px;
+      background-color: var(--bg-clr);
+      animation: explosion var(--animation-duration) var(--animation-timing) var(--animation-iteration);
+    }
+  }
+}
+
+@keyframes explosion {
+  0% {
+    top: 100%;
+  }
+  33%,
+  100% {
+    top: -50%;
+  }
+}
+
+.animated-spinner {
+  --size: 5em;
+  --color: #{$secondary};
+  --rotate-animation-duration: 2s;
+  --rotate-animation-timing: linear;
+  --rotate-animation-iteration: infinite;
+  --dash-animation-duration: 1.5s;
+  --dash-animation-timing: ease-in-out;
+  --dash-animation-iteration: infinite;
+  position: relative;
+  margin: 0 0;
+  width: var(--size);
+
+  &::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  &__circular {
+    animation: rotate var(--rotate-animation-duration) var(--rotate-animation-timing) var(--rotate-animation-iteration);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  &__path {
+    stroke: var(--color);
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash var(--dash-animation-duration) var(--dash-animation-timing) var(--dash-animation-iteration);
+    stroke-linecap: round;
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+    // https://stackoverflow.com/questions/23871507/css-transforms-why-does-a-simple-rotation-make-the-image-blurry
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}

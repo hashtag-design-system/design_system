@@ -2,9 +2,10 @@ import { Color } from "framer";
 import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAnimateCheckmark, useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { Animated, Base, ComponentProps } from "../__helpers__";
-import { checkmarkVariants } from "../__helpers__/Animated/Checkmark";
+import { Base, ComponentProps } from "../__helpers__";
+import { checkmarkVariants } from "../Animated/Checkmark";
 import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/SelectionInput/Base";
+import Animated from "../Animated";
 
 const grey1 = Color("#ffffff").toValue();
 const grey5 = Color("#d6d6d6").toValue();

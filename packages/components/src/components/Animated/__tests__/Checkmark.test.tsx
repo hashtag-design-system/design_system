@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Animated } from "../Animated";
+import Animated from "../Animated";
 
 describe("<Animated.Checkmark />", () => {
   test("default behaviour", () => {

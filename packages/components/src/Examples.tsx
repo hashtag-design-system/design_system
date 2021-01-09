@@ -10,7 +10,23 @@ import RadioButton from "./components/RadioButton";
 import Select from "./components/Select";
 import Slider from "./components/Slider";
 import Switch from "./components/Switch";
+import Table from "./components/Table";
 import { Modal } from "./components/__helpers__";
+import { useSortableData } from "./utils/hooks";
+
+type InitialDataType = {
+  id: number;
+  amount: number;
+  hey: string;
+  test: boolean;
+  username: string;
+};
+const initialData: InitialDataType[] = [
+  { id: 1, amount: 0.75, hey: "hey", test: true, username: "georgekrax" },
+  { id: 2, amount: 1.0, hey: "hey", test: false, username: "me" },
+  { id: 3, amount: 0.65, hey: "hey", test: false, username: "skg" },
+  { id: 4, amount: 1.5, hey: "hey", test: true, username: "spoon" },
+];
 
 const options = [
   { value: "amsterdam", label: "Amsterdam" },
@@ -20,6 +36,7 @@ const options = [
 
 const Examples: React.FC = () => {
   const [isShown, setIsShown] = useState(false);
+  const { data, setSort } = useSortableData<InitialDataType>(initialData);
 
   const loadData = async () => {
     const res = await fetch("http://ip-api.com/json/");
@@ -39,6 +56,80 @@ const Examples: React.FC = () => {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
+      <Pagination
+        totalPages={10}
+        // currentPage={page}
+        // surroundingPageCount={3}
+        // hrefBuilder={page => `https://georgekrax.com/${page}`}
+        onPageChange={(e, page) => {
+          e.preventDefault();
+          console.log(page);
+        }}
+        // onClick={(e, page) => {
+        // e.preventDefault();
+        // setPage(page);
+        // console.log(page);
+        // }}
+      />
+      <Table extraColumn={{ component: "radio", withBorderRight: true, selectedRows: e => console.log(e) }}>
+        <Table.THead>
+          <Table.Tr>
+            <Table.Th
+              sort
+              onClick={(_, { direction }) => {
+                setSort({ direction, key: "id" });
+              }}
+            >
+              ID
+            </Table.Th>
+            <Table.Th
+              sort
+              onClick={(_, { direction }) => {
+                setSort({ direction, key: "amount" });
+              }}
+            >
+              Amount
+            </Table.Th>
+            <Table.Th
+              sort
+              onClick={(_, { direction }) => {
+                setSort({ direction, key: "hey" });
+              }}
+            >
+              Hey
+            </Table.Th>
+            <Table.Th
+              sort
+              onClick={(_, { direction }) => {
+                setSort({ direction, key: "test" });
+              }}
+            >
+              Test
+            </Table.Th>
+            <Table.Th
+              sort
+              onClick={(_, { direction }) => {
+                setSort({ direction, key: "username" });
+              }}
+            >
+              Username
+            </Table.Th>
+          </Table.Tr>
+        </Table.THead>
+        <Table.TBody>
+          {data.map(({ id, amount, hey, test, username }, i) => {
+            return (
+              <Table.Tr key={i}>
+                <Table.Td>{id}</Table.Td>
+                <Table.Td>{amount}</Table.Td>
+                <Table.Td>{hey}</Table.Td>
+                <Table.Td>{String(test).toUpperCase()}</Table.Td>
+                <Table.Td>{username}</Table.Td>
+              </Table.Tr>
+            );
+          })}
+        </Table.TBody>
+      </Table>
       <Slider
         marks={[
           { value: 0, label: "0" },
