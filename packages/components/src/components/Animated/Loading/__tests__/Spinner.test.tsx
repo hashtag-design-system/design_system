@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Animated from "../../index";
-import { checkChildStyle } from "../../__helpers__";
+import { checkChildStyle, checkStyleCustomProperties } from "../../__helpers__";
 
 describe("<Animated.Loading.Spinner />", () => {
   test("default behaviour", () => {
@@ -12,18 +12,27 @@ describe("<Animated.Loading.Spinner />", () => {
     expect(spinner).toHaveAttribute("style");
     // "--color" is exluded beacause it does not have a default value in the component,
     // but only in the stylesheet
-    [
-      "--size",
-      "--rotate-animation-duration",
-      "--rotate-animation-timing",
-      "--rotate-animation-iteration",
-      "--dash-animation-duration",
-      "--dash-animation-timing",
-      "--dash-animation-iteration",
-    ].forEach((style, i) => {
-      // @ts-expect-error
-      expect(spinner.style[i.toString()]).toBe(style);
-    });
+    // [
+    //   "--size",
+    //   "--rotate-animation-duration",
+    //   "--rotate-animation-timing",
+    //   "--rotate-animation-iteration",
+    //   "--dash-animation-duration",
+    //   "--dash-animation-timing",
+    //   "--dash-animation-iteration",
+    // ].forEach((style, i) => {
+    //   // @ts-expect-error
+    //   expect(spinner.style[i.toString()]).toBe(style);
+    // });
+    checkStyleCustomProperties(spinner, [
+      "size",
+      "rotate-animation-duration",
+      "rotate-animation-timing",
+      "rotate-animation-iteration",
+      "dash-animation-duration",
+      "dash-animation-timing",
+      "dash-animation-iteration",
+    ]);
 
     expect(spinner.children).toHaveLength(1);
     expect(spinner).toContainElement(screen.getByTestId("icon"));

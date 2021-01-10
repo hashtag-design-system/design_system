@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Animated from "../index";
-import { checkChildStyle } from "../__helpers__";
+import { checkChildStyle, checkStyleCustomProperties } from "../__helpers__";
 
 const checkChildren = (fireworks: HTMLElement, totalFireworks = 12) => {
   const children = fireworks.children;
@@ -21,16 +21,17 @@ describe("<Animated.Fireworks />", () => {
     expect(fireworks).toBeVisible();
     expect(fireworks).toHaveAttribute("class");
     expect(fireworks).toHaveAttribute("style");
-    // @ts-expect-error
-    expect(fireworks.style["0"]).toBe("--width");
-    // @ts-expect-error
-    expect(fireworks.style["1"]).toBe("--height");
-    // @ts-expect-error
-    expect(fireworks.style["2"]).toBe("--animation-duration");
-    // @ts-expect-error
-    expect(fireworks.style["3"]).toBe("--animation-timing");
-    // @ts-expect-error
-    expect(fireworks.style["4"]).toBe("--animation-iteration");
+    checkStyleCustomProperties(fireworks, ["width", "height", "animation-duration", "animation-timing", "animation-iteration"]);
+    // // @ts-expect-error
+    // expect(fireworks.style["0"]).toBe("--width");
+    // // @ts-expect-error
+    // expect(fireworks.style["1"]).toBe("--height");
+    // // @ts-expect-error
+    // expect(fireworks.style["2"]).toBe("--animation-duration");
+    // // @ts-expect-error
+    // expect(fireworks.style["3"]).toBe("--animation-timing");
+    // // @ts-expect-error
+    // expect(fireworks.style["4"]).toBe("--animation-iteration");
 
     checkChildren(fireworks);
   });

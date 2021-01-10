@@ -104,3 +104,29 @@
     stroke-dashoffset: -124px;
   }
 }
+
+.animated-dots {
+  width: auto;
+  height: auto;
+  margin: em(12);
+  list-style-type: none;
+  padding: 0;
+
+  &__dot {
+    --size: #{em(8)};
+    --margin: 0.5em;
+    --bg-clr: #{$secondary};
+    position: relative;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    margin: var(--margin);
+    z-index: 2;
+    background-color: var(--bg-clr);
+
+    &:last-of-type {
+      z-index: -1;
+    }
+  }
+}

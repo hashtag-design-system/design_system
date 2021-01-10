@@ -82,6 +82,20 @@ describe("<Dialog />", () => {
     expect(modalRoot.children).toHaveLength(1);
     expect(modalRoot).toContainElement(dialog);
   });
+  test("with overlayProps", async () => {
+    render(
+      <Dialog isShown overlayProps={{ bgColor: "light" }}>
+        Hey
+      </Dialog>
+    );
+
+    // Wait for animation to finish
+    await waitFor(() => {
+      expect(screen.getByTestId("dialog")).toBeVisible();
+    });
+
+    expect(screen.getByTestId("modal").style["backgroundColor"]).toBe("rgba(255, 255, 255, 0.85)");
+  });
   describe("with sub-component children", () => {
     test("default behaviour", async () => {
       render(<TestChildren />);

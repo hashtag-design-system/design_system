@@ -13,17 +13,9 @@ import Switch from "./components/Switch";
 
 function App() {
   const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const [isShown, setIsShown] = useState(false);
-
-  // const handleDismiss = (e: React.MouseEvent<HTMLElement>) => {
-  //   setTimeout(() => {
-  //     setIsShown(false);
-  //     setIsLoading(false);
-  //   }, 2000);
-  //   console.log(isLoading);
-  // };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (ref && ref.current) {
@@ -54,7 +46,7 @@ function App() {
         loading={isLoading}
         allowDismissOnLoading={true}
         isShown={isShown}
-        bgColor="light"
+        overlayProps={{ bgColor: "light" }}
         onDismiss={(e, { cancel }) => {
           if (!cancel) {
             setIsLoading(true);
@@ -90,7 +82,7 @@ function App() {
           <Dialog.Btn confirm>Confirm</Dialog.Btn>
         </Dialog.Btn.Group>
       </Dialog>
-      <Animated.Loading.Spinner color="black" />
+      <Animated.Loading.Dots />
       <Input
         // label="Label"
         secondhelptext={{ value: "2nd Help text", error: true }}

@@ -36,6 +36,7 @@ const options = [
 
 const Examples: React.FC = () => {
   const [isShown, setIsShown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { data, setSort } = useSortableData<InitialDataType>(initialData);
 
   const loadData = async () => {
@@ -282,10 +283,30 @@ const Examples: React.FC = () => {
       </div>
       <Button onClick={() => setIsShown(true)}>Click me</Button>
       <Dialog
+        loading={isLoading}
+        allowDismissOnLoading={true}
         isShown={isShown}
-        bgColor="light"
-        onDismiss={() => {
-          setIsShown(false);
+        overlayProps={{ bgColor: "light" }}
+        onDismiss={(e, { cancel }) => {
+          if (!cancel) {
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsShown(false);
+              setIsLoading(false);
+            }, 2000);
+          } else {
+            if (!cancel) {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsShown(false);
+                setIsLoading(false);
+              }, 2000);
+            } else {
+              if (true) {
+                setIsShown(false);
+              }
+            }
+          }
         }}
       >
         <Dialog.Btn.Close />
@@ -297,8 +318,8 @@ const Examples: React.FC = () => {
           </Dialog.Title>
         </Dialog.Content>
         <Dialog.Btn.Group>
-          <Dialog.Btn variant="secondary">Cancel</Dialog.Btn>
-          <Dialog.Btn>Confirm</Dialog.Btn>
+          <Dialog.Btn>Cancel</Dialog.Btn>
+          <Dialog.Btn confirm>Confirm</Dialog.Btn>
         </Dialog.Btn.Group>
       </Dialog>
       <Slider

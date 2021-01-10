@@ -1,5 +1,6 @@
 import Loading from "./Loading";
 
-export type { Props as AnimatedLoadingSpinnerProps, FProps as AnimatedLoadingSpinnerFProps } from "./Spinner";
+export type { FProps as AniamtedLoadingDotsFProps, Props as AnimatedLoadingDotsProps } from "./Dots";
+export type { FProps as AnimatedLoadingSpinnerFProps, Props as AnimatedLoadingSpinnerProps } from "./Spinner";
 
 export default Loading;

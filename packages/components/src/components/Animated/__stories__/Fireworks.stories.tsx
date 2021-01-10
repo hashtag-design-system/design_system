@@ -12,7 +12,7 @@ export default {
     color: {
       control: "text",
     },
-    animationDelay: {
+    animationDuration: {
       control: "text",
       defaultValue: "3s",
     },
@@ -20,7 +20,7 @@ export default {
       control: "text",
       defaultValue: "ease-in-out",
     },
-    animationDuration: {
+    animationIteration: {
       control: "text",
       defaultValue: "infinite",
     },

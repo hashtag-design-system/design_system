@@ -12,7 +12,15 @@ export default {
   },
 } as Meta;
 
-const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, loading, allowDismissOnLoading = true, bgColor, onDismiss, ...args }) => {
+const Template: Story<DialogFProps> = ({
+  isShown: isOpen,
+  confirm,
+  loading,
+  allowDismissOnLoading = true,
+  overlayProps,
+  onDismiss,
+  ...args
+}) => {
   const [isShown, setIsShown] = useState(isOpen);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,8 +29,8 @@ const Template: Story<DialogFProps> = ({ isShown: isOpen, confirm, loading, allo
       <Button onClick={() => setIsShown(true)}>Open dialog</Button>
       <Dialog
         isShown={isShown}
-        bgColor={bgColor}
         confirm={confirm}
+        overlayProps={overlayProps}
         loading={isLoading}
         allowDismissOnLoading={allowDismissOnLoading}
         onDismiss={(e, { cancel }) => {

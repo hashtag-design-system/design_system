@@ -20,10 +20,11 @@ const scaleVariants = {
 export type Props = {
   confirm?: boolean;
   allowDismissOnLoading?: boolean;
+  overlayProps?: Partial<ModalOverlayFProps>;
   onDismiss?: (e: React.MouseEvent<HTMLElement>, info: { cancel: boolean }) => void;
 };
 
-export type FProps = Props & ModalOverlayFProps & ComponentLoading;
+export type FProps = Props & Pick<ModalOverlayFProps, "isShown"> & ComponentLoading;
 
 type SubComponents = {
   Btn: typeof Btn;
@@ -36,6 +37,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   confirm = false,
   loading,
   allowDismissOnLoading = true,
+  overlayProps,
   onDismiss,
   children,
   ...props
@@ -86,7 +88,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
 
   return (
     <DialogContextProvider value={{ confirm, loading, allowDismissOnLoading, hasBtnGroup: hasBtnGroup || false, handleDismiss }}>
-      <Modal.Overlay isShown={isShown}>
+      <Modal.Overlay isShown={isShown} {...overlayProps}>
         <motion.div
           variants={scaleVariants}
           initial="hidden"

@@ -1,4 +1,5 @@
 import React from "react"
+import Dots from "./Dots";
 import Spinner from "./Spinner";
 
 export type Props = {
@@ -7,6 +8,7 @@ export type Props = {
 
 type SubComponents = {
   Spinner: typeof Spinner;
+  Dots: typeof Dots;
 }
 
 const Loading: React.FC<Props> & SubComponents= () => {
@@ -19,5 +21,6 @@ const Loading: React.FC<Props> & SubComponents= () => {
 
 Loading.displayName = "Loading"
 Loading.Spinner = Spinner;
+Loading.Dots = Dots;
 
 export default Loading;

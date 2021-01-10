@@ -23,7 +23,7 @@ const Template: Story<Pick<DialogProps, "onDismiss"> & { insideGroup?: boolean }
   confirm,
   onDismiss,
 }) => (
-  <Dialog isShown bgColor="light" onDismiss={onDismiss}>
+  <Dialog isShown onDismiss={onDismiss}>
     <Dialog.Content>
       <Dialog.Title>Dialog content here. Dialog content here</Dialog.Title>
     </Dialog.Content>

@@ -67,6 +67,6 @@ const Spinner: React.FC<FProps> = ({
   );
 };
 
-Spinner.displayName = "AnimatedSpinner";
+Spinner.displayName = "AnimatedLoadingSpinner";
 
 export default Spinner;

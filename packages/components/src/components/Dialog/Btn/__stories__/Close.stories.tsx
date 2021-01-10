@@ -12,7 +12,7 @@ export default {
 } as Meta;
 
 const Template: Story<ButtonSBProps & Pick<DialogProps, "onDismiss">> = ({ onDismiss, ...args }) => (
-  <Dialog isShown bgColor="light" onDismiss={onDismiss}>
+  <Dialog isShown onDismiss={onDismiss}>
     <Dialog.Btn.Close {...args} />
   </Dialog>
 );
