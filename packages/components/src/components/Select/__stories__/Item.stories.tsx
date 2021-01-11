@@ -6,7 +6,7 @@ export default {
   title: `${titleGroups.FORM_SELECT}/Item`,
   component: Select.Item,
   argTypes: {
-    children: {
+    content: {
       control: {
         type: "text",
       },
@@ -25,12 +25,12 @@ export default {
   },
 } as Meta;
 
-const Template: Story<SelectItemSBProps> = ({ children = "Item select option", ...args }) => (
+const Template: Story<SelectItemSBProps> = ({ content = "Item select option", ...args }) => (
   <Select defaultOpen>
     <Select.Button style={{ width: "200px" }}>Projects</Select.Button>
     <Select.Modal>
       <Select.Options>
-        <Select.Item {...args}>{children}</Select.Item>
+        <Select.Item content={content} {...args} />
       </Select.Options>
     </Select.Modal>
   </Select>

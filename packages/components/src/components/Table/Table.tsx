@@ -9,6 +9,7 @@ import Tr from "./Tr";
 
 export const TableSelectionInputs = ["checkbox", "radio"] as const;
 
+// TODO: Add the `Shift + click` <Checkbox /> keydown handler
 export type TableSelectionInputsTableType = { id: string; isChecked: boolean; header: boolean };
 export type TableSelectionInputType = typeof TableSelectionInputs[number];
 

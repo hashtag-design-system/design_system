@@ -281,6 +281,8 @@ const Examples: React.FC = () => {
           <Input.Number label="Label" />
         </Form.Group>
       </div>
+      <Switch insideText={{ value: "hedcsdfsdffsfdsdy", position: "toggle" }} />
+      <Switch />
       <Button onClick={() => setIsShown(true)}>Click me</Button>
       <Dialog
         loading={isLoading}

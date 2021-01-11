@@ -10,13 +10,15 @@ import { Item } from "./Item";
 import { Modal } from "./Modal";
 import { Options } from "./Options";
 
-export type SelectedItems = { id: string; content: string | null; selected: boolean; isShown: boolean };
+export type SelectedItems = { id: string; content: string; highlightedChildren: string; selected: boolean; isShown: boolean };
 
 export type Props = {
   defaultOpen?: boolean;
   multiSelectable?: boolean;
   mobileView?: boolean;
   onSelect?: (selected: SelectedItems[]) => void;
+  onDismiss?: (e: React.MouseEvent<HTMLElement>) => void;
+  onOutsideClick?: (outsideClick: boolean) => void;
 };
 
 type SubComponents = {
@@ -41,17 +43,26 @@ const Select: React.FC<FProps> & SubComponents = ({
   multiSelectable = false,
   mobileView = false,
   children,
+  open,
   forwardRef,
   onToggle,
   onSelect,
+  onOutsideClick,
+  onDismiss,
   ...props
 }) => {
-  const { ref: modalRef, isOpen, setIsOpen } = useClickOutside<HTMLDivElement>(defaultOpen);
+  const { ref: modalRef, isOpen, setIsOpen, outsideClick } = useClickOutside<HTMLDivElement>(defaultOpen, undefined, onDismiss);
   const [value, setValue] = useState<string>("");
   const [items, setItems] = useState<SelectedItems[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [classNames, rest] = useClassnames("select__box__container", props);
   const { isMobile } = useIsMobile(mobileView);
+
+  useEffect(() => {
+    if (onOutsideClick) {
+      onOutsideClick(outsideClick);
+    }
+  }, [outsideClick, onOutsideClick]);
 
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -171,10 +182,12 @@ const Select: React.FC<FProps> & SubComponents = ({
     }
   }, [items, onSelect]);
 
+  const fOpen = open === undefined ? isOpen : open;
+
   return (
     <SelectContextProvider
       value={{
-        isOpen,
+        isOpen: fOpen,
         ref: forwardRef,
         value,
         multiSelectable,
@@ -190,7 +203,7 @@ const Select: React.FC<FProps> & SubComponents = ({
         <details
           ref={isMobile ? undefined : modalRef}
           className={classNames}
-          open={isOpen}
+          open={fOpen}
           onClick={e => handleClick(e)}
           onToggle={e => handleToggle(e)}
           onKeyDown={e => handleKeyDown(e)}

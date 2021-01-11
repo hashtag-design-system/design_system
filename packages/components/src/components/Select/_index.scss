@@ -33,7 +33,7 @@
   }
 
   &__options {
-    max-height: em(480);
+    max-height: 65vh;
     height: auto;
     width: 100%;
     overflow-x: hidden;
@@ -62,6 +62,7 @@
   }
 
   &__modal {
+    max-height: 90vh;
     position: absolute;
     inset: auto;
     padding: 0;
@@ -79,7 +80,9 @@
     box-shadow: $modal-shadow;
 
     &--mobile {
-      @extend .flex-row-center-center;
+      .input__container__field {
+        margin-bottom: em(4);
+      }
     }
 
     .input__container {
@@ -208,7 +211,7 @@
 @include modal-classNames("select__modal--mobile") {
   .select__modal {
     width: min(70%, 32em);
-    max-height: 80%;
+    // max-height: 80%;
   }
 
   .select__item:not(.select__header) {

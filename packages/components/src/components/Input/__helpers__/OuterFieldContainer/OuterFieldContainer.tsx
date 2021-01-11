@@ -37,9 +37,6 @@ export const OuterFieldContainer: React.FunctionComponent<Props> = ({ prefixWidt
     return null;
   }
 
-  if (!placeholder) {
-    floatingplaceholder = false;
-  }
   if (isError() && !placeholder && !label && type !== "number" && className && !className.includes("input-digit")) {
     error(errors.PLACEHOLDER_OR_LABEL);
     return null;

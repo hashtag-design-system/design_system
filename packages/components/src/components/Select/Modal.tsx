@@ -1,11 +1,16 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isInViewport } from "../../utils";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
+import { SelectFProps } from "./index";
 import { ModalMobile } from "./__helpers__";
 
 const variants = {
+  hidden: {
+    height: 0,
+    opacity: 0,
+  },
   initial: ({ isMobile }: { isMobile: boolean }) =>
     isMobile
       ? {
@@ -13,6 +18,7 @@ const variants = {
           opacity: 0,
         }
       : {
+          opacity: 0,
           height: "15%",
         },
   open: ({ isMobile, isOpen }: { isMobile: boolean; isOpen: boolean }) =>
@@ -23,6 +29,7 @@ const variants = {
         }
       : {
           height: isOpen ? "auto" : "",
+          opacity: 1,
         },
 };
 
@@ -32,9 +39,11 @@ export type Props = {
   align?: typeof SelectModalAligns[number];
 };
 
-export type FProps = Props & HTMLMotionProps<"div">;
+export type FProps = Props & HTMLMotionProps<"div"> & Pick<SelectFProps, "open">;
 
-export const Modal: React.FunctionComponent<FProps> = ({ align = "left", initial, animate, children, ...props }) => {
+export const Modal: React.FC<FProps> = ({ align = "left", open, initial, animate, children, ...props }) => {
+  const [top, setTop] = useState<number | undefined>(undefined);
+  const [animationEnd, setAnimationEnd] = useState(false);
   const { isOpen, isMobile, modalRef } = useSelectContext();
 
   const [classNames, rest] = useClassnames("select__modal", props);
@@ -65,17 +74,32 @@ export const Modal: React.FunctionComponent<FProps> = ({ align = "left", initial
   }
   // }, [initialRef, isOpen, isMobile, windowDimensions.width, windowDimensions.height]);
 
+  const fOpen = open === undefined ? isOpen : open;
+
+  useEffect(() => {
+    // @ts-expect-error
+    if (isMobile && animationEnd && modalRef && modalRef.current) {
+      // @ts-expect-error
+      const { offsetTop } = modalRef.current;
+      setTop(offsetTop);
+    }
+  }, [animationEnd, fOpen, isOpen, isMobile, modalRef]);
+
   return (
-    <ModalMobile align={align}>
+    <ModalMobile isShown={fOpen} align={align}>
       <motion.div
         ref={isMobile ? modalRef : initialRef}
         variants={variants}
         initial="initial"
-        animate={isOpen ? "open" : "initial"}
+        animate={open === undefined ? (isOpen ? "open" : "initial") : open ? "open" : "hidden"}
         custom={{ isMobile, isOpen }}
+        style={{ top: top ? top : undefined }}
         transition={{ type: "tween", duration: 0.25 }}
         className={classNames}
         data-testid="select-modal"
+        onAnimationComplete={() => {
+          setAnimationEnd(true);
+        }}
         {...rest}
       >
         {children}

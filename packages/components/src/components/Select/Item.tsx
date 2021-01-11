@@ -1,18 +1,34 @@
+import parse from "html-react-parser";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { stringifyChildren } from "../../utils";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames, useDisabled } from "../../utils/hooks";
 import { ComponentProps, ComponentState } from "../__helpers__";
 import Select from "./Select";
 
-export type FProps = Required<Pick<ComponentProps<"input">, "id">> &
+export type Props = {
+  // Make required
+  content?: string;
+  htmlContent?: { before?: React.ReactNode; after?: React.ReactNode };
+};
+
+export type FProps = Props &
+  Required<Pick<ComponentProps<"input">, "id">> &
   Pick<ComponentProps<"input">, "defaultChecked" | "children" | "className"> &
   ComponentProps<"div", false> &
   ComponentState<"default" | "hover" | "focus" | "disabled">;
 
-export type SBProps = Pick<FProps, "id" | "state" | "defaultChecked" | "children" | "onClick">;
+export type SBProps = Props & Pick<FProps, "id" | "state" | "defaultChecked" | "onClick">;
 
-export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onClick, children, ...props }) => {
+export const Item: React.FC<FProps> = ({
+  id,
+  state,
+  defaultChecked = false,
+  content = "",
+  htmlContent,
+  onClick,
+  children,
+  ...props
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props, { stateToRemove: { state } });
   const isDisabled = useDisabled(props, state);
@@ -21,22 +37,19 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
 
   const { multiSelectable, items, isMobile, setItems, handleToggle } = useSelectContext();
 
-  let newChildren = children?.toString() || null;
-  if (children) {
-    newChildren = stringifyChildren(children);
-  }
-
   const addItem = useCallback(() => {
     if (!isDisabled) {
-      setItems(prevState => [...prevState, { id, content: newChildren, selected: defaultChecked, isShown: true }]);
+      setItems(prevState => [...prevState, { id, content, highlightedChildren: content, selected: defaultChecked, isShown: true }]);
+      // { id, content, highlightedChildren: content, selected: defaultChecked, isShown: true },
     }
-  }, [isDisabled, id, defaultChecked, newChildren, setItems]);
+  }, [id, defaultChecked, content, isDisabled, setItems]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!multiSelectable) {
       handleToggle(e, false);
     }
+
     // state has not been updated yet, that is why the opposite is used
     const newItems = items.map(item => {
       if (item.id === id) {
@@ -92,6 +105,8 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
     return null;
   }
 
+  const fChecked = isChecked || defaultChecked;
+
   return (
     <>
       <div
@@ -99,7 +114,7 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
         ref={ref}
         tabIndex={isDisabled ? -1 : 0}
         onClick={e => handleClick(e)}
-        aria-selected={isChecked || defaultChecked}
+        aria-selected={fChecked}
         aria-disabled={isDisabled}
         data-testid="select-item"
         role="option"
@@ -107,8 +122,8 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
       >
         <input
           type="checkbox"
-          value={String(isChecked || defaultChecked)}
-          aria-checked={isChecked || defaultChecked}
+          value={String(fChecked)}
+          aria-checked={fChecked}
           id={id}
           disabled={Boolean(isDisabled)}
           aria-disabled={isDisabled}
@@ -116,7 +131,9 @@ export const Item: React.FC<FProps> = ({ id, state, defaultChecked = false, onCl
           data-testid="select-item-input"
         />
         <label unselectable="on" htmlFor={id} className="body-14" data-testid="select-item-label">
-          {children}
+          {htmlContent?.before}
+          {parse(items.find(item => item.id === id)?.highlightedChildren?.toString() || "")}
+          {htmlContent?.after}
         </label>
       </div>
       {isMobile && <Select.Hr />}

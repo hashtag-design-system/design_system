@@ -14,7 +14,7 @@ export const FieldContainer: React.FunctionComponent = () => {
     type,
     label,
     defaultValue,
-    placeholder = "Placeholder",
+    placeholder,
     floatingplaceholder = true,
     prefix,
     suffix,

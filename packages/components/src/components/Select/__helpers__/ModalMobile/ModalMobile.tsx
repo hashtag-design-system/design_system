@@ -1,15 +1,15 @@
 import React from "react";
 import { SelectModalProps } from "../..";
 import { useSelectContext } from "../../../../utils/contexts";
-import { Modal } from "../../../__helpers__";
+import { Modal, ModalOverlayFProps } from "../../../__helpers__";
 
-export type FProps = SelectModalProps;
+export type FProps = SelectModalProps & Pick<ModalOverlayFProps, "isShown">;
 
-export const ModalMobile: React.FC<FProps> = ({ align, children }) => {
-  const { isOpen, isMobile } = useSelectContext();
+export const ModalMobile: React.FC<FProps> = ({ isShown, align, children }) => {
+  const { isMobile } = useSelectContext();
 
   return isMobile ? (
-    <Modal.Overlay isShown={isOpen} bgColor="dark" className="select__modal--mobile">
+    <Modal.Overlay isShown={isShown} bgColor="dark" className="select__modal--mobile">
       {children}
     </Modal.Overlay>
   ) : (

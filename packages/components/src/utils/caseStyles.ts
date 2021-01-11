@@ -13,11 +13,21 @@ export const kebabCase = (str: string): string => {
 
 export const stringifyChildren = (children: React.ReactNode) => {
   return React.Children.toArray(children)
-      .map(child => {
-        if (typeof child === "object") {
+    .map(child => {
+      if (typeof child === "object") {
+        if ((child as React.ReactElement).props.children.length > 0) {
           return (child as React.ReactElement).props.children;
+        } else {
+          return ((child as React.ReactElement).props.children as React.ReactElement[]).map(child => {
+            if (typeof child === "object") {
+              return child.props.children;
+            } else {
+              return (child as HTMLElement).textContent || (child as HTMLElement).innerText;
+            }
+          });
         }
-        return child;
-      })
-      .join(" ");
-}
+      }
+      return child;
+    })
+    .join(" ");
+};

@@ -94,8 +94,7 @@ export default class Input extends React.Component<FProps, State> {
   render() {
     const { id, value } = this.state;
 
-    const { value: propsValue, overrideOnChange } = this.props;
-    // console.log(id);
+    const { value: propsValue, overrideOnChange, placeholder, floatingplaceholder } = this.props;
 
     return (
       <InputContextProvider
@@ -105,6 +104,8 @@ export default class Input extends React.Component<FProps, State> {
           value: overrideOnChange && propsValue !== undefined ? propsValue : value,
           onChange: overrideOnChange ? this.props.onChange : this.handleChange,
           overrideOnChange,
+          placeholder,
+          floatingplaceholder: floatingplaceholder !== undefined ? floatingplaceholder : !placeholder ? false : true,
         }}
       >
         <InputContainer>
