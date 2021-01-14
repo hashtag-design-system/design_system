@@ -4,6 +4,7 @@ exports[`<Select.Button /> default behaviour 1`] = `
 <summary
   class="select__btn btn btn-secondary"
   data-testid="select-btn"
+  style="width: 200px;"
 >
   <p />
   <svg

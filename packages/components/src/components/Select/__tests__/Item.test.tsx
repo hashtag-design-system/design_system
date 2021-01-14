@@ -1,12 +1,12 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent, { specialChars } from "@testing-library/user-event";
 import { SelectContextType } from "../../../utils/contexts";
 import Select from "../index";
 import { selectCustomRender } from "../__helpers__/utils";
 
 const TEST_SELECTED_MULTIPLE_ITEMS: SelectContextType["items"] = [
-  { id: "test_id0", content: "Test 1", selected: true, isShown: true },
-  { id: "test_id1", content: "Test 2", selected: false, isShown: false },
+  { id: "test_id0", content: "Test 1", highlightedChildren: "Test 1", selected: true, isShown: true },
+  { id: "test_id1", content: "Test 2", highlightedChildren: "Test 2", selected: false, isShown: false },
 ];
 
 describe("<Select.Item />", () => {
@@ -30,6 +30,8 @@ describe("<Select.Item />", () => {
     expect(item).toHaveAttribute("aria-selected", "false");
     expect(item.children).toHaveLength(2);
     expect(item.onclick).toBeDefined();
+    expect(item.onmousedown).toBeDefined();
+    expect(item.onkeydown).toBeDefined();
 
     // itemInput tests
     expect(itemInput).toBeVisible();
@@ -91,13 +93,21 @@ describe("<Select.Item />", () => {
     expect(btnTextContent).not.toBe("Test");
     expect(btnTextContent).toBe("Project");
   });
-  test("with children", () => {
+  test("with children", async () => {
     render(
       <Select defaultOpen>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
-        <Select.Item id="test_id">
-          <strong>NL</strong>Amsterdam
-        </Select.Item>
+        <Select.Item
+          id="test_id"
+          content="Amsterdam"
+          htmlContent={{
+            before: (
+              <>
+                <strong>NL</strong>
+              </>
+            ),
+          }}
+        />
       </Select>
     );
     const itemLabel = screen.getByTestId("select-item-label");
@@ -108,9 +118,11 @@ describe("<Select.Item />", () => {
     expect(children[0].tagName.toLowerCase()).toBe("strong");
     expect(children[0].textContent).toBe("NL");
 
-    userEvent.click(itemLabel);
+    screen.getByTestId("select-item").click();
     // Check for items["content"] serialization in <Select.Item /> (newChildren)
-    expect(screen.getByTestId("select-btn").children[0]).toHaveTextContent("NL Amsterdam");
+    await waitFor(() => {
+      expect(screen.getByTestId("select-btn").children[0]).toHaveTextContent("Amsterdam");
+    });
   });
   test("with mobileView={true}", () => {
     render(
@@ -146,9 +158,11 @@ describe("<Select.Item />", () => {
   test("with one selectedItems", () => {
     render(
       <Select defaultOpen>
-        <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[0].id} defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[0].selected}>
-          {TEST_SELECTED_MULTIPLE_ITEMS[0].content}
-        </Select.Item>
+        <Select.Item
+          id={TEST_SELECTED_MULTIPLE_ITEMS[0].id}
+          defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[0].selected}
+          content={TEST_SELECTED_MULTIPLE_ITEMS[0].content}
+        />
       </Select>
     );
     // , {
@@ -170,12 +184,16 @@ describe("<Select.Item />", () => {
         {/* This does not work in testing env: {TEST_SELECTED_MULTIPLE_ITEMS.map(({ id, content }) => {
           <Select.Item id={id}>{content}</Select.Item>;
         })} */}
-        <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[0].id} defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[0].selected}>
-          {TEST_SELECTED_MULTIPLE_ITEMS[0].content}
-        </Select.Item>
-        <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[1].id} defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[1].selected}>
-          {TEST_SELECTED_MULTIPLE_ITEMS[1].content}
-        </Select.Item>
+        <Select.Item
+          id={TEST_SELECTED_MULTIPLE_ITEMS[0].id}
+          defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[0].selected}
+          content={TEST_SELECTED_MULTIPLE_ITEMS[0].content}
+        />
+        <Select.Item
+          id={TEST_SELECTED_MULTIPLE_ITEMS[1].id}
+          defaultChecked={TEST_SELECTED_MULTIPLE_ITEMS[1].selected}
+          content={TEST_SELECTED_MULTIPLE_ITEMS[1].content}
+        />
       </Select>
     );
 
@@ -190,5 +208,49 @@ describe("<Select.Item />", () => {
       expect(input).toHaveAttribute("aria-checked", checked.toString());
       expect(input).toHaveAttribute("id", `test_id${i}`);
     });
+  });
+  test('keyDown="Enter"', async () => {
+    render(
+      <Select>
+        <Select.Button style={{ width: "200px" }}>Btn test</Select.Button>
+        <Select.Modal>
+          <Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[0].id} content={TEST_SELECTED_MULTIPLE_ITEMS[0].content} />
+        </Select.Modal>
+      </Select>
+    );
+    const item = screen.getByTestId("select-item");
+    const btn = screen.getByTestId("select-btn");
+
+    userEvent.click(btn);
+    userEvent.type(btn, specialChars.arrowDown);
+
+    userEvent.type(item, specialChars.enter);
+    expect(screen.getByTestId("select")).not.toHaveAttribute("open");
+    expect(screen.getByTestId("select-modal")).not.toBeVisible();
+  });
+  test("onClick", async () => {
+    const onClick = jest.fn(e => e.currentTarget.getAttribute("data-testid"));
+    const content = TEST_SELECTED_MULTIPLE_ITEMS[0].content;
+    render(
+      <Select defaultOpen>
+        <Select.Button style={{ width: "200px" }}>Btn test</Select.Button>
+        <Select.Modal>
+          <Select.Item onClick={e => onClick(e)} id={TEST_SELECTED_MULTIPLE_ITEMS[0].id} content={content} />
+        </Select.Modal>
+      </Select>
+    );
+    const item = screen.getByTestId("select-item");
+
+    act(() => {
+      item.click();
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId("select-modal")).not.toBeVisible();
+    });
+    expect(screen.getByTestId("select")).not.toHaveAttribute("open");
+    expect(screen.getByTestId("select-btn")).toHaveTextContent(content);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick.mock.results[0].value).toBe("select-item");
   });
 });

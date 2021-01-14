@@ -13,9 +13,9 @@ export type FProps = Props & ComponentProps<"summary", false> & Pick<ButtonProps
 
 export type SBProps = Props & Pick<FProps, "state" | "className">;
 
-export const Button: React.FC<FProps> = ({ state, showValue = true, children, ...props }) => {
+export const Button: React.FC<FProps> = ({ state, showValue = true, style, children, ...props }) => {
   const [classNames, rest] = useClassnames<FProps>("select__btn btn btn-secondary", props, { stateToRemove: { state } });
-  const { value, ref, setIsDisabled } = useSelectContext();
+  const { value, ref, width, setIsDisabled } = useSelectContext();
   const isDisabled = useDisabled<boolean>(props, state);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const Button: React.FC<FProps> = ({ state, showValue = true, children, ..
   }, [isDisabled, setIsDisabled]);
 
   return (
-    <summary ref={ref} className={classNames} data-testid="select-btn" {...rest}>
+    <summary style={{ width, ...style }} ref={ref} className={classNames} data-testid="select-btn" {...rest}>
       <p style={{ width: rest.style?.width }}>{value && showValue ? value : children}</p>
       <DownArrowIcon />
     </summary>

@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { AutosuggestContextProvider } from "../../utils/contexts";
 import { useDisabled, useIsMobile } from "../../utils/hooks";
-import { InputFProps } from "../Input";
-import Select, { SelectFProps } from "../Select";
+import Select, { SelectFilterFProps, SelectFProps } from "../Select";
 import { SelectedItems } from "../Select/Select";
+import { Filter } from "./__helpers__";
 
 export type Props = {
   mobileView?: boolean;
+  onChange?: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export type FProps = Props & InputFProps & Pick<SelectFProps, "defaultOpen">;
+export type FProps = Props & Omit<SelectFilterFProps, "onSelect" | "onChange"> & Pick<SelectFProps, "defaultOpen" | "onSelect">;
 
 const Autosuggest: React.FC<FProps> = ({
   defaultValue,
   defaultOpen = false,
   mobileView = false,
+  filterById,
   onChange,
   onFocus,
   onBlur,
+  onSelect,
+  children,
   ...props
 }) => {
   const [isShown, setIsShown] = useState(defaultOpen);
-  const [value, setValue] = useState(defaultValue);
-  const [selectValue, setSelectValue] = useState("");
+  const [value, setValue] = useState<string>(String(defaultValue || ""));
   const [items, setItems] = useState<SelectedItems[]>([]);
   const [key, setKey] = useState("");
-  const [typing, setTyping] = useState(false);
   const isDisabled = useDisabled(props);
   const { isMobile } = useIsMobile(mobileView);
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsShown(true);
-    setTyping(false);
 
     if (onFocus) {
       onFocus(e);
@@ -39,11 +41,10 @@ const Autosuggest: React.FC<FProps> = ({
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (key === "Tab") {
-      return 1;
+      return;
     }
 
     setIsShown(false);
-    setTyping(false);
 
     if (onBlur) {
       onBlur(e);
@@ -54,12 +55,11 @@ const Autosuggest: React.FC<FProps> = ({
     const newVal = e.target.value;
     if (!isDisabled) {
       setValue(newVal);
+      setIsShown(true);
     }
 
-    setTyping(true);
-
     if (onChange) {
-      onChange(e);
+      onChange(newVal, e);
     }
   };
 
@@ -68,70 +68,68 @@ const Autosuggest: React.FC<FProps> = ({
     // @ts-expect-error
     const testId = target.getAttribute("data-testid");
 
-    if (testId === "modal") {
+    if (testId === "modal" || testId === "select-item") {
       setIsShown(false);
+      setKey("Escape");
+      handleBlur(e as any);
     }
   };
 
-  const handleSelect = (selectTtems: SelectedItems[]) => {
-    setItems(selectTtems);
-    const checkedItem = selectTtems.filter(item => item.selected);
+  const handleSelect = (selectItems: SelectedItems[]) => {
+    setItems(selectItems);
+    const checkedItem = selectItems.filter(item => item.selected);
     if (checkedItem.length > 0 && !isDisabled) {
-      setSelectValue(checkedItem[0].content || "");
+      const newVal = checkedItem[0].content;
+      setValue(newVal);
+
+      if (onChange) {
+        onChange(newVal);
+      }
+    }
+    if (onSelect) {
+      onSelect(selectItems);
     }
   };
 
   useEffect(() => {
     const checkedItems = items.filter(item => item.selected);
-    if (isShown && !typing && checkedItems.length > 0) {
+    if (isShown && checkedItems.length > 0) {
       setIsShown(false);
     }
+
     // eslint-disable-next-line
   }, [items]);
 
+  const fMobile = isMobile || mobileView;
+
   return (
-    <div>
-      <Select open onSelect={items => handleSelect(items)} style={{ width: "100%" }} onDismiss={e => handleDismiss(e)}>
-        <Select.Button style={{ display: "none" }} />
-        <Select.Filter
-          onKeyDown={e => setKey(e.code)}
-          value={typing ? value : selectValue || value}
-          overrideOnChange
-          onFocus={e => handleFocus(e)}
-          onBlur={e => !isMobile && handleBlur(e)}
-          onChange={e => handleChange(e)}
-          {...props}
-        />
+    <AutosuggestContextProvider
+      value={{
+        inputValue: value,
+        key,
+        setKey,
+        filterById,
+        handleChange,
+        handleFocus,
+      }}
+    >
+      <Select
+        open
+        className="autosuggest__select__container"
+        mobileView={mobileView}
+        onDismiss={e => handleDismiss(e)}
+        onToggle={e => handleDismiss(e as any)}
+        onSelect={items => handleSelect(items)}
+        data-testid="autosuggest-select-container"
+      >
+        <Select.Button className="autosuggest__select__btn" />
+        <Filter onBlur={e => !fMobile && handleBlur(e)} {...props} />
         <Select.Modal open={isShown}>
-          {isMobile && (
-            <Select.Filter
-              onKeyDown={e => setKey(e.code)}
-              value={typing ? value : selectValue || value}
-              overrideOnChange
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              onChange={e => handleChange(e)}
-              {...props}
-            />
-          )}
-          <Select.Options>
-            <Select.Item id="hey_george" content="Hey_george" />
-            <Select.Item id="amsterdam" content="Amsterdam george" />
-            <Select.Item id="amsterdamstrong" content="Amsterdam" />
-            <Select.Item id="georgekrax" content="Hey" />
-            <Select.Item id="georgekrax2" content="Me" />
-            <Select.Item id="georgekrax3" content="Me2" />
-            {/* <Select.Item id="georgekrax4" content="Me3" />
-            <Select.Item id="georgekrax4" content="Me3" />
-            <Select.Item id="georgekrax5" content="Me4" />
-            <Select.Item id="georgekrax6" content="Me5" />
-            <Select.Item id="georgekrax7" content="Me7" />
-            <Select.Item id="georgekrax8" content="Me8" />
-            <Select.Item id="georgekrax9" content="Me9" /> */}
-          </Select.Options>
+          {fMobile && <Filter onBlur={e => handleBlur(e)} {...props} />}
+          <Select.Options>{children}</Select.Options>
         </Select.Modal>
       </Select>
-    </div>
+    </AutosuggestContextProvider>
   );
 };
 

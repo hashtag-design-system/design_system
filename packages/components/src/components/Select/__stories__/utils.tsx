@@ -8,16 +8,12 @@ export const StoriesItems: React.FC<Pick<StoriesComponentProps, "optionsChilden"
       {!optionsChilden && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
       <Select.Options>
         {optionsChilden && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
-        <Select.Item id="hey_george">Hey george</Select.Item>
-        <Select.Item id="amsterdam">
-          Amsterdam<p>george</p>
-        </Select.Item>
-        <Select.Item id="georgekrax">georgekrax</Select.Item>
-        <Select.Item id="georgekrax2">georgekrachropoulos</Select.Item>
-        <Select.Item id="test">Test item</Select.Item>
-        <Select.Item id="test_id">
-          <strong>NL</strong> Amsterdam
-        </Select.Item>
+        <Select.Item id="hey_george" content="Hey george" />
+        <Select.Item id="amsterdam" content="Amsterdam" htmlContent={{ after: <p>, NL</p> }} />
+        <Select.Item id="georgekrax" content="georgekrax" />
+        <Select.Item id="georgekrax2" content="georgekrachropoulos" />
+        <Select.Item id="test" content="Test item" />
+        <Select.Item id="test_id" content=" Amsterdam" htmlContent={{ before: <strong>NL</strong> }} />
       </Select.Options>
     </>
   );

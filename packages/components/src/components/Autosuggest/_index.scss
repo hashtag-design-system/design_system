@@ -1,3 +1,11 @@
 .autosuggest {
-  
+  &__select {
+    &__container {
+      width: 100%;
+    }
+
+    &__btn {
+      display: none;
+    }
+  }
 }

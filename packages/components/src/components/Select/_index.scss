@@ -81,7 +81,7 @@
 
     &--mobile {
       .input__container__field {
-        margin-bottom: em(4);
+        margin-bottom: em(6);
       }
     }
 
@@ -143,6 +143,26 @@
       margin-top: 0;
       margin-bottom: 0;
     }
+
+    &__label {
+      @extend .body-14;
+      @extend .flex-row-flex-start-center;
+    }
+
+    &__country {
+      gap: 8px;
+
+      &-flag {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        border-radius: 2px;
+        vertical-align: -webkit-baseline-middle;
+        object-fit: fill;
+        max-width: em(24);
+        height: auto;
+      }
+    }
   }
 
   &__header {
@@ -189,7 +209,7 @@
   .select {
     &__item {
       padding: em(6) em(8);
-      margin: em(4);
+      margin: em(8) em(4);
       border-radius: em(4);
     }
 

@@ -3,6 +3,7 @@ import { SelectContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
+import Countries from "./Countries";
 import { Filter } from "./Filter";
 import { Header } from "./Header";
 import { Hr } from "./Hr";
@@ -10,7 +11,15 @@ import { Item } from "./Item";
 import { Modal } from "./Modal";
 import { Options } from "./Options";
 
-export type SelectedItems = { id: string; content: string; highlightedChildren: string; selected: boolean; isShown: boolean };
+export type SelectedItems = {
+  id: string;
+  content: string;
+  valueAlternative?: string;
+  highlightedChildren: string;
+  selected: boolean;
+  isShown: boolean;
+  ref?: React.RefObject<HTMLDivElement>;
+};
 
 export type Props = {
   defaultOpen?: boolean;
@@ -19,7 +28,7 @@ export type Props = {
   onSelect?: (selected: SelectedItems[]) => void;
   onDismiss?: (e: React.MouseEvent<HTMLElement>) => void;
   onOutsideClick?: (outsideClick: boolean) => void;
-};
+} & Pick<React.CSSProperties, "width">;
 
 type SubComponents = {
   Item: typeof Item;
@@ -27,8 +36,9 @@ type SubComponents = {
   Modal: typeof Modal;
   Button: typeof Button;
   Hr: typeof Hr;
-  Options: typeof Options;
   Filter: typeof Filter;
+  Options: typeof Options;
+  Countries: typeof Countries;
 };
 
 export type FProps = Props &
@@ -45,6 +55,7 @@ const Select: React.FC<FProps> & SubComponents = ({
   children,
   open,
   forwardRef,
+  width = "200px",
   onToggle,
   onSelect,
   onOutsideClick,
@@ -173,16 +184,19 @@ const Select: React.FC<FProps> & SubComponents = ({
     setValue(
       items
         .filter(item => item.selected)
-        .map(item => item.content)
+        .map(item => {
+          if (item.valueAlternative) {
+            return item.valueAlternative;
+          } else {
+            return item.content;
+          }
+        })
         .join(", ")
     );
-
-    if (onSelect && items.length >= 1) {
-      onSelect(items);
-    }
-  }, [items, onSelect]);
+  }, [items]);
 
   const fOpen = open === undefined ? isOpen : open;
+  const fMobile = isMobile || mobileView;
 
   return (
     <SelectContextProvider
@@ -192,16 +206,18 @@ const Select: React.FC<FProps> & SubComponents = ({
         value,
         multiSelectable,
         items,
-        isMobile,
+        isMobile: fMobile,
         modalRef,
+        width,
         setItems,
         handleToggle,
         setIsDisabled,
+        onSelect,
       }}
     >
       <div className="select__container" ref={divRef} data-testid="select-container">
         <details
-          ref={isMobile ? undefined : modalRef}
+          ref={fMobile ? undefined : modalRef}
           className={classNames}
           open={fOpen}
           onClick={e => handleClick(e)}
@@ -222,7 +238,8 @@ Select.Item = Item;
 Select.Modal = Modal;
 Select.Button = Button;
 Select.Hr = Hr;
-Select.Options = Options;
 Select.Filter = Filter;
+Select.Options = Options;
+Select.Countries = Countries;
 
 export default Select;

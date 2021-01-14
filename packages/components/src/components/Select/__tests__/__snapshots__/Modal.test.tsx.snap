@@ -4,6 +4,6 @@ exports[`<Select.Modal /> default behaviour 1`] = `
 <div
   class="select__modal"
   data-testid="select-modal"
-  style="height: 15%;"
+  style="opacity: 0; height: 15%;"
 />
 `;

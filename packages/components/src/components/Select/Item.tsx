@@ -1,13 +1,13 @@
 import parse from "html-react-parser";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames, useDisabled } from "../../utils/hooks";
 import { ComponentProps, ComponentState } from "../__helpers__";
-import Select from "./Select";
+import Select, { SelectedItems } from "./Select";
 
 export type Props = {
-  // Make required
-  content?: string;
+  content: string;
+  valueAlternative?: string;
   htmlContent?: { before?: React.ReactNode; after?: React.ReactNode };
 };
 
@@ -27,22 +27,33 @@ export const Item: React.FC<FProps> = ({
   htmlContent,
   onClick,
   children,
+  valueAlternative,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item", props, { stateToRemove: { state } });
+  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item__label", props, { stateToRemove: { state } });
   const isDisabled = useDisabled(props, state);
 
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
-  const { multiSelectable, items, isMobile, setItems, handleToggle } = useSelectContext();
+  const { multiSelectable, items, isMobile, setItems, handleToggle, onSelect } = useSelectContext();
 
   const addItem = useCallback(() => {
     if (!isDisabled) {
-      setItems(prevState => [...prevState, { id, content, highlightedChildren: content, selected: defaultChecked, isShown: true }]);
-      // { id, content, highlightedChildren: content, selected: defaultChecked, isShown: true },
+      setItems(prevState => [
+        ...prevState,
+        {
+          id,
+          content,
+          highlightedChildren: content,
+          valueAlternative: valueAlternative,
+          selected: defaultChecked,
+          isShown: true,
+          ref,
+        },
+      ]);
     }
-  }, [id, defaultChecked, content, isDisabled, setItems]);
+  }, [id, defaultChecked, content, valueAlternative, isDisabled, setItems]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -53,7 +64,7 @@ export const Item: React.FC<FProps> = ({
     // state has not been updated yet, that is why the opposite is used
     const newItems = items.map(item => {
       if (item.id === id) {
-        const newItem = {
+        const newItem: SelectedItems = {
           ...item,
           // Opposite because the state has not changed yet
           selected: !isChecked,
@@ -69,10 +80,29 @@ export const Item: React.FC<FProps> = ({
     });
     if (!isDisabled) {
       setItems(newItems);
+
+      if (onSelect) {
+        onSelect(newItems);
+      }
     }
 
     if (onClick) {
       onClick(e);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const key = e.code;
+
+    switch (key) {
+      case "Enter": {
+        handleClick(e as any);
+        break;
+      }
+      case "Escape": {
+        handleToggle(e, false);
+        break;
+      }
     }
   };
 
@@ -81,9 +111,7 @@ export const Item: React.FC<FProps> = ({
     if (!items.map(item => item.id).includes(id)) {
       // if (items.length === 0) {
       addItem();
-      // }
     }
-    // }
   }, [id, items, addItem]);
 
   useEffect(() => {
@@ -96,28 +124,34 @@ export const Item: React.FC<FProps> = ({
     }
   }, [isDisabled, isChecked]);
 
-  if (
-    items
-      .filter(item => item.isShown === false)
-      .map(item => item.id)
-      .includes(id)
-  ) {
-    return null;
-  }
+  const isHidden = useMemo(
+    () =>
+      items
+        .filter(item => item.isShown === false)
+        .map(item => item.id)
+        .includes(id),
+    [id, items]
+  );
 
   const fChecked = isChecked || defaultChecked;
 
   return (
     <>
       <div
-        className={classNames}
+        className="select__item"
         ref={ref}
         tabIndex={isDisabled ? -1 : 0}
         onClick={e => handleClick(e)}
+        onMouseDown={e => handleClick(e)}
+        onKeyDown={e => handleKeyDown(e)}
         aria-selected={fChecked}
         aria-disabled={isDisabled}
         data-testid="select-item"
         role="option"
+        aria-hidden={isHidden}
+        // Better performance
+        hidden={isHidden}
+        // style={{ display: isShown ? "block" : "none" }}
         {...rest}
       >
         <input
@@ -130,9 +164,9 @@ export const Item: React.FC<FProps> = ({
           className="select__item__input"
           data-testid="select-item-input"
         />
-        <label unselectable="on" htmlFor={id} className="body-14" data-testid="select-item-label">
+        <label unselectable="on" htmlFor={id} className={classNames} data-testid="select-item-label">
           {htmlContent?.before}
-          {parse(items.find(item => item.id === id)?.highlightedChildren?.toString() || "")}
+          <div>{parse(items.find(item => item.id === id)?.highlightedChildren?.toString() || "")}</div>
           {htmlContent?.after}
         </label>
       </div>

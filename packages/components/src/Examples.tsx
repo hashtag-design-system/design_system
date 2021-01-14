@@ -169,19 +169,11 @@ const Examples: React.FC = () => {
           <Select.Header value="header">
             <Select.Options>
               <Select.Filter placeholder="Filter" floatingplaceholder={false} />
-              <Select.Item state="hover" id="hey_george">
-                Hey george
-              </Select.Item>
-              <Select.Item state="focus" id="amsterda,">
-                Amsterdam<p>george</p>
-              </Select.Item>
-              <Select.Item state="disabled" id="georgekrax">
-                georgekrax
-              </Select.Item>
-              <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-              <Select.Item id="test_id">
-                <strong>NL</strong> Amsterdam
-              </Select.Item>
+              <Select.Item state="hover" id="hey_george" content="Hey george" />
+              <Select.Item state="focus" id="amsterdam" content="Amsterdam" htmlContent={{ after: <p>george</p> }} />
+              <Select.Item state="disabled" id="georgekrax" content="georgekrax" />
+              <Select.Item id="georgekrax2" content="georgekrachtopoulos" />
+              <Select.Item id="test_id" content=" Amsterdam" htmlContent={{ before: <strong>NL</strong> }} />
             </Select.Options>
           </Select.Header>
         </Select.Modal>
@@ -251,22 +243,12 @@ const Examples: React.FC = () => {
           <Select.Header value="header" />
           <Select.Filter placeholder="Filter" floatingplaceholder={false} />
           <Select.Options>
-            <Select.Item id="hey_george">Hey george</Select.Item>
-            <Select.Item id="amsterda,">
-              Amsterdam<p>george</p>
-            </Select.Item>
-            <Select.Item id="georgekrax">georgekrax</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="georgekrax2">georgekrachropou;os</Select.Item>
-            <Select.Item id="test_id">
-              <strong>NL</strong> Amsterdam
-            </Select.Item>
+            <Select.Item id="hey_george" content="Hey george" />
+            <Select.Item id="amsterdam" content="Amsterdam" htmlContent={{ after: <strong>george</strong> }} />
+            <Select.Item id="georgekrax" content="georgekrax" />
+            <Select.Item id="georgekrax2" content="georgekrachtopoulos" />
+            <Select.Item id="georgekrax2" content="georgekrachtopoulos" />
+            <Select.Item id="test_id" content=" Amsterdam" htmlContent={{ before: <strong>NL</strong> }} />
           </Select.Options>
         </Select.Modal>
       </Select>

@@ -55,7 +55,7 @@ const Dots: React.FC<FProps> = ({ totalDots = 3, size = 18, margin = 8, bgClr, d
               scale: [1, 0.7, 1],
               x: i === boxes.length - 1 ? -(totalWidthSpace * (boxes.length - 1)) : totalWidthSpace,
             }}
-            transition={{ loop: Infinity, duration: 1.5, ease: "easeInOut", ...transition }}
+            transition={{ loop: Infinity, duration: 1.65, ease: "easeInOut", ...transition }}
             custom={i}
             style={
               {

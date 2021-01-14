@@ -1,8 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React from "react";
+import Button from "../../Button";
 import Select, { SelectButtonFProps, SelectFilterProps } from "../index";
 
-const TestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFProps> = ({
+export const SelectTestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFProps> = ({
   state,
   showValue,
   filterById = false,
@@ -17,9 +19,9 @@ const TestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFPro
         <Select.Header value="Header" />
         <Select.Options>
           <Select.Filter filterById={filterById} placeholder="Filter" floatingplaceholder={false} />
-          <Select.Item id="hey">Hey</Select.Item>
-          <Select.Item id="amsterdam">Amsterdam</Select.Item>
-          <Select.Item id="georgekrax">georgekrax</Select.Item>
+          <Select.Item id="hey" content="Hey" />
+          <Select.Item id="amsterdam" content="Amsterdam" />
+          <Select.Item id="georgekrax" content="georgekrax" />
           {children}
         </Select.Options>
       </Select.Modal>
@@ -56,7 +58,7 @@ describe("<Select />", () => {
   test('state="disabled"', () => {
     render(
       <Select>
-        <TestChildren state="disabled" />
+        <SelectTestChildren state="disabled" />
       </Select>
     );
     const btn = screen.getByTestId("select-btn");
@@ -69,10 +71,10 @@ describe("<Select />", () => {
     expect(screen.getByTestId("select")).not.toHaveAttribute("open");
   });
   describe("with children", () => {
-    test("with defaultOpen={true}", () => {
+    test("with defaultOpen={true}", async () => {
       render(
         <Select defaultOpen>
-          <TestChildren />
+          <SelectTestChildren />
         </Select>
       );
       const select = screen.getByTestId("select");
@@ -82,21 +84,25 @@ describe("<Select />", () => {
       expect(select.children).toHaveLength(2);
       expect(select.children[1].tagName.toLowerCase()).toBe("div");
 
-      expect(modal).toBeVisible();
+      await waitFor(() => {
+        expect(modal).toBeVisible();
+      });
       expect(modal.children).toBeDefined();
 
       expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Project");
     });
-    test("with showValue={true}", () => {
+    test("with showValue={true}", async () => {
       render(
         <Select defaultOpen multiSelectable>
-          <TestChildren showValue />
+          <SelectTestChildren showValue />
         </Select>
       );
 
       const items = screen.getAllByTestId("select-item");
       items.slice(0, 2).forEach(item => {
-        userEvent.click(item);
+        act(() => {
+          item.click();
+        });
       });
 
       expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -109,13 +115,15 @@ describe("<Select />", () => {
     test("with showValue={false} & value", () => {
       render(
         <Select defaultOpen multiSelectable>
-          <TestChildren showValue={false} />
+          <SelectTestChildren showValue={false} />
         </Select>
       );
 
       const items = screen.getAllByTestId("select-item");
       items.slice(0, 2).forEach(item => {
-        userEvent.click(item);
+        act(() => {
+          item.click();
+        });
       });
 
       expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -128,7 +136,7 @@ describe("<Select />", () => {
     test("with mobileView={true}", () => {
       render(
         <Select mobileView>
-          <TestChildren />
+          <SelectTestChildren />
         </Select>
       );
 
@@ -137,11 +145,11 @@ describe("<Select />", () => {
     test("with mobileView={true} & defaultOpen={true}", async () => {
       render(
         <Select mobileView defaultOpen>
-          <TestChildren />
+          <SelectTestChildren />
         </Select>
       );
 
-      const modal = screen.getByTestId("modal");
+      const modal = screen.getByTestId("select-modal--mobile");
       const selectModal = screen.getByTestId("select-modal");
 
       expect(screen.getByTestId("modal-root")).toBeInTheDocument();
@@ -162,11 +170,38 @@ describe("<Select />", () => {
         expect(hr).toBeVisible();
       });
     });
+    test("onOutsideClick", async () => {
+      const onOutsideClick = jest.fn(bool => bool);
+      render(
+        <>
+          <Button>Click me</Button>
+          <Select defaultOpen onOutsideClick={boolean => onOutsideClick(boolean)}>
+            <SelectTestChildren />
+          </Select>
+        </>
+      );
+
+      const modal = screen.getByTestId("select-modal--desktop");
+
+      expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+      await waitFor(() => {
+        expect(modal).toBeVisible();
+      });
+      act(() => {
+        screen.getByTestId("btn").click();
+      });
+      await waitFor(() => {
+        expect(modal).not.toBeVisible();
+      });
+      // +plus useEffect()
+      expect(onOutsideClick).toHaveBeenCalledTimes(3);
+      expect(onOutsideClick.mock.results[1].value).toBeTruthy();
+    });
     describe("onToggle functionality", () => {
-      test("basic functionality", () => {
+      test("basic functionality", async () => {
         render(
           <Select>
-            <TestChildren />
+            <SelectTestChildren />
           </Select>
         );
 
@@ -186,7 +221,9 @@ describe("<Select />", () => {
 
         fireEvent.change(select, { target: { open: true } });
 
-        expect(selectModal).toBeVisible();
+        await waitFor(() => {
+          expect(selectModal).toBeVisible();
+        });
 
         fireEvent.change(select, { target: { open: false } });
 
@@ -195,7 +232,7 @@ describe("<Select />", () => {
       test("with mobileView={true} functionality", async () => {
         render(
           <Select mobileView>
-            <TestChildren />
+            <SelectTestChildren />
           </Select>
         );
 
@@ -212,7 +249,7 @@ describe("<Select />", () => {
         fireEvent.change(select, { target: { open: true } });
 
         await waitFor(() => {
-          const modal = screen.getByTestId("modal");
+          const modal = screen.getByTestId("select-modal--mobile");
           expect(modal).toBeVisible();
           expect(modal).toBeInTheDocument();
           expect(modal).toContainElement(screen.getByTestId("select-modal"));
@@ -244,7 +281,7 @@ describe("<Select />", () => {
         });
 
         // Click outside
-        userEvent.click(screen.getByTestId("modal"));
+        userEvent.click(screen.getByTestId("select-modal--mobile"));
 
         await waitFor(() => {
           expect(screen.queryByTestId("select-modal")).toBeNull();
@@ -257,22 +294,48 @@ describe("<Select />", () => {
         const onSelect = jest.fn(selectedItems => selectedItems);
         render(
           <Select defaultOpen onSelect={items => onSelect(items)}>
-            <TestChildren />
+            <SelectTestChildren />
           </Select>
         );
 
         const items = screen.queryAllByTestId("select-item");
 
-        userEvent.click(items[0]);
+        act(() => {
+          items[0].click();
+        });
 
-        // As it is also called at useEffect(), on initial render
-        expect(onSelect).toHaveBeenCalledTimes(2);
+        expect(onSelect).toHaveBeenCalledTimes(1);
         const mockResults = onSelect.mock.results;
 
+        const itemsContent = items.map(item => item.children[1].textContent);
         expect(mockResults[mockResults.length - 1].value).toStrictEqual([
-          { id: items[0].children[0].id, content: items[0].children[1].textContent, selected: true, isShown: true },
-          { id: items[1].children[0].id, content: items[1].children[1].textContent, selected: false, isShown: true },
-          { id: items[2].children[0].id, content: items[2].children[1].textContent, selected: false, isShown: true },
+          {
+            id: items[0].children[0].id,
+            content: itemsContent[0],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[0],
+            selected: true,
+            isShown: true,
+            ref: expect.anything(),
+          },
+          {
+            id: items[1].children[0].id,
+            content: itemsContent[1],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[1],
+            selected: false,
+            isShown: true,
+            ref: expect.anything(),
+          },
+          {
+            id: items[2].children[0].id,
+            content: itemsContent[2],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[2],
+            selected: false,
+            isShown: true,
+            ref: expect.anything(),
+          },
         ]);
 
         await waitFor(() => {
@@ -282,15 +345,13 @@ describe("<Select />", () => {
       test("with mobileView={true} functionality", async () => {
         render(
           <Select mobileView defaultOpen>
-            <TestChildren />
+            <SelectTestChildren />
           </Select>
         );
 
-        const modal = screen.getByTestId("modal");
-
         expect(screen.getByTestId("modal-root")).toBeInTheDocument();
         await waitFor(() => {
-          expect(modal).toBeVisible();
+          expect(screen.getByTestId("select-modal--mobile")).toBeVisible();
         });
 
         const item = screen.getAllByTestId("select-item")[0];
@@ -299,7 +360,7 @@ describe("<Select />", () => {
         // Modal closes after onClick, so the items are not displayed on the screen
         await waitFor(() => {
           expect(screen.queryAllByTestId("select-item")).toHaveLength(0);
-          expect(screen.queryByTestId("modal")).toBeNull();
+          expect(screen.queryByTestId("select-modal--mobile")).toBeNull();
         });
 
         expect(screen.getByTestId("select-btn")).toBeVisible();
@@ -307,7 +368,7 @@ describe("<Select />", () => {
 
         // On second open of the modal however, the item should be selected - checked
         await waitFor(() => {
-          expect(modal).toBeVisible();
+          expect(screen.getByTestId("select-modal--mobile")).toBeVisible();
           const items = screen.getAllByTestId("select-item");
           expect(items).toHaveLength(3);
           checkItem(items[0]);
@@ -317,15 +378,13 @@ describe("<Select />", () => {
         const onSelect = jest.fn(selectedItems => selectedItems);
         render(
           <Select defaultOpen multiSelectable mobileView onSelect={items => onSelect(items)}>
-            <TestChildren />
+            <SelectTestChildren />
           </Select>
         );
 
-        const modal = screen.getByTestId("modal");
-
         expect(screen.getByTestId("modal-root")).toBeInTheDocument();
         await waitFor(() => {
-          expect(modal).toBeVisible();
+          expect(screen.getByTestId("select-modal")).toBeVisible();
         });
 
         const items = screen.getAllByTestId("select-item");
@@ -333,21 +392,46 @@ describe("<Select />", () => {
         expect(items).toHaveLength(3);
 
         items.slice(0, 2).forEach((item, i) => {
-          userEvent.click(item);
-          // +1 due to the index, which starts from 0
-          // +1 due to the initial first call on useEffect()
-          expect(onSelect).toHaveBeenCalledTimes(i + 2);
+          act(() => {
+            item.click();
+          });
+          expect(onSelect).toHaveBeenCalledTimes(i + 1);
         });
 
         const mockResults = onSelect.mock.results;
         await waitFor(() => {
-          expect(mockResults).toHaveLength(3);
+          expect(mockResults).toHaveLength(2);
         });
 
+        const itemsContent = items.map(item => item.children[1].textContent);
         expect(mockResults[mockResults.length - 1].value).toStrictEqual([
-          { id: items[0].children[0].id, content: items[0].children[1].textContent, selected: true, isShown: true },
-          { id: items[1].children[0].id, content: items[1].children[1].textContent, selected: true, isShown: true },
-          { id: items[2].children[0].id, content: items[2].children[1].textContent, selected: false, isShown: true },
+          {
+            id: items[0].children[0].id,
+            content: itemsContent[0],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[0],
+            selected: true,
+            isShown: true,
+            ref: expect.anything(),
+          },
+          {
+            id: items[1].children[0].id,
+            content: itemsContent[1],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[1],
+            selected: true,
+            isShown: true,
+            ref: expect.anything(),
+          },
+          {
+            id: items[2].children[0].id,
+            content: itemsContent[2],
+            valueAlternative: undefined,
+            highlightedChildren: itemsContent[2],
+            selected: false,
+            isShown: true,
+            ref: expect.anything(),
+          },
         ]);
 
         // Modal should not close after onClick, due to multiSelectable={true}
@@ -361,83 +445,24 @@ describe("<Select />", () => {
         });
       });
     });
-    describe("<Select.Filter />", () => {
-      // Tests in conjuction with the tests in "./Filter.test/tsx" file
-      test("default behaviour", async () => {
-        render(
-          <Select defaultOpen>
-            <TestChildren />
-          </Select>
-        );
-        const filterInput = screen.getByTestId("input");
-
-        expect(filterInput).toBeVisible();
-        const testVal = "george";
-
-        userEvent.type(filterInput, testVal);
-
-        expect(filterInput).toHaveValue(testVal);
-        await waitFor(() => {
-          const items = screen.queryAllByTestId("select-item");
-          expect(items).toHaveLength(1);
-          expect(items[0]).toHaveTextContent("georgekrax");
-        });
-      });
-      test("with filterById={true}", async () => {
-        render(
-          <Select defaultOpen>
-            <TestChildren filterById>
-              <Select.Item id="georgekrax2">amsterdam</Select.Item>
-            </TestChildren>
-          </Select>
-        );
-        const filterInput = screen.getByTestId("input");
-
-        expect(filterInput).toBeVisible();
-        const testVal = "george";
-
-        userEvent.type(filterInput, testVal);
-
-        expect(filterInput).toHaveValue(testVal);
-        await waitFor(() => {
-          const items = screen.queryAllByTestId("select-item");
-          expect(items).toHaveLength(2);
-          expect(items[0]).toHaveTextContent("georgekrax");
-          expect(items[1]).toHaveTextContent("amsterdam");
-        });
-      });
-      test("onChange basic functionality", () => {
-        const onChange = jest.fn(e => e.target.value);
-        render(
-          <Select defaultOpen>
-            <Select.Filter placeholder="Filter" onChange={e => onChange(e)} />
-          </Select>
-        );
-        const input = screen.getByTestId("input");
-        const testVal = "george";
-
-        userEvent.type(input, testVal);
-
-        expect(input).toHaveValue(testVal);
-        expect(onChange).toHaveBeenCalledTimes(testVal.length);
-        expect(onChange.mock.results[testVal.length - 1].value).toBe(testVal);
-      });
-    });
     describe("with children", () => {
-      test("<Select.Modal />", () => {
+      test("<Select.Modal />", async () => {
         render(
           <Select defaultOpen>
             <Select.Modal>
-              <Select.Item id="test_id0">Test 1</Select.Item>
-              <Select.Item id="test_id1">Test 2</Select.Item>
+              <Select.Item id="test_id0" content="Test 1" />
+              <Select.Item id="test_id1" content="Test 2" />
             </Select.Modal>
           </Select>
         );
         const children = screen.getByTestId("select-modal").children;
 
         expect(children).toHaveLength(2);
+        await waitFor(() => {
+          expect(children[0]).toBeVisible();
+          expect(children[1]).toBeVisible();
+        });
         Array.from(children).forEach((child, i) => {
-          expect(child).toBeVisible();
           expect(child.children[0].id).toBe(`test_id${i}`);
           expect(child.children[1].textContent).toBe(child.textContent);
         });
@@ -447,8 +472,8 @@ describe("<Select />", () => {
           <Select defaultOpen>
             <Select.Header value="Test header">
               <Select.Options>
-                <Select.Item id="hey">Hey</Select.Item>
-                <Select.Item id="amsterdam">Amsterdam</Select.Item>
+                <Select.Item id="hey" content="Hey" />
+                <Select.Item id="amsterdam" content="Amsterdam" />
               </Select.Options>
             </Select.Header>
           </Select>

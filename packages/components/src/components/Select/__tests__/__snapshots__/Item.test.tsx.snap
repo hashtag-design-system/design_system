@@ -24,14 +24,13 @@ exports[`<Select.Item /> state="disabled" 1`] = `
     data-testid="select-item-label"
     for="test_id"
     unselectable="on"
-  >
-    Test
-  </label>
+  />
 </div>
 `;
 
 exports[`<Select.Item /> with defaultChecked={true} 1`] = `
 <div
+  aria-hidden="false"
   aria-selected="true"
   class="select__item"
   data-testid="select-item"
@@ -47,10 +46,12 @@ exports[`<Select.Item /> with defaultChecked={true} 1`] = `
     value="true"
   />
   <label
-    class="body-14"
+    class="select__item__label"
     data-testid="select-item-label"
     for="test_id"
     unselectable="on"
-  />
+  >
+    <div />
+  </label>
 </div>
 `;
