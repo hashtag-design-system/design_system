@@ -1,31 +1,17 @@
+import { COUNTRIES_ARR } from "@georgekrax-hashtag/common";
 import { render, screen } from "@testing-library/react";
 import { CountriesArrType } from "../Countries";
-import Select, { countriesArr } from "../index";
+import Select from "../index";
 
 describe("<Select.Countries />", () => {
-  test.each([true, false])("default behaviour & withFlags={bool}", bool => {
+  test("default behaviour", () => {
     render(
       <Select defaultOpen>
-        <Select.Countries withFlags={bool} />
+        <Select.Countries />
       </Select>
     );
-    const countries = screen.getAllByTestId("select-item");
 
-    expect(countries).toHaveLength(countriesArr.length);
-    countries.forEach((country, i) => {
-      const name = countriesArr[i].name;
-      const lowerCaseName = name.toLowerCase();
-      const label = country.children[1];
-      expect(country.children[0].id).toBe(lowerCaseName);
-      if (bool) {
-        const img = label.children[0];
-        expect(img.tagName.toLowerCase()).toBe("img");
-        expect(img).toHaveAttribute("src", expect.stringContaining("https://d32454kkzii6gk.cloudfront.net/"));
-      }
-      // Due to withFlags={true} by default, and an <img /> is first
-      expect(label.children[bool ? 1 : 0]).toHaveTextContent(name);
-      expect(label).toHaveAttribute("for", lowerCaseName);
-    });
+    expect(screen.getAllByTestId("select-item")).toHaveLength(COUNTRIES_ARR.length);
   });
   test("with custom arr", () => {
     const totalCountries = 50;
@@ -38,6 +24,6 @@ describe("<Select.Countries />", () => {
 
     expect(screen.getAllByTestId("select-item")).toHaveLength(totalCountries);
     expect(arr).toHaveBeenCalledTimes(1);
-    expect(arr.mock.results[0].value).toStrictEqual(countriesArr.slice(0, 50));
+    expect(arr.mock.results[0].value).toStrictEqual(COUNTRIES_ARR.slice(0, 50));
   });
 });

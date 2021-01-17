@@ -210,8 +210,8 @@
 @include breakpoint("sm") {
   .select {
     &__item {
-      padding: em(6) em(8);
-      margin: em(8) em(4);
+      padding: em(10) em(8);
+      margin: em(4);
       border-radius: em(4);
     }
 

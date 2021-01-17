@@ -62,6 +62,7 @@ const InputAutocompleteTypes = [
 export type InputAutocompleteType = typeof InputAutocompleteTypes[number];
 
 const InputTypes = [
+  "tel",
   "text",
   "textarea",
   "email",

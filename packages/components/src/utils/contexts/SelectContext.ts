@@ -9,6 +9,8 @@ export type SelectContextType = Pick<SelectProps, "multiSelectable" | "width"> &
   isMobile: boolean;
   modalRef: React.RefObject<HTMLDivElement> | ((instance: HTMLDivElement | null) => void);
   ref: ((instance: HTMLElement | null) => void) | React.RefObject<HTMLElement> | null | undefined;
+  filterValue: string[];
+  setFilterValue: React.Dispatch<React.SetStateAction<string[]>>;
   setItems: React.Dispatch<React.SetStateAction<SelectedItems[]>>;
   handleToggle: (e: React.SyntheticEvent<HTMLElement>, boolean?: boolean) => void;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;

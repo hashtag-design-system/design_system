@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SelectContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
 import Countries from "./Countries";
+import Country from "./Country";
 import { Filter } from "./Filter";
 import { Header } from "./Header";
 import { Hr } from "./Hr";
@@ -15,7 +16,6 @@ export type SelectedItems = {
   id: string;
   content: string;
   valueAlternative?: string;
-  highlightedChildren: string;
   selected: boolean;
   isShown: boolean;
   ref?: React.RefObject<HTMLDivElement>;
@@ -38,6 +38,7 @@ type SubComponents = {
   Hr: typeof Hr;
   Filter: typeof Filter;
   Options: typeof Options;
+  Country: typeof Country;
   Countries: typeof Countries;
 };
 
@@ -64,6 +65,7 @@ const Select: React.FC<FProps> & SubComponents = ({
 }) => {
   const { ref: modalRef, isOpen, setIsOpen, outsideClick } = useClickOutside<HTMLDivElement>(defaultOpen, undefined, onDismiss);
   const [value, setValue] = useState<string>("");
+  const [filterValue, setFilterValue] = useState<string[]>([]);
   const [items, setItems] = useState<SelectedItems[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [classNames, rest] = useClassnames("select__box__container", props);
@@ -83,22 +85,25 @@ const Select: React.FC<FProps> & SubComponents = ({
     }
   };
 
-  const handleToggle = (e: React.SyntheticEvent<HTMLElement>, boolean = true) => {
-    e.preventDefault();
+  const handleToggle = useCallback(
+    (e: React.SyntheticEvent<HTMLElement>, boolean = true) => {
+      e.preventDefault();
 
-    if (!isDisabled) {
-      if (boolean) {
-        // @ts-expect-error
-        setIsOpen(e.target.open);
-      } else {
-        setIsOpen(!isOpen);
+      if (!isDisabled) {
+        if (boolean) {
+          // @ts-expect-error
+          setIsOpen(e.target.open);
+        } else {
+          setIsOpen(!isOpen);
+        }
       }
-    }
 
-    if (onToggle) {
-      onToggle(e);
-    }
-  };
+      if (onToggle) {
+        onToggle(e);
+      }
+    },
+    [isOpen, isDisabled, setIsOpen, onToggle]
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.target instanceof HTMLInputElement) {
@@ -209,6 +214,8 @@ const Select: React.FC<FProps> & SubComponents = ({
         isMobile: fMobile,
         modalRef,
         width,
+        filterValue,
+        setFilterValue,
         setItems,
         handleToggle,
         setIsDisabled,
@@ -240,6 +247,7 @@ Select.Button = Button;
 Select.Hr = Hr;
 Select.Filter = Filter;
 Select.Options = Options;
+Select.Country = Country;
 Select.Countries = Countries;
 
 export default Select;

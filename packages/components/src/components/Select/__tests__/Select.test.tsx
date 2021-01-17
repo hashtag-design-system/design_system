@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import Button from "../../Button";
 import Select, { SelectButtonFProps, SelectFilterProps } from "../index";
+import { SelectedItems } from "../Select";
 
 export const SelectTestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFProps> = ({
   state,
@@ -309,30 +310,27 @@ describe("<Select />", () => {
         const mockResults = onSelect.mock.results;
 
         const itemsContent = items.map(item => item.children[1].textContent);
-        expect(mockResults[mockResults.length - 1].value).toStrictEqual([
+        expect(mockResults[mockResults.length - 1].value).toStrictEqual<SelectedItems[]>([
           {
             id: items[0].children[0].id,
-            content: itemsContent[0],
+            content: itemsContent[0]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[0],
             selected: true,
             isShown: true,
             ref: expect.anything(),
           },
           {
             id: items[1].children[0].id,
-            content: itemsContent[1],
+            content: itemsContent[1]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[1],
             selected: false,
             isShown: true,
             ref: expect.anything(),
           },
           {
             id: items[2].children[0].id,
-            content: itemsContent[2],
+            content: itemsContent[2]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[2],
             selected: false,
             isShown: true,
             ref: expect.anything(),
@@ -405,30 +403,27 @@ describe("<Select />", () => {
         });
 
         const itemsContent = items.map(item => item.children[1].textContent);
-        expect(mockResults[mockResults.length - 1].value).toStrictEqual([
+        expect(mockResults[mockResults.length - 1].value).toStrictEqual<SelectedItems[]>([
           {
             id: items[0].children[0].id,
-            content: itemsContent[0],
+            content: itemsContent[0]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[0],
             selected: true,
             isShown: true,
             ref: expect.anything(),
           },
           {
             id: items[1].children[0].id,
-            content: itemsContent[1],
+            content: itemsContent[1]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[1],
             selected: true,
             isShown: true,
             ref: expect.anything(),
           },
           {
             id: items[2].children[0].id,
-            content: itemsContent[2],
+            content: itemsContent[2]!,
             valueAlternative: undefined,
-            highlightedChildren: itemsContent[2],
             selected: false,
             isShown: true,
             ref: expect.anything(),

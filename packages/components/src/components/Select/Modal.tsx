@@ -1,5 +1,5 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { isInViewport } from "../../utils";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
@@ -75,7 +75,7 @@ export const Modal: React.FC<FProps> = ({ align = "left", fullWidth = false, ope
   }
   // }, [initialRef, isOpen, isMobile, windowDimensions.width, windowDimensions.height]);
 
-  const fOpen = open === undefined ? isOpen : open;
+  const fOpen = useMemo(() => (open === undefined ? isOpen : open), [isOpen, open]);
 
   useEffect(() => {
     // @ts-expect-error

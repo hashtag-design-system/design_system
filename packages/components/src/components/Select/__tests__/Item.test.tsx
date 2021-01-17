@@ -5,8 +5,8 @@ import Select from "../index";
 import { selectCustomRender } from "../__helpers__/utils";
 
 const TEST_SELECTED_MULTIPLE_ITEMS: SelectContextType["items"] = [
-  { id: "test_id0", content: "Test 1", highlightedChildren: "Test 1", selected: true, isShown: true },
-  { id: "test_id1", content: "Test 2", highlightedChildren: "Test 2", selected: false, isShown: false },
+  { id: "test_id0", content: "Test 1", selected: true, isShown: true },
+  { id: "test_id1", content: "Test 2", selected: false, isShown: false },
 ];
 
 describe("<Select.Item />", () => {
@@ -164,9 +164,10 @@ describe("<Select.Item />", () => {
     expect(items).toHaveLength(1);
     expect(items.filter(item => !item.hidden)).toHaveLength(0);
     items.forEach(item => {
-      expect(item).toHaveAttribute("hidden")
-      expect(item).toHaveAttribute("aria-hidden", "true")
+      expect(item).toHaveAttribute("hidden");
+      expect(item).toHaveAttribute("aria-hidden", "true");
     });
+    expect(screen.queryAllByTestId("select-hr")).toHaveLength(0);
   });
   test("with one selectedItems", () => {
     render(

@@ -25,17 +25,17 @@ function App() {
       <Button pill onClick={() => setIsChecked(!isChecked)}>
         Button
       </Button>
-      <Input.Tel />
-      <Select placeholder="Projects" onSelect={items => console.log(items)}>
+      <Input.Tel defaultCountry="GREECE" inputProps={{ value: "6974954916" }} />
+      <Select width="200px" placeholder="Projects" onSelect={items => console.log(items)}>
         <Select.Button>Project</Select.Button>
-        <Select.Modal>
+        <Select.Modal fullWidth>
           {/* <Select.Header value="header" /> */}
           <Select.Filter bold={true} placeholder="Filter" floatingplaceholder={false} />
           <Select.Options>
             {/* <Select.Countries /> */}
+            {/* <Select.Item id="hey_george" content="Hey_george" state="disabled" valueAlternative="hey" /> */}
             <Select.Countries />
-            {/* <Select.Item id="hey_george" content="Hey_george" valueAlternative="hey" />
-              <Select.Item id="amsterdam" content="Amsterdam george" valueAlternative="hey" />
+            {/* <Select.Item id="amsterdam" content="Amsterdam george" valueAlternative="hey" />
               <Select.Item id="amsterdamstrong" content="Amsterdam" />
               <Select.Item id="georgekrax" content="Hey" />
               <Select.Item id="georgekrax2" content="Me" />
@@ -59,12 +59,12 @@ function App() {
         }}
       />
       <Animated.Loading.Dots />
-      {/* <Input
+      <Input
         // label="Label"
         secondhelptext={{ value: "2nd Help text", error: true }}
         // floatingplaceholder={true}
         placeholder="Placeholder"
-      /> */}
+      />
       <Input.Number />
     </div>
   );

@@ -13,7 +13,7 @@ describe("Autosuggest <Filter />", () => {
     expect(filterInput.onfocus).toBeDefined();
     expect(filterInput.onblur).toBeDefined();
   });
-  test("onChange", () => {
+  test("onChange", async () => {
     const onChange = jest.fn(val => val);
     render(<AutosuggestTestComponent onChange={value => onChange(value)} />);
     const filterInput = screen.getByTestId("select-filter");
@@ -27,12 +27,14 @@ describe("Autosuggest <Filter />", () => {
 
     const items = screen.getAllByTestId("select-item");
     expect(items).toHaveLength(6);
-    const shownItems = items.filter(item => !item.hidden);
-    expect(shownItems).toHaveLength(2);
-    shownItems.forEach(item => {
-      // screen.debug();
-      expect(item.children[1].children[0].children[0].tagName.toLowerCase()).toBe("strong");
-      expect(item.textContent?.toLowerCase()).toContain(testVal);
+    await waitFor(() => {
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(2);
+      shownItems.forEach(item => {
+        // screen.debug();
+        expect(item.children[1].children[0].children[0].tagName.toLowerCase()).toBe("strong");
+        expect(item.textContent?.toLowerCase()).toContain(testVal);
+      });
     });
   });
   test("with mobileView={true}", async () => {

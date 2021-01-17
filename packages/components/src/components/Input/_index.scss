@@ -412,3 +412,27 @@
     }
   }
 }
+
+.input-tel {
+  height: 100%;
+
+  &__container {
+    @extend .flex-row-stretch-stretch;
+    height: 100%;
+    width: $input-width;
+
+    .input:not(.select__filter) {
+      width: 100%;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &__btn {
+    height: 100%;
+    padding-right: em(12);
+    padding-left: em(12);
+    gap: 0.25em;
+    border-radius: $input-border-radius 0 0 $input-border-radius;
+  }
+}

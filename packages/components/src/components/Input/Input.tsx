@@ -10,6 +10,7 @@ import { InputBaseFProps } from "./index";
 import Multiline from "./Multiline";
 import Number from "./Number";
 import Password from "./Password";
+import Tel from "./Tel";
 import { Base, FieldContainer, InputContainer } from "./__helpers__";
 
 const InputBaseStates = ["default", "focus", "disabled"] as const;
@@ -63,6 +64,8 @@ export default class Input extends React.Component<FProps, State> {
   static Number: typeof Number;
 
   static IncrDcr: typeof IncrDcr;
+
+  static Tel: typeof Tel;
 
   static displayName = "Input";
 
@@ -125,3 +128,4 @@ Input.Digit = Digit;
 Input.DigitSequence = DigitSequence;
 Input.Number = Number;
 Input.IncrDcr = IncrDcr;
+Input.Tel = Tel;
