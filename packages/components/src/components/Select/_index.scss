@@ -150,7 +150,9 @@
     }
 
     &__country {
-      gap: 8px;
+      .select__item__label {
+        gap: 8px;
+      }
 
       &-flag {
         display: inline-block;

@@ -31,7 +31,7 @@ export const Item: React.FC<FProps> = ({
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [classNames, rest] = useClassnames<Partial<FProps>>("select__item__label", props, { stateToRemove: { state } });
+  const [classNames, rest] = useClassnames("select__item", props, { stateToRemove: { state } });
   const isDisabled = useDisabled(props, state);
 
   const [isChecked, setIsChecked] = useState(defaultChecked);
@@ -138,7 +138,7 @@ export const Item: React.FC<FProps> = ({
   return (
     <>
       <div
-        className="select__item"
+        className={classNames}
         ref={ref}
         tabIndex={isDisabled ? -1 : 0}
         onClick={e => handleClick(e)}
@@ -164,9 +164,9 @@ export const Item: React.FC<FProps> = ({
           className="select__item__input"
           data-testid="select-item-input"
         />
-        <label unselectable="on" htmlFor={id} className={classNames} data-testid="select-item-label">
+        <label unselectable="on" htmlFor={id} className="select__item__label" data-testid="select-item-label">
           {htmlContent?.before}
-          <div>{parse(items.find(item => item.id === id)?.highlightedChildren?.toString() || "")}</div>
+          <div>{parse(items.find(item => item.id === id)?.highlightedChildren?.toString() || content)}</div>
           {htmlContent?.after}
         </label>
       </div>

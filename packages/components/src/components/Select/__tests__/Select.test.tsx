@@ -8,6 +8,7 @@ export const SelectTestChildren: React.FunctionComponent<SelectFilterProps & Sel
   state,
   showValue,
   filterById = false,
+  bold = true,
   children,
 }) => {
   return (
@@ -18,7 +19,7 @@ export const SelectTestChildren: React.FunctionComponent<SelectFilterProps & Sel
       <Select.Modal>
         <Select.Header value="Header" />
         <Select.Options>
-          <Select.Filter filterById={filterById} placeholder="Filter" floatingplaceholder={false} />
+          <Select.Filter bold={bold} filterById={filterById} placeholder="Filter" floatingplaceholder={false} />
           <Select.Item id="hey" content="Hey" />
           <Select.Item id="amsterdam" content="Amsterdam" />
           <Select.Item id="georgekrax" content="georgekrax" />

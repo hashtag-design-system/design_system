@@ -15,7 +15,7 @@
   order: 1;
   flex-grow: 0;
   outline: none;
-  @include transition-3s("ease-in-out", "", "padding 0s");
+  @include transition-2s("ease-in-out", "", "padding 0s");
 
   @include input-background();
 
@@ -96,7 +96,7 @@
     user-select: none;
     pointer-events: none;
     overflow: visible;
-    @include transition-3s("ease-in-out");
+    @include transition-2s("ease-in-out");
 
     @include hover-classNames() {
       cursor: text;
@@ -176,7 +176,7 @@
 
   &__character-limit {
     @extend .flex-column-flex-start-center;
-    @include transition-3s("ease-out");
+    @include transition-2s("ease-out");
     order: 2;
     text-align: right;
     opacity: 0;
@@ -221,7 +221,7 @@
     margin-left: em(6);
     align-self: flex-end;
     opacity: 0;
-    @include transition-3s("ease-out");
+    @include transition-2s("ease-out");
 
     &.sm-secure {
       background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);

@@ -13,7 +13,7 @@ describe("<Select.Item />", () => {
   test("default behaviour", () => {
     render(
       <Select defaultOpen>
-        <Select.Item id="test_id" />
+        <Select.Item id="test_id" content="" />
       </Select>
     );
     const item = screen.getByTestId("select-item");
@@ -25,9 +25,11 @@ describe("<Select.Item />", () => {
     expect(item.onclick).toBeDefined();
     expect(item.tagName.toLowerCase()).toBe("div");
     expect(item).toHaveAttribute("class");
+    expect(item).not.toHaveAttribute("hidden");
     expect(item).toHaveAttribute("tabindex", "0");
     expect(item).toHaveAttribute("role", "option");
     expect(item).toHaveAttribute("aria-selected", "false");
+    expect(item).toHaveAttribute("aria-hidden", "false");
     expect(item.children).toHaveLength(2);
     expect(item.onclick).toBeDefined();
     expect(item.onmousedown).toBeDefined();
@@ -43,16 +45,18 @@ describe("<Select.Item />", () => {
     expect(itemInput).toHaveAttribute("aria-checked", "false");
 
     // itemLabel tests
+    const firstChild = itemLabel.children[0];
     expect(itemLabel).toBeVisible();
     expect(itemLabel).toHaveAttribute("class");
     expect(itemLabel).toHaveAttribute("for", "test_id");
-    expect(itemLabel.children).toHaveLength(0);
-    expect(itemLabel.textContent).toBe("");
+    expect(itemLabel.children).toHaveLength(1);
+    expect(firstChild.tagName.toLowerCase()).toBe("div");
+    expect(firstChild).toHaveTextContent("");
   });
   test("with defaultChecked={true}", () => {
     render(
       <Select defaultOpen>
-        <Select.Item id="test_id" defaultChecked />
+        <Select.Item id="test_id" defaultChecked content="" />
       </Select>
     );
     const item = screen.getByTestId("select-item");
@@ -69,9 +73,7 @@ describe("<Select.Item />", () => {
     render(
       <Select defaultOpen>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
-        <Select.Item id="test_id" state="disabled">
-          Test
-        </Select.Item>
+        <Select.Item id="test_id" state="disabled" content="Test" />
       </Select>
     );
     const item = screen.getByTestId("select-item");
@@ -81,6 +83,11 @@ describe("<Select.Item />", () => {
     expect(item).toHaveAttribute("aria-selected", "false");
     expect(item).toHaveAttribute("aria-disabled", "true");
     expect(item).toMatchSnapshot();
+    expect(item.children).toHaveLength(2);
+
+    const itemLabelChildren = item.children[1].children;
+    expect(itemLabelChildren).toHaveLength(1);
+    expect(itemLabelChildren[0]).toHaveTextContent("Test");
 
     userEvent.click(item);
 
@@ -95,8 +102,8 @@ describe("<Select.Item />", () => {
   });
   test("with children", async () => {
     render(
-      <Select defaultOpen>
-        <Select.Button style={{ width: "200px" }}>Project</Select.Button>
+      <Select defaultOpen width="200px">
+        <Select.Button>Project</Select.Button>
         <Select.Item
           id="test_id"
           content="Amsterdam"
@@ -114,7 +121,7 @@ describe("<Select.Item />", () => {
     const children = itemLabel.children;
 
     expect(itemLabel).toHaveTextContent("Amsterdam");
-    expect(children).toHaveLength(1);
+    expect(children).toHaveLength(2);
     expect(children[0].tagName.toLowerCase()).toBe("strong");
     expect(children[0].textContent).toBe("NL");
 
@@ -127,7 +134,7 @@ describe("<Select.Item />", () => {
   test("with mobileView={true}", () => {
     render(
       <Select defaultOpen mobileView>
-        <Select.Item id="test_id" />
+        <Select.Item id="test_id" content="" />
       </Select>
     );
 
@@ -136,7 +143,7 @@ describe("<Select.Item />", () => {
   test("with disabled={true}", () => {
     render(
       <Select defaultOpen>
-        <Select.Item id="test_id" aria-disabled="true" />
+        <Select.Item id="test_id" aria-disabled="true" content="" />
       </Select>
     );
     const item = screen.getByTestId("select-item");
@@ -148,12 +155,18 @@ describe("<Select.Item />", () => {
     expect(selectInput).toHaveAttribute("aria-disabled", "true");
   });
   test("with isShown={false}", () => {
-    selectCustomRender(<Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[1].id}>{TEST_SELECTED_MULTIPLE_ITEMS[1].content}</Select.Item>, {
+    selectCustomRender(<Select.Item id={TEST_SELECTED_MULTIPLE_ITEMS[1].id} content={TEST_SELECTED_MULTIPLE_ITEMS[1].content} />, {
       // Pass for document - screen render, otherwise it will not be displayed, so we won't have access to it
       providerProps: { items: TEST_SELECTED_MULTIPLE_ITEMS.slice(1, 2) },
     });
+    const items = screen.getAllByTestId("select-item");
 
-    expect(screen.queryAllByTestId("select-item")).toHaveLength(0);
+    expect(items).toHaveLength(1);
+    expect(items.filter(item => !item.hidden)).toHaveLength(0);
+    items.forEach(item => {
+      expect(item).toHaveAttribute("hidden")
+      expect(item).toHaveAttribute("aria-hidden", "true")
+    });
   });
   test("with one selectedItems", () => {
     render(
@@ -243,7 +256,7 @@ describe("<Select.Item />", () => {
 
     act(() => {
       item.click();
-    })
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("select-modal")).not.toBeVisible();

@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import Animated from "./components/Animated";
-import Autosuggest from "./components/Autosuggest";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
@@ -26,28 +25,14 @@ function App() {
       <Button pill onClick={() => setIsChecked(!isChecked)}>
         Button
       </Button>
-      <Autosuggest onChange={value => console.log(value)} placeholder="Filter">
-        {/* <Select.Item id="hey_george" content="Hey_george" htmlContent={{ after: <div>Hey</div> }} />
-        <Select.Item id="amsterdamgeorge" content="Amsterdam george" />
-        <Select.Item id="amsterdam" content="Amsterdam" />
-        <Select.Item id="hey" content="Hey" />
-        <Select.Item id="me" content="Me" />
-        <Select.Item id="me2" content="Me2" /> */}
-        <Select.Countries />
-        {/* <Select.Item id="georgekrax4" content="Me3" />
-            <Select.Item id="georgekrax4" content="Me3" />
-            <Select.Item id="georgekrax5" content="Me4" />
-            <Select.Item id="georgekrax6" content="Me5" />
-            <Select.Item id="georgekrax7" content="Me7" />
-            <Select.Item id="georgekrax8" content="Me8" />
-            <Select.Item id="georgekrax9" content="Me9" /> */}
-      </Autosuggest>
-      <Select defaultOpen placeholder="Projects" onSelect={items => console.log(items)}>
+      <Input.Tel />
+      <Select placeholder="Projects" onSelect={items => console.log(items)}>
         <Select.Button>Project</Select.Button>
         <Select.Modal>
           {/* <Select.Header value="header" /> */}
-          <Select.Filter placeholder="Filter" floatingplaceholder={false} />
+          <Select.Filter bold={true} placeholder="Filter" floatingplaceholder={false} />
           <Select.Options>
+            {/* <Select.Countries /> */}
             <Select.Countries />
             {/* <Select.Item id="hey_george" content="Hey_george" valueAlternative="hey" />
               <Select.Item id="amsterdam" content="Amsterdam george" valueAlternative="hey" />

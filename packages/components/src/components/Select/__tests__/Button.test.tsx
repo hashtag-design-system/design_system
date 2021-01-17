@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import Select from "../index";
 
 describe("<Select.Button />", () => {
@@ -32,14 +33,33 @@ describe("<Select.Button />", () => {
 
     expect(screen.getByTestId("select-btn").children[0].textContent).toBe("Placeholder");
   });
-  test("with style={{ width }}", () => {
+  test("with width", () => {
     render(
-      <Select>
-        <Select.Button style={{ width: 5 }} />
+      <Select width={5}>
+        <Select.Button />
       </Select>
     );
-    const pChild = screen.getByTestId("select-btn").children[0] as HTMLParagraphElement;
 
-    expect(pChild.style.width).toBe("5px");
+    expect(screen.getByTestId("select-btn")).toHaveStyle("width: 5px");
+  });
+  test('keyDown="Tab"', async () => {
+    render(
+      <Select>
+        <Select.Button />
+      </Select>
+    );
+    const btn = screen.getByTestId("select-btn");
+    act(() => {
+      btn.focus();
+    })
+    expect(btn).toHaveFocus();
+
+    fireEvent.keyDown(btn, {
+      key: "Tab",
+      code: "Tab",
+      keyCode: 9,
+      charCode: 9,
+    });
+    expect(btn).not.toHaveFocus();
   });
 });

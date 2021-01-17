@@ -34,8 +34,39 @@ describe("<Select.Filter />", () => {
     expect(filterInput).toHaveValue(testVal);
     await waitFor(() => {
       const items = screen.queryAllByTestId("select-item");
-      expect(items).toHaveLength(1);
-      expect(items[0]).toHaveTextContent("georgekrax");
+      expect(items).toHaveLength(3);
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(1);
+      expect(shownItems[0]).toHaveTextContent("georgekrax");
+    });
+  });
+  test("with bold={false}", async () => {
+    render(
+      <Select defaultOpen>
+        <SelectTestChildren bold={false} />
+      </Select>
+    );
+    const filterInput = screen.getByTestId("select-filter");
+
+    await waitFor(() => {
+      expect(filterInput).toBeVisible();
+    });
+    const testVal = "george";
+
+    userEvent.type(filterInput, testVal);
+
+    expect(filterInput).toHaveValue(testVal);
+    await waitFor(() => {
+      const items = screen.queryAllByTestId("select-item");
+      expect(items).toHaveLength(3);
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(1);
+      expect(shownItems[0]).toHaveTextContent("georgekrax");
+      shownItems.forEach(item => {
+        expect(item.children).toHaveLength(2);
+        expect(item.children[1].children).toHaveLength(1);
+        expect(item.children[1].children[0].tagName.toLowerCase()).not.toBe("strong");
+      });
     });
   });
   test("with filterById={true}", async () => {
@@ -58,9 +89,11 @@ describe("<Select.Filter />", () => {
     expect(filterInput).toHaveValue(testVal);
     await waitFor(() => {
       const items = screen.queryAllByTestId("select-item");
-      expect(items).toHaveLength(2);
-      expect(items[0]).toHaveTextContent("georgekrax");
-      expect(items[1]).toHaveTextContent("Amsterdam");
+      expect(items).toHaveLength(4);
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(2);
+      expect(shownItems[0]).toHaveTextContent("georgekrax");
+      expect(shownItems[1]).toHaveTextContent("Amsterdam");
     });
   });
   test("onChange basic functionality", () => {

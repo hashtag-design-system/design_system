@@ -18,13 +18,26 @@ export const Button: React.FC<FProps> = ({ state, showValue = true, style, child
   const { value, ref, width, setIsDisabled } = useSelectContext();
   const isDisabled = useDisabled<boolean>(props, state);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.code === "Tab") {
+      e.currentTarget.blur();
+    }
+  }
+
   useEffect(() => {
     setIsDisabled(isDisabled);
   }, [isDisabled, setIsDisabled]);
 
   return (
-    <summary style={{ width, ...style }} ref={ref} className={classNames} data-testid="select-btn" {...rest}>
-      <p style={{ width: rest.style?.width }}>{value && showValue ? value : children}</p>
+    <summary
+      onKeyDown={e => handleKeyDown(e)}
+      style={{ width, ...style }}
+      ref={ref}
+      className={classNames}
+      data-testid="select-btn"
+      {...rest}
+    >
+      <p>{value && showValue ? value : children}</p>
       <DownArrowIcon />
     </summary>
   );

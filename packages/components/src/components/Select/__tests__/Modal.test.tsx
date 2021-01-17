@@ -26,6 +26,16 @@ describe("<Select.Modal />", () => {
     });
     expect(modal).toHaveAttribute("style");
   });
+  test("with width & fullWidth={false}", () => {
+    selectCustomRender(<Select.Modal />, { providerProps: { width: 100 } });
+
+    expect(screen.getByTestId("select-modal")).not.toHaveStyle("width: 100px");
+  });
+  test("with width & fullWidth={true}", () => {
+    selectCustomRender(<Select.Modal fullWidth />, { providerProps: { width: 100 } });
+
+    expect(screen.getByTestId("select-modal")).toHaveStyle("width: 100px");
+  });
   // test("with open={true}", async () => {
   //   const modal = screen.getByTestId("select-modal");
 

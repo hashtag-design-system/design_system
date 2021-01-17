@@ -9,6 +9,7 @@ export { SelectModalAligns } from "./Modal";
 export type { FProps as SelectModalFProps, Props as SelectModalProps } from "./Modal";
 export type { FProps as SelectOptionsFProps } from "./Options";
 export type { FProps as SelectFProps, Props as SelectProps, SBProps as SelectSBProps } from "./Select";
-export type { FProps as SelectCountriesFProps, Props as SelectCountriesProps } from "./Countries";
+export type { CountriesArrType, FProps as SelectCountriesFProps, Props as SelectCountriesProps } from "./Countries";
+export { countriesArr } from "./Countries";
 
 export default Select;

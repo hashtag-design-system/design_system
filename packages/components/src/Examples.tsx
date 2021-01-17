@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Autosuggest from "./components/Autosuggest";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Dialog from "./components/Dialog";
@@ -237,6 +238,22 @@ const Examples: React.FC = () => {
           console.log(page);
         }}
       />
+      <Autosuggest onChange={value => console.log(value)} placeholder="Filter">
+        {/* <Select.Item id="hey_george" content="Hey_george" htmlContent={{ after: <div>Hey</div> }} />
+        <Select.Item id="amsterdamgeorge" content="Amsterdam george" />
+        <Select.Item id="amsterdam" content="Amsterdam" />
+        <Select.Item id="hey" content="Hey" />
+        <Select.Item id="me" content="Me" />
+        <Select.Item id="me2" content="Me2" /> */}
+        <Select.Countries />
+        {/* <Select.Item id="georgekrax4" content="Me3" />
+            <Select.Item id="georgekrax4" content="Me3" />
+            <Select.Item id="georgekrax5" content="Me4" />
+            <Select.Item id="georgekrax6" content="Me5" />
+            <Select.Item id="georgekrax7" content="Me7" />
+            <Select.Item id="georgekrax8" content="Me8" />
+            <Select.Item id="georgekrax9" content="Me9" /> */}
+      </Autosuggest>
       <Select multiSelectable mobileView onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>

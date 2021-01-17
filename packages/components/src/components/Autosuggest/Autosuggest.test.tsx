@@ -88,10 +88,12 @@ describe("<Autosuggest />", () => {
       expect(onChange).toHaveBeenCalledTimes(testVal.length);
       expect(onChange.mock.results[testVal.length - 1].value).toBe(testVal);
       const items = screen.getAllByTestId("select-item");
-      expect(items).toHaveLength(2);
-      items.forEach(item => {
+      expect(items).toHaveLength(6);
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(2)
+      shownItems.forEach(item => {
         // screen.debug();
-        expect(item.children[1].children[0].tagName.toLowerCase()).toBe("strong");
+        expect(item.children[1].children[0].children[0].tagName.toLowerCase()).toBe("strong");
         expect(item.textContent?.toLowerCase()).toContain(testVal);
       });
 
@@ -132,10 +134,12 @@ describe("<Autosuggest />", () => {
         expect(modal).toBeVisible();
       });
       const items = screen.getAllByTestId("select-item");
-      expect(items).toHaveLength(2);
-      items.forEach(item => {
+      expect(items).toHaveLength(6);
+      const shownItems = items.filter(item => !item.hidden);
+      expect(shownItems).toHaveLength(2);
+      shownItems.forEach(item => {
         // screen.debug();
-        expect(item.children[1].children[0].tagName.toLowerCase()).toBe("strong");
+        expect(item.children[1].children[0].children[0].tagName.toLowerCase()).toBe("strong");
         expect(item.textContent?.toLowerCase()).toContain(testVal);
       });
 
@@ -152,7 +156,7 @@ describe("<Autosuggest />", () => {
         expect(modal).toBeVisible();
       });
       expect(filterInput).toHaveValue(testVal);
-      expect(items).toHaveLength(items.length);
+      expect(shownItems).toHaveLength(shownItems.length);
     });
   });
 });

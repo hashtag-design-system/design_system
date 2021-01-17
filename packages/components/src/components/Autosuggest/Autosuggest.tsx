@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AutosuggestContextProvider } from "../../utils/contexts";
 import { useDisabled, useIsMobile } from "../../utils/hooks";
 import Select, { SelectFilterFProps, SelectFProps } from "../Select";
@@ -12,7 +12,7 @@ export type Props = {
 
 export type FProps = Props & Omit<SelectFilterFProps, "onSelect" | "onChange"> & Pick<SelectFProps, "defaultOpen" | "onSelect">;
 
-const Autosuggest: React.FC<FProps> = ({
+const Autosuggest: React.FC<FProps> = React.memo(({
   defaultValue,
   defaultOpen = false,
   mobileView = false,
@@ -51,7 +51,7 @@ const Autosuggest: React.FC<FProps> = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
     if (!isDisabled) {
       setValue(newVal);
@@ -61,7 +61,7 @@ const Autosuggest: React.FC<FProps> = ({
     if (onChange) {
       onChange(newVal, e);
     }
-  };
+  }, [isDisabled, onChange]);
 
   const handleDismiss = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target;
@@ -131,7 +131,7 @@ const Autosuggest: React.FC<FProps> = ({
       </Select>
     </AutosuggestContextProvider>
   );
-};
+});
 
 Autosuggest.displayName = "Autosuggest";
 

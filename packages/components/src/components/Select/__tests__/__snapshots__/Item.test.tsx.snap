@@ -3,6 +3,7 @@
 exports[`<Select.Item /> state="disabled" 1`] = `
 <div
   aria-disabled="true"
+  aria-hidden="false"
   aria-selected="false"
   class="select__item disabled"
   data-testid="select-item"
@@ -20,11 +21,15 @@ exports[`<Select.Item /> state="disabled" 1`] = `
     value="false"
   />
   <label
-    class="body-14"
+    class="select__item__label"
     data-testid="select-item-label"
     for="test_id"
     unselectable="on"
-  />
+  >
+    <div>
+      Test
+    </div>
+  </label>
 </div>
 `;
 
