@@ -3,15 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import Animated from "./components/Animated";
+import BottomSheet from "./components/BottomSheet";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import Dialog from "./components/Dialog";
 import Input from "./components/Input";
-import Select from "./components/Select";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -22,32 +23,45 @@ function App() {
 
   return (
     <div className="App">
-      <Button pill onClick={() => setIsChecked(!isChecked)}>
-        Button
-      </Button>
-      <Input.Tel defaultCountry="GREECE" inputProps={{ value: "6974954916" }} />
-      <Select width="200px" placeholder="Projects" onSelect={items => console.log(items)}>
-        <Select.Button>Project</Select.Button>
-        <Select.Modal fullWidth>
-          {/* <Select.Header value="header" /> */}
-          <Select.Filter bold={true} placeholder="Filter" floatingplaceholder={false} />
-          <Select.Options>
-            {/* <Select.Countries /> */}
-            {/* <Select.Item id="hey_george" content="Hey_george" state="disabled" valueAlternative="hey" /> */}
-            <Select.Countries />
-            {/* <Select.Item id="amsterdam" content="Amsterdam george" valueAlternative="hey" />
-              <Select.Item id="amsterdamstrong" content="Amsterdam" />
-              <Select.Item id="georgekrax" content="Hey" />
-              <Select.Item id="georgekrax2" content="Me" />
-              <Select.Item id="georgekrax3" content="Me3" />
-              <Select.Item id="georgekrax4" content="Me4" />
-              <Select.Item id="georgekrax5" content="Me5" />
-              <Select.Item id="georgekrax6" content="Me6" />
-              <Select.Item id="georgekrax7" content="Me7" />
-              <Select.Item id="georgekrax8" content="Me8" /> */}
-          </Select.Options>
-        </Select.Modal>
-      </Select>
+      {/* <Button pill onClick={() => setIsChecked(!isChecked)}> */}
+      <button style={{ padding: "1em 2em" }} onClick={() => setIsChecked(true)}>
+        Click me
+      </button>
+      <Button pill>Button</Button>
+      {/* <BottomSheet isShown={isChecked} onDismiss={() => setIsChecked(false)}> */}
+      <BottomSheet
+        isShown={isChecked}
+        onDismiss={() => {
+          console.log("hey");
+
+          setIsChecked(false);
+        }}
+      >
+        {({ dismiss }) => (
+          <>
+            <BottomSheet.ScrollBar />
+            <Dialog.Content>
+              {/* <div style={{ maxHeight: "100px", overflow: "scroll" }}> */}
+              <div style={{ maxHeight: "100px", overflow: "hidden" }}>
+                georgekraxfsdsfd<p>dfdfd</p>
+                <p>1</p>
+                <p>2</p>
+                <p>3</p>
+                <p>4</p>
+                <p>5</p>
+                <p>6</p>
+                <p>7</p>
+                <p>8</p>
+                <p>9</p>
+                <p>10</p>
+              </div>
+              <Button pill onClick={async () => await dismiss()}>
+                Button
+              </Button>
+            </Dialog.Content>
+          </>
+        )}
+      </BottomSheet>
       <Checkbox
         // state="disabled|checked"
         // defaultChecked={true}

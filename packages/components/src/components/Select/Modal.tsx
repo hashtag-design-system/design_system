@@ -84,7 +84,8 @@ export const Modal: React.FC<FProps> = ({ align = "left", fullWidth = false, ope
       const { top } = modalRef.current.getBoundingClientRect();
       setTop(top);
     }
-  }, [animationEnd, fOpen, isOpen, isMobile, modalRef]);
+    // eslint-disable-next-line
+  }, [animationEnd]);
 
   return (
     <ModalMobile isShown={fOpen} align={align}>

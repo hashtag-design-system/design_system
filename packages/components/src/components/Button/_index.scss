@@ -6,7 +6,7 @@
   align-self: flex-start;
   position: relative;
   white-space: nowrap;
-  padding: em(8) em(16);
+  padding: em(8) em(24);
   width: auto;
   align-items: center;
   border-radius: rem(12);
@@ -15,7 +15,7 @@
   overflow: hidden;
   position: relative;
   text-align: center;
-  height: em(36);
+  height: em(48);
   appearance: none;
   gap: em(8);
   transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);

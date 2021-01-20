@@ -52,7 +52,7 @@ export type SBProps = Props & Pick<FProps, "defaultOpen" | "onToggle" | "onSelec
 const Select: React.FC<FProps> & SubComponents = ({
   defaultOpen = false,
   multiSelectable = false,
-  mobileView = false,
+  mobileView,
   children,
   open,
   forwardRef,
@@ -70,6 +70,7 @@ const Select: React.FC<FProps> & SubComponents = ({
   const [isDisabled, setIsDisabled] = useState(false);
   const [classNames, rest] = useClassnames("select__box__container", props);
   const { isMobile } = useIsMobile(mobileView);
+  
 
   useEffect(() => {
     if (onOutsideClick) {
@@ -201,7 +202,6 @@ const Select: React.FC<FProps> & SubComponents = ({
   }, [items]);
 
   const fOpen = open === undefined ? isOpen : open;
-  const fMobile = isMobile || mobileView;
 
   return (
     <SelectContextProvider
@@ -211,7 +211,7 @@ const Select: React.FC<FProps> & SubComponents = ({
         value,
         multiSelectable,
         items,
-        isMobile: fMobile,
+        isMobile,
         modalRef,
         width,
         filterValue,
@@ -224,7 +224,7 @@ const Select: React.FC<FProps> & SubComponents = ({
     >
       <div className="select__container" ref={divRef} data-testid="select-container">
         <details
-          ref={fMobile ? undefined : modalRef}
+          ref={isMobile ? undefined : modalRef}
           className={classNames}
           open={fOpen}
           onClick={e => handleClick(e)}

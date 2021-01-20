@@ -7,8 +7,12 @@ import Button from "../Button";
 import { InputFProps } from "./index";
 import { BaseNumber } from "./__helpers__";
 
+// See -> http://jsfiddle.net/8edLbmtz/
+
 const IS_UP_HEIGHT = "57.5%";
 const IS_DOWN_HEIGHT = "42.5%";
+
+type NumberInputBtnsType = "up" | "down";
 
 const initialState: ReducerInitialStateType = {
   min: 0,
@@ -54,17 +58,28 @@ const Number: React.FunctionComponent<FProps> = ({
   const [isUp, setIsUp] = useState<boolean>(false);
   const [isDown, setIsDown] = useState<boolean>(false);
 
-  const increment = (stepNumber = step) => {
+  const increment = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
+    e.preventDefault();
     dispatch({ type: ACTIONS.INCREMENT, payload: { step: stepNumber } });
   };
 
-  const decrement = (stepNumber = step) => {
+  const decrement = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
+    e.preventDefault();
     dispatch({ type: ACTIONS.DECREMENT, payload: { step: stepNumber } });
   };
 
   const toggleBtn = (boolean: boolean) => {
     if (!isDisabled && state === "default") {
       setIsBtnShown(boolean);
+    }
+  };
+
+  const handleBtnMouse = (e: React.MouseEvent<HTMLButtonElement>, btn: NumberInputBtnsType, bool: boolean) => {
+    e.stopPropagation();
+    if (btn === "up") {
+      setIsUp(bool);
+    } else {
+      setIsDown(bool);
     }
   };
 
@@ -118,9 +133,9 @@ const Number: React.FunctionComponent<FProps> = ({
                 <Button
                   variant="secondary"
                   style={{ height: isUp ? IS_UP_HEIGHT : isDown ? IS_DOWN_HEIGHT : undefined }}
-                  onMouseEnter={() => setIsUp(true)}
-                  onMouseLeave={() => setIsUp(false)}
-                  onClick={() => increment()}
+                  onMouseEnter={e => handleBtnMouse(e, "up", true)}
+                  onMouseLeave={e => handleBtnMouse(e, "up", false)}
+                  onMouseDown={e => increment(e)}
                   data-testid="input-number-btn-increase"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,9 +145,9 @@ const Number: React.FunctionComponent<FProps> = ({
                 <Button
                   variant="secondary"
                   style={{ height: isDown ? IS_UP_HEIGHT : isUp ? IS_DOWN_HEIGHT : undefined }}
-                  onMouseEnter={() => setIsDown(true)}
-                  onMouseLeave={() => setIsDown(false)}
-                  onClick={() => decrement()}
+                  onMouseEnter={e => handleBtnMouse(e, "down", true)}
+                  onMouseLeave={e => handleBtnMouse(e, "down", false)}
+                  onMouseDown={e => decrement(e)}
                   data-testid="input-number-btn-decrease"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">

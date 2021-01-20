@@ -15,7 +15,7 @@ export type FProps = Props & Omit<SelectFilterFProps, "onSelect" | "onChange"> &
 const Autosuggest: React.FC<FProps> = React.memo(({
   defaultValue,
   defaultOpen = false,
-  mobileView = false,
+  mobileView,
   filterById,
   onChange,
   onFocus,
@@ -100,8 +100,6 @@ const Autosuggest: React.FC<FProps> = React.memo(({
     // eslint-disable-next-line
   }, [items]);
 
-  const fMobile = isMobile || mobileView;
-
   return (
     <AutosuggestContextProvider
       value={{
@@ -123,9 +121,9 @@ const Autosuggest: React.FC<FProps> = React.memo(({
         data-testid="autosuggest-select-container"
       >
         <Select.Button className="autosuggest__select__btn" />
-        <Filter onBlur={e => !fMobile && handleBlur(e)} {...props} />
+        <Filter onBlur={e => !isMobile && handleBlur(e)} {...props} />
         <Select.Modal open={isShown}>
-          {fMobile && <Filter onBlur={e => handleBlur(e)} {...props} />}
+          {isMobile && <Filter onBlur={e => handleBlur(e)} {...props} />}
           <Select.Options>{children}</Select.Options>
         </Select.Modal>
       </Select>

@@ -238,6 +238,28 @@ const Examples: React.FC = () => {
           console.log(page);
         }}
       />
+      <Select width="200px" placeholder="Projects" onSelect={items => console.log(items)}>
+        <Select.Button>Project</Select.Button>
+        <Select.Modal fullWidth>
+          {/* <Select.Header value="header" /> */}
+          <Select.Filter bold={true} placeholder="Filter" floatingplaceholder={false} />
+          <Select.Options>
+            {/* <Select.Countries /> */}
+            {/* <Select.Item id="hey_george" content="Hey_george" state="disabled" valueAlternative="hey" /> */}
+            <Select.Countries />
+            {/* <Select.Item id="amsterdam" content="Amsterdam george" valueAlternative="hey" />
+              <Select.Item id="amsterdamstrong" content="Amsterdam" />
+              <Select.Item id="georgekrax" content="Hey" />
+              <Select.Item id="georgekrax2" content="Me" />
+              <Select.Item id="georgekrax3" content="Me3" />
+              <Select.Item id="georgekrax4" content="Me4" />
+              <Select.Item id="georgekrax5" content="Me5" />
+              <Select.Item id="georgekrax6" content="Me6" />
+              <Select.Item id="georgekrax7" content="Me7" />
+              <Select.Item id="georgekrax8" content="Me8" /> */}
+          </Select.Options>
+        </Select.Modal>
+      </Select>
       <Autosuggest onChange={value => console.log(value)} placeholder="Filter">
         {/* <Select.Item id="hey_george" content="Hey_george" htmlContent={{ after: <div>Hey</div> }} />
         <Select.Item id="amsterdamgeorge" content="Amsterdam george" />
@@ -254,7 +276,7 @@ const Examples: React.FC = () => {
             <Select.Item id="georgekrax8" content="Me8" />
             <Select.Item id="georgekrax9" content="Me9" /> */}
       </Autosuggest>
-      <Select multiSelectable mobileView onSelect={items => console.log(items)}>
+      <Select multiSelectable mobileView={false} onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>
           <Select.Header value="header" />
@@ -323,6 +345,7 @@ const Examples: React.FC = () => {
           <Dialog.Btn confirm>Confirm</Dialog.Btn>
         </Dialog.Btn.Group>
       </Dialog>
+      <Input.Tel defaultCountry="GREECE" inputProps={{ value: "6974954916" }} />
       <Slider
         marks={[
           { value: 0, label: "0" },

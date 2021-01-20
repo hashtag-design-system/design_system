@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import React, { useCallback, useEffect } from "react";
 import { DialogContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside } from "../../utils/hooks";
@@ -17,14 +17,16 @@ const scaleVariants = {
   },
 };
 
+export type DialogDismissInfoType = { cancel: boolean };
+
 export type Props = {
   confirm?: boolean;
   allowDismissOnLoading?: boolean;
   overlayProps?: Partial<ModalOverlayFProps>;
-  onDismiss?: (e: React.MouseEvent<HTMLElement>, info: { cancel: boolean }) => void;
+  onDismiss?: (e: React.MouseEvent<HTMLElement>, info: DialogDismissInfoType) => void;
 };
 
-export type FProps = Props & Pick<ModalOverlayFProps, "isShown"> & ComponentLoading;
+export type FProps = Props & Pick<ModalOverlayFProps, "isShown"> & ComponentLoading & HTMLMotionProps<"div">;
 
 type SubComponents = {
   Btn: typeof Btn;
@@ -81,6 +83,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
 
   useEffect(() => {
     document.addEventListener("keydown", e => handleKeyDown(e));
+
     return () => {
       document.removeEventListener("keydown", e => handleKeyDown(e));
     };
