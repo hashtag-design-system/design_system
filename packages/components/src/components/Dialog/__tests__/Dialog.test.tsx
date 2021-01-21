@@ -95,8 +95,7 @@ describe("<Dialog />", () => {
       expect(screen.getByTestId("dialog")).toBeVisible();
     });
 
-    expect(screen.getByTestId("modal").style["backgroundColor"]).toBe("rgba(255, 255, 255, 0.85)");
-    await overlayCheckStyle("rgba(255, 255, 255, 0.85)");
+    await overlayCheckStyle("rgba(255, 255, 255, 0.75)");
   });
   describe("with sub-component children", () => {
     test("default behaviour", async () => {

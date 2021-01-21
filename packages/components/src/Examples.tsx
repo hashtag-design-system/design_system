@@ -307,7 +307,7 @@ const Examples: React.FC = () => {
       <Button onClick={() => setIsShown(true)}>Click me</Button>
       <Dialog
         loading={isLoading}
-        allowDismissOnLoading={true}
+        allowDismissOnLoading
         isShown={isShown}
         overlayProps={{ background: { color: "light" } }}
         onDismiss={(e, { cancel }) => {

@@ -204,7 +204,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       onDragEnd={(e, info) => handleDragEnd(e, info)}
       onDismiss={async (e, info) => await handleDismiss(info, e)}
       dragConstraints={dragConstraints}
-      overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.4 }, ...overlayProps }}
+      overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
       onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
       {...rest}

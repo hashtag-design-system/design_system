@@ -12,7 +12,7 @@ import Input from "./components/Input";
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function App() {
 
           setIsChecked(false);
         }}
-        // overlayProps={{ background: { color: "dark" } }}
+        overlayProps={{ background: { color: "light", alpha: 0.75 } }}
         // state="expanded"
         // allowedPositions={{ expanded: true, middle: false }}
       >

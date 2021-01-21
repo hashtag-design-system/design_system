@@ -94,7 +94,7 @@ describe("<Modal.Overlay />", () => {
         </Modal.Overlay>
       );
 
-      await overlayCheckStyle("rgba(255, 255, 255, 0.85)");
+      await overlayCheckStyle("rgba(255, 255, 255, 0.75)");
     });
     test('with background={{ color: "dark" }}', async () => {
       render(
