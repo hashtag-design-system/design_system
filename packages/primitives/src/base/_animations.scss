@@ -2,6 +2,6 @@
   transition: #{$animatedProperty} 0.2s #{$type}, #{$properties};
 
   @include breakpoint("sm", "max-width") {
-    transition: 0.15s #{$type}, #{$properties};
+    transition: #{$animatedProperty} 0.15s #{$type}, #{$properties};
   }
 }

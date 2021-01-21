@@ -1,5 +1,6 @@
 export { Modal } from "./Modal/Modal";
 export { overlayVariants } from "./Modal/Overlay";
+export { overlayCheckStyle } from "./Modal/__helpers__";
 export type { FProps as ModalOverlayFProps, Props as ModalOverlayProps } from "./Modal/Overlay";
 export { createPortalElement } from "./Modal/Portal";
 export type { Props as PortalProps } from "./Modal/Portal";

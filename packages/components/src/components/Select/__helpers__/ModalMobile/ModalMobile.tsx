@@ -9,7 +9,12 @@ export const ModalMobile: React.FC<FProps> = ({ isShown = false, align, children
   const { isMobile } = useSelectContext();
 
   return isMobile ? (
-    <Modal.Overlay isShown={isShown} bgColor="dark" className="select__modal--mobile" data-testid="select-modal--mobile">
+    <Modal.Overlay
+      isShown={isShown}
+      background={{ color: "dark" }}
+      className="select__modal--mobile"
+      data-testid="select-modal--mobile"
+    >
       {children}
     </Modal.Overlay>
   ) : (

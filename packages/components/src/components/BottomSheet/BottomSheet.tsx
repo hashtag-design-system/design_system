@@ -2,16 +2,18 @@ import { DraggableProps, PanInfo, useAnimation, useMotionValue, Variant } from "
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useClassnames, useWindowDimensions } from "../../utils/hooks";
 import Dialog, { DialogDismissInfoType, DialogFProps } from "../Dialog";
-import { overlayVariants } from "../__helpers__";
+import { ComponentState, overlayVariants } from "../__helpers__";
 import ScrollBar from "./ScrollBar";
 
 // See: https://github.com/framer/snippets/blob/master/animation/Re-rendering%20when%20a%20MotionValue%20changes.md
 // See: https://www.youtube.com/watch?v=ogwnFACfW1Q
 
 export type BottomSheetAllowNextObj = { whenMiddle: number; whenExpanded: number };
-export type BottomSheetPosition = "hidden" | "middle" | "expanded";
+export const BottomSheetPositions = ["hidden", "middle", "expanded"] as const;
+export type BottomSheetPosition = typeof BottomSheetPositions[number];
 type DialogVariantsCustom = { height: number; defaultY: number };
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
+type BottomSheetVariablePositions = Exclude<BottomSheetPosition, "hidden">;
 
 const dialogVariants: Record<BottomSheetPosition, Variant> = {
   hidden: ({ height }: DialogVariantsCustom) => ({ y: height, transition: { ease: "easeIn" } }),
@@ -22,12 +24,13 @@ const dialogVariants: Record<BottomSheetPosition, Variant> = {
 export type Props = {
   defaultY?: number;
   allowNext?: number | BottomSheetAllowNextObj;
+  allowedPositions?: { [k in BottomSheetVariablePositions]: boolean };
   onChange?: (y: number, info: { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] }) => void;
   onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
   children?: React.ReactNode | ((utils: { dismiss: () => Promise<void> }) => React.ReactNode);
 };
 
-export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss">;
+export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss"> & ComponentState<BottomSheetVariablePositions>;
 
 type SubComponents = {
   ScrollBar: typeof ScrollBar;
@@ -36,6 +39,8 @@ type SubComponents = {
 const BottomSheet: React.FC<FProps> & SubComponents = ({
   defaultY = 400,
   allowNext = { whenMiddle: 75, whenExpanded: 50 },
+  allowedPositions = { expanded: true, middle: true },
+  state = "middle",
   isShown,
   dragElastic = 0.3,
   variants,
@@ -51,7 +56,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   onAnimationComplete,
   ...props
 }) => {
-  const [position, setPosition] = useState<BottomSheetPosition>("middle");
+  const [position, setPosition] = useState<BottomSheetPosition>(state);
   const y = useMotionValue(position === "expanded" ? 0 : defaultY);
   const [yState, setYState] = useState(y.get());
   const [animationEnd, setAnimationEnd] = useState<boolean>(false);
@@ -92,9 +97,11 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   }, [allowNext]);
 
-  const goTo = (position: BottomSheetPosition) => {
-    dialogControls.start(dialogVariants[position]);
-    setPosition(position);
+  const goTo = (position: BottomSheetVariablePositions) => {
+    if (allowedPositions[position]) {
+      dialogControls.start(dialogVariants[position]);
+      setPosition(position);
+    }
   };
 
   const dismiss = async (info: DialogDismissInfoType) => {
@@ -167,8 +174,8 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       if (isShown === true) {
         await dialogControls.start(dialogVariants.hidden);
         overlayControls.start("visible");
-        dialogControls.start(dialogVariants.middle);
-        setPosition("middle");
+        dialogControls.start(dialogVariants[position]);
+        setPosition(position);
       }
     }
     promiseFunction();
@@ -197,7 +204,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       onDragEnd={(e, info) => handleDragEnd(e, info)}
       onDismiss={async (e, info) => await handleDismiss(info, e)}
       dragConstraints={dragConstraints}
-      overlayProps={{ ref: modalRef, animate: overlayControls, ...overlayProps }}
+      overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.4 }, ...overlayProps }}
       onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
       {...rest}

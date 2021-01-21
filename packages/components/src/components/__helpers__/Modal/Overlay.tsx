@@ -1,5 +1,5 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import React from "react";
+import React, { useMemo } from "react";
 import { useClassnames } from "../../../utils/hooks";
 import { ComponentProps } from "../index";
 import { Portal, Props as PortalProps } from "./Portal";
@@ -13,20 +13,23 @@ export const overlayVariants = {
   },
 };
 
+export const ModalOverlayBackgroundColors = ["light", "dark"] as const;
+export type ModalOverlayBackgroundColor = typeof ModalOverlayBackgroundColors[number];
+
 export type Props = {
   isShown: boolean;
   blur?: boolean | string;
   grayscale?: boolean | string;
   opacity?: string | number;
-  bgColor?: "light" | "dark";
-  // By refering to it here, it is now required
+  background?: { color?: ModalOverlayBackgroundColor; alpha?: number };
+  // By referrencing to it here, it is now required
   children: React.ReactNode;
 };
 
 export type FProps = Props & ComponentProps<"div", true> & HTMLMotionProps<"div"> & PortalProps;
 
 export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
-  ({ root, isShown = false, blur, grayscale, opacity = 1, bgColor = "dark", style, children, ...props }, ref) => {
+  ({ root, isShown = false, blur, grayscale, opacity = 1, background = { color: "dark" }, style, children, ...props }, ref) => {
     const [classNames, rest] = useClassnames<Partial<FProps>>("modal", props);
 
     const backdropFilter = [
@@ -35,7 +38,14 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
       `opacity(${opacity})`,
     ].join(" ");
 
-    const backgroundColor = bgColor === "light" ? "rgba(255, 255, 255, 0.85)" : "rgba(0, 0, 0, 0.5)";
+    const backgroundColor: string = useMemo(() => {
+      const alpha = background.alpha;
+      if (background.color === "light") {
+        return `rgba(255, 255, 255, ${alpha ? alpha : 0.85})`;
+      } else {
+        return `rgba(0, 0, 0, ${alpha ? alpha : 0.5})`;
+      }
+    }, [background]);
 
     return isShown ? (
       <Portal root={root}>

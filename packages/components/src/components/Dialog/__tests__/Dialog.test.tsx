@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
+import { overlayCheckStyle } from "../../__helpers__";
 import Dialog, { DialogFProps } from "../index";
 
 const TestChildren: React.FC<Partial<DialogFProps> & { hasBtnGroup?: boolean }> = ({
@@ -84,7 +85,7 @@ describe("<Dialog />", () => {
   });
   test("with overlayProps", async () => {
     render(
-      <Dialog isShown overlayProps={{ bgColor: "light" }}>
+      <Dialog isShown overlayProps={{ background: { color: "light" } }}>
         Hey
       </Dialog>
     );
@@ -95,6 +96,7 @@ describe("<Dialog />", () => {
     });
 
     expect(screen.getByTestId("modal").style["backgroundColor"]).toBe("rgba(255, 255, 255, 0.85)");
+    await overlayCheckStyle("rgba(255, 255, 255, 0.85)");
   });
   describe("with sub-component children", () => {
     test("default behaviour", async () => {

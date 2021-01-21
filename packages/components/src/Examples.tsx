@@ -309,7 +309,7 @@ const Examples: React.FC = () => {
         loading={isLoading}
         allowDismissOnLoading={true}
         isShown={isShown}
-        overlayProps={{ bgColor: "light" }}
+        overlayProps={{ background: { color: "light" } }}
         onDismiss={(e, { cancel }) => {
           if (!cancel) {
             setIsLoading(true);

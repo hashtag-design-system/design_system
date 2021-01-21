@@ -36,6 +36,9 @@ function App() {
 
           setIsChecked(false);
         }}
+        // overlayProps={{ background: { color: "dark" } }}
+        // state="expanded"
+        // allowedPositions={{ expanded: true, middle: false }}
       >
         {({ dismiss }) => (
           <>

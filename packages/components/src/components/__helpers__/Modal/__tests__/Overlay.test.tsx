@@ -1,22 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { Modal } from "../Modal";
-
-const checkStyle = async (toContain: string): Promise<void> => {
-  const modal = screen.getByTestId("modal");
-
-  // Wait due to animation from `opacity: 0` to `opacity: 1`
-  await waitFor(() => {
-    expect(modal).toBeVisible();
-  });
-
-  expect(modal).toHaveAttribute("style");
-  if (toContain.includes("rgba")) {
-    expect(modal.style.backgroundColor).toContain(toContain);
-  } else {
-    // @ts-expect-error
-    expect(modal.style["backdropFilter"]).toContain(toContain);
-  }
-};
+import { overlayCheckStyle } from "../__helpers__";
 
 describe("<Modal.Overlay />", () => {
   test("default behaviour", () => {
@@ -60,7 +44,7 @@ describe("<Modal.Overlay />", () => {
       </Modal.Overlay>
     );
 
-    await checkStyle("opacity(0.5)");
+    await overlayCheckStyle("opacity(0.5)");
   });
   describe("with blur", () => {
     test("with blur={true}", async () => {
@@ -70,7 +54,7 @@ describe("<Modal.Overlay />", () => {
         </Modal.Overlay>
       );
 
-      await checkStyle("blur");
+      await overlayCheckStyle("blur");
     });
     test('with blur="5px"', async () => {
       render(
@@ -79,7 +63,7 @@ describe("<Modal.Overlay />", () => {
         </Modal.Overlay>
       );
 
-      await checkStyle("blur(5px)");
+      await overlayCheckStyle("blur(5px)");
     });
   });
   describe("with grayscale", () => {
@@ -90,7 +74,7 @@ describe("<Modal.Overlay />", () => {
         </Modal.Overlay>
       );
 
-      await checkStyle("grayscale");
+      await overlayCheckStyle("grayscale");
     });
     test('with grayscale="50%"', async () => {
       render(
@@ -99,27 +83,37 @@ describe("<Modal.Overlay />", () => {
         </Modal.Overlay>
       );
 
-      await checkStyle("grayscale(50%)");
+      await overlayCheckStyle("grayscale(50%)");
     });
   });
-  describe("with bgColor", () => {
-    test('with bgColor="light"', async () => {
+  describe("with background", () => {
+    test('with background={{ color: "light" }}', async () => {
       render(
-        <Modal.Overlay isShown bgColor="light">
+        <Modal.Overlay isShown background={{ color: "light" }}>
           Test
         </Modal.Overlay>
       );
 
-      await checkStyle("rgba(255, 255, 255, 0.85)");
+      await overlayCheckStyle("rgba(255, 255, 255, 0.85)");
     });
-    test('with bgColor="dark"', async () => {
+    test('with background={{ color: "dark" }}', async () => {
       render(
-        <Modal.Overlay isShown bgColor="dark">
+        <Modal.Overlay isShown background={{ color: "dark" }}>
           Test
         </Modal.Overlay>
       );
 
-      await checkStyle("rgba(0, 0, 0, 0.5)");
+      await overlayCheckStyle("rgba(0, 0, 0, 0.5)");
+    });
+    test("with background={{ alpha: 0.7 }}", async () => {
+      const alpha = 0.7;
+      render(
+        <Modal.Overlay isShown background={{ alpha }}>
+          Test
+        </Modal.Overlay>
+      );
+
+      await overlayCheckStyle(`rgba(0, 0, 0, ${alpha})`);
     });
   });
 });
