@@ -10,20 +10,10 @@ describe("<Animated.Loading.Spinner />", () => {
     expect(spinner).toBeVisible();
     expect(spinner).toHaveAttribute("class");
     expect(spinner).toHaveAttribute("style");
+    expect(spinner).toHaveAttribute("role", "alert")
+    expect(spinner).toHaveAttribute("aria-live", "assertive")
     // "--color" is exluded beacause it does not have a default value in the component,
     // but only in the stylesheet
-    // [
-    //   "--size",
-    //   "--rotate-animation-duration",
-    //   "--rotate-animation-timing",
-    //   "--rotate-animation-iteration",
-    //   "--dash-animation-duration",
-    //   "--dash-animation-timing",
-    //   "--dash-animation-iteration",
-    // ].forEach((style, i) => {
-    //   // @ts-expect-error
-    //   expect(spinner.style[i.toString()]).toBe(style);
-    // });
     checkStyleCustomProperties(spinner, [
       "size",
       "rotate-animation-duration",

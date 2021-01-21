@@ -1,3 +1,16 @@
+/* Grey */
+/* Blue */
+/* Cyan */
+/* Green */
+/* Purple */
+/* Magenta */
+/* Yellow */
+/* Orange */
+/* Volcano */
+/* Bronze */
+/* Red */
+/* Variables */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 .block {
   display: block;
   width: 100%;
@@ -452,6 +465,62 @@
   align-items: unset;
 }
 
+.flex-column-stretch-baseline {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-column-stretch-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-column-stretch-flex-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-column-stretch-flex-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-column-stretch-stretch {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-column-stretch-initial {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-column-stretch-inherit {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-column-stretch-unset {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: unset;
+}
+
 .flex-column-reverse-flex-start-baseline {
   display: flex;
   flex-direction: column-reverse;
@@ -897,6 +966,62 @@
   display: flex;
   flex-direction: column-reverse;
   justify-content: unset;
+  align-items: unset;
+}
+
+.flex-column-reverse-stretch-baseline {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-column-reverse-stretch-center {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-column-reverse-stretch-flex-end {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-column-reverse-stretch-flex-start {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-column-reverse-stretch-stretch {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-column-reverse-stretch-initial {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-column-reverse-stretch-inherit {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-column-reverse-stretch-unset {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: stretch;
   align-items: unset;
 }
 
@@ -1348,6 +1473,62 @@
   align-items: unset;
 }
 
+.flex-row-stretch-baseline {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-row-stretch-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-row-stretch-flex-end {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-row-stretch-flex-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-row-stretch-stretch {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-row-stretch-initial {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-row-stretch-inherit {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-row-stretch-unset {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: unset;
+}
+
 .flex-row-reverse-flex-start-baseline {
   display: flex;
   flex-direction: row-reverse;
@@ -1793,6 +1974,62 @@
   display: flex;
   flex-direction: row-reverse;
   justify-content: unset;
+  align-items: unset;
+}
+
+.flex-row-reverse-stretch-baseline {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-row-reverse-stretch-center {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-row-reverse-stretch-flex-end {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-row-reverse-stretch-flex-start {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-row-reverse-stretch-stretch {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-row-reverse-stretch-initial {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-row-reverse-stretch-inherit {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-row-reverse-stretch-unset {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: stretch;
   align-items: unset;
 }
 
@@ -2244,6 +2481,62 @@
   align-items: unset;
 }
 
+.flex-initial-stretch-baseline {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-initial-stretch-center {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-initial-stretch-flex-end {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-initial-stretch-flex-start {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-initial-stretch-stretch {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-initial-stretch-initial {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-initial-stretch-inherit {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-initial-stretch-unset {
+  display: flex;
+  flex-direction: initial;
+  justify-content: stretch;
+  align-items: unset;
+}
+
 .flex-inherit-flex-start-baseline {
   display: flex;
   flex-direction: inherit;
@@ -2692,10 +2985,86 @@
   align-items: unset;
 }
 
-.shadow-2 {
+.flex-inherit-stretch-baseline {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: baseline;
+}
+
+.flex-inherit-stretch-center {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.flex-inherit-stretch-flex-end {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: flex-end;
+}
+
+.flex-inherit-stretch-flex-start {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.flex-inherit-stretch-stretch {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.flex-inherit-stretch-initial {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: initial;
+}
+
+.flex-inherit-stretch-inherit {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: inherit;
+}
+
+.flex-inherit-stretch-unset {
+  display: flex;
+  flex-direction: inherit;
+  justify-content: stretch;
+  align-items: unset;
+}
+
+.state--disabled {
+  cursor: not-allowed !important;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-top-width: 3px;
+  border-left-width: 0.5px;
+  background-clip: padding-box;
+  border-radius: 100%;
+  -webkit-border-radius: 5px;
+  background-color: #d6d6d6;
+}
+.scrollbar::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.shadow-sm {
   box-shadow: 0px 5px 12px rgba(194, 194, 194, 0.25);
 }
-.shadow-large {
+.shadow-lg {
   box-shadow: 0px 8px 24px rgba(0, 2, 46, 0.2);
 }
 .shadow__form-2 {
@@ -2704,14 +3073,10 @@
 .shadow__form-4 {
   box-shadow: 0px 4px 4px rgba(0, 2, 46, 0.08), 4px 4px 8px rgba(0, 2, 46, 0.06);
 }
-.shadow__inset-small {
+.shadow__inset-sm {
   box-shadow: inset 0px 1px 2px rgba(96, 96, 96, 0.25);
 }
 
-@font-face {
-  font-family: "Roboto";
-  src: url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-}
 h1,
 h2,
 h3,
@@ -2722,6 +3087,10 @@ p,
 span {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .light {
@@ -2736,18 +3105,24 @@ span {
   font-weight: bold !important;
 }
 
-.uppercase {
+.upper {
   text-transform: uppercase !important;
 }
 
-.lowercase {
+.lower {
   text-transform: lowercase !important;
+}
+
+.caps {
+  text-transform: capitalize !important;
 }
 
 h1,
 .header-1 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold !important;
   text-transform: uppercase !important;
   font-size: 64px;
@@ -2757,8 +3132,10 @@ h1,
 
 h2,
 .header-2 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold !important;
   text-transform: uppercase !important;
   font-size: 48px;
@@ -2768,8 +3145,10 @@ h2,
 
 h3,
 .header-3 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold !important;
   text-transform: uppercase !important;
   font-size: 40px;
@@ -2779,8 +3158,10 @@ h3,
 
 h4,
 .header-4 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold !important;
   text-transform: uppercase !important;
   font-size: 24px;
@@ -2790,8 +3171,10 @@ h4,
 
 h5,
 .header-5 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: 500 !important;
   font-size: 24px;
   line-height: 28px;
@@ -2799,8 +3182,10 @@ h5,
 
 h6,
 .header-6 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: 500 !important;
   font-size: 20px;
   line-height: 23px;
@@ -2808,32 +3193,42 @@ h6,
 
 p,
 .body-16 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: normal;
+  letter-spacing: 0.01em;
   font-size: 16px;
-  line-height: 150%;
 }
 
 .body-14 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: normal;
+  letter-spacing: 0.01em;
   font-size: 14px;
   line-height: 150%;
 }
 
 .body-12 {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: normal;
+  letter-spacing: 0.01em;
   font-size: 12px;
   line-height: 150%;
 }
 
 .pre-header {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-transform: uppercase !important;
   font-size: 10px;
   line-height: 12px;
@@ -2841,25 +3236,33 @@ p,
 }
 
 .link-font {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: bold !important;
   font-size: 16px;
   line-height: 150%;
 }
 
 .input-label-font {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: normal;
+  letter-spacing: 0.01em;
   font-size: 14px;
   line-height: 150%;
 }
 
 .input-placeholder-font {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: normal;
+  letter-spacing: 0.01em;
   font-size: 16px;
   line-height: 19px;
 }
@@ -2867,27 +3270,5 @@ p,
 .input-password-font {
   letter-spacing: 0.05em !important;
 }
-
-.btn-default-font {
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 19px;
-  letter-spacing: 0.025em;
-}
-
-/* Grey */
-/* Blue */
-/* Cyan */
-/* Green */
-/* Purple */
-/* Magenta */
-/* Yellow */
-/* Orange */
-/* Volcano */
-/* Bronze */
-/* Red */
-/* Variables */
 
 /*# sourceMappingURL=index.css.map */

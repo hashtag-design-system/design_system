@@ -42,6 +42,8 @@ const Dots: React.FC<FProps> = ({ totalDots = 3, size = 18, margin = 8, bgClr, d
       animate="show"
       variants={containerVariants}
       className={classNames}
+      role="alert"
+      aria-live="assertive"
       data-testid="animated-dots-container"
       {...rest}
     >

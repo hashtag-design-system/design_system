@@ -11,6 +11,7 @@ import ScrollBar from "./ScrollBar";
 export type BottomSheetAllowNextObj = { whenMiddle: number; whenExpanded: number };
 export const BottomSheetPositions = ["hidden", "middle", "expanded"] as const;
 export type BottomSheetPosition = typeof BottomSheetPositions[number];
+export type BottomSheetChangeInfo = { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] }
 type DialogVariantsCustom = { height: number; defaultY: number };
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 type BottomSheetVariablePositions = Exclude<BottomSheetPosition, "hidden">;
@@ -25,7 +26,7 @@ export type Props = {
   defaultY?: number;
   allowNext?: number | BottomSheetAllowNextObj;
   allowedPositions?: { [k in BottomSheetVariablePositions]: boolean };
-  onChange?: (y: number, info: { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] }) => void;
+  onChange?: (y: number, info: BottomSheetChangeInfo) => void;
   onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
   children?: React.ReactNode | ((utils: { dismiss: () => Promise<void> }) => React.ReactNode);
 };
@@ -174,8 +175,9 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       if (isShown === true) {
         await dialogControls.start(dialogVariants.hidden);
         overlayControls.start("visible");
-        dialogControls.start(dialogVariants[position]);
-        setPosition(position);
+        const newPosition: BottomSheetPosition = state || "middle";
+        dialogControls.start(dialogVariants[newPosition]);
+        setPosition(newPosition);
       }
     }
     promiseFunction();
@@ -193,7 +195,6 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       isShown={isShown}
       className={classNames}
       drag={animationEnd && "y"}
-      draggable
       dragDirectionLock
       variants={animationEnd ? variants : { ...dialogVariants, ...variants }}
       transition={{ duration: 0.3, ease: "easeInOut", ...transition }}
@@ -207,26 +208,27 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
       onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
+      data-testid="bottom-sheet"
       {...rest}
     >
       {/* @ts-expect-error */}
-      {children({ dismiss: () => handleDismiss({ cancel: true }) })}
-      <div style={{ padding: "1.25em" }}>
-        <p>
-          <b>{position}</b>
-        </p>
-        <br />
-        <p>
-          <b>{JSON.stringify(allowNext)}</b>
-        </p>
-        <p>
-          <b>{JSON.stringify(dragConstraints)}</b>
-        </p>
-        <br />
-        <p>
-          <b>{yState}</b>
-        </p>
-      </div>
+      {children && (typeof children === "function" ? children({ dismiss: () => handleDismiss({ cancel: true }) }) : children)}
+      {/* <div style={{ padding: "1.25em" }}>
+      <p>
+        <b>{position}</b>
+      </p>
+      <br />
+      <p>
+        <b>{JSON.stringify(allowNext)}</b>
+      </p>
+      <p>
+        <b>{JSON.stringify(dragConstraints)}</b>
+      </p>
+      <br />
+      <p>
+        <b>{yState}</b>
+      </p>
+      </div> */}
     </Dialog>
   );
 };

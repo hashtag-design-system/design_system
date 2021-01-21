@@ -18,7 +18,7 @@
 @import "components/Autosuggest/index";
 @import "components/BottomSheet/index";
 
-* {
+*, *::before, *::after  {
   box-sizing: border-box;
 }
 

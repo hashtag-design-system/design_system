@@ -5,7 +5,7 @@
   "main": "./src/index.scss",
   "scripts": {
     "fresh": "rm -rf node_modules; yarn",
-    "scss": "sass ./src:./css -c --update",
+    "css": "sass ./src:./css -c --update",
     "npm:prepublish": "yarn scss",
     "npm:publish": "npm publish --access public",
     "version:patch": "npm version patch",

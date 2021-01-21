@@ -12,6 +12,8 @@ describe("<Animated.Loading.Dots />", () => {
       expect(container).toBeVisible();
     });
     expect(container).toHaveAttribute("class");
+    expect(container).toHaveAttribute("role", "alert")
+    expect(container).toHaveAttribute("aria-live", "assertive")
     expect(container.children).toHaveLength(dots.length);
     expect(dots).toHaveLength(3);
 

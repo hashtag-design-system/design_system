@@ -48,6 +48,8 @@ const Spinner: React.FC<FProps> = ({
           "--dash-animation-iteration": dashIteration,
         } as any
       }
+      role="alert"
+      aria-live="assertive"
       data-testid="animated-spinner"
       {...rest}
     >
