@@ -31,3 +31,11 @@
     background-color: transparent;
   }
 }
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}

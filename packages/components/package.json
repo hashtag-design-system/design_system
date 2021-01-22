@@ -44,6 +44,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
+    "dayjs": "^1.10.3",
     "framer": "^1.2.12",
     "framer-motion": "^2.9.4",
     "html-react-parser": "^1.1.1",

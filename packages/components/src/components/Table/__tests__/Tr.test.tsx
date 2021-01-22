@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent, { specialChars } from "@testing-library/user-event";
 import Table from "../index";
-import { TableSelectionInputs } from "../Table";
+import { TableSelectionInputs, TableSelectionInputsTableType } from "../Table";
 import { TableTestWrapper } from "./Table.test";
 
 const Wrapper: React.FC = ({ children }) => {
@@ -97,13 +97,13 @@ describe("<Table.Tr />", () => {
       expect(selectedRows).toHaveBeenCalledTimes(2);
       const results = selectedRows.mock.results;
       expect(results).toHaveLength(2);
-      expect(results[1].value).toStrictEqual([
-        { id: expect.any(String), isChecked: false, header: true },
-        { id: expect.any(String), isChecked: false, header: false },
-        { id: expect.any(String), isChecked: false, header: false },
-        { id: expect.any(String), isChecked: false, header: false },
-        { id: expect.any(String), isChecked: false, header: false },
-        { id: expect.any(String), isChecked: false, header: false },
+      expect(results[1].value).toStrictEqual<TableSelectionInputsTableType[]>([
+        { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
+        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
       ]);
 
       // +1 in header
@@ -118,10 +118,11 @@ describe("<Table.Tr />", () => {
         const called = 2 + 1 + i;
         const notHeaderIdx = i + 1;
         expect(selectedRows).toHaveBeenCalledTimes(called);
-        expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual({
+        expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual<TableSelectionInputsTableType>({
           id: expect.any(String),
           isChecked: true,
           header: false,
+          latestChange: expect.anything(),
         });
 
         if (i === checkboxes.length - 2) {
@@ -135,10 +136,11 @@ describe("<Table.Tr />", () => {
 
       checkboxes.forEach((checkbox, i) => {
         checkSelectionInput(checkbox, false);
-        expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual({
+        expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<TableSelectionInputsTableType>({
           id: expect.any(String),
           isChecked: false,
           header: i === 0 ? true : false,
+          latestChange: expect.anything(),
         });
       });
 
@@ -151,6 +153,43 @@ describe("<Table.Tr />", () => {
       clickOrType(checkboxes[checkboxes.length - 1], userEventType);
 
       checkSelectionInput(header, false, true);
+
+      clickOrType(header, userEventType);
+
+      // Click checkoxes[0] (header), and it should "uncheck" all checkboxes if inteterminate
+      checkSelectionInput(header, false, false);
+    });
+    test.each([false, true])("<Checkbox /> | Shift + onClick & reverse", (isReverse) => {
+      render(<TableTestWrapper extraColumn={{ component: "checkbox" }} />);
+      const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
+
+      // +1 in header
+      expect(checkboxes).toHaveLength(6);
+      checkboxes.forEach(checkbox => {
+        expect(checkbox).not.toBeChecked();
+      });
+
+      let firstCheckboxIdx = 2;
+      let lastCheckboxIdx = 4;
+      if (isReverse) {
+        firstCheckboxIdx = lastCheckboxIdx;
+        lastCheckboxIdx = 2;
+      }
+      clickOrType(checkboxes[firstCheckboxIdx], "click");
+
+      checkSelectionInput(checkboxes[firstCheckboxIdx], true);
+
+      userEvent.click(checkboxes[lastCheckboxIdx], { shiftKey: true });
+
+      checkboxes.forEach((checkbox, i) => {
+        if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) {
+          checkSelectionInput(checkbox, true);
+        } else if (i >= firstCheckboxIdx && i <= lastCheckboxIdx) {
+          checkSelectionInput(checkbox, true);
+        } else {
+          checkSelectionInput(checkbox, false, i === 0);
+        }
+      });
     });
     describe.each<UserEventType>(UserEventTypes)("<RadioButton />", userEventType => {
       test("onClick basic functionality", () => {
@@ -163,13 +202,13 @@ describe("<Table.Tr />", () => {
         expect(selectedRows).toHaveBeenCalledTimes(2);
         const results = selectedRows.mock.results;
         expect(results).toHaveLength(2);
-        expect(results[1].value).toStrictEqual([
-          { id: expect.any(String), isChecked: false, header: true },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
+        expect(results[1].value).toStrictEqual<TableSelectionInputsTableType[]>([
+          { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
         ]);
 
         // +1 in header but with `display: none`
@@ -189,10 +228,11 @@ describe("<Table.Tr />", () => {
           }
           const called = 2 + 1 + i;
           expect(selectedRows).toHaveBeenCalledTimes(called);
-          expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual({
+          expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<TableSelectionInputsTableType>({
             id: expect.any(String),
             isChecked: true,
             header: i === 0,
+            latestChange: expect.anything(),
           });
           radioBtns
             .filter(btn => btn.id !== radioBtn.id)
@@ -203,13 +243,13 @@ describe("<Table.Tr />", () => {
 
         expect(selectedRows).toHaveBeenCalledTimes(2 + 6);
         expect(results).toHaveLength(2 + 6);
-        expect(results[results.length - 1].value).toStrictEqual([
-          { id: expect.any(String), isChecked: false, header: true },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: false, header: false },
-          { id: expect.any(String), isChecked: true, header: false },
+        expect(results[results.length - 1].value).toStrictEqual<TableSelectionInputsTableType[]>([
+          { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), isChecked: true, header: false, latestChange: expect.anything() },
         ]);
 
         expect(radioBtns.filter(btn => btn.getAttribute("value")?.includes("true"))).toHaveLength(1);

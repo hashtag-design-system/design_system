@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTableContext } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
@@ -11,7 +12,6 @@ export type TrStateType = typeof TrStates[number];
 
 export type FProps = React.ComponentProps<"tr"> & ComponentState<TrStateType>;
 
-// TODO: <Pagination /> onClick different from onPageChange
 const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
   const { extraColumn, selectionInputs, setSelectionInputs, handleClick } = useTableContext();
 
@@ -66,7 +66,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
         const { id, isChecked } = res;
         if (id && !selectionInputs.map(input => input.id).includes(id)) {
           // ! if Boolean(input.value || false) is used it will return always true, which is not true
-          setSelectionInputs(prevData => [...prevData, { id, isChecked, header }]);
+          setSelectionInputs(prevData => [...prevData, { id, isChecked, header, latestChange: dayjs() }]);
         }
       }
     }
@@ -74,7 +74,7 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
   }, [ref.current, selectionInputs, setSelectionInputs, getIdAndValue]);
 
   const finalComponent = useCallback(
-    (component: React.ReactNode, header = false) => {
+    (component: React.ReactNode, header: boolean = false) => {
       const res = getIdAndValue();
       if (!res) {
         return component;
@@ -103,14 +103,14 @@ const Tr: React.FC<FProps> = ({ state = "default", children, ...props }) => {
           checked: checked && state !== "indeterminate",
           state: header ? state : undefined,
           onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-            handleClick(e, header);
+            handleClick(e as any, header ? { inteterminate: state === "indeterminate" } : undefined);
           },
         });
       } else {
         return React.cloneElement<any>(component as any, {
           checked,
           onClick: (e: React.MouseEvent<HTMLInputElement>) => {
-            handleClick(e, header);
+            handleClick(e, undefined);
           },
         });
       }

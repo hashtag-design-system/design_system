@@ -1,7 +1,7 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import React, { useCallback, useEffect } from "react";
 import { DialogContextProvider } from "../../utils/contexts";
-import { useClassnames, useClickOutside } from "../../utils/hooks";
+import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
 import { ButtonFProps } from "../Button";
 import { ComponentLoading, Modal, ModalOverlayFProps } from "../__helpers__";
 import Btn from "./Btn/Btn";
@@ -40,8 +40,9 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   loading,
   allowDismissOnLoading = true,
   overlayProps,
-  onDismiss,
+  style,
   children,
+  onDismiss,
   ...props
 }) => {
   const { ref: modalRef, setIsOpen } = useClickOutside<HTMLDivElement>(
@@ -50,6 +51,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
     e => onDismiss && onDismiss(e, { cancel: true })
   );
   const [classNames, rest] = useClassnames("dialog", props);
+  const { isMobile } = useIsMobile();
 
   const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>, info: { cancel: boolean }, onClick?: ButtonFProps["onClick"]) => {
     if (onClick) {
@@ -99,6 +101,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
           transition={{ duration: 0.2 }}
           className={classNames}
           ref={modalRef}
+          style={{ translateY: !isMobile ? "-50%" : undefined, ...style }}
           data-testid="dialog"
           {...rest}
         >

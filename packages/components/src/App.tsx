@@ -12,7 +12,7 @@ import Input from "./components/Input";
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
 function App() {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ function App() {
 
           setIsChecked(false);
         }}
-        onChange={(e, info) => console.log(e, info)}
         // state="expanded"
         // allowedPositions={{ expanded: true, middle: false }}
       >
@@ -44,9 +43,7 @@ function App() {
           <>
             <BottomSheet.ScrollBar />
             <Dialog.Content>
-              {/* <div style={{ maxHeight: "100px", overflow: "scroll" }}> */}
-              <div style={{ maxHeight: "100px", overflow: "hidden" }}>
-                georgekraxfsdsfd<p>dfdfd</p>
+              <div style={{ maxHeight: "100px", overflow: "scroll" }}>
                 <p>1</p>
                 <p>2</p>
                 <p>3</p>

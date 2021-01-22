@@ -63,36 +63,40 @@ describe("<Input.Tel />", () => {
     expect(onChange).toHaveBeenCalledTimes(valLength);
     expect(onChange.mock.results[valLength - 1].value).toBe(res);
   });
-  test.each([true, false])("onSelect & disabled", async disabled => {
-    const onSelect = jest.fn((items: SelectedItems[]) => items.find(item => item.selected)?.content);
-    render(<Input.Tel selectProps={{ defaultOpen: true, onSelect }} inputProps={{ disabled }} />);
-    const modal = screen.getByTestId("select-modal");
+  test.each([true, false])(
+    "onSelect & disabled",
+    async disabled => {
+      const onSelect = jest.fn((items: SelectedItems[]) => items.find(item => item.selected)?.content);
+      render(<Input.Tel selectProps={{ defaultOpen: true, onSelect }} inputProps={{ disabled }} />);
+      const modal = screen.getByTestId("select-modal");
 
-    await waitFor(() => {
-      expect(modal).toBeVisible();
-    });
+      await waitFor(() => {
+        expect(modal).toBeVisible();
+      });
 
-    const testCountry = COUNTRIES["GREECE"];
-    const testCountryName = testCountry.name;
+      const testCountry = COUNTRIES["GREECE"];
+      const testCountryName = testCountry.name;
 
-    const item = screen
-      .getAllByTestId("select-item")
-      .find(item => item.children[1].children[1].textContent?.includes(testCountryName));
+      const item = screen
+        .getAllByTestId("select-item")
+        .find(item => item.children[1].children[1].textContent?.includes(testCountryName));
 
-    item?.click();
+      item?.click();
 
-    await waitFor(() => {
-      expect(modal).not.toBeVisible();
-    });
+      await waitFor(() => {
+        expect(modal).not.toBeVisible();
+      });
 
-    expect(screen.getByTestId("select-btn")).toHaveTextContent("+" + testCountry.callingCode);
-    if (disabled) {
-      expect(onSelect).toHaveBeenCalledTimes(0);
-    } else {
-      expect(onSelect).toHaveBeenCalledTimes(1);
-      expect(onSelect).toHaveNthReturnedWith(1, expect.stringContaining(testCountryName));
-    }
-  });
+      expect(screen.getByTestId("select-btn")).toHaveTextContent("+" + testCountry.callingCode);
+      if (disabled) {
+        expect(onSelect).toHaveBeenCalledTimes(0);
+      } else {
+        expect(onSelect).toHaveBeenCalledTimes(1);
+        expect(onSelect).toHaveNthReturnedWith(1, expect.stringContaining(testCountryName));
+      }
+    },
+    5500
+  );
   describe("defaultCountry, defaltValue, value", () => {
     test("with defaultCountry", () => {
       const defaultCountry: COUNTRIES_LITERAL_TYPE = "GREECE";

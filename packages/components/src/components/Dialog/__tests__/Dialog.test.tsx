@@ -78,6 +78,7 @@ describe("<Dialog />", () => {
     });
     expect(dialog).toHaveAttribute("class");
     expect(dialog).toHaveTextContent("Hey");
+    expect(dialog).not.toHaveStyle("transform: translateY(-50%)");
 
     const modalRoot = screen.getByTestId("modal-root");
     expect(modalRoot.children).toHaveLength(1);

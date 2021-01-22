@@ -63,6 +63,10 @@
         gap: em(10);
       }
 
+      .btn-primary {
+        @extend .bold;
+      }
+
       .btn-secondary {
         border-color: $grey-6;
         color: $grey-8;

@@ -22,6 +22,7 @@ type InitialDataType = {
   test: boolean;
   username: string;
 };
+
 const initialData: InitialDataType[] = [
   { id: 1, amount: 0.75, hey: "hey", test: true, username: "georgekrax" },
   { id: 2, amount: 1.0, hey: "hey", test: false, username: "me" },

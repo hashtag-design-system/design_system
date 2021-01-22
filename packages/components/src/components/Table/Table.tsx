@@ -1,3 +1,5 @@
+import dayjs, { Dayjs } from "dayjs";
+import MinMax from "dayjs/plugin/minMax";
 import React, { useEffect, useRef, useState } from "react";
 import { TableContextProvider } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
@@ -7,10 +9,12 @@ import Th from "./Th";
 import THead from "./THead";
 import Tr from "./Tr";
 
+dayjs.extend(MinMax);
+
 export const TableSelectionInputs = ["checkbox", "radio"] as const;
 
 // TODO: Add the `Shift + click` <Checkbox /> keydown handler
-export type TableSelectionInputsTableType = { id: string; isChecked: boolean; header: boolean };
+export type TableSelectionInputsTableType = { id: string; isChecked: boolean; header: boolean; latestChange: Dayjs };
 export type TableSelectionInputType = typeof TableSelectionInputs[number];
 
 export type Props = {
@@ -36,24 +40,53 @@ const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...pro
   const [classNames, rest] = useClassnames("table", props);
   const ref = useRef<HTMLTableElement>(null);
 
-  const handleClick = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLInputElement>, header = false) => {
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>, header?: { inteterminate: boolean }) => {
     const { currentTarget } = e;
     const id = currentTarget.id;
+    // todo: Tets on checked === false when inteterminate
+
     // Opposite because state has not been updated
-    const checked = currentTarget.value === "false" ? true : false;
+    const newChecked = !(currentTarget.value === "false" ? false : true);
+    const latestChange = dayjs();
 
     if (extraColumn?.component === "checkbox") {
+      const shiftKey = e.nativeEvent.shiftKey;
+
       setSelectionInputs(prevData =>
-        prevData.map(input => {
+        prevData.map((input, idx) => {
           if (header) {
             return {
               ...input,
-              isChecked: checked,
+              isChecked: header.inteterminate ? false : newChecked,
+              latestChange,
             };
+          } else if (shiftKey) {
+            const latestCheckedDate = dayjs.max(selectionInputs.map(input => input.latestChange));
+            const latestCheckedIdx = selectionInputs.findIndex(
+              input => input.isChecked && input.latestChange.isSame(latestCheckedDate)
+            );
+            const currentTargetIdx = selectionInputs.findIndex(({ id: inputId }) => inputId === id);
+
+            if (currentTargetIdx >= latestCheckedIdx && idx <= currentTargetIdx && idx >= latestCheckedIdx) {
+              return {
+                ...input,
+                isChecked: true,
+                latestChange,
+              };
+            } else if (currentTargetIdx <= latestCheckedIdx && idx >= currentTargetIdx && idx <= latestCheckedIdx) {
+              return {
+                ...input,
+                isChecked: true,
+                latestChange,
+              };
+            } else {
+              return input;
+            }
           } else if (input.id === id) {
             return {
               ...input,
-              isChecked: checked,
+              isChecked: newChecked,
+              latestChange,
             };
           } else {
             return input;
@@ -65,15 +98,17 @@ const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...pro
         prevData.map(input => {
           // checked !== true is essential, otherwise when checked === false,
           // it will set checked === true for all the other <RadioButton /> components
-          if (input.id === id || checked !== true) {
+          if (input.id === id) {
             return {
               ...input,
-              isChecked: checked,
+              isChecked: newChecked,
+              latestChange,
             };
           } else {
             return {
               ...input,
-              isChecked: !checked,
+              isChecked: false,
+              latestChange,
             };
           }
         })
