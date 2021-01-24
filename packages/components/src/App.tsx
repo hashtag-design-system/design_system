@@ -1,13 +1,14 @@
 /* spell-checker: disable */
 // TODO: Remove afterwards removing the <Checkbox /> label Prop
+import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import Animated from "./components/Animated";
-import BottomSheet from "./components/BottomSheet";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
-import Dialog from "./components/Dialog";
+import DatePicker from "./components/DatePicker";
 import Input from "./components/Input";
+import Select from "./components/Select";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -28,44 +29,25 @@ function App() {
         Click me
       </button>
       <Button pill>Button</Button>
-      {/* <BottomSheet isShown={isChecked} onDismiss={() => setIsChecked(false)}> */}
-      <BottomSheet
-        isShown={isChecked}
-        onDismiss={() => {
-          console.log("hey");
-
-          setIsChecked(false);
+      <DatePicker
+        defaultOpen
+        onClick={({ e, dayInCalendar }) => console.log(e, dayInCalendar.date())}
+        // onChange={({ bottomSheetIsShown }) => console.log(bottomSheetIsShown)}
+        disabledDays={{
+          days: [dayjs().set("date", 30)],
+          from: { date: dayjs() },
+          till: {
+            // parse: date => date.set("date", 29),
+            // date: dayjs().add(10, "year").date(dayjs().add(3, "months").daysInMonth()),
+            date: dayjs().add(20, "year"),
+          },
         }}
-        // state="expanded"
-        // allowedPositions={{ expanded: true, middle: false }}
-      >
-        {({ dismiss }) => (
-          <>
-            <BottomSheet.ScrollBar />
-            <Dialog.Content>
-              <div style={{ maxHeight: "100px", overflow: "scroll" }}>
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
-                <p>7</p>
-                <p>8</p>
-                <p>9</p>
-                <p>10</p>
-              </div>
-              <Button pill onClick={async () => await dismiss()}>
-                Button
-              </Button>
-            </Dialog.Content>
-          </>
-        )}
-      </BottomSheet>
+        selectBtn={({ selectedDate }) => <Select.Button>{selectedDate.from.format("DD/MM/YYYY")}</Select.Button>}
+      />
       <Checkbox
         // state="disabled|checked"
         // defaultChecked={true}
-        // checked={isChecked}
+        checked={isChecked}
         onChange={e => console.log(e.currentTarget.value)}
         label={{
           value:

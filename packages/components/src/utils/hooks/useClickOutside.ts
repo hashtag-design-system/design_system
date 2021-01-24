@@ -42,7 +42,7 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
     }
   }, [isOpen, outsideClick]);
 
-  return { ref, isOpen, setIsOpen, outsideClick };
+  return { ref: ref as React.RefObject<T>, isOpen, setIsOpen, outsideClick };
 };
 
 export default useClickOutside;

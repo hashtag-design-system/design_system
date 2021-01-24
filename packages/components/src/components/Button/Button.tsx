@@ -1,3 +1,4 @@
+import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 import { useClassnames, useDisabled } from "../../utils/hooks";
 
@@ -18,7 +19,7 @@ export type Props = {
   pill?: boolean;
 };
 
-export type FProps = Props & React.ComponentPropsWithRef<"button">;
+export type FProps = Props & HTMLMotionProps<"button">;
 
 export type SBProps = Props & Pick<FProps, "disabled" | "type" | "onClick" | "children">
 
@@ -42,9 +43,9 @@ const Button: React.FC<FProps> = ({
   // const pathLength = useMotionValue(0);
 
   return (
-    <button className={classNames} disabled={isDisabled} aria-disabled={isDisabled} data-testid="btn" {...rest}>
+    <motion.button className={classNames} disabled={isDisabled} aria-disabled={isDisabled} data-testid="btn" {...rest}>
       {children}
-    </button>
+    </motion.button>
     /* {state === "loading" && (
         <motion.svg className="btn__loading-icon" width={78} height={41} fill="transparent">
           <motion.path

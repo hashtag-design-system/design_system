@@ -1,0 +1,4 @@
+@mixin selected-state() {
+  background-color: $secondary;
+  color: $grey-1;
+}

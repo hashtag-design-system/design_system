@@ -1,6 +1,14 @@
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import toObject from "dayjs/plugin/toObject";
+import minMax from "dayjs/plugin/minMax";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+
+dayjs.extend(isToday);
+dayjs.extend(toObject);
+dayjs.extend(minMax);
 
 ReactDOM.render(
   <React.StrictMode>

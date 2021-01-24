@@ -1,0 +1,212 @@
+@import "./__helpers__/mixins";
+
+.date-picker {
+  &[data-ismobile="false"] {
+    .date-picker__days-container .td {
+      @include hover-classNames() {
+        @include selected-state();
+      }
+    }
+  }
+
+  &__content {
+    margin-top: 0.5em;
+    padding-top: 0 !important;
+    padding-bottom: 2em !important;
+  }
+
+  &__months-container {
+    @extend .flex-row-center-stretch;
+    gap: 16px;
+
+    &__btn {
+      $border-color: $grey-4;
+      border-radius: 50%;
+      border-color: $border-color;
+      border-width: 1px;
+      padding: 0;
+      height: em(36);
+      width: em(36);
+      box-shadow: none;
+
+      &:not(.disabled) {
+        @include hover-classNames() {
+          background-color: unset;
+          border-color: $border-color;
+        }
+
+        @include active-classNames() {
+          background-color: $border-color;
+          border-color: initial;
+        }
+      }
+
+      @include disabled-classNames() {
+        background-color: $border-color;
+        border-color: transparent;
+        opacity: 0.5;
+      }
+
+      @include path-classNames() {
+        stroke: $grey-10;
+      }
+    }
+
+    &__date {
+      @extend .flex-row-center-center;
+      @extend .bold;
+      @extend .header-6;
+      gap: 8px;
+      text-align: center;
+      flex: 1;
+
+      span.dash {
+        transform: translateY(-7.5%);
+      }
+    }
+  }
+
+  &__days-container {
+    $td-margin: 0.25em;
+    @extend .flex-column-center-center;
+    gap: em(8);
+    width: 100%;
+    margin-top: 1em;
+    position: relative;
+    background-color: $grey-1;
+
+    .thead,
+    .tbody {
+      flex-wrap: wrap;
+      flex-shrink: 0;
+      background-color: inherit;
+    }
+
+    .thead,
+    .tbody,
+    .tr {
+      @extend .flex-row-space-around-center;
+      width: 100%;
+    }
+
+    .tbody {
+      &__months-container,
+      &__years-container {
+        @extend .flex-row-center-center;
+        flex-wrap: wrap;
+        position: absolute;
+        top: 0;
+        background-color: inherit;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        margin-top: 0.25em;
+
+        & > .btn {
+          @extend .medium;
+          font-size: 18px;
+          margin: 0;
+          // border-color: $grey-4;
+          // border-width: 1px;
+          border: none;
+          flex: 1 1 auto;
+
+          &.selected {
+            @extend .btn, .hover;
+          }
+        }
+      }
+
+      &__months-container {
+        padding: 0;
+        gap: 0 2em;
+      }
+
+      &__years-container {
+        $w-margin: 0.7em;
+        gap: 0em $w-margin;
+
+        .btn {
+          flex-basis: flex-basis(4, $w-margin / 2);
+
+          &.other-year {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .th,
+    .td {
+      @extend .flex-row-center-center;
+      flex-grow: 1;
+      flex: 1 0 flex-basis(7, $td-margin);
+    }
+
+    .th {
+      @extend .body-14;
+      @extend .bold;
+      color: $grey-7;
+    }
+
+    .td {
+      $aspect-ratio: 1 / 1;
+      @extend .body-16;
+      font-size: 18px;
+      position: relative;
+      border-radius: 28px;
+      cursor: pointer;
+      margin: $td-margin;
+
+      // See: https://css-tricks.com/aspect-ratio-boxes/
+      @supports not (aspect-ratio: $aspect-ratio) {
+        @include aspect-ratio(100%);
+      }
+
+      @supports (aspect-ratio: $aspect-ratio) {
+        aspect-ratio: $aspect-ratio;
+      }
+
+      &:not(.other-date) {
+        @extend .medium;
+      }
+
+      &.other-day {
+        color: $grey-7;
+      }
+
+      .today {
+        @extend .body-12;
+        @extend .bold;
+        font-size: 11px;
+        color: $secondary;
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: em(-12);
+        transform: translateX(-50%);
+      }
+
+      &:not(.disabled) {
+        &.selected {
+          @include selected-state();
+
+          &:not(:only-of-type) {
+            &:not(:first-of-type) {
+              border-radius: 0;
+            }
+
+            &:last-of-type() {
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+          }
+        }
+      }
+
+      @include disabled-classNames {
+        @extend .state--disabled;
+      }
+    }
+  }
+}

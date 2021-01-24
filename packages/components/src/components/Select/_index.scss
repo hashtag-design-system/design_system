@@ -12,6 +12,13 @@
     border-width: $input-border-width / 2;
     box-shadow: 0px 0px 2px rgba(194, 194, 194, 0.25);
 
+    &::-webkit-details-marker,
+    &::marker {
+      list-style: none;
+      list-style-type: none;
+      display: none;
+    }
+
     @include hover-classNames() {
       background-color: $grey-2;
       color: initial;

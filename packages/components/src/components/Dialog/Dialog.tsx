@@ -1,5 +1,5 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DialogContextProvider } from "../../utils/contexts";
 import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
 import { ButtonFProps } from "../Button";
@@ -18,12 +18,14 @@ const scaleVariants = {
 };
 
 export type DialogDismissInfoType = { cancel: boolean };
+export type DialogChildrenInfo = { childrenHeight: number; width: number };
 
 export type Props = {
   confirm?: boolean;
   allowDismissOnLoading?: boolean;
   overlayProps?: Partial<ModalOverlayFProps>;
   onDismiss?: (e: React.MouseEvent<HTMLElement>, info: DialogDismissInfoType) => void;
+  children?: React.ReactNode | ((info: DialogChildrenInfo) => React.ReactNode);
 };
 
 export type FProps = Props & Pick<ModalOverlayFProps, "isShown"> & ComponentLoading & HTMLMotionProps<"div">;
@@ -45,6 +47,8 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   onDismiss,
   ...props
 }) => {
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
   const { ref: modalRef, setIsOpen } = useClickOutside<HTMLDivElement>(
     isShown,
     undefined,
@@ -81,7 +85,14 @@ const Dialog: React.FC<FProps> & SubComponents = ({
 
   useEffect(() => {
     setIsOpen(isShown);
-  }, [isShown, setIsOpen]);
+  }, [isShown, setIsOpen, modalRef]);
+
+  useEffect(() => {
+    if (modalRef && modalRef.current) {
+      setHeight(Array.from(modalRef.current.children).reduce((total, child) => total + child.clientHeight, 0));
+      setWidth(modalRef.current!.offsetWidth);
+    }
+  }, [modalRef]);
 
   useEffect(() => {
     document.addEventListener("keydown", e => handleKeyDown(e));
@@ -105,7 +116,8 @@ const Dialog: React.FC<FProps> & SubComponents = ({
           data-testid="dialog"
           {...rest}
         >
-          {children}
+          {/* @ts-expect-error */}
+          {children && (typeof children === "function" ? children({ childrenHeight: height, width } as DialogChildrenInfo) : children)}
         </motion.div>
       </Modal.Overlay>
     </DialogContextProvider>

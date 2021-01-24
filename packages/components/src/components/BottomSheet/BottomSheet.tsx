@@ -1,7 +1,7 @@
 import { DraggableProps, PanInfo, useAnimation, useMotionValue, Variant } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useClassnames, useWindowDimensions } from "../../utils/hooks";
-import Dialog, { DialogDismissInfoType, DialogFProps } from "../Dialog";
+import Dialog, { DialogChildrenInfo, DialogDismissInfoType, DialogFProps } from "../Dialog";
 import { ComponentState, overlayVariants } from "../__helpers__";
 import ScrollBar from "./ScrollBar";
 
@@ -11,7 +11,8 @@ import ScrollBar from "./ScrollBar";
 export type BottomSheetAllowNextObj = { whenMiddle: number; whenExpanded: number };
 export const BottomSheetPositions = ["hidden", "middle", "expanded"] as const;
 export type BottomSheetPosition = typeof BottomSheetPositions[number];
-export type BottomSheetChangeInfo = { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] }
+export type BottomSheetChangeInfo = { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] };
+export type BottomSheetChildrenInfo = { dismiss: () => Promise<void> } & DialogChildrenInfo;
 type DialogVariantsCustom = { height: number; defaultY: number };
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 type BottomSheetVariablePositions = Exclude<BottomSheetPosition, "hidden">;
@@ -26,21 +27,23 @@ export type Props = {
   defaultY?: number;
   allowNext?: number | BottomSheetAllowNextObj;
   allowedPositions?: { [k in BottomSheetVariablePositions]: boolean };
+  hugContentsHeight?: boolean;
   onChange?: (y: number, info: BottomSheetChangeInfo) => void;
   onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
-  children?: React.ReactNode | ((utils: { dismiss: () => Promise<void> }) => React.ReactNode);
+  children?: React.ReactNode | ((info: BottomSheetChildrenInfo) => React.ReactNode);
 };
 
-export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss"> & ComponentState<BottomSheetVariablePositions>;
+export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss" | "children"> & ComponentState<BottomSheetVariablePositions>;
 
 type SubComponents = {
   ScrollBar: typeof ScrollBar;
 };
 
 const BottomSheet: React.FC<FProps> & SubComponents = ({
-  defaultY = 400,
+  defaultY: propsDefaultY = 400,
   allowNext = { whenMiddle: 75, whenExpanded: 50 },
   allowedPositions = { expanded: true, middle: true },
+  hugContentsHeight = false,
   state = "middle",
   isShown,
   dragElastic = 0.3,
@@ -58,6 +61,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   ...props
 }) => {
   const [position, setPosition] = useState<BottomSheetPosition>(state);
+  const [defaultY, setDefaultY] = useState(propsDefaultY);
   const y = useMotionValue(position === "expanded" ? 0 : defaultY);
   const [yState, setYState] = useState(y.get());
   const [animationEnd, setAnimationEnd] = useState<boolean>(false);
@@ -65,7 +69,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const dialogControls = useAnimation();
   const overlayControls = useAnimation();
-  const { height } = useWindowDimensions();
+  const { height: viewportHeight } = useWindowDimensions();
 
   const dragConstraints = useMemo((): DraggableProps["dragConstraints"] => {
     switch (position) {
@@ -82,10 +86,10 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
         };
       }
       case "hidden": {
-        return { top: 0, bottom: height };
+        return { top: 0, bottom: viewportHeight };
       }
     }
-  }, [defaultY, height, position]);
+  }, [defaultY, viewportHeight, position]);
 
   const fAllowNext = useMemo((): BottomSheetAllowNextObj => {
     if (typeof allowNext === "number") {
@@ -199,7 +203,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       variants={animationEnd ? variants : { ...dialogVariants, ...variants }}
       transition={{ duration: 0.3, ease: "easeInOut", ...transition }}
       animate={dialogControls}
-      custom={{ defaultY, height, ...custom } as DialogVariantsCustom}
+      custom={{ defaultY, height: viewportHeight, ...custom } as DialogVariantsCustom}
       dragElastic={yState <= 0 ? 0.06 : dragElastic}
       onDrag={async (e, info) => await handleDrag(e, info)}
       onDragEnd={(e, info) => handleDragEnd(e, info)}
@@ -211,8 +215,24 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       data-testid="bottom-sheet"
       {...rest}
     >
-      {/* @ts-expect-error */}
-      {children && (typeof children === "function" ? children({ dismiss: () => handleDismiss({ cancel: true }) }) : children)}
+      {({ childrenHeight, width }) => {
+        if (hugContentsHeight) {
+          const contentsHeight = viewportHeight - childrenHeight;
+          if (defaultY !== contentsHeight) {
+            setDefaultY(viewportHeight - childrenHeight);
+          }
+        }
+
+        return (
+          <>
+            {children &&
+              (typeof children === "function"
+                ? // @ts-expect-error
+                  children({ dismiss: () => handleDismiss({ cancel: true }), childrenHeight, width } as BottomSheetChildrenInfo)
+                : children)}
+          </>
+        );
+      }}
       {/* <div style={{ padding: "1.25em" }}>
       <p>
         <b>{position}</b>

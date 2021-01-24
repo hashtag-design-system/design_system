@@ -7,19 +7,19 @@
   // Scrollbar's height
   min-height: em(24);
   height: calc(100% + #{$drag-elastic-height});
-  cursor: move;
   @include transition-2s("linear", "border-radius");
-
+  
   .dialog__content {
     padding: 1em 1.25em;
   }
-
+  
   &__srcoll-bar {
     width: 15%;
     height: em(4);
     border-radius: 24px;
     background-color: $grey-5;
     margin: em(10) 0;
+    cursor: move;
 
     &__container {
       @extend .flex-row-center-center;
