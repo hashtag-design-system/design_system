@@ -67,3 +67,18 @@
     @content;
   }
 }
+
+@mixin aspect-ratio($padding-top: 100%) {
+  &::before {
+    content: "";
+    float: left;
+    height: 0;
+    padding-top: $padding-top;
+  }
+
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

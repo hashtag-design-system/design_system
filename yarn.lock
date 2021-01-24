@@ -1527,10 +1527,10 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@georgekrax-hashtag/common@^1.0.27":
-  version "1.0.27"
-  resolved "https://npm.pkg.github.com/download/@georgekrax-hashtag/common/1.0.27/f1dec41f87079ea4132e4aca29ead1a8b036cc35f0b278fb08ef0d6da9c974af#c9fa6b47890b0a8c86ae0a65c64c42f656a544c2"
-  integrity sha512-J07/r2A3imnj/oPxiv107LkCoxSTC053bzj0pNuw9Ckryyx2d3oPk2MvW5k07fQhBxbWe8wR2OIOcBA4n4ny6Q==
+"@georgekrax-hashtag/common@^1.0.28":
+  version "1.0.28"
+  resolved "https://npm.pkg.github.com/download/@georgekrax-hashtag/common/1.0.28/642ba0440c0cc3ef4182ff09d59f1efe59c952146e623af42d86e65aa651df95#cb3b7337d91182e582c8e2215dfa66e8854ce4d5"
+  integrity sha512-eUp+mQ132uMsXerrVH4oknlA9i7z3AGpfXcr4u76jK1QiVZCg6jlQCyDMJbXoilwFnjCGv/YfO15+GUaISb4uQ==
   dependencies:
     "@nexus/schema" "0.19.2"
     apollo-server-express "2.14.2"
@@ -1590,6 +1590,13 @@
   integrity sha512-tAag0jEcjwH+P2quUfipd7liWCNX2F8NvYjQp2wtInsZxnMlypdw0FtAOLxtvvkO+GSRRbmNi8m/5y42PQJYCQ==
   dependencies:
     "@hapi/hoek" "^8.3.0"
+
+"@hashtag-design-system/primitives@1.0.20":
+  version "1.0.20"
+  resolved "https://npm.pkg.github.com/download/@hashtag-design-system/primitives/1.0.20/ced1a4dd965bb32ae5617787d260755e3c1b39a75344f8a4a70cc2cdf9b66012#33eb0dd181dd98562febd7eb1338b62047471d2e"
+  integrity sha512-eqt7Ic6AMtw4gJe7KLb41KC72a+bO8H3VhNfGobvV/7OmAZcwr8EdZJFnZNG/EWugE5Ka4RWJ8wv4ftHCKid5g==
+  dependencies:
+    sass "^1.29.0"
 
 "@icons/material@^0.2.4":
   version "0.2.4"

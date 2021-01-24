@@ -32,10 +32,13 @@
   }
 }
 
+a,
+td,
+div,
 input,
-textarea,
-button,
 select,
-a {
+button,
+summary,
+textarea {
   -webkit-tap-highlight-color: transparent;
 }
