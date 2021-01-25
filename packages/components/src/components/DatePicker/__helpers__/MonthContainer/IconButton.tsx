@@ -1,10 +1,11 @@
 import React from "react";
+import { DatePickerCalendarOperation } from "../../index";
 import { useDatePickerContext } from "../../../../utils/contexts";
 import { useClassnames } from "../../../../utils/hooks";
 import Button, { ButtonFProps } from "../../../Button";
 
 type Props = {
-  operation: "add" | "subtract";
+  operation: DatePickerCalendarOperation;
 };
 
 type FProps = Props & ButtonFProps;

@@ -2,3 +2,8 @@
   background-color: $secondary;
   color: $grey-1;
 }
+
+@mixin btn-active-state($color) {
+  background-color: $color;
+  border-color: initial;
+}

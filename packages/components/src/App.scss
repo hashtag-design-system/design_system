@@ -19,7 +19,9 @@
 @import "components/BottomSheet/index";
 @import "components/DatePicker/index";
 
-*, *::before, *::after  {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -35,6 +37,7 @@ body {
 }
 
 .App {
+  --hey: #298d96;
   display: flex;
   align-items: center;
   justify-content: center;

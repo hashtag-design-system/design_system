@@ -1,7 +1,8 @@
 import DatePicker from "./DatePicker";
 
-export { DatePickerModes, DatePickerOtherDays } from "./DatePicker";
+export { DatePickerModes, DatePickerOtherDays, DatePickerCalendarOperations } from "./DatePicker";
 export type {
+  DatePickerCalendarOperation,
   DatePickerOnClickInfo,
   DatePickerSelectedDateState,
   DatePickerOnChangeInfo,

@@ -13,6 +13,7 @@ export const BottomSheetPositions = ["hidden", "middle", "expanded"] as const;
 export type BottomSheetPosition = typeof BottomSheetPositions[number];
 export type BottomSheetChangeInfo = { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] };
 export type BottomSheetChildrenInfo = { dismiss: () => Promise<void> } & DialogChildrenInfo;
+export type BottomSheetDismissType = Pick<BottomSheetChildrenInfo, "dismiss">;
 type DialogVariantsCustom = { height: number; defaultY: number };
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 type BottomSheetVariablePositions = Exclude<BottomSheetPosition, "hidden">;

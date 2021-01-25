@@ -22,7 +22,7 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
 
   return (
     <div className={classNames} {...rest}>
-      <IconButton state={previous || mode === "months" ? "disabled" :  undefined} operation="subtract">
+      <IconButton state={previous || mode === "months" ? "disabled" : undefined} operation="subtract">
         <svg
           width={16}
           height={16}
@@ -38,19 +38,21 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
       <div
         className="date-picker__months-container__date"
         onMouseDown={() => {
-          setMode(prevMode => {
-            switch (prevMode) {
-              case "calendar":
-                return "months";
-              case "months":
-                return "years";
-              case "years":
-                return "years";
+          switch (mode) {
+            case "calendar":
+              setMode("months");
+              break;
+            case "months":
+              setMode("years");
+              break;
+            case "years":
+              setMode("years");
+              break;
 
-              default:
-                return "calendar";
-            }
-          });
+            default:
+              setMode("calendar");
+              break;
+          }
         }}
       >
         {mode === "calendar" && <span>{MONTHS[calendarDate.month()]}</span>}

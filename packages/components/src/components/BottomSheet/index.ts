@@ -2,6 +2,7 @@ import BottomSheet from "./BottomSheet";
 
 export { BottomSheetPositions } from "./BottomSheet";
 export type {
+  BottomSheetDismissType,
   BottomSheetChildrenInfo,
   BottomSheetChangeInfo,
   BottomSheetAllowNextObj,

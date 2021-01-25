@@ -5,11 +5,10 @@ import { range } from "lodash";
 import React from "react";
 import { useDatePickerContext } from "../../../../utils/contexts";
 import { useClassnames } from "../../../../utils/hooks";
-import { BottomSheetChildrenInfo } from "../../../BottomSheet";
+import { BottomSheetDismissType } from "../../../BottomSheet";
 import Button from "../../../Button";
 import { DatePickerOtherDay } from "../../DatePicker";
-
-type BottomSheetDismissType = Pick<BottomSheetChildrenInfo, "dismiss">;
+import { ACTIONS } from "../index";
 
 const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ dismiss, ...props }) => {
   const {
@@ -21,11 +20,62 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
     disabledDays,
     yearsArr,
     dismissOnClick,
+    isRange,
     setMode,
-    setSelectedDate,
-    setCalendarDate,
     onClick,
+    dispatch,
   } = useDatePickerContext();
+
+  const formatDate = <T extends string | string[]>(value: Dayjs | Dayjs[]): T => {
+    const format = "DD/MM/YYYY";
+    let formattedValue: any;
+    if (Array.isArray(value)) {
+      formattedValue = value.map(date => date.format(format));
+    } else {
+      formattedValue = value.format(format);
+    }
+    return formattedValue;
+  };
+
+  const isSelected = (dayInCalendar: Dayjs): { checked: boolean; first: boolean; middle: boolean; last: boolean } => {
+    if (isRange && selectedDate.length === 1 && dayInCalendar.isSame(selectedDate[0])) {
+      return {
+        checked: true,
+        middle: false,
+        first: false,
+        last: false,
+      };
+    }
+
+    const formattedSelectedDate = formatDate(selectedDate);
+    const formattedDayInCalendar = formatDate<string>(dayInCalendar);
+
+    if (formattedSelectedDate.includes(formattedDayInCalendar)) {
+      return {
+        checked: true,
+        middle: false,
+        first: formattedSelectedDate.indexOf(formattedDayInCalendar) === 0 && new Set(formattedSelectedDate).size >= 2,
+        last: formattedSelectedDate.indexOf(formattedDayInCalendar) === 1,
+      };
+    }
+
+    if (isRange && selectedDate.length === 2) {
+      if (dayInCalendar.isAfter(selectedDate[0]) && dayInCalendar.isBefore(selectedDate[1])) {
+        return {
+          checked: true,
+          middle: true,
+          first: false,
+          last: false,
+        };
+      }
+    }
+    return {
+      checked: false,
+      middle: false,
+      first: false,
+      last: false,
+    };
+  };
 
   const isDisabled = (dayInCalendar: Dayjs, unit?: UnitTypeLong): boolean => {
     const { days } = disabledDays;
@@ -44,35 +94,10 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>, dayInCalendar: Dayjs, otherDay?: DatePickerOtherDay) => {
-    if (!isDisabled(dayInCalendar, "month")) {
-      let newMonth = calendarDate.month();
-      let newYear = calendarDate.year();
-
-      if (otherDay) {
-        if (otherDay === "previous") {
-          newMonth = newMonth - 1;
-          if (newMonth === -1) {
-            newYear = newYear - 1;
-          }
-        } else {
-          newMonth = newMonth + 1;
-          if (newMonth === 12) {
-            newYear = newYear + 1;
-          }
-        }
-      }
-
-      // const newDate = selectedDate.set("month", newMonth).set("date", dayInCalendar.date()).set("year", newYear).startOf("day");
-
-      if (!isDisabled(dayInCalendar)) {
-        // setSelectedDate(newDate);
-
-        if (dismissOnClick) {
-          dismiss();
-        }
-      }
-      // setCalendarDate(newDate);
-    }
+    dispatch({
+      type: ACTIONS.HANDLE_DATE_CLICK,
+      payload: { dayInCalendar, isRange, otherDay, dismissOnClick, isDisabled, dismiss, formatDate },
+    });
 
     if (onClick) {
       onClick({ e, dayInCalendar, otherDay });
@@ -91,15 +116,16 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
         const disabled = isDisabled(dayInCalendar);
 
         if (day <= monthDays && idx >= monthFirstDay && disabledDays.days && !disabledDays.days.includes(dayInCalendar)) {
-          // TODO: Range
-          const isSelected = dayInCalendar.isSame(selectedDate.from);
-          const classNames = `td ${isSelected ? "selected" : ""} ${disabled ? "other-day disabled" : ""}`.trim();
+          const { checked: selected, first, middle, last } = isSelected(dayInCalendar);
+          const classNames = `td ${selected ? "selected" : ""} ${first ? "first" : ""} ${middle ? "middle" : ""} ${
+            last ? "last" : ""
+          } ${disabled ? "other-day disabled" : ""}`.trim();
 
           return (
             <div key={idx} className={classNames} onMouseDown={e => handleClick(e, dayInCalendar)}>
               {day}
               <AnimatePresence>
-                {dayInCalendar.isToday() && !isSelected && (
+                {dayInCalendar.isToday() && !selected && (
                   <motion.span className="today" variants={todayVariants} initial="initial" animate="animate" exit="exit">
                     Today
                   </motion.span>
@@ -118,7 +144,11 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
             month = "next";
           }
           return (
-            <div key={idx} className="td other-day" onMouseDown={e => handleClick(e, dayInCalendar, month)}>
+            <div
+              key={idx}
+              className={`td other-day ${disabled ? "disabled" : ""}`.trimEnd()}
+              onMouseDown={e => handleClick(e, dayInCalendar, month)}
+            >
               {otherDate}
             </div>
           );
@@ -144,7 +174,7 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
                     transition={{ duration: 0.05 }}
                     onMouseDown={() => {
                       setMode("calendar");
-                      setCalendarDate(prevDate => prevDate.month(i));
+                      dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.month(i) } });
                     }}
                   >
                     {name}
@@ -165,7 +195,7 @@ const MonthDays: React.FC<HTMLMotionProps<"div"> & BottomSheetDismissType> = ({ 
                       transition={{ duration: 0.05 }}
                       onMouseDown={() => {
                         setMode("months");
-                        setCalendarDate(prevDate => prevDate.year(year));
+                        dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.year(year) } });
                       }}
                     >
                       {year}
