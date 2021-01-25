@@ -31,7 +31,12 @@ function App() {
       <Button pill>Button</Button>
       <DatePicker
         defaultOpen
-        onClick={({ e, dayInCalendar }) => console.log(e, dayInCalendar.date())}
+        // isRange
+        // defaultDates={[dayjs(), dayjs().add(2, "day")]}
+        // defaultMode="months"
+        // allowedModes={{ calendar: true, months: true, years: false }}
+        dismissOnClick={false}
+        // onClick={({ e, dayInCalendar }) => console.log(e, dayInCalendar.date())}
         // onChange={({ bottomSheetIsShown }) => console.log(bottomSheetIsShown)}
         disabledDays={{
           days: [dayjs().set("date", 30)],
@@ -42,7 +47,9 @@ function App() {
             date: dayjs().add(20, "year"),
           },
         }}
-        selectBtn={({ selectedDate }) => <Select.Button>{selectedDate.from.format("DD/MM/YYYY")}</Select.Button>}
+        selectBtn={({ selectedDate }) => (
+          <Select.Button>{selectedDate.length >= 1 ? selectedDate[0].format("DD/MM/YYYY") : ""}</Select.Button>
+        )}
       />
       <Checkbox
         // state="disabled|checked"

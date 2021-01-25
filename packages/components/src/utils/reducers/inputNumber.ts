@@ -51,7 +51,7 @@ const decrement = (value: number, step: number, min: number) => {
 };
 
 // ------------ The reducer ------------ //
-export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE) => {
+export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): ReducerInitialStateType => {
   const { value: number, min: prevMin, max: prevMax, defaultValue, isDisabled, hasShiftKey } = state;
 
   const value = parseFloat(String(number || prevMin));
@@ -91,7 +91,7 @@ export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE) => {
     case ACTIONS.HANDLE_KEY_UP_CAPTURE:
       const e = action.payload.e;
       if (!(e.shiftKey && (e.key === "ArrowUp" || e.key === "ArrowDown"))) {
-        return { ...state, shiftKey: false };
+        return { ...state, hasShiftKey: false };
       }
 
       return state;

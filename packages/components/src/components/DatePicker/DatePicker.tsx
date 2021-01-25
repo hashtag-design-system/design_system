@@ -1,22 +1,24 @@
 import dayjs, { Dayjs } from "dayjs";
 import { range } from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import { getDecade } from "../../utils";
 import { DatePickerContextProvider } from "../../utils/contexts";
-import { useIsMobile } from "../../utils/hooks";
+import { useClassnames, useIsMobile } from "../../utils/hooks";
 import BottomSheet, { BottomSheetFProps } from "../BottomSheet";
 import Dialog, { DialogDismissInfoType } from "../Dialog";
 import Select, { SelectFProps } from "../Select";
-import { DaysTable, MonthContainer } from "./__helpers__";
+import { ACTIONS, DaysTable, MonthContainer, reducer, ReducerInitialStateType } from "./__helpers__";
 
 export const DatePickerModes = ["calendar", "months", "years"] as const;
 export type DatePickerMode = typeof DatePickerModes[number];
 export const DatePickerOtherDays = ["previous", "next"] as const;
 export type DatePickerOtherDay = typeof DatePickerOtherDays[number];
+export const DatePickerCalendarOperations = ["add", "subtract"] as const;
+export type DatePickerCalendarOperation = typeof DatePickerCalendarOperations[number];
 
 export type DatePickerDisabledType = { next: boolean; previous: boolean; from?: Dayjs; till?: Dayjs };
 export type DatePickerDisabledDaysObj = { date: Dayjs; parse?: (date: Dayjs) => Dayjs };
-export type DatePickerSelectedDateState = { from: Dayjs; till: Dayjs };
+export type DatePickerSelectedDateState = Dayjs[];
 export type DatePickerYearsArrObj = {
   fArr: { year: number; otherYear: boolean }[];
   years: number[];
@@ -26,8 +28,9 @@ export type DatePickerYearsArrObj = {
 export type DatePickerOnChangeInfo = {
   selectedDate: DatePickerSelectedDateState;
   calendarDate: Dayjs;
-  bottomSheetIsShown: boolean;
+  isShown: boolean;
   isMobile: boolean;
+  mode: DatePickerMode;
   disabled: DatePickerDisabledType;
   yearsArr: DatePickerYearsArrObj;
 };
@@ -38,8 +41,15 @@ export type DatePickerOnClickInfo = {
   otherDay?: DatePickerOtherDay;
 };
 
+const initialState: ReducerInitialStateType = {
+  selectedDate: [],
+  calendarDate: dayjs(),
+  isShown: false,
+  mode: "calendar",
+};
+
 export type Props = {
-  defaultDate?: DatePickerSelectedDateState;
+  defaultDates?: DatePickerSelectedDateState;
   mobileView?: { view?: boolean; hover: boolean };
   calendarWeeks?: number;
   yearsRows?: number;
@@ -48,6 +58,8 @@ export type Props = {
   isRange?: boolean;
   onChange?: (info: DatePickerOnChangeInfo) => void;
   onClick?: (info: DatePickerOnClickInfo) => void;
+  defaultMode?: DatePickerMode;
+  allowedModes?: { [k in DatePickerMode]: boolean };
   disabledDays?: {
     days?: Dayjs[];
     from?: DatePickerDisabledDaysObj;
@@ -56,10 +68,11 @@ export type Props = {
   selectBtn?: React.ReactNode | ((info: { selectedDate: DatePickerSelectedDateState }) => React.ReactNode);
 };
 
-export type FProps = Props & Omit<SelectFProps, "onChange" | "onClick"> & Pick<BottomSheetFProps, "onDismiss">;
+export type FProps = Props & Omit<SelectFProps, "onChange" | "onClick" | "onDismiss"> & Pick<BottomSheetFProps, "onDismiss">;
 
 const DatePicker: React.FC<FProps> = ({
-  defaultDate = { from: dayjs(), till: dayjs().add(1, "day") },
+  isRange = false,
+  defaultDates = isRange ? [] : [dayjs()],
   disabledDays = {},
   mobileView,
   defaultOpen = false,
@@ -68,7 +81,8 @@ const DatePicker: React.FC<FProps> = ({
   yearsRows = 4,
   yearsBeforeAfter = 3,
   dismissOnClick = true,
-  isRange = false,
+  defaultMode = "calendar",
+  allowedModes = { calendar: true, months: true, years: true },
   selectBtn,
   onChange,
   onClick,
@@ -76,10 +90,16 @@ const DatePicker: React.FC<FProps> = ({
   onDismiss,
   ...props
 }) => {
-  const [selectedDate, setSelectedDate] = useState<DatePickerSelectedDateState>(defaultDate);
-  const [calendarDate, setCalendarDate] = useState<Dayjs>(defaultDate.from);
-  const [bottomSheetIsShown, setBottomSheetIsShown] = useState<boolean>(defaultOpen);
-  const [mode, setMode] = useState<DatePickerMode>("calendar");
+  const [{ selectedDate, calendarDate, isShown, mode }, dispatch] = useReducer(reducer, initialState, (): typeof initialState => {
+    return {
+      ...initialState,
+      selectedDate: defaultDates,
+      calendarDate: defaultDates.length >= 1 ? defaultDates[0] : dayjs(),
+      isShown: defaultOpen,
+      mode: defaultMode,
+    };
+  });
+  const [classNames, rest] = useClassnames("date-picker", props);
   const { isMobile } = useIsMobile(mobileView?.view);
 
   const yearsArr: DatePickerYearsArrObj = useMemo(() => {
@@ -139,51 +159,38 @@ const DatePicker: React.FC<FProps> = ({
 
   const handleToggle = (e: React.SyntheticEvent<HTMLElement>) => {
     const open = e.currentTarget.attributes.getNamedItem("open");
-    if (open) {
-      setBottomSheetIsShown(true);
-    } else {
-      // In this way, the <BottomSheet /> animates on exit
-      // setBottomSheetIsShown(false);
-    }
-
+    dispatch({ type: ACTIONS.HANDLE_TOGGLE, payload: { open: open ? true : false } });
     if (onToggle) {
       onToggle(e);
     }
   };
 
-  const handleOperation = (operation: "add" | "subtract") => {
-    setCalendarDate(prevDate => {
-      const unit: "months" | "years" = mode === "calendar" ? "months" : mode;
-      const newDate = prevDate[operation](unit === "months" ? 1 : 10, unit);
-
-      if (operation === "add" && disabled.next) {
-        return prevDate;
-      } else if (operation === "subtract" && disabled.previous) {
-        return prevDate;
-      } else {
-        return newDate;
-      }
-    });
+  const handleOperation = (operation: DatePickerCalendarOperation) => {
+    dispatch({ type: ACTIONS.HANDLE_OPERATION, payload: { operation, disabled } });
   };
 
-  const handleDismiss = (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => {
-    setBottomSheetIsShown(false);
-
+  const handleDismiss = (info?: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => {
+    dispatch({ type: ACTIONS.HANDLE_DISMISS });
     if (onDismiss) {
-      onDismiss(info, e);
+      onDismiss(info ? info : { cancel: false }, e);
     }
+  };
+
+  const setMode = (newMode: DatePickerMode) => {
+    dispatch({ type: ACTIONS.SET_MODE, payload: { newMode, allowedModes } });
   };
 
   useEffect(() => {
     if (onChange) {
-      onChange({ selectedDate, calendarDate, bottomSheetIsShown, isMobile, disabled, yearsArr });
+      onChange({ selectedDate, calendarDate, isShown, isMobile, mode, disabled, yearsArr });
     }
-  }, [onChange, selectedDate, calendarDate, bottomSheetIsShown, isMobile, disabled, yearsArr]);
+  }, [onChange, selectedDate, calendarDate, isShown, isMobile, mode, disabled, yearsArr]);
 
   return (
     <DatePickerContextProvider
       value={{
         mode,
+        isRange,
         selectedDate,
         calendarDate,
         calendarWeeks,
@@ -192,45 +199,37 @@ const DatePicker: React.FC<FProps> = ({
         yearsArr,
         dismissOnClick,
         setMode,
-        setSelectedDate,
-        setCalendarDate,
+        dispatch,
         handleOperation,
         onClick,
       }}
     >
       <Select
-        className="date-picker"
+        className={classNames}
+        defaultOpen={defaultOpen}
         mobileView={false}
         width={width}
-        open={isMobile ? bottomSheetIsShown : undefined}
+        open={isShown}
         onToggle={e => handleToggle(e)}
+        onDismiss={e => handleDismiss({ cancel: true }, e)}
         data-ismobile={mobileView?.view ? mobileView?.view : isMobile}
-        {...props}
+        {...rest}
       >
         {selectBtn && (typeof selectBtn === "function" ? selectBtn({ selectedDate }) : selectBtn)}
         {!isMobile ? (
           <Select.Modal>
-            {/* <div className="date-picker__content">
-              <Month />
-              <table className="date-picker__days-table">
-                <thead>
-                  <tr>
-                    {DAY_NAMES_ARR.map(({ short_abbreviation }) => {
-                      return <th>{short_abbreviation}</th>;
-                    })}
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-            </div> */}
+            <div className="date-picker__content">
+              <MonthContainer />
+              <DaysTable dismiss={async () => handleDismiss()} />
+            </div>
           </Select.Modal>
         ) : (
           <BottomSheet
             className="date-picker"
-            data-ismobile={isMobile}
+            data-ismobile={mobileView?.view ? mobileView?.view : isMobile}
             defaultY={380}
             hugContentsHeight
-            isShown={bottomSheetIsShown}
+            isShown={isShown}
             onDismiss={(info, e) => handleDismiss(info, e)}
           >
             {({ dismiss }) => {
