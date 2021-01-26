@@ -1,7 +1,7 @@
 import dayjs, { Dayjs, UnitTypeLong } from "dayjs";
 import { keys, pickBy } from "lodash";
 import { BottomSheetDismissType } from "../../BottomSheet";
-import { DatePickerCalendarOperation, DatePickerMode, DatePickerOnChangeInfo, DatePickerOtherDay } from "../DatePicker";
+import { DatePickerCalendarOperation, DatePickerMode, DatePickerOnChangeInfo, DatePickerOtherDay } from "../index";
 import { DatePickerProps } from "../index";
 
 // ------------ Reducer types ------------ //

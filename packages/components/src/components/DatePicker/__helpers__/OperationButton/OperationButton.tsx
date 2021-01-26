@@ -10,7 +10,7 @@ type Props = {
 
 type FProps = Props & ButtonFProps;
 
-export const IconButton: React.FC<FProps> = ({ variant = "secondary", operation, children, onClick, ...props }) => {
+export const OperationButton: React.FC<FProps> = ({ variant = "secondary", operation, children, onClick, ...props }) => {
   const [classNames, rest] = useClassnames("date-picker__months-container__btn", props);
 
   const { handleOperation } = useDatePickerContext();

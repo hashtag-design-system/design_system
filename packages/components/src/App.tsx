@@ -1,4 +1,3 @@
-/* spell-checker: disable */
 // TODO: Remove afterwards removing the <Checkbox /> label Prop
 import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
@@ -31,7 +30,7 @@ function App() {
       <Button pill>Button</Button>
       <DatePicker
         defaultOpen
-        // isRange
+        isRange
         // defaultDates={[dayjs(), dayjs().add(2, "day")]}
         // defaultMode="months"
         // allowedModes={{ calendar: true, months: true, years: false }}

@@ -269,7 +269,12 @@
     }
 
     &__days-container {
+      gap: 0;
       margin-top: 0.5em;
+
+      .thead .th {
+        font-size: 12px;
+      }
 
       .tbody .td {
         font-size: 16px;
