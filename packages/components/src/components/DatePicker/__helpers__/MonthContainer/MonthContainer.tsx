@@ -2,7 +2,7 @@ import { MONTHS } from "@georgekrax-hashtag/common";
 import { useMemo } from "react";
 import { useDatePickerContext } from "../../../../utils/contexts";
 import { useClassnames } from "../../../../utils/hooks";
-import { IconButton } from "./IconButton";
+import { OperationButton } from "../OperationButton/OperationButton";
 
 type FProps = React.ComponentPropsWithoutRef<"div">;
 
@@ -17,12 +17,30 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
     setMode,
   } = useDatePickerContext();
 
+  const handleMouseDown = () => {
+    switch (mode) {
+      case "calendar":
+        setMode("months");
+        break;
+      case "months":
+        setMode("years");
+        break;
+      case "years":
+        setMode("years");
+        break;
+
+      default:
+        setMode("calendar");
+        break;
+    }
+  };
+
   const firstYear = useMemo(() => years[0], [years]);
   const lastYear = useMemo(() => years[years.length - 1], [years]);
 
   return (
     <div className={classNames} {...rest}>
-      <IconButton state={previous || mode === "months" ? "disabled" : undefined} operation="subtract">
+      <OperationButton state={previous || mode === "months" ? "disabled" : undefined} operation="subtract">
         <svg
           width={16}
           height={16}
@@ -34,27 +52,8 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
         >
           <path d="M17 21L7 12l10-9" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </IconButton>
-      <div
-        className="date-picker__months-container__date"
-        onMouseDown={() => {
-          switch (mode) {
-            case "calendar":
-              setMode("months");
-              break;
-            case "months":
-              setMode("years");
-              break;
-            case "years":
-              setMode("years");
-              break;
-
-            default:
-              setMode("calendar");
-              break;
-          }
-        }}
-      >
+      </OperationButton>
+      <div className="date-picker__months-container__date" onMouseDown={() => handleMouseDown()}>
         {mode === "calendar" && <span>{MONTHS[calendarDate.month()]}</span>}
         {mode !== "years" && <span>{calendarDate.year()}</span>}
         {mode === "years" && (
@@ -65,7 +64,7 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
           </>
         )}
       </div>
-      <IconButton state={next || mode === "months" ? "disabled" : undefined} operation="add">
+      <OperationButton state={next || mode === "months" ? "disabled" : undefined} operation="add">
         <svg
           width={16}
           height={16}
@@ -77,7 +76,7 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
         >
           <path d="M7 21l10-9L7 3" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </IconButton>
+      </OperationButton>
     </div>
   );
 };

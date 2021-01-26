@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import { Dayjs, UnitTypeLong } from "dayjs";
 import {
   DatePickerDisabledType,
   DatePickerMode,
@@ -18,8 +18,7 @@ export type DatePickerContextType = Required<Pick<DatePickerProps, "calendarWeek
     yearsArr: DatePickerYearsArrObj;
     dispatch: React.Dispatch<ACTIONTYPE>;
     setMode: (mode: DatePickerMode) => void;
-    // setSelectedDate: React.Dispatch<React.SetStateAction<DatePickerSelectedDateState>>;
-    // setCalendarDate: React.Dispatch<React.SetStateAction<Dayjs>>;
+    isDisabled: (dayInCalendar: Dayjs, unit?: UnitTypeLong) => boolean;
     handleOperation: (operation: "add" | "subtract") => void;
   };
 
