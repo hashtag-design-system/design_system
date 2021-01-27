@@ -27,13 +27,10 @@ const containerVariants: Record<"initial" | "visible" | "exit", Variant> = {
   },
 };
 
-const btnVariants: Record<"initial" | "visible" | "exit" | "transition", Variant> = {
+const btnVariants: Record<"initial" | "exit" | "transition", Variant> = {
   initial: {
     opacity: 0,
   },
-  visible: (otherYear: boolean) => ({
-    opacity: otherYear ? 0.5 : 1,
-  }),
   exit: {
     opacity: 0,
   },
@@ -56,31 +53,40 @@ export const MonthsAndYears: React.FC = () => {
           initial="initial"
           animate="visible"
           exit="exit"
+          data-testid={`date-picker-tbody-${mode}-container`}
         >
           {mode === "months"
-            ? MONTHS.map((name, i) => (
-                <Button
-                  key={name}
-                  className={calendarDate.month() === i ? "selected" : undefined}
-                  variant="secondary"
-                  variants={btnVariants}
-                  initial="initial"
-                  animate="visible"
-                  exit="exit"
-                  custom={false}
-                  transition={btnVariants.transition}
-                  onMouseDown={() => {
-                    setMode("calendar");
-                    dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.month(i) } });
-                  }}
-                >
-                  {name}
-                </Button>
-              ))
+            ? MONTHS.map((name, i) => {
+                const disabled = isDisabled(dayjs().month(i).startOf("month"), "month");
+
+                return (
+                  <Button
+                    key={name}
+                    className={calendarDate.month() === i ? "selected" : undefined}
+                    variant="secondary"
+                    variants={btnVariants}
+                    initial="initial"
+                    animate={{ opacity: disabled ? 0.5 : 1 }}
+                    exit="exit"
+                    transition={btnVariants.transition}
+                    disabled={disabled}
+                    onMouseDown={() => {
+                      if (!disabled) {
+                        setMode("calendar");
+                        dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.month(i) } });
+                      }
+                    }}
+                    data-testid="date-picker-tbody-months-container-btn"
+                  >
+                    {name}
+                  </Button>
+                );
+              })
             : yearsArr.fArr.map(({ year, otherYear }) => {
-                const classNames = `${otherYear || isDisabled(dayjs().year(year).startOf("year")) ? "other-year" : ""} ${
-                  calendarDate.year() === year ? "selected" : ""
-                }`;
+                const disabled = isDisabled(dayjs().year(year).startOf("year"), "year");
+                const other = otherYear || disabled;
+                const classNames = `${other ? "other-year" : ""} ${calendarDate.year() === year ? "selected" : ""}`.trim();
+
                 return (
                   <Button
                     key={year}
@@ -88,14 +94,17 @@ export const MonthsAndYears: React.FC = () => {
                     className={classNames}
                     variants={btnVariants}
                     initial="initial"
-                    animate="visible"
+                    animate={{ opacity: other ? 0.5 : 1 }}
                     exit="exit"
-                    custom={otherYear}
                     transition={btnVariants.transition}
+                    disabled={disabled}
                     onMouseDown={() => {
-                      setMode("months");
-                      dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.year(year) } });
+                      if (!disabled) {
+                        setMode("months");
+                        dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.year(year) } });
+                      }
                     }}
+                    data-testid="date-picker-tbody-years-container-btn"
                   >
                     {year}
                   </Button>

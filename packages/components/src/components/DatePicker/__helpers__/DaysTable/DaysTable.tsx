@@ -1,8 +1,8 @@
 import { DAY_NAMES_ARR } from "@georgekrax-hashtag/common";
 import React from "react";
-import { MonthDays } from "../index";
 import { useClassnames } from "../../../../utils/hooks";
 import { BottomSheetDismissType } from "../../../BottomSheet";
+import { MonthDays } from "../index";
 
 type FProps = React.ComponentPropsWithoutRef<"div"> & BottomSheetDismissType;
 
@@ -10,10 +10,10 @@ export const DaysTable: React.FC<FProps> = ({ dismiss, ...props }) => {
   const [classNames, rest] = useClassnames("date-picker__days-container", props);
 
   return (
-    <div className={classNames} {...rest}>
-      <div className="thead">
+    <div className={classNames} data-testid="date-picker-days-container" {...rest}>
+      <div className="thead" data-testid="date-picker-thead">
         {DAY_NAMES_ARR.map(({ id, short_abbreviation }) => (
-          <div className="th" key={id}>
+          <div key={id} className="th" data-testid="date-picker-thead-th">
             {short_abbreviation}
           </div>
         ))}

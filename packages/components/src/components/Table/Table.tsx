@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import minMax from "dayjs/plugin/minMax";
 import React, { useEffect, useRef, useState } from "react";
 import { TableContextProvider } from "../../utils/contexts";
 import { useClassnames } from "../../utils/hooks";
@@ -7,6 +8,8 @@ import Td from "./Td";
 import Th from "./Th";
 import THead from "./THead";
 import Tr from "./Tr";
+
+dayjs.extend(minMax);
 
 export const TableSelectionInputs = ["checkbox", "radio"] as const;
 

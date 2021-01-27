@@ -7,10 +7,30 @@
     border-radius: 16px;
   }
 
+  &[data-ismobile="true"] {
+    @include breakpoint("md") {
+      .date-picker__days-container .tbody .td:not(.disabled) {
+        @include hover-classNames() {
+          @include selected-state();
+        }
+      }
+    }
+  }
+
   &[data-ismobile="false"] {
     .date-picker__days-container {
+      gap: 0.5em;
+      margin-top: 0.25em;
+
+      .thead .th {
+        font-size: 12px;
+      }
+
       .tbody {
         .td {
+          font-size: 16px;
+          font-weight: normal !important;
+
           &:not(.disabled) {
             @include hover-classNames() {
               @include selected-state();
@@ -30,12 +50,27 @@
       }
     }
 
-    .date-picker__months-container .btn {
-      &:not(:disabled) {
-        @include hover-classNames() {
-          @include btn-active-state($btn-active-color);
+    .date-picker__months-container {
+      gap: 2em;
+      transform: scale(0.75);
+
+      &__date {
+        flex: 0;
+      }
+
+      .btn {
+        &:not(:disabled) {
+          @include hover-classNames() {
+            @include btn-active-state($btn-active-color);
+          }
         }
       }
+    }
+
+    .date-picker__content {
+      margin: 0;
+      padding: 0.5em 0.75em !important;
+      max-width: 19em;
     }
   }
 
@@ -72,7 +107,7 @@
       @include disabled-classNames() {
         background-color: darken($btn-active-color, 8);
         border-color: transparent;
-        opacity: 0.5;
+        opacity: 0.3;
       }
 
       @include path-classNames() {
@@ -198,6 +233,7 @@
       position: relative;
       border-radius: 28px;
       margin: 0 -$td-margin;
+      max-height: 3.25em;
 
       // See: https://css-tricks.com/aspect-ratio-boxes/
       @supports not (aspect-ratio: $aspect-ratio) {
@@ -251,42 +287,6 @@
 
       @include disabled-classNames {
         @extend .state--disabled;
-      }
-    }
-  }
-}
-
-@include breakpoint("lg") {
-  .date-picker {
-    & > .td {
-      font-weight: normal !important;
-    }
-
-    &__content {
-      margin: 0;
-      padding: 0.5em 0.75em !important;
-      max-width: 19em;
-    }
-
-    &__days-container {
-      gap: 0;
-      margin-top: 0.5em;
-
-      .thead .th {
-        font-size: 12px;
-      }
-
-      .tbody .td {
-        font-size: 16px;
-      }
-    }
-
-    &__months-container {
-      gap: 2em;
-      transform: scale(0.75);
-
-      &__date {
-        flex: 0;
       }
     }
   }

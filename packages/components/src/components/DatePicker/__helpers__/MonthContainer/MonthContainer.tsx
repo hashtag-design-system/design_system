@@ -2,7 +2,7 @@ import { MONTHS } from "@georgekrax-hashtag/common";
 import { useMemo } from "react";
 import { useDatePickerContext } from "../../../../utils/contexts";
 import { useClassnames } from "../../../../utils/hooks";
-import { OperationButton } from "../OperationButton/OperationButton";
+import { OperationButton } from "../index";
 
 type FProps = React.ComponentPropsWithoutRef<"div">;
 
@@ -28,7 +28,7 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
       case "years":
         setMode("years");
         break;
-
+      /* istanbul ignore next */
       default:
         setMode("calendar");
         break;
@@ -39,7 +39,7 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
   const lastYear = useMemo(() => years[years.length - 1], [years]);
 
   return (
-    <div className={classNames} {...rest}>
+    <div className={classNames} data-testid="date-picker-months-container" {...rest}>
       <OperationButton state={previous || mode === "months" ? "disabled" : undefined} operation="subtract">
         <svg
           width={16}
@@ -53,14 +53,20 @@ export const MonthContainer: React.FC<FProps> = ({ ...props }) => {
           <path d="M17 21L7 12l10-9" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </OperationButton>
-      <div className="date-picker__months-container__date" onMouseDown={() => handleMouseDown()}>
-        {mode === "calendar" && <span>{MONTHS[calendarDate.month()]}</span>}
-        {mode !== "years" && <span>{calendarDate.year()}</span>}
+      <div
+        className="date-picker__months-container__date"
+        onMouseDown={() => handleMouseDown()}
+        data-testid="date-picker-months-container-date"
+      >
+        {mode === "calendar" && <span data-testid="date-picker-months-container-date-month">{MONTHS[calendarDate.month()]}</span>}
+        {mode !== "years" && <span data-testid="date-picker-months-container-date-year">{calendarDate.year()}</span>}
         {mode === "years" && (
           <>
-            <span>{firstYear}</span>
-            <span className="dash">&ndash;</span>
-            <span>{lastYear}</span>
+            <span data-testid="date-picker-months-container-date-years-first">{firstYear}</span>
+            <span className="dash" data-testid="date-picker-months-container-date-years-dash">
+              &ndash;
+            </span>
+            <span data-testid="date-picker-months-container-date-years-last">{lastYear}</span>
           </>
         )}
       </div>

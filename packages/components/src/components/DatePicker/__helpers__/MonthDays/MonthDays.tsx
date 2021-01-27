@@ -5,8 +5,7 @@ import React from "react";
 import { useDatePickerContext } from "../../../../utils/contexts";
 import { BottomSheetDismissType } from "../../../BottomSheet";
 import { DatePickerOtherDay } from "../../index";
-import { ACTIONS } from "../index";
-import { MonthsAndYears } from "../MonthsAndYears/MonthsAndYears";
+import { ACTIONS, MonthsAndYears } from "../index";
 
 const todayVariants: Variants = {
   initial: { opacity: 0, height: 0 },
@@ -92,7 +91,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
   };
 
   return (
-    <motion.div className="tbody" {...props}>
+    <motion.div className="tbody" data-testid="date-picker-tbody" {...props}>
       {range(1, calendarWeeks * 7 + 1).map(idx => {
         const monthDays = calendarDate.daysInMonth();
         const monthFirstDay = calendarDate.date(1).get("day") + 1;
@@ -101,16 +100,21 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
         const day = idx - daysFromPrevMonth;
         const dayInCalendar = calendarDate.date(day);
         const disabled = isDisabled(dayInCalendar);
-        const baseClassNames = `td${disabled ? " disabled" : ""}`;
+        const { checked: selected, first, middle, last } = isSelected(dayInCalendar);
+        const baseClassNames = `td${disabled ? " disabled" : ""}${selected ? " selected" : ""}${first ? " first" : ""}${
+          middle ? " middle" : ""
+        }${last ? " last" : ""}`;
 
-        if (day <= monthDays && idx >= monthFirstDay && disabledDays.days && !disabledDays.days.includes(dayInCalendar)) {
-          const { checked: selected, first, middle, last } = isSelected(dayInCalendar);
-          const classNames = `${selected ? "selected" : ""} ${first ? "first" : ""} ${middle ? "middle" : ""} ${last ? "last" : ""}${
-            disabled ? " other-day" : ""
-          } ${baseClassNames}`.trim();
+        if (
+          day <= monthDays &&
+          idx >= monthFirstDay &&
+          ((disabledDays && disabledDays.days && !disabledDays.days.includes(dayInCalendar)) ||
+            Object.entries(disabledDays).length === 0)
+        ) {
+          const classNames = `${disabled ? " other-day" : ""} ${baseClassNames}`.trim();
 
           return (
-            <div key={idx} className={classNames} onMouseDown={e => handleClick(e, dayInCalendar)}>
+            <div key={idx} className={classNames} onMouseDown={e => handleClick(e, dayInCalendar)} data-testid="date-picker-tbody-td">
               {day}
               <AnimatePresence>
                 {dayInCalendar.isToday() && !selected && (
@@ -136,6 +140,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
               key={idx}
               className={("other-day " + baseClassNames).trimEnd()}
               onMouseDown={e => handleClick(e, dayInCalendar, month)}
+              data-testid="date-picker-tbody-td"
             >
               {otherDate}
             </div>
@@ -143,57 +148,6 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
         }
       })}
       <MonthsAndYears />
-      {/* <AnimatePresence>
-        {(mode === "months" || mode === "years") && (
-          <motion.div
-            className={`tbody__${mode}-container`}
-            initial={{ scale: 1, height: 0, opacity: 0 }}
-            animate={{ scale: 1, height: "100%", opacity: 1 }}
-            exit={{ scale: 0, height: 0, opacity: 0, transition: { delay: 0.1 } }}
-          >
-            {mode === "months"
-              ? MONTHS.map((name, i) => (
-                  <Button
-                    key={name}
-                    className={calendarDate.month() === i ? "selected" : undefined}
-                    variant="secondary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.05 }}
-                    onMouseDown={() => {
-                      setMode("calendar");
-                      dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.month(i) } });
-                    }}
-                  >
-                    {name}
-                  </Button>
-                ))
-              : yearsArr.fArr.map(({ year, otherYear }) => {
-                  const classNames = `${otherYear || isDisabled(dayjs().year(year).startOf("year")) ? "other-year" : ""} ${
-                    calendarDate.year() === year ? "selected" : ""
-                  }`;
-                  return (
-                    <Button
-                      key={year}
-                      variant="secondary"
-                      className={classNames}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: otherYear ? 0.5 : 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.05 }}
-                      onMouseDown={() => {
-                        setMode("months");
-                        dispatch({ type: ACTIONS.SET_CALENDAR_DATE, payload: { newDate: calendarDate.year(year) } });
-                      }}
-                    >
-                      {year}
-                    </Button>
-                  );
-                })}
-          </motion.div>
-        )}
-      </AnimatePresence> */}
     </motion.div>
   );
 };

@@ -1,4 +1,5 @@
 import dayjs, { Dayjs, UnitTypeLong } from "dayjs";
+import isToday from "dayjs/plugin/isToday";
 import { range } from "lodash";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { getDecade } from "../../utils";
@@ -23,6 +24,8 @@ import {
   ReducerInitialStateType,
 } from "./__helpers__";
 
+dayjs.extend(isToday);
+
 const initialState: ReducerInitialStateType = {
   selectedDate: [],
   calendarDate: dayjs(),
@@ -30,9 +33,10 @@ const initialState: ReducerInitialStateType = {
   mode: "calendar",
 };
 
+// TODO: git rebase -i HEAD~2 to rename the title of the commit message
 export type Props = {
   defaultDates?: DatePickerSelectedDateState;
-  mobileView?: { view?: boolean; hover: boolean };
+  defaultCalendarDate?: Dayjs;
   calendarWeeks?: number;
   yearsRows?: number;
   yearsBeforeAfter?: number;
@@ -55,6 +59,7 @@ export type FProps = Props & Omit<SelectFProps, "onChange" | "onClick" | "onDism
 const DatePicker: React.FC<FProps> = ({
   isRange = false,
   defaultDates = isRange ? [] : [dayjs()],
+  defaultCalendarDate = defaultDates.length >= 1 ? defaultDates[0] : dayjs(),
   disabledDays = {},
   mobileView,
   defaultOpen = false,
@@ -76,13 +81,13 @@ const DatePicker: React.FC<FProps> = ({
     return {
       ...initialState,
       selectedDate: defaultDates,
-      calendarDate: defaultDates.length >= 1 ? defaultDates[0] : dayjs(),
+      calendarDate: defaultCalendarDate,
       isShown: defaultOpen,
       mode: defaultMode,
     };
   });
   const [classNames, rest] = useClassnames("date-picker", props);
-  const { isMobile } = useIsMobile(mobileView?.view);
+  const { isMobile } = useIsMobile(mobileView);
 
   const yearsArr: DatePickerYearsArrObj = useMemo(() => {
     if (mode !== "years") {
@@ -105,6 +110,7 @@ const DatePicker: React.FC<FProps> = ({
   const disabled: DatePickerDisabledType = useMemo(() => {
     let newFrom: Dayjs | undefined = undefined;
     let newTill: Dayjs | undefined = undefined;
+    /* istanbul ignore next */
     if (!disabledDays) {
       return { next: false, previous: false, from: newFrom, till: newTill };
     }
@@ -210,8 +216,9 @@ const DatePicker: React.FC<FProps> = ({
         width={width}
         open={isShown}
         onToggle={e => handleToggle(e)}
-        onDismiss={e => handleDismiss({ cancel: true }, e)}
-        data-ismobile={mobileView?.hover ? mobileView?.hover : isMobile}
+        onDismiss={e => !isMobile && handleDismiss({ cancel: true }, e)}
+        data-ismobile={isMobile}
+        data-testid="date-picker"
         {...rest}
       >
         {selectBtn && (typeof selectBtn === "function" ? selectBtn({ selectedDate }) : selectBtn)}
@@ -225,11 +232,12 @@ const DatePicker: React.FC<FProps> = ({
         ) : (
           <BottomSheet
             className={classNames}
-            data-ismobile={mobileView?.hover ? mobileView?.hover : isMobile}
+            data-ismobile={isMobile}
             defaultY={380}
             hugContentsHeight
             isShown={isShown}
             onDismiss={(info, e) => handleDismiss(info, e)}
+            data-testid="date-picker"
           >
             {({ dismiss }) => {
               return (
