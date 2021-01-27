@@ -33,7 +33,6 @@ const initialState: ReducerInitialStateType = {
   mode: "calendar",
 };
 
-// TODO: git rebase -i HEAD~2 to rename the title of the commit message
 export type Props = {
   defaultDates?: DatePickerSelectedDateState;
   defaultCalendarDate?: Dayjs;
