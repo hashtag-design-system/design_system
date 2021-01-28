@@ -21,20 +21,24 @@ export const Filter: React.FunctionComponent<FProps> = React.memo(
 
     const { items, setItems, setFilterValue, handleToggle } = useSelectContext();
 
-    const handleSearch = debounce((newVal: string[]) => {
-      const suggestions = items.map(({ id, content, ...item }) => {
-        let isShown: boolean = item.isShown;
-        if (content) {
-          isShown = newVal.every(val => content.toLowerCase().indexOf(val.toLowerCase()) > -1);
-        }
-        if (filterById && id) {
-          isShown = newVal.some(val => id.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          // isShown = id.toLowerCase().indexOf(value.toLowerCase()) > -1;
-        }
-        return { ...item, id, content, isShown };
-      });
-      setItems(suggestions);
-    }, debounceMs);
+    const handleSearch = debounce(
+      (newVal: string[]) => {
+        const suggestions = items.map(({ id, content, ...item }) => {
+          let isShown: boolean = item.isShown;
+          if (content) {
+            isShown = newVal.every(val => content.toLowerCase().indexOf(val.toLowerCase()) > -1);
+          }
+          if (filterById && id) {
+            isShown = newVal.some(val => id.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            // isShown = id.toLowerCase().indexOf(value.toLowerCase()) > -1;
+          }
+          return { ...item, id, content, isShown };
+        });
+        setItems(suggestions);
+      },
+      debounceMs,
+      { leading: true }
+    );
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {

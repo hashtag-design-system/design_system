@@ -1,17 +1,15 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { overlayCheckStyle } from "../../__helpers__";
-import Dialog, { DialogFProps } from "../index";
+import Dialog, { DialogBtnCloseFProps, DialogFProps } from "../index";
 
-const TestChildren: React.FC<Partial<DialogFProps> & { hasBtnGroup?: boolean }> = ({
-  isShown = true,
-  hasBtnGroup = false,
-  loading,
-  allowDismissOnLoading = true,
-  onDismiss,
-  ...props
-}) => {
+const TEST_CHILDREN_HEIGHT = 300;
+const TEST_WIDTH = 270;
+
+const TestChildren: React.FC<
+  Omit<Partial<DialogFProps>, "onClick"> & Pick<DialogBtnCloseFProps, "onClick"> & { hasBtnGroup?: boolean }
+> = ({ isShown = true, hasBtnGroup = false, loading, allowDismissOnLoading = true, onDismiss, onClick, ...props }) => {
   const [isOpen, setIsOpen] = useState(isShown);
   const [isLoading, setIsLoading] = useState(loading || false);
 
@@ -40,19 +38,21 @@ const TestChildren: React.FC<Partial<DialogFProps> & { hasBtnGroup?: boolean }> 
       }}
       {...props}
     >
-      <Dialog.Btn.Close />
-      <Dialog.Content>
-        <Dialog.Title>
-          Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here.
-          Dialog content here
-        </Dialog.Title>
-      </Dialog.Content>
-      {hasBtnGroup && (
-        <Dialog.Btn.Group>
-          <Dialog.Btn>Cancel</Dialog.Btn>
-          <Dialog.Btn confirm>Confirm</Dialog.Btn>
-        </Dialog.Btn.Group>
-      )}
+      <div style={{ height: TEST_CHILDREN_HEIGHT, width: TEST_WIDTH }}>
+        <Dialog.Btn.Close onClick={onClick} />
+        <Dialog.Content>
+          <Dialog.Title>
+            Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content
+            here. Dialog content here
+          </Dialog.Title>
+        </Dialog.Content>
+        {hasBtnGroup && (
+          <Dialog.Btn.Group>
+            <Dialog.Btn>Cancel</Dialog.Btn>
+            <Dialog.Btn confirm>Confirm</Dialog.Btn>
+          </Dialog.Btn.Group>
+        )}
+      </div>
     </Dialog>
   );
 };
@@ -98,6 +98,20 @@ describe("<Dialog />", () => {
 
     await overlayCheckStyle("rgba(255, 255, 255, 0.75)");
   });
+  test("with onChildrenHeight and onWidth", async () => {
+    const onChildrenHeight = jest.fn(height => height);
+    const onWidth = jest.fn(width => width);
+    render(<TestChildren onChildrenHeight={height => onChildrenHeight(height)} onWidth={width => onWidth(width)} />);
+    const dialog = screen.getByTestId("dialog");
+
+    await waitFor(() => {
+      expect(dialog).toBeVisible();
+    });
+
+    expect(onChildrenHeight).toHaveBeenCalled();
+    expect(onWidth).toHaveBeenCalled();
+    expect(dialog.children[0]).toHaveStyle(`height: ${TEST_CHILDREN_HEIGHT}px; width: ${TEST_WIDTH}px`)
+  });
   describe("with sub-component children", () => {
     test("default behaviour", async () => {
       render(<TestChildren />);
@@ -107,7 +121,8 @@ describe("<Dialog />", () => {
         expect(dialog).toBeVisible();
       });
 
-      expect(dialog.children).toHaveLength(2);
+      expect(dialog.children).toHaveLength(1);
+      expect(dialog.children[0].children).toHaveLength(2);
       expect(dialog).toHaveTextContent(
         "Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here. Dialog content here"
       );
@@ -132,25 +147,25 @@ describe("<Dialog />", () => {
 
       const content = screen.getByTestId("dialog-content");
       expect(content).not.toHaveClass("confirm");
-      expect(content).toHaveAttribute("style");
-      expect(content.style.padding).toBeDefined();
       expect(screen.getByTestId("dialog-btn-group").children).toHaveLength(2);
     });
   });
   describe("basic functionality", () => {
     test.each(["dialog-btn-close", "modal-root"])("onDismiss default functionality & click outside", testId => {
+      const onClick = jest.fn();
       const onDismiss = jest.fn((_, { cancel }) => cancel);
-      render(<TestChildren onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} />);
+      render(<TestChildren onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} onClick={onClick} />);
 
       act(() => {
         screen.getByTestId(testId).click();
       });
 
       expect(screen.queryByTestId("dialog")).toBeNull();
+      if (testId === "dialog-btn-close") {
+        expect(onClick).toHaveBeenCalledTimes(1);
+      }
       expect(onDismiss).toHaveBeenCalledTimes(1);
-      const results = onDismiss.mock.results;
-      expect(results).toHaveLength(1);
-      expect(results[0].value).toBeTruthy();
+      expect(onDismiss).toHaveReturnedWith(true);
     });
     test.each([0, 1])("click cancel / confirm button", i => {
       const onDismiss = jest.fn((_, { cancel }) => cancel);
@@ -169,6 +184,23 @@ describe("<Dialog />", () => {
       } else {
         expect(results[0].value).toBeFalsy();
       }
+    });
+    test("escape (esc) key down", () => {
+      const onDismiss = jest.fn((_, { cancel }) => cancel);
+      render(<TestChildren hasBtnGroup onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} />);
+
+      act(() => {
+        fireEvent.keyDown(screen.getByTestId("dialog"), {
+          key: "Escape",
+          code: "Escape",
+          keyCode: 27,
+          charCode: 27,
+        });
+      });
+
+      expect(screen.queryByTestId("dialog")).toBeNull();
+      expect(onDismiss).toHaveBeenCalledTimes(1);
+      expect(onDismiss).toHaveReturnedWith(true);
     });
   });
   describe("with loading", () => {

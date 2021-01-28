@@ -135,6 +135,22 @@ describe("<BottomSheet />", () => {
       checkOnChangeResults("hidden", { top: 0, bottom: expect.any(Number) });
     });
   });
+  test("with onChildrenHeight and onWidth", async () => {
+    const onChildrenHeight = jest.fn(height => height);
+    const onWidth = jest.fn(width => width);
+    render(<TestChildren onChildrenHeight={height => onChildrenHeight(height)} onWidth={width => onWidth(width)} />);
+    const bottomSheet = screen.getByTestId("bottom-sheet");
+
+    await waitFor(() => {
+      expect(bottomSheet).toBeVisible();
+    });
+
+    expect(onWidth).toHaveBeenCalled();
+    expect(onChildrenHeight).toHaveBeenCalled();
+    expect(onChildrenHeight).toHaveLastReturnedWith(expect.any(Number));
+
+    // expect(dialog.children[0]).toHaveStyle(`height: ${TEST_CHILDREN_HEIGHT}px; width: ${TEST_WIDTH}px`)
+  });
   describe("with children", () => {
     test("<React.Fragment />", async () => {
       render(

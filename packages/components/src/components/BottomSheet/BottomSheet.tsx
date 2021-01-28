@@ -59,6 +59,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   onDragEnd,
   onDismiss,
   onAnimationComplete,
+  onChildrenHeight,
   ...props
 }) => {
   const [position, setPosition] = useState<BottomSheetPosition>(state);
@@ -170,6 +171,17 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   };
 
+  const handleChildrenHeight = (height: number) => {
+    const newHeight = viewportHeight - height;
+    if (defaultY !== newHeight && hugContentsHeight) {
+      setDefaultY(newHeight);
+    }
+
+    if (onChildrenHeight) {
+      onChildrenHeight(newHeight);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = y.onChange(setYState);
     return unsubscribe;
@@ -213,17 +225,11 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
       onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
+      onChildrenHeight={height => handleChildrenHeight(height)}
       data-testid="bottom-sheet"
       {...rest}
     >
       {({ childrenHeight, width }) => {
-        if (hugContentsHeight) {
-          const contentsHeight = viewportHeight - childrenHeight;
-          if (defaultY !== contentsHeight) {
-            setDefaultY(viewportHeight - childrenHeight);
-          }
-        }
-
         return (
           <>
             {children &&

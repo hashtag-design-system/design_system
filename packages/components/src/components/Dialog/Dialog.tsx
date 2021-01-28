@@ -24,8 +24,10 @@ export type Props = {
   confirm?: boolean;
   allowDismissOnLoading?: boolean;
   overlayProps?: Partial<ModalOverlayFProps>;
-  onDismiss?: (e: React.MouseEvent<HTMLElement>, info: DialogDismissInfoType) => void;
   children?: React.ReactNode | ((info: DialogChildrenInfo) => React.ReactNode);
+  onDismiss?: (e: React.MouseEvent<HTMLElement>, info: DialogDismissInfoType) => void;
+  onChildrenHeight?: (height: number) => void;
+  onWidth?: (width: number) => void;
 };
 
 export type FProps = Props & Pick<ModalOverlayFProps, "isShown"> & ComponentLoading & HTMLMotionProps<"div">;
@@ -45,6 +47,8 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   style,
   children,
   onDismiss,
+  onWidth,
+  onChildrenHeight,
   ...props
 }) => {
   const [height, setHeight] = useState(0);
@@ -89,10 +93,19 @@ const Dialog: React.FC<FProps> & SubComponents = ({
 
   useEffect(() => {
     if (modalRef && modalRef.current) {
-      setHeight(Array.from(modalRef.current.children).reduce((total, child) => total + child.clientHeight, 0));
-      setWidth(modalRef.current!.offsetWidth);
+      const newChildrenHeight = Array.from(modalRef.current.children).reduce((total, child) => total + child.clientHeight, 0);
+      const newWidth = modalRef.current!.offsetWidth;
+      setHeight(newChildrenHeight);
+      setWidth(newWidth);
+
+      if (onChildrenHeight) {
+        onChildrenHeight(newChildrenHeight);
+      }
+      if (onWidth) {
+        onWidth(newWidth);
+      }
     }
-  }, [modalRef]);
+  }, [modalRef, onChildrenHeight, onWidth]);
 
   useEffect(() => {
     document.addEventListener("keydown", e => handleKeyDown(e));

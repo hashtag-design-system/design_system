@@ -6,6 +6,7 @@ import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import DatePicker from "./components/DatePicker";
 import Input from "./components/Input";
+import Select from "./components/Select";
 
 // https://stackoverflow.com/questions/44497388/typescript-array-to-string-literal-type
 
@@ -48,9 +49,9 @@ function App() {
         //     date: dayjs().add(20, "days"),
         //   },
         // }}
-        // selectBtn={({ selectedDate }) => (
-        //   <Select.Button>{selectedDate.length >= 1 ? selectedDate[0].format("DD/MM/YYYY") : ""}</Select.Button>
-        // )}
+        selectBtn={({ selectedDate }) => (
+          <Select.Button>{selectedDate.length >= 1 ? selectedDate[0].format("DD/MM/YYYY") : ""}</Select.Button>
+        )}
       />
       <Checkbox
         // state="disabled|checked"
