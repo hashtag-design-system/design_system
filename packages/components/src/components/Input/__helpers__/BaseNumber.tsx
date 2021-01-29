@@ -74,7 +74,8 @@ export const BaseNumber: React.FunctionComponent<Props> = ({ isBtnShown, childre
       return;
     }
     const newVal = e.target.valueAsNumber;
-    if (String(newVal).length > String(max).length || isDisabled || newVal > max || newVal < min) {
+
+    if (!isNaN(newVal) && (String(newVal).length > String(max).length || isDisabled || newVal > max || newVal < min)) {
       e.preventDefault();
     } else {
       dispatch({ type: ACTIONS.HANDLE_CHANGE, payload: { newVal } });

@@ -16,7 +16,6 @@ export type BottomSheetChildrenInfo = { dismiss: () => Promise<void> } & DialogC
 export type BottomSheetDismissType = Pick<BottomSheetChildrenInfo, "dismiss">;
 type DialogVariantsCustom = { height: number; defaultY: number };
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
-type BottomSheetVariablePositions = Exclude<BottomSheetPosition, "hidden">;
 
 const dialogVariants: Record<BottomSheetPosition, Variant> = {
   hidden: ({ height }: DialogVariantsCustom) => ({ y: height, transition: { ease: "easeIn" } }),
@@ -27,14 +26,14 @@ const dialogVariants: Record<BottomSheetPosition, Variant> = {
 export type Props = {
   defaultY?: number;
   allowNext?: number | BottomSheetAllowNextObj;
-  allowedPositions?: { [k in BottomSheetVariablePositions]: boolean };
+  allowedPositions?: { [k in BottomSheetPosition]: boolean };
   hugContentsHeight?: boolean;
   onChange?: (y: number, info: BottomSheetChangeInfo) => void;
   onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
   children?: React.ReactNode | ((info: BottomSheetChildrenInfo) => React.ReactNode);
 };
 
-export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss" | "children"> & ComponentState<BottomSheetVariablePositions>;
+export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss" | "children"> & ComponentState<BottomSheetPosition>;
 
 type SubComponents = {
   ScrollBar: typeof ScrollBar;
@@ -44,7 +43,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   defaultY: propsDefaultY = 400,
   allowNext = { whenMiddle: 75, whenExpanded: 50 },
   allowedPositions = { expanded: true, middle: true },
-  hugContentsHeight = false,
+  hugContentsHeight = true,
   state = "middle",
   isShown,
   dragElastic = 0.3,
@@ -77,7 +76,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     switch (position) {
       case "middle": {
         return {
-          top: defaultY,
+          top: allowedPositions["hidden"] === true ? defaultY : defaultY + 1,
           bottom: defaultY,
         };
       }
@@ -91,7 +90,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
         return { top: 0, bottom: viewportHeight };
       }
     }
-  }, [defaultY, viewportHeight, position]);
+  }, [defaultY, viewportHeight, position, allowedPositions]);
 
   const fAllowNext = useMemo((): BottomSheetAllowNextObj => {
     if (typeof allowNext === "number") {
@@ -104,10 +103,10 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   }, [allowNext]);
 
-  const goTo = (position: BottomSheetVariablePositions) => {
-    if (allowedPositions[position]) {
-      dialogControls.start(dialogVariants[position]);
-      setPosition(position);
+  const goTo = (newPosition: BottomSheetPosition) => {
+    if (allowedPositions[newPosition]) {
+      dialogControls.start(dialogVariants[newPosition]);
+      setPosition(newPosition);
     }
   };
 
@@ -129,8 +128,10 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   };
 
   const handleDrag = async (e: DragEvent, info: PanInfo) => {
-    if (info.velocity.y >= (position === "middle" ? 350 : 1000) && info.delta.y >= 50) {
-      await handleDismiss({ cancel: false }, e as any);
+    if (allowedPositions["hidden"] === true) {
+      if (info.velocity.y >= (position === "middle" ? 350 : 1000) && info.delta.y >= 50) {
+        await handleDismiss({ cancel: false }, e as any);
+      }
     }
 
     if (onDrag) {
@@ -221,7 +222,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       onDrag={async (e, info) => await handleDrag(e, info)}
       onDragEnd={(e, info) => handleDragEnd(e, info)}
       onDismiss={async (e, info) => await handleDismiss(info, e)}
-      dragConstraints={dragConstraints}
+      dragConstraints={{ ...dragConstraints }}
       overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
       onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}

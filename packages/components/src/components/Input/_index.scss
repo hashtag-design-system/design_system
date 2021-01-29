@@ -6,8 +6,8 @@
   @extend .body-16;
   color: $grey-10;
   padding: em(12);
-  width: auto;
-  height: em(48);
+  width: $input-width;
+  height: 3em;
   box-sizing: border-box;
   border: $input-border-width solid $input-border-color;
   border-radius: $input-border-radius;
@@ -51,12 +51,14 @@
   &__container {
     @extend .flex-column-stretch-flex-start;
     gap: em(4);
+    height: 100%;
 
     &__field {
       padding: 0;
       width: auto;
       align-self: stretch;
       position: relative;
+      height: 100%;
 
       &[data-isfloated="true"] {
         .input {
@@ -312,7 +314,7 @@
 
 .input-number {
   position: relative;
-  min-width: em(120);
+  width: $input-width * 0.6;
   -moz-appearance: textfield;
 
   &::-webkit-outer-spin-button,
@@ -341,7 +343,7 @@
       cursor: pointer;
       background-color: transparent;
       padding: 0;
-      width: em(24);
+      width: 1.5em;
       height: 50%;
       border: none;
       box-shadow: none;
@@ -390,7 +392,7 @@
   &__btn {
     width: rem(32);
     height: rem(32);
-    padding: em(8);
+    padding: 0.5em;
     background-color: lighten($primary, 40);
 
     @include path-classNames() {

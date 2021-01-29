@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Autosuggest from "./components/Autosuggest";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import DatePicker from "./components/DatePicker";
 import Dialog from "./components/Dialog";
 import Form from "./components/Form";
 import Input from "./components/Input";
@@ -277,6 +278,32 @@ const Examples: React.FC = () => {
             <Select.Item id="georgekrax8" content="Me8" />
             <Select.Item id="georgekrax9" content="Me9" /> */}
       </Autosuggest>
+      <DatePicker
+        defaultOpen
+        isRange
+        // defaultMode="months"
+        // mobileView
+        // allowedModes={{ calendar: false, months: true, years: false }}
+        // defaultCalendarDate={TEST_DEFAULT_DATE}
+        // defaultDates={[dayjs().startOf("month")]}
+        // allowedModes={{ calendar: false, months: true, years: true }}
+        // dismissOnClick={false}
+        // onClick={({ e, dayInCalendar }) => console.log(e, dayInCalendar.date())}
+        // onChange={({ bottomSheetIsShown }) => console.log(bottomSheetIsShown)}
+        // disabledDays={{
+        //   days: [dayjs().set("date", 30)],
+        //   from: { date: dayjs() },
+        //   till: {
+        //     // parse: date => date.set("date", 29),
+        //     // date: dayjs().add(10, "year").date(dayjs().add(3, "months").daysInMonth()),
+        //     // date: dayjs().add(20, "year"),
+        //     date: dayjs().add(20, "days"),
+        //   },
+        // }}
+        selectBtn={({ selectedDate }) => (
+          <Select.Button>{selectedDate.length >= 1 ? selectedDate[0].format("DD/MM/YYYY") : ""}</Select.Button>
+        )}
+      />
       <Select multiSelectable mobileView={false} onSelect={items => console.log(items)}>
         <Select.Button style={{ width: "200px" }}>Project</Select.Button>
         <Select.Modal>

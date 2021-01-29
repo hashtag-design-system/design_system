@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useReducer, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import { InputContextProvider } from "../../utils/contexts/InputContext";
 import { useDisabled } from "../../utils/hooks";
 import { ACTIONS, reducer, ReducerInitialStateType } from "../../utils/reducers/inputNumber";
@@ -28,7 +28,11 @@ const animationVariants = {
   visible: { opacity: 1 },
 };
 
-export type FProps = Omit<InputFProps, "characterLimit" | "type" | "allowClear" | "passwordboxes">;
+export type Props = {
+  showBtnControl?: boolean;
+};
+
+export type FProps = Props & Omit<InputFProps, "characterLimit" | "type" | "allowClear" | "passwordboxes">;
 
 const Number: React.FunctionComponent<FProps> = ({
   min = 0,
@@ -39,6 +43,7 @@ const Number: React.FunctionComponent<FProps> = ({
   state = "default",
   width = "7.5em",
   overrideOnChange,
+  showBtnControl = false,
   onFocus,
   onBlur,
   onMouseOver,
@@ -54,7 +59,9 @@ const Number: React.FunctionComponent<FProps> = ({
       max,
     };
   });
-  const [isBtnShown, setIsBtnShown] = useState<boolean>(false || state === "hover" || state === "focus" || state === "disabled");
+  const [isBtnShown, setIsBtnShown] = useState<boolean>(
+    showBtnControl ? showBtnControl : false || state === "hover" || state === "focus" || state === "disabled"
+  );
   const [isUp, setIsUp] = useState<boolean>(false);
   const [isDown, setIsDown] = useState<boolean>(false);
 
@@ -76,23 +83,27 @@ const Number: React.FunctionComponent<FProps> = ({
 
   const handleBtnMouse = (e: React.MouseEvent<HTMLButtonElement>, btn: NumberInputBtnsType, bool: boolean) => {
     e.stopPropagation();
-    if (btn === "up") {
-      setIsUp(bool);
-    } else {
-      setIsDown(bool);
+    if (showBtnControl) {
+      if (btn === "up") {
+        setIsUp(bool);
+      } else {
+        setIsDown(bool);
+      }
     }
   };
 
+  const fIsBtnShown = useMemo(() => isBtnShown && showBtnControl, [isBtnShown, showBtnControl]);
+
   // TODO: Replace with <Icon /> components
   return (
-    <div onMouseOver={() => toggleBtn(true)} onMouseLeave={() => toggleBtn(false)} data-testid="input-number-container">
+    <div style={{ height: "100%" }} onMouseOver={() => toggleBtn(true)} onMouseLeave={() => toggleBtn(false)} data-testid="input-number-container">
       <InputContextProvider
         value={{
           ...props,
           value,
           dispatch,
           defaultValue,
-          state: isBtnShown ? "focus" : state,
+          state: fIsBtnShown ? "focus" : state,
           min,
           max,
           step,
@@ -118,9 +129,9 @@ const Number: React.FunctionComponent<FProps> = ({
           },
         }}
       >
-        <BaseNumber isBtnShown={isBtnShown} data-testid="input-number">
+        <BaseNumber isBtnShown={fIsBtnShown} data-testid="input-number">
           <AnimatePresence>
-            {isBtnShown && (
+            {fIsBtnShown && (
               <motion.div
                 initial="hidden"
                 animate="visible"
