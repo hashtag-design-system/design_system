@@ -43,10 +43,11 @@ const Number: React.FunctionComponent<FProps> = ({
   state = "default",
   width = "7.5em",
   overrideOnChange,
-  showBtnControl = false,
+  showBtnControl = true,
   onFocus,
   onBlur,
   onMouseOver,
+  onMouseLeave,
   ...props
 }) => {
   const isDisabled = useDisabled(props, state);
@@ -59,9 +60,7 @@ const Number: React.FunctionComponent<FProps> = ({
       max,
     };
   });
-  const [isBtnShown, setIsBtnShown] = useState<boolean>(
-    showBtnControl ? showBtnControl : false || state === "hover" || state === "focus" || state === "disabled"
-  );
+  const [isBtnShown, setIsBtnShown] = useState<boolean>(false || state === "hover" || state === "focus" || state === "disabled");
   const [isUp, setIsUp] = useState<boolean>(false);
   const [isDown, setIsDown] = useState<boolean>(false);
 
@@ -96,7 +95,12 @@ const Number: React.FunctionComponent<FProps> = ({
 
   // TODO: Replace with <Icon /> components
   return (
-    <div style={{ height: "100%" }} onMouseOver={() => toggleBtn(true)} onMouseLeave={() => toggleBtn(false)} data-testid="input-number-container">
+    <div
+      style={{ height: "100%" }}
+      onMouseOver={() => toggleBtn(true)}
+      onMouseLeave={() => toggleBtn(false)}
+      data-testid="input-number-container"
+    >
       <InputContextProvider
         value={{
           ...props,
@@ -113,6 +117,12 @@ const Number: React.FunctionComponent<FProps> = ({
             toggleBtn(true);
             if (onMouseOver) {
               onMouseOver(e);
+            }
+          },
+          onMouseLeave: e => {
+            toggleBtn(false);
+            if (onMouseLeave) {
+              onMouseLeave(e);
             }
           },
           onFocus: e => {

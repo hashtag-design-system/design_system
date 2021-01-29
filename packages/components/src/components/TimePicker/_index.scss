@@ -1,0 +1,154 @@
+@import "./__helpers__/mixins";
+
+.time-picker__item-font--default {
+  @extend .header-6;
+  font-weight: normal !important;
+  color: $grey-9;
+}
+
+.time-picker__item-font--bottom-sheet {
+  @extend .header-3;
+  font-weight: normal !important;
+  letter-spacing: 0.1rem;
+}
+
+.bottom-sheet {
+  .dialog__content .time-picker {
+    &__dot {
+      height: 4px;
+      width: 4px;
+    }
+
+    &__labels-container {
+      margin-top: 1em;
+      margin-bottom: 1em;
+
+      &__label {
+        @extend .body-14;
+      }
+    }
+
+    &__content-container {
+      width: min(28em, 100%);
+    }
+
+    &__active-box > div {
+      @extend .header-4;
+    }
+
+    &__item {
+      @extend .time-picker__item-font--bottom-sheet;
+
+      &__input {
+        @extend .time-picker__item-font--bottom-sheet;
+      }
+    }
+  }
+}
+
+.time-picker {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  overflow: hidden;
+  height: var(--height);
+
+  &__dot {
+    height: 2px;
+    width: 2px;
+    border-radius: 50%;
+    background-color: $grey-9;
+  }
+
+  &__content-container {
+    @extend .flex-column-space-around-center;
+    width: min(11em, 100%);
+  }
+
+  &__labels-container {
+    @extend .flex-row-center-center;
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+
+    &__label {
+      @extend .body-12;
+      color: $grey-9;
+      flex: 1 1 33.3%;
+      text-align: center;
+    }
+  }
+
+  &__container {
+    @extend .flex-row-space-around-center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 2em;
+    background-color: transparent;
+    border-radius: 24px;
+
+    &::after {
+      @extend .time-picker__container-pseudo;
+      top: 0;
+    }
+
+    &::before {
+      @extend .time-picker__container-pseudo;
+      bottom: 0;
+    }
+  }
+
+  &__active-box {
+    @extend .flex-row-space-around-center;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    height: 33.3%;
+    transform: translateY(-50%);
+    z-index: 1;
+    padding: 0 16.5%;
+
+    & > div {
+      @extend .flex-column-center-center;
+      @extend .header-6;
+      gap: 0.5rem;
+      transform: translateY(0%);
+      user-select: none;
+    }
+  }
+
+  &__item {
+    @extend .flex-row-center-center;
+    @extend .time-picker__item-font--default;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    user-select: none;
+
+    &-container {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: transparent;
+      width: 100%;
+      z-index: 99;
+      pointer-events: all;
+      height: 33.3%;
+    }
+
+    &__input {
+      @extend .time-picker__item-font--default;
+      height: 100%;
+      width: 100%;
+      background-color: transparent;
+      padding: 0;
+      min-width: 0;
+      border: none;
+
+      &:not([value="0"]) {
+        background-color: $grey-1;
+      }
+    }
+  }
+}

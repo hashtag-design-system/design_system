@@ -58,7 +58,7 @@ describe("<BottomSheet />", () => {
   });
   test("with defaultY", async () => {
     const testDefaultY = 200;
-    render(<BottomSheet isShown defaultY={testDefaultY} />);
+    render(<BottomSheet hugContentsHeight={false} isShown defaultY={testDefaultY} />);
 
     await waitFor(() => {
       checkY(testDefaultY);
@@ -72,11 +72,24 @@ describe("<BottomSheet />", () => {
     });
   });
   test('with state="middle"', async () => {
-    render(<BottomSheet isShown state="middle" />);
+    render(<BottomSheet isShown hugContentsHeight={false} state="middle" />);
 
     await waitFor(() => {
       checkY(400);
     });
+  });
+  test("with hugContents={false}", async () => {
+    const onChange = jest.fn((y: number) => y);
+    render(<BottomSheet isShown hugContentsHeight={false} state="middle" onChange={y => onChange(y)} />);
+
+    const bottomSheet = screen.getByTestId("bottom-sheet");
+
+    await waitFor(() => {
+      expect(bottomSheet).toBeVisible();
+      expect(bottomSheet.style.transform).toContain(`translate3d(0px, 400px, 0)`);
+    });
+    expect(onChange).toHaveBeenCalled();
+    expect(onChange).toHaveLastReturnedWith(400);
   });
   test("click outside", async () => {
     render(<TestChildren />);
@@ -124,7 +137,7 @@ describe("<BottomSheet />", () => {
 
     const defaultY = 400;
     await waitFor(() => {
-      checkOnChangeResults("middle", { top: defaultY, bottom: defaultY });
+      checkOnChangeResults("middle", { top: expect.any(Number), bottom: expect.any(Number) });
     });
 
     act(() => {

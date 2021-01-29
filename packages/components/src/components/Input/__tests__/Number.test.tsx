@@ -107,6 +107,18 @@ describe("<Input.Number />", () => {
       parseFloat(increaseBtn.style.height.replace("rem", ""))
     );
   });
+  test("with showBtnControl={false}", () => {
+    render(<Input.Number showBtnControl={false} />);
+    const input = screen.getByTestId("input-number");
+
+    userEvent.hover(input);
+
+    const increaseBtn = screen.queryByTestId("input-number-btn-increase");
+    const decreaseBtn = screen.queryByTestId("input-number-btn-decrease");
+
+    expect(increaseBtn).toBeNull();
+    expect(decreaseBtn).toBeNull();
+  });
   describe("number input onChange functionality", () => {
     test("onChange basic functionality", () => {
       render(<Input.Number />);

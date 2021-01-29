@@ -83,12 +83,13 @@ describe("DatePicker <MonthDays />", () => {
     render(
       <DefaultDatePicker
         disabledDays={{
-          days: [dayjs().set("date", 30)],
+          days: [TEST_DEFAULT_DATE.set("date", 30)],
           from: { date: TEST_DEFAULT_DATE },
           till: {
-            date: dayjs().add(20, "days"),
+            date: TEST_DEFAULT_DATE.add(20, "days"),
           },
         }}
+        defaultCalendarDate={TEST_DEFAULT_DATE}
       />
     );
     const tbody = screen.getByTestId("date-picker-tbody");
@@ -114,10 +115,10 @@ describe("DatePicker <MonthDays />", () => {
     userEvent.click(secondOperationBtn);
     expect(dateMonth).toHaveTextContent("February");
 
-    const notDisbaledTds = tds.filter(td => !td.className.includes("disabled"));
-    expect(notDisbaledTds).toHaveLength(17);
-    const last = notDisbaledTds.length - 1;
-    expect(notDisbaledTds[notDisbaledTds.length - 1]).toHaveTextContent(last.toString());
+    const notDisabledTds = tds.filter(td => !td.className.includes("disabled"));
+    expect(notDisabledTds).toHaveLength(16);
+    const last = notDisabledTds.length - 1;
+    expect(notDisabledTds[notDisabledTds.length - 1]).toHaveTextContent(last.toString());
 
     expect(firstOperationBtn).not.toBeDisabled();
     expect(secondOperationBtn).toBeDisabled();
