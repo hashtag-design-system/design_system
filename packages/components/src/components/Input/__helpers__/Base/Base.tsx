@@ -75,7 +75,7 @@ export const Base: React.FunctionComponent = () => {
   return (
     <input
       id={id}
-      type={type}
+      type={type || "text"}
       className={classNames}
       value={value}
       placeholder={!floatingplaceholder ? placeholder : undefined}

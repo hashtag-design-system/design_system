@@ -3,10 +3,10 @@ import { SwiperCol, TimePickerSwiperColFProps } from "./__helpers__/index";
 
 export type FProps = TimePickerSwiperColFProps;
 
-const Hours: React.FC<FProps> = ({ ...props }) => {
+const Seconds: React.FC<FProps> = ({ ...props }) => {
   return <SwiperCol {...props} />;
 };
 
-Hours.displayName = "TimePickerSeconds";
+Seconds.displayName = "TimePickerSeconds";
 
-export default Hours;
+export default Seconds;

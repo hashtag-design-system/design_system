@@ -1,5 +1,5 @@
 import { DraggableProps, PanInfo, useAnimation, useMotionValue, Variant } from "framer-motion";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useClassnames, useWindowDimensions } from "../../utils/hooks";
 import Dialog, { DialogChildrenInfo, DialogDismissInfoType, DialogFProps } from "../Dialog";
 import { ComponentState, overlayVariants } from "../__helpers__";
@@ -8,29 +8,34 @@ import ScrollBar from "./ScrollBar";
 // See: https://github.com/framer/snippets/blob/master/animation/Re-rendering%20when%20a%20MotionValue%20changes.md
 // See: https://www.youtube.com/watch?v=ogwnFACfW1Q
 
+export type Props = {
+  defaultY?: number;
+  allowNext?: number | BottomSheetAllowNextObj;
+  allowedPositions?: { [k in BottomSheetPosition]: boolean };
+  hugContentsHeight?: boolean;
+  inputFocusedMove?: number;
+  children?: React.ReactNode | ((info: BottomSheetChildrenInfo) => React.ReactNode);
+  onChange?: (y: number, info: BottomSheetChangeInfo) => void;
+  onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
+};
+
 export type BottomSheetAllowNextObj = { whenMiddle: number; whenExpanded: number };
-export const BottomSheetPositions = ["hidden", "middle", "expanded"] as const;
+export const BottomSheetPositions = ["hidden", "middle", "expanded", "input-focused"] as const;
 export type BottomSheetPosition = typeof BottomSheetPositions[number];
 export type BottomSheetChangeInfo = { position: BottomSheetPosition; dragConstraints: DraggableProps["dragConstraints"] };
 export type BottomSheetChildrenInfo = { dismiss: () => Promise<void> } & DialogChildrenInfo;
 export type BottomSheetDismissType = Pick<BottomSheetChildrenInfo, "dismiss">;
-type DialogVariantsCustom = { height: number; defaultY: number };
+type DialogVariantsCustom = { height: number } & Required<Pick<Props, "defaultY" | "inputFocusedMove">>;
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 
 const dialogVariants: Record<BottomSheetPosition, Variant> = {
   hidden: ({ height }: DialogVariantsCustom) => ({ y: height, transition: { ease: "easeIn" } }),
   middle: ({ defaultY }: DialogVariantsCustom) => ({ y: defaultY }),
   expanded: { y: 0 },
-};
-
-export type Props = {
-  defaultY?: number;
-  allowNext?: number | BottomSheetAllowNextObj;
-  allowedPositions?: { [k in BottomSheetPosition]: boolean };
-  hugContentsHeight?: boolean;
-  onChange?: (y: number, info: BottomSheetChangeInfo) => void;
-  onDismiss?: (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => void;
-  children?: React.ReactNode | ((info: BottomSheetChildrenInfo) => React.ReactNode);
+  "input-focused": ({ defaultY, inputFocusedMove }: DialogVariantsCustom) => ({
+    y: defaultY - inputFocusedMove,
+    transition: { ease: "easeOut", duration: 0.1 },
+  }),
 };
 
 export type FProps = Props & Omit<DialogFProps, "onChange" | "onDismiss" | "children"> & ComponentState<BottomSheetPosition>;
@@ -42,8 +47,9 @@ type SubComponents = {
 const BottomSheet: React.FC<FProps> & SubComponents = ({
   defaultY: propsDefaultY = 400,
   allowNext = { whenMiddle: 75, whenExpanded: 50 },
-  allowedPositions = { expanded: true, middle: true },
+  allowedPositions = { expanded: true, middle: true, hidden: true, "input-focused": true },
   hugContentsHeight = true,
+  inputFocusedMove = 75,
   state = "middle",
   isShown,
   dragElastic = 0.3,
@@ -66,6 +72,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   const y = useMotionValue(position === "expanded" ? 0 : defaultY);
   const [yState, setYState] = useState(y.get());
   const [animationEnd, setAnimationEnd] = useState<boolean>(false);
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [classNames, rest] = useClassnames("bottom-sheet", props);
   const modalRef = useRef<HTMLDivElement>(null);
   const dialogControls = useAnimation();
@@ -89,6 +96,9 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       case "hidden": {
         return { top: 0, bottom: viewportHeight };
       }
+      case "input-focused": {
+        return { top: defaultY, bottom: defaultY };
+      }
     }
   }, [defaultY, viewportHeight, position, allowedPositions]);
 
@@ -103,12 +113,15 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   }, [allowNext]);
 
-  const goTo = (newPosition: BottomSheetPosition) => {
-    if (allowedPositions[newPosition]) {
-      dialogControls.start(dialogVariants[newPosition]);
-      setPosition(newPosition);
-    }
-  };
+  const goTo = useCallback(
+    (newPosition: BottomSheetPosition) => {
+      if (allowedPositions[newPosition]) {
+        dialogControls.start(dialogVariants[newPosition]);
+        setPosition(newPosition);
+      }
+    },
+    [allowedPositions, dialogControls]
+  );
 
   const dismiss = async (info: DialogDismissInfoType) => {
     setPosition("hidden");
@@ -174,8 +187,12 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
 
   const handleChildrenHeight = (height: number) => {
     const newHeight = viewportHeight - height;
-    if (defaultY !== newHeight && hugContentsHeight) {
-      setDefaultY(newHeight);
+    if (defaultY !== newHeight && hugContentsHeight && !isInputFocused) {
+      if (newHeight > 0) {
+        setDefaultY(newHeight);
+      } else {
+        setDefaultY(0);
+      }
     }
 
     if (onChildrenHeight) {
@@ -208,6 +225,39 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   }, [yState, position, dragConstraints, onChange]);
 
+  const handleInput = useCallback(
+    (e: FocusEvent, eventType: "focus" | "blur") => {
+      const { tagName } = e.target as HTMLElement;
+
+      if (["input", "textarea"].includes(tagName.toLowerCase())) {
+        const type = (e.target as HTMLElement).getAttribute("type") || "text";
+        if (type !== "radio" && type !== "checkbox") {
+          if (eventType === "focus") {
+            if (defaultY - inputFocusedMove > 50) {
+              goTo("input-focused");
+            } else {
+              goTo("expanded");
+            }
+            setIsInputFocused(true);
+          } else {
+            goTo("middle");
+          }
+        }
+      }
+    },
+    [defaultY, inputFocusedMove, goTo]
+  );
+
+  useEffect(() => {
+    document.addEventListener("focusin", e => handleInput(e, "focus"));
+    document.addEventListener("focusout", e => handleInput(e as any, "blur"));
+
+    return () => {
+      document.removeEventListener("focusin", e => handleInput(e, "focus"));
+      document.removeEventListener("focusout", e => handleInput(e as any, "blur"));
+    };
+  }, [handleInput]);
+
   return (
     <Dialog
       isShown={isShown}
@@ -217,7 +267,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       variants={animationEnd ? variants : { ...dialogVariants, ...variants }}
       transition={{ duration: 0.3, ease: "easeInOut", ...transition }}
       animate={dialogControls}
-      custom={{ defaultY, height: viewportHeight, ...custom } as DialogVariantsCustom}
+      custom={{ defaultY, height: viewportHeight, inputFocusedMove, ...custom } as DialogVariantsCustom}
       dragElastic={yState <= 0 ? 0.06 : dragElastic}
       onDrag={async (e, info) => await handleDrag(e, info)}
       onDragEnd={(e, info) => handleDragEnd(e, info)}
@@ -238,6 +288,11 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
                 ? // @ts-expect-error
                   children({ dismiss: () => handleDismiss({ cancel: true }), childrenHeight, width } as BottomSheetChildrenInfo)
                 : children)}
+            <div>{position}</div>
+            <div>{viewportHeight}</div>
+            <div>{defaultY}</div>
+            <div>{inputFocusedMove}</div>
+            <div>{defaultY - inputFocusedMove}</div>
           </>
         );
       }}
@@ -262,5 +317,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
 };
 
 BottomSheet.ScrollBar = ScrollBar;
+
+BottomSheet.displayName = "BottomSheet";
 
 export default BottomSheet;

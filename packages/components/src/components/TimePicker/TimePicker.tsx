@@ -29,7 +29,8 @@ const TimePicker: React.FC<FProps> & SubComponents = ({ mobileView, bottomSheetP
     <BottomSheet
       isShown={bottomSheetProps?.isShown || false}
       dragElastic={0}
-      allowedPositions={{ middle: true, expanded: false, hidden: false }}
+      inputFocusedMove={220}
+      allowedPositions={{ middle: true, expanded: true, hidden: false, "input-focused": true }}
       {...bottomSheetProps}
     >
       <Dialog.Content className="flex-column-center-center">

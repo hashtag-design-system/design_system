@@ -110,7 +110,6 @@ export const BaseNumber: React.FunctionComponent<Props> = ({ isBtnShown, childre
       onBlur={e => handleBlur(e)}
       onKeyDown={e => handleKeyDownCapture(e)}
       onKeyUp={e => handleKeyUpCapture(e)}
-      data-testid="input-hey"
       {...rest}
       {...testProps}
     >

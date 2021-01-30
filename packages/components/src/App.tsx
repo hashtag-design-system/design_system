@@ -30,14 +30,18 @@ function App() {
           isShown: isChecked,
           onDismiss: () => setIsChecked(false),
         }}
-        mobileView
       >
-        <TimePicker.Content>
-          <TimePicker.Hours />
+        <TimePicker.Content showLabels={{ hasHours: true, hasMinutes: true, hasSeconds: true }}>
+          <TimePicker.Hours inputProps={{ onFocus: () => console.log("focus"), onBlur: () => console.log("Blur") }} />
           <TimePicker.Minutes />
           <TimePicker.Seconds onSlideChange={swiper => console.log(swiper.realIndex)} />
         </TimePicker.Content>
       </TimePicker>
+      {/* <BottomSheet defaultY={400} hugContentsHeight={false} isShown>
+        <Dialog.Content>
+          <Input placeholder="Hey" />
+        </Dialog.Content>
+      </BottomSheet> */}
       <Button pill>Button</Button>
       <Checkbox
         // state="disabled|checked"

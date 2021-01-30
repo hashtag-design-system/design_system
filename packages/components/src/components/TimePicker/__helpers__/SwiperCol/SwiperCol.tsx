@@ -4,13 +4,14 @@ import { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.scss";
 import { useClassnames, useIsMobile } from "../../../../utils/hooks";
-import Input from "../../../Input";
+import Input, { InputNumberFProps } from "../../../Input";
 
 export type TimePickerSwiperColProps = {
   min?: number;
   max?: number;
   step?: number;
   padMaxLength?: number;
+  inputProps?: Omit<InputNumberFProps, "max" | "min" | "step" | "showBtnControl">;
 };
 
 export type TimePickerSwiperColFProps = TimePickerSwiperColProps & Swiper;
@@ -22,26 +23,40 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
   initialSlide = min,
   padMaxLength = 2,
   style,
-  onSlideChange,
+  inputProps = {},
   ...props
 }) => {
-  const [value, setValue] = useState(initialSlide);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [swiper, setSwiper] = useState<SwiperClass>();
-  const [classNames, rest] = useClassnames("time-picker", props);
+  const [classNames, restProps] = useClassnames("time-picker", props);
+  const [inputClassNames, inputRestProps] = useClassnames("time-picker__input", inputProps);
   const { isMobile } = useIsMobile();
 
-  const { height = isMobile ? 300 : 160 } = rest;
+  /* istanbul ignore next */
+  const { height = isMobile ? 240 : 160, ...rest } = restProps;
+  const { onFocus: inputOnFocus, onBlur: inputOnBlur, onChange: inputOnChange, style: inputStyle, ...inputRest } = inputRestProps;
 
-  const handleFocus = (bool: boolean) => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>, bool: boolean, eventType: "focus" | "blur") => {
     setIsInputFocused(bool);
-    if (swiper) {
-      swiper.allowTouchMove = !bool;
+    if (eventType === "focus" && swiper) {
+      swiper.slideToLoop(e.target.valueAsNumber);
+    }
+
+    if (eventType === "focus") {
+      if (inputOnFocus) {
+        inputOnFocus(e);
+      }
+    } else {
+      /* istanbul ignore next */
+      if (inputOnBlur) {
+        inputOnBlur(e);
+      }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, valueAsNumber } = e.target;
+    /* istanbul ignore next */
     if (swiper) {
       if (valueAsNumber === 0 || value.trim().length === 0 || valueAsNumber > max || valueAsNumber < min) {
         swiper.slideToLoop(0);
@@ -49,38 +64,36 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
         swiper.slideToLoop(valueAsNumber);
       }
     }
-  };
 
-  const handleSlideChange = (swiper: SwiperClass) => {
-    setValue(swiper.realIndex);
-
-    if (onSlideChange) {
-      onSlideChange(swiper);
+    if (inputOnChange) {
+      inputOnChange(e);
     }
   };
 
   useEffect(() => {
-    if (swiper) {
+    if (swiper && isMobile) {
       swiper.slideToLoop(Math.floor(Math.random() * (max - min + 1)) + min);
       setTimeout(() => {
+        /* istanbul ignore next */
         swiper.slideToLoop(initialSlide, 750);
       }, 750);
     }
-  }, [min, max, initialSlide, swiper]);
+  }, [min, max, initialSlide, isMobile, swiper]);
 
   return (
     <div style={{ position: "relative", width: "max-content" }}>
-      <div className="time-picker__item-container">
+      <div className="time-picker__item-container" data-testid="time-picker-item-container">
         <Input.Number
           min={min}
           max={max}
           step={step}
           showBtnControl={false}
-          onFocus={() => handleFocus(true)}
-          onBlur={() => handleFocus(false)}
+          onFocus={e => handleFocus(e, true, "focus")}
+          onBlur={e => handleFocus(e, false, "blur")}
           onChange={e => handleChange(e)}
-          className="time-picker__item__input"
-          style={{ opacity: isInputFocused ? 1 : 0 }}
+          className={inputClassNames}
+          style={{ ...inputStyle, opacity: isInputFocused ? 1 : 0 }}
+          {...inputRest}
         />
       </div>
       <Swiper
@@ -102,21 +115,15 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
         resistanceRatio={0.25}
         style={{ "--height": height + "px", ...style } as any}
         onSwiper={swipper => setSwiper(swipper)}
-        onSlideChange={swiper => handleSlideChange(swiper)}
+        data-testid="time-picker"
         {...rest}
       >
-        {range(min, max, step).map(itemNum => (
+        {range(min, max, step).map((itemNum, i) => (
           <SwiperSlide
             key={itemNum}
-            onClick={e => {
-              if (e.currentTarget.textContent?.includes(value.toString())) {
-                e.preventDefault();
-              }
-
-              // setIsInputFocused(false)
-              // console.log(document.activeElement);
-            }}
+            onClick={() => swiper && swiper.slideToLoop(i)}
             className="time-picker__item"
+            data-testid="time-picker-item"
           >
             {itemNum.toString().padStart(padMaxLength, "0")}
           </SwiperSlide>
