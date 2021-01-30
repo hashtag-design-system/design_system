@@ -288,30 +288,9 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
                 ? // @ts-expect-error
                   children({ dismiss: () => handleDismiss({ cancel: true }), childrenHeight, width } as BottomSheetChildrenInfo)
                 : children)}
-            <div>{position}</div>
-            <div>{viewportHeight}</div>
-            <div>{defaultY}</div>
-            <div>{inputFocusedMove}</div>
-            <div>{defaultY - inputFocusedMove}</div>
           </>
         );
       }}
-      {/* <div style={{ padding: "1.25em" }}>
-      <p>
-        <b>{position}</b>
-      </p>
-      <br />
-      <p>
-        <b>{JSON.stringify(allowNext)}</b>
-      </p>
-      <p>
-        <b>{JSON.stringify(dragConstraints)}</b>
-      </p>
-      <br />
-      <p>
-        <b>{yState}</b>
-      </p>
-      </div> */}
     </Dialog>
   );
 };

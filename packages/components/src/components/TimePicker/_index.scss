@@ -1,17 +1,5 @@
 @import "./__helpers__/mixins";
 
-.time-picker__item-font--default {
-  @include h6();
-  font-weight: normal !important;
-  color: $grey-9;
-}
-
-.time-picker__item-font--bottom-sheet {
-  @include h3();
-  font-weight: normal !important;
-  letter-spacing: 0.1rem;
-}
-
 .bottom-sheet {
   .dialog__content .time-picker {
     &__dot {
