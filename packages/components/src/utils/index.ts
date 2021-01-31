@@ -5,3 +5,4 @@ export { generateId } from "./generateId";
 export { round } from "./round";
 export { isInViewport } from "./viewport";
 export { getDecade } from "./dates";
+export { clickOrType, checkSelectionInput } from "./tests";

@@ -1,18 +1,23 @@
 import dayjs, { Dayjs } from "dayjs";
+import minMax from "dayjs/plugin/minMax";
 import { range } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { CheckboxState } from "../../components/Checkbox";
 
+dayjs.extend(minMax);
+
 export const SelectionInputGroupTypes = ["checkbox", "radio"] as const;
 export type SelectionInputGroupType = typeof SelectionInputGroupTypes[number];
 export type SelectionInputGroupObj = { id: string; isChecked: boolean; state: CheckboxState; header: boolean; latestChange: Dayjs };
+export type UseSelectionInputOptions = {
+  type: SelectionInputGroupType;
+  inputsLength: number;
+  defaultChecked?: boolean[];
+  defaultState?: CheckboxState[];
+  shift?: boolean;
+};
 
-export const useSelectionInput = (
-  type: SelectionInputGroupType,
-  inputsLength: number,
-  defaultChecked?: boolean[],
-  defaultState?: CheckboxState[]
-) => {
+export const useSelectionInput = ({ type, inputsLength, defaultChecked, defaultState, shift = true }: UseSelectionInputOptions) => {
   const ref = useRef<HTMLElement[] | null[]>([]);
   const [inputs, setInputs] = useState<SelectionInputGroupObj[]>(
     range(0, inputsLength).map(() => ({ id: "", isChecked: false, state: "default", header: false, latestChange: dayjs() }))
@@ -29,6 +34,7 @@ export const useSelectionInput = (
   const onClick = (e: React.MouseEvent<HTMLElement>) => {
     // @ts-expect-error
     const target: HTMLElement | undefined = ref.current.find((item: HTMElement) => item.id === e.target.id);
+    /* istanbul ignore next */
     if (!target) {
       return;
     }
@@ -48,7 +54,7 @@ export const useSelectionInput = (
             isChecked: targetState === "indeterminate" ? false : newChecked,
             latestChange: newLatestChange,
           };
-        } else if (shiftKey) {
+        } else if (shiftKey && shift) {
           const latestCheckedDate = dayjs.max(inputs.map(input => input.latestChange));
           const latestCheckedIdx = inputs.findIndex(input => input.isChecked && input.latestChange.isSame(latestCheckedDate));
           const firstCondition = idx >= latestCheckedIdx && i <= idx && i >= latestCheckedIdx;

@@ -5,6 +5,7 @@ import Animated from "./components/Animated";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Input from "./components/Input";
+import RadioButton from "./components/RadioButton";
 import Table from "./components/Table";
 import { useSelectionInput } from "./utils/hooks";
 
@@ -27,9 +28,12 @@ const data: InitialDataType[] = [
 
 function App() {
   const [isChecked, setIsChecked] = useState(false);
-  const { ref: selectionInputRef, onClick, inputs } = useSelectionInput("checkbox", 5);
+  const { ref: selectionInputRef, onClick, inputs } = useSelectionInput({
+    type: "radio",
+    inputsLength: 5,
+    defaultChecked: [true, true],
+  });
   const ref = useRef<HTMLElement>(null);
-  // console.log(inputs);
 
   useEffect(() => {
     if (ref && ref.current) {
@@ -78,7 +82,7 @@ function App() {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
-      {/* <div>
+      <div>
         <RadioButton
           checked={inputs[0].isChecked}
           onClick={onClick}
@@ -110,8 +114,8 @@ function App() {
           ref={element => (selectionInputRef.current[4] = element)}
           label={{ value: "Label 5" }}
         />
-      </div> */}
-      <div>
+      </div>
+      {/* <div>
         <Checkbox
           state={inputs[0].state}
           checked={inputs[0].isChecked}
@@ -148,7 +152,7 @@ function App() {
           ref={element => (selectionInputRef.current[4] = element)}
           label={{ value: "Label 5" }}
         />
-      </div>
+      </div> */}
       <Animated.Loading.Dots />
       <Input
         // label="Label"

@@ -41,6 +41,7 @@ describe("useClassNames", () => {
     expect(input).not.toHaveClass("basic");
   });
 });
+
 describe("useInputId", () => {
   test("default behaviour", () => {
     render(<TestComponent />);
@@ -60,6 +61,7 @@ describe("useInputId", () => {
     expect(input).toMatchSnapshot();
   });
 });
+
 describe("useDisabled", () => {
   test('state="disabled"', () => {
     inputCustomRender(<Base />, { providerProps: { state: "disabled" } });

@@ -31,10 +31,10 @@ type SubComponents = {
 };
 
 const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...props }) => {
-  const { inputs: selectionInputs, ref: selectionInputsRef, onClick } = useSelectionInput(
-    extraColumn?.component || "checkbox",
-    extraColumn?.totalRows || 0
-  );
+  const { inputs: selectionInputs, ref: selectionInputsRef, onClick } = useSelectionInput({
+    type: extraColumn?.component || "checkbox",
+    inputsLength: extraColumn?.totalRows || 0,
+  });
   const [classNames, rest] = useClassnames("table", props);
   const ref = useRef<HTMLTableElement>(null);
 
@@ -56,9 +56,9 @@ const Table: React.FC<FProps> & SubComponents = ({ extraColumn, children, ...pro
   );
 };
 
-Table.Tr = Tr;
 Table.Th = Th;
 Table.Td = Td;
+Table.Tr = Tr;
 Table.THead = THead;
 Table.TBody = TBody;
 

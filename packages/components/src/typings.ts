@@ -2,6 +2,9 @@ import { HTMLMotionProps } from "framer-motion";
 import React from "react";
 import { ComponentProps } from "./components/__helpers__";
 
+export const UserSelectionInputEventTypes = ["click", "space"] as const;
+export type UserSelectionInputEventType = typeof UserSelectionInputEventTypes[number];
+
 export type IconPropType = React.ReactNode;
 
 export type SortDirection = "asc" | "desc";

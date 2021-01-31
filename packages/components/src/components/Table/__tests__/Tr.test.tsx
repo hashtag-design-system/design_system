@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import userEvent, { specialChars } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
+import { UserSelectionInputEventType, UserSelectionInputEventTypes } from "../../../typings";
+import { checkSelectionInput, clickOrType } from "../../../utils";
 import { SelectionInputGroupObj, SelectionInputGroupTypes } from "../../../utils/hooks";
 import Table from "../index";
 import { TableTestWrapper, TEST_TABLE_TOTAL_ROWS } from "./Table.test";
@@ -10,23 +12,6 @@ const Wrapper: React.FC = ({ children }) => {
       <Table.TBody>{children}</Table.TBody>
     </Table>
   );
-};
-
-const UserEventTypes = ["click", "space"] as const;
-type UserEventType = typeof UserEventTypes[number];
-
-const clickOrType = (element: HTMLElement, userEventType: UserEventType) => {
-  if (userEventType === "click") {
-    userEvent.click(element);
-  } else {
-    userEvent.type(element, specialChars.space);
-  }
-};
-
-const checkSelectionInput = (element: HTMLElement, bool: boolean, mixed = false) => {
-  const strBool = String(bool);
-  expect(element).toHaveAttribute("value", expect.stringContaining(strBool));
-  expect(element).toHaveAttribute("aria-checked", mixed ? "mixed" : strBool);
 };
 
 describe("<Table.Tr />", () => {
@@ -88,83 +73,86 @@ describe("<Table.Tr />", () => {
 
       expect(screen.getAllByTestId("table-tr")[0]).toHaveClass("border-right");
     });
-    test.each<UserEventType>(UserEventTypes)("<Checkbox /> | onClick basic functionality", userEventType => {
-      const selectedRows = jest.fn(row => row);
-      render(
-        <TableTestWrapper
-          extraColumn={{ component: "checkbox", selectedRows: row => selectedRows(row), totalRows: TEST_TABLE_TOTAL_ROWS }}
-        />
-      );
-      const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
+    test.each<UserSelectionInputEventType>(UserSelectionInputEventTypes)(
+      "<Checkbox /> | onClick basic functionality",
+      userEventType => {
+        const selectedRows = jest.fn(row => row);
+        render(
+          <TableTestWrapper
+            extraColumn={{ component: "checkbox", selectedRows: row => selectedRows(row), totalRows: TEST_TABLE_TOTAL_ROWS }}
+          />
+        );
+        const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
 
-      // On initial render in userEffect()
-      expect(selectedRows).toHaveBeenCalledTimes(2);
-      const results = selectedRows.mock.results;
-      expect(results).toHaveLength(2);
-      expect(results[1].value).toStrictEqual<SelectionInputGroupObj[]>([
-        { id: expect.any(String), state: "default", isChecked: false, header: true, latestChange: expect.anything() },
-        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
-      ]);
+        // On initial render in userEffect()
+        expect(selectedRows).toHaveBeenCalledTimes(2);
+        const results = selectedRows.mock.results;
+        expect(results).toHaveLength(2);
+        expect(results[1].value).toStrictEqual<SelectionInputGroupObj[]>([
+          { id: expect.any(String), state: "default", isChecked: false, header: true, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+        ]);
 
-      // +1 in header
-      expect(checkboxes).toHaveLength(6);
-      checkboxes.forEach(checkbox => {
-        expect(checkbox).not.toBeChecked();
-      });
-
-      const header = checkboxes[0];
-      checkboxes.slice(1, checkboxes.length).forEach((checkbox, i) => {
-        clickOrType(checkbox, userEventType);
-        const called = 2 + 1 + i;
-        const notHeaderIdx = i + 1;
-        expect(selectedRows).toHaveBeenCalledTimes(called);
-        expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual<SelectionInputGroupObj>({
-          id: expect.any(String),
-          state: expect.any(String),
-          isChecked: true,
-          header: false,
-          latestChange: expect.anything(),
+        // +1 in header
+        expect(checkboxes).toHaveLength(6);
+        checkboxes.forEach(checkbox => {
+          expect(checkbox).not.toBeChecked();
         });
 
-        if (i === checkboxes.length - 2) {
-          checkSelectionInput(header, true);
-        } else {
-          checkSelectionInput(header, false, true);
-        }
-      });
+        const header = checkboxes[0];
+        checkboxes.slice(1, checkboxes.length).forEach((checkbox, i) => {
+          clickOrType(checkbox, userEventType);
+          const called = 2 + 1 + i;
+          const notHeaderIdx = i + 1;
+          expect(selectedRows).toHaveBeenCalledTimes(called);
+          expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual<SelectionInputGroupObj>({
+            id: expect.any(String),
+            state: expect.any(String),
+            isChecked: true,
+            header: false,
+            latestChange: expect.anything(),
+          });
 
-      clickOrType(header, userEventType);
-
-      checkboxes.forEach((checkbox, i) => {
-        checkSelectionInput(checkbox, false);
-        expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<SelectionInputGroupObj>({
-          id: expect.any(String),
-          state: "default",
-          isChecked: false,
-          header: i === 0 ? true : false,
-          latestChange: expect.anything(),
+          if (i === checkboxes.length - 2) {
+            checkSelectionInput(header, true);
+          } else {
+            checkSelectionInput(header, false, true);
+          }
         });
-      });
 
-      clickOrType(header, userEventType);
+        clickOrType(header, userEventType);
 
-      checkboxes.forEach(checkbox => {
-        checkSelectionInput(checkbox, true);
-      });
+        checkboxes.forEach((checkbox, i) => {
+          checkSelectionInput(checkbox, false);
+          expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<SelectionInputGroupObj>({
+            id: expect.any(String),
+            state: "default",
+            isChecked: false,
+            header: i === 0 ? true : false,
+            latestChange: expect.anything(),
+          });
+        });
 
-      clickOrType(checkboxes[checkboxes.length - 1], userEventType);
+        clickOrType(header, userEventType);
 
-      checkSelectionInput(header, false, true);
+        checkboxes.forEach(checkbox => {
+          checkSelectionInput(checkbox, true);
+        });
 
-      clickOrType(header, userEventType);
+        clickOrType(checkboxes[checkboxes.length - 1], userEventType);
 
-      // Click checkoxes[0] (header), and it should "uncheck" all checkboxes if inteterminate
-      checkSelectionInput(header, false, false);
-    });
+        checkSelectionInput(header, false, true);
+
+        clickOrType(header, userEventType);
+
+        // Click checkoxes[0] (header), and it should "uncheck" all checkboxes if inteterminate
+        checkSelectionInput(header, false, false);
+      }
+    );
     test.each([false, true])("<Checkbox /> | Shift + onClick & reverse", isReverse => {
       render(<TableTestWrapper extraColumn={{ component: "checkbox", totalRows: TEST_TABLE_TOTAL_ROWS }} />);
       const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
@@ -197,7 +185,7 @@ describe("<Table.Tr />", () => {
         }
       });
     });
-    describe.each<UserEventType>(UserEventTypes)("<RadioButton />", userEventType => {
+    describe.each<UserSelectionInputEventType>(UserSelectionInputEventTypes)("<RadioButton />", userEventType => {
       test("onClick basic functionality", () => {
         const selectedRows = jest.fn(row => row);
         render(
