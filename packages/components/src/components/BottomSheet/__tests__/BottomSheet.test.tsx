@@ -4,6 +4,7 @@ import { DraggableProps } from "framer-motion";
 import { useState } from "react";
 import Button from "../../Button";
 import Dialog from "../../Dialog";
+import Input from "../../Input";
 import { BottomSheetChangeInfo, BottomSheetPosition } from "../BottomSheet";
 import BottomSheet, { BottomSheetFProps } from "../index";
 
@@ -76,6 +77,13 @@ describe("<BottomSheet />", () => {
 
     await waitFor(() => {
       checkY(400);
+    });
+  });
+  test('with state="input-focused"', async () => {
+    render(<BottomSheet isShown hugContentsHeight={false} state="input-focused" />);
+
+    await waitFor(() => {
+      checkY(400 - 75);
     });
   });
   test("with hugContents={false}", async () => {
@@ -164,6 +172,47 @@ describe("<BottomSheet />", () => {
 
     // expect(dialog.children[0]).toHaveStyle(`height: ${TEST_CHILDREN_HEIGHT}px; width: ${TEST_WIDTH}px`)
   });
+  test.each([75, 125, 425])(
+    "input focus / default functioncality | with inputFocusedMove | inputFocusedMove > defaultY",
+    async inputFocusedMove => {
+      render(
+        <BottomSheet isShown hugContentsHeight={false} inputFocusedMove={inputFocusedMove === 75 ? undefined : inputFocusedMove}>
+          <Input placeholder="Placeholder" />
+        </BottomSheet>
+      );
+      let bottomSheet = screen.getByTestId("bottom-sheet");
+      const input = screen.getByTestId("input");
+
+      const defaultY = 400;
+      const inputFocusedYString = `, ${inputFocusedMove <= defaultY ? defaultY - inputFocusedMove : 0}px,`;
+      const defaultYString = `, ${defaultY}px,`;
+      await waitFor(() => {
+        bottomSheet = screen.getByTestId("bottom-sheet");
+        expect(bottomSheet).toBeVisible();
+        expect(bottomSheet.style.transform).toContain(defaultYString);
+      });
+
+      userEvent.tab();
+
+      expect(input).toHaveFocus();
+
+      await waitFor(() => {
+        bottomSheet = screen.getByTestId("bottom-sheet");
+        expect(bottomSheet.style.transform).toContain(inputFocusedYString);
+        expect(bottomSheet.style.transform).not.toContain(defaultYString);
+      });
+
+      act(() => {
+        input.blur();
+      });
+
+      await waitFor(() => {
+        bottomSheet = screen.getByTestId("bottom-sheet");
+        expect(bottomSheet.style.transform).toContain(defaultYString);
+        expect(bottomSheet.style.transform).not.toContain(inputFocusedYString);
+      });
+    }
+  );
   describe("with children", () => {
     test("<React.Fragment />", async () => {
       render(

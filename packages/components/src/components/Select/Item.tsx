@@ -1,4 +1,3 @@
-import parse from "html-react-parser";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelectContext } from "../../utils/contexts";
 import { useClassnames, useDisabled } from "../../utils/hooks";
@@ -122,13 +121,17 @@ export const Item: React.FC<FProps> = React.memo(
 
     const isHidden = useMemo(() => !item?.isShown, [item?.isShown]);
 
-    const handleSearch = useCallback(() => {
-      const newChildren = item?.content.replace(new RegExp(filterValue.join(" "), "gi"), match => `<strong><b>${match}</b></strong>`);
+    const handleSearch: () => string = useCallback(() => {
+      let newChildren = item?.content || "";
+      const newFilterValue = filterValue.join(" ");
+      if (newFilterValue) {
+        newChildren = newChildren.replace(new RegExp(newFilterValue, "gi"), match => `<strong><b>${match}</b></strong>`) || "";
+      }
       return newChildren;
     }, [filterValue, item?.content]);
 
     const fChecked = useMemo(() => isChecked || defaultChecked, [isChecked, defaultChecked]);
-    const fChildren = useMemo(() => !isHidden && parse(handleSearch() || content), [content, isHidden, handleSearch]);
+    const fChildren = useMemo(() => handleSearch(), [handleSearch]);
 
     return (
       <>
@@ -161,7 +164,7 @@ export const Item: React.FC<FProps> = React.memo(
           />
           <label unselectable="on" htmlFor={id} className="select__item__label" data-testid="select-item-label">
             {htmlContent?.before}
-            <div>{fChildren}</div>
+            <div dangerouslySetInnerHTML={{ __html: fChildren || "" }}></div>
             {htmlContent?.after}
           </label>
         </div>

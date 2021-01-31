@@ -27,25 +27,7 @@ exports[`<Select.Item /> state="disabled" 1`] = `
     unselectable="on"
   >
     <div>
-      <strong>
-        <b />
-      </strong>
-      T
-      <strong>
-        <b />
-      </strong>
-      e
-      <strong>
-        <b />
-      </strong>
-      s
-      <strong>
-        <b />
-      </strong>
-      t
-      <strong>
-        <b />
-      </strong>
+      Test
     </div>
   </label>
 </div>
@@ -74,11 +56,7 @@ exports[`<Select.Item /> with defaultChecked={true} 1`] = `
     for="test_id"
     unselectable="on"
   >
-    <div>
-      <strong>
-        <b />
-      </strong>
-    </div>
+    <div />
   </label>
 </div>
 `;

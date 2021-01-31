@@ -14,6 +14,7 @@ describe("Input <Base />", () => {
     const input = screen.getByTestId("input");
 
     expect(input).toHaveAttribute("id");
+    expect(input).toHaveAttribute("type", "text");
     expect(input.id).toHaveLength(5);
     expect(input).toHaveAttribute("class");
     expect(input).toHaveValue("");

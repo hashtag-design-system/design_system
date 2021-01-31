@@ -47,7 +47,6 @@
     "dayjs": "^1.10.3",
     "framer": "^1.2.12",
     "framer-motion": "^2.9.4",
-    "html-react-parser": "^1.1.1",
     "libphonenumber-js": "^1.9.7",
     "lodash": "^4.17.20",
     "next": "^10.0.5",

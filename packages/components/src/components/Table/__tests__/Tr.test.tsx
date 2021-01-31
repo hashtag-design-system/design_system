@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent, { specialChars } from "@testing-library/user-event";
+import { SelectionInputGroupObj, SelectionInputGroupTypes } from "../../../utils/hooks";
 import Table from "../index";
-import { TableSelectionInputs, TableSelectionInputsTableType } from "../Table";
-import { TableTestWrapper } from "./Table.test";
+import { TableTestWrapper, TEST_TABLE_TOTAL_ROWS } from "./Table.test";
 
 const Wrapper: React.FC = ({ children }) => {
   return (
@@ -33,7 +33,7 @@ describe("<Table.Tr />", () => {
   test("default behaviour", () => {
     render(
       <Wrapper>
-        <Table.Tr />
+        <Table.Tr idx={0} />
       </Wrapper>
     );
     const tr = screen.getByTestId("table-tr");
@@ -46,7 +46,7 @@ describe("<Table.Tr />", () => {
   test("with children", () => {
     render(
       <Wrapper>
-        <Table.Tr>
+        <Table.Tr idx={0}>
           <Table.Td />
         </Table.Tr>
       </Wrapper>
@@ -59,15 +59,15 @@ describe("<Table.Tr />", () => {
   test('with state="hover"', () => {
     render(
       <Wrapper>
-        <Table.Tr state="hover" />
+        <Table.Tr idx={0} state="hover" />
       </Wrapper>
     );
 
     expect(screen.getByTestId("table-tr")).toHaveClass("hover");
   });
   describe("with extraColumn", () => {
-    test.each(TableSelectionInputs)("default behaviour", component => {
-      render(<TableTestWrapper extraColumn={{ component }} />);
+    test.each(SelectionInputGroupTypes)("default behaviour", component => {
+      render(<TableTestWrapper extraColumn={{ component, totalRows: TEST_TABLE_TOTAL_ROWS }} />);
       const tr = screen.getAllByTestId("table-tr")[0];
 
       // Although the first <RadioButton /> is not being displayed, its is hidden via CSS
@@ -83,27 +83,31 @@ describe("<Table.Tr />", () => {
       }
       expect(td).toContainElement(screen.getAllByTestId("selection-input__container")[0]);
     });
-    test.each(TableSelectionInputs)("with withBorderRight={true}", component => {
-      render(<TableTestWrapper extraColumn={{ component, withBorderRight: true }} />);
+    test.each(SelectionInputGroupTypes)("with withBorderRight={true}", component => {
+      render(<TableTestWrapper extraColumn={{ component, withBorderRight: true, totalRows: TEST_TABLE_TOTAL_ROWS }} />);
 
       expect(screen.getAllByTestId("table-tr")[0]).toHaveClass("border-right");
     });
     test.each<UserEventType>(UserEventTypes)("<Checkbox /> | onClick basic functionality", userEventType => {
       const selectedRows = jest.fn(row => row);
-      render(<TableTestWrapper extraColumn={{ component: "checkbox", selectedRows: row => selectedRows(row) }} />);
+      render(
+        <TableTestWrapper
+          extraColumn={{ component: "checkbox", selectedRows: row => selectedRows(row), totalRows: TEST_TABLE_TOTAL_ROWS }}
+        />
+      );
       const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
 
       // On initial render in userEffect()
       expect(selectedRows).toHaveBeenCalledTimes(2);
       const results = selectedRows.mock.results;
       expect(results).toHaveLength(2);
-      expect(results[1].value).toStrictEqual<TableSelectionInputsTableType[]>([
-        { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
-        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-        { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+      expect(results[1].value).toStrictEqual<SelectionInputGroupObj[]>([
+        { id: expect.any(String), state: "default", isChecked: false, header: true, latestChange: expect.anything() },
+        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+        { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
       ]);
 
       // +1 in header
@@ -118,8 +122,9 @@ describe("<Table.Tr />", () => {
         const called = 2 + 1 + i;
         const notHeaderIdx = i + 1;
         expect(selectedRows).toHaveBeenCalledTimes(called);
-        expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual<TableSelectionInputsTableType>({
+        expect(results[1 + notHeaderIdx].value[notHeaderIdx]).toStrictEqual<SelectionInputGroupObj>({
           id: expect.any(String),
+          state: expect.any(String),
           isChecked: true,
           header: false,
           latestChange: expect.anything(),
@@ -136,8 +141,9 @@ describe("<Table.Tr />", () => {
 
       checkboxes.forEach((checkbox, i) => {
         checkSelectionInput(checkbox, false);
-        expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<TableSelectionInputsTableType>({
+        expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<SelectionInputGroupObj>({
           id: expect.any(String),
+          state: "default",
           isChecked: false,
           header: i === 0 ? true : false,
           latestChange: expect.anything(),
@@ -159,8 +165,8 @@ describe("<Table.Tr />", () => {
       // Click checkoxes[0] (header), and it should "uncheck" all checkboxes if inteterminate
       checkSelectionInput(header, false, false);
     });
-    test.each([false, true])("<Checkbox /> | Shift + onClick & reverse", (isReverse) => {
-      render(<TableTestWrapper extraColumn={{ component: "checkbox" }} />);
+    test.each([false, true])("<Checkbox /> | Shift + onClick & reverse", isReverse => {
+      render(<TableTestWrapper extraColumn={{ component: "checkbox", totalRows: TEST_TABLE_TOTAL_ROWS }} />);
       const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
 
       // +1 in header
@@ -194,7 +200,11 @@ describe("<Table.Tr />", () => {
     describe.each<UserEventType>(UserEventTypes)("<RadioButton />", userEventType => {
       test("onClick basic functionality", () => {
         const selectedRows = jest.fn(row => row);
-        render(<TableTestWrapper extraColumn={{ component: "radio", selectedRows: row => selectedRows(row) }} />);
+        render(
+          <TableTestWrapper
+            extraColumn={{ component: "radio", selectedRows: row => selectedRows(row), totalRows: TEST_TABLE_TOTAL_ROWS }}
+          />
+        );
 
         const radioBtns = Array.from(screen.getAllByTestId("radio-btn"));
 
@@ -202,13 +212,13 @@ describe("<Table.Tr />", () => {
         expect(selectedRows).toHaveBeenCalledTimes(2);
         const results = selectedRows.mock.results;
         expect(results).toHaveLength(2);
-        expect(results[1].value).toStrictEqual<TableSelectionInputsTableType[]>([
-          { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
+        expect(results[1].value).toStrictEqual<SelectionInputGroupObj[]>([
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
         ]);
 
         // +1 in header but with `display: none`
@@ -228,10 +238,11 @@ describe("<Table.Tr />", () => {
           }
           const called = 2 + 1 + i;
           expect(selectedRows).toHaveBeenCalledTimes(called);
-          expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<TableSelectionInputsTableType>({
+          expect(results[selectedRows.mock.calls.length - 1].value[i]).toStrictEqual<SelectionInputGroupObj>({
             id: expect.any(String),
+            state: expect.any(String),
             isChecked: true,
-            header: i === 0,
+            header: false,
             latestChange: expect.anything(),
           });
           radioBtns
@@ -243,19 +254,19 @@ describe("<Table.Tr />", () => {
 
         expect(selectedRows).toHaveBeenCalledTimes(2 + 6);
         expect(results).toHaveLength(2 + 6);
-        expect(results[results.length - 1].value).toStrictEqual<TableSelectionInputsTableType[]>([
-          { id: expect.any(String), isChecked: false, header: true, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: false, header: false, latestChange: expect.anything() },
-          { id: expect.any(String), isChecked: true, header: false, latestChange: expect.anything() },
+        expect(results[results.length - 1].value).toStrictEqual<SelectionInputGroupObj[]>([
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: false, header: false, latestChange: expect.anything() },
+          { id: expect.any(String), state: "default", isChecked: true, header: false, latestChange: expect.anything() },
         ]);
 
         expect(radioBtns.filter(btn => btn.getAttribute("value")?.includes("true"))).toHaveLength(1);
       });
       test("double click", () => {
-        render(<TableTestWrapper extraColumn={{ component: "radio" }} />);
+        render(<TableTestWrapper extraColumn={{ component: "radio", totalRows: TEST_TABLE_TOTAL_ROWS }} />);
 
         const radioBtns = Array.from(screen.getAllByTestId("radio-btn"));
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Autosuggest from "./components/Autosuggest";
+import BottomSheet from "./components/BottomSheet";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import DatePicker from "./components/DatePicker";
@@ -13,6 +14,7 @@ import Select from "./components/Select";
 import Slider from "./components/Slider";
 import Switch from "./components/Switch";
 import Table from "./components/Table";
+import TimePicker from "./components/TimePicker";
 import { Modal } from "./components/__helpers__";
 import { useSortableData } from "./utils/hooks";
 
@@ -75,9 +77,16 @@ const Examples: React.FC = () => {
         // console.log(page);
         // }}
       />
-      <Table extraColumn={{ component: "radio", withBorderRight: true, selectedRows: e => console.log(e) }}>
+      <Table
+        extraColumn={{
+          component: "radio",
+          withBorderRight: true,
+          selectedRows: e => console.log(e),
+          totalRows: initialData.length + 1,
+        }}
+      >
         <Table.THead>
-          <Table.Tr>
+          <Table.Tr idx={0}>
             <Table.Th
               sort
               onClick={(_, { direction }) => {
@@ -123,7 +132,7 @@ const Examples: React.FC = () => {
         <Table.TBody>
           {data.map(({ id, amount, hey, test, username }, i) => {
             return (
-              <Table.Tr key={i}>
+              <Table.Tr key={i} idx={i + 1}>
                 <Table.Td>{id}</Table.Td>
                 <Table.Td>{amount}</Table.Td>
                 <Table.Td>{hey}</Table.Td>
@@ -319,6 +328,22 @@ const Examples: React.FC = () => {
           </Select.Options>
         </Select.Modal>
       </Select>
+      <BottomSheet isShown hugContentsHeight={true}>
+        <Dialog.Content>
+          <div style={{ height: 800, width: "100%", background: "blue" }}></div>
+        </Dialog.Content>
+      </BottomSheet>
+      <TimePicker
+        bottomSheetProps={{
+          isShown: true,
+        }}
+      >
+        <TimePicker.Content showLabels={{ hasHours: true, hasMinutes: true, hasSeconds: true }}>
+          <TimePicker.Hours inputProps={{ onFocus: () => console.log("focus"), onBlur: () => console.log("Blur") }} />
+          <TimePicker.Minutes />
+          <TimePicker.Seconds onSlideChange={swiper => console.log(swiper.realIndex)} />
+        </TimePicker.Content>
+      </TimePicker>
       <Form onSubmit={d => console.log(d)} defaultValues={{ text: "georgerkax", number: 5 }}>
         <Input name="text" placeholder="Placeholder" floatingplaceholder={true} />
         <Input.Number name="number" />

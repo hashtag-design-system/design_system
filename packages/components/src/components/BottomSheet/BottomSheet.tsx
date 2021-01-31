@@ -102,6 +102,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   }, [defaultY, viewportHeight, position, allowedPositions]);
 
+  /* istanbul ignore next */
   const fAllowNext = useMemo((): BottomSheetAllowNextObj => {
     if (typeof allowNext === "number") {
       return {
@@ -140,6 +141,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   };
 
+  /* istanbul ignore next */
   const handleDrag = async (e: DragEvent, info: PanInfo) => {
     if (allowedPositions["hidden"] === true) {
       if (info.velocity.y >= (position === "middle" ? 350 : 1000) && info.delta.y >= 50) {
@@ -152,6 +154,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     }
   };
 
+  /* istanbul ignore next */
   const handleDragEnd = (e: DragEvent, info: PanInfo) => {
     if (position === "hidden") {
       return;
@@ -188,9 +191,10 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   const handleChildrenHeight = (height: number) => {
     const newHeight = viewportHeight - height;
     if (defaultY !== newHeight && hugContentsHeight && !isInputFocused) {
-      if (newHeight > 0) {
+      if (newHeight > 25) {
         setDefaultY(newHeight);
       } else {
+        /* istanbul ignore next */
         setDefaultY(0);
       }
     }

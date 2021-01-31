@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import { TableTrStates } from "..";
 import { titleGroups } from "../../../config/storybook";
-import { TableTestWrapper, TableTestWrapperFProps } from "../__tests__/Table.test";
+import { TableTestWrapper, TableTestWrapperFProps, TEST_TABLE_TOTAL_ROWS } from "../__tests__/Table.test";
 
 export default {
   title: `${titleGroups.DATA_TABLE}/Tr`,
@@ -33,24 +33,24 @@ Hover.args = {
 
 export const WithExtraColumnCheckbox = Template.bind({});
 WithExtraColumnCheckbox.args = {
-  extraColumn: { component: "checkbox" },
+  extraColumn: { component: "checkbox", totalRows: TEST_TABLE_TOTAL_ROWS },
 };
 WithExtraColumnCheckbox.storyName = "With extra column | <Checkbox />";
 
 export const WithExtraColumnRadioButton = Template.bind({});
 WithExtraColumnRadioButton.args = {
-  extraColumn: { component: "radio" },
+  extraColumn: { component: "radio", totalRows: TEST_TABLE_TOTAL_ROWS },
 };
 WithExtraColumnRadioButton.storyName = "With extra column | <RadioButton />";
 
 export const WithExtraColumnCheckboxAndBorder = Template.bind({});
 WithExtraColumnCheckboxAndBorder.args = {
-  extraColumn: { component: "checkbox", withBorderRight: true },
+  extraColumn: { component: "checkbox", withBorderRight: true, totalRows: TEST_TABLE_TOTAL_ROWS },
 };
 WithExtraColumnCheckboxAndBorder.storyName = "With extra column & border | <Checkbox />";
 
 export const WithExtraColumnRadioButtonAndBorder = Template.bind({});
 WithExtraColumnRadioButtonAndBorder.args = {
-  extraColumn: { component: "radio", withBorderRight: true },
+  extraColumn: { component: "radio", withBorderRight: true, totalRows: TEST_TABLE_TOTAL_ROWS },
 };
 WithExtraColumnRadioButtonAndBorder.storyName = "With extra column & border | <RadioButton />";

@@ -17,6 +17,8 @@ export const tableTestInitialData: TableTestInitialDataType[] = [
   { id: 5, amount: 1.25, test: false, username: "georgekrax" },
 ];
 
+export const TEST_TABLE_TOTAL_ROWS = 6;
+
 export type TableTestWrapperFProps = Omit<TableFProps, "onClick"> & TableThProps & { header?: boolean } & Pick<TableTrFProps, "state">;
 
 export const TableTestWrapper: React.FC<TableTestWrapperFProps> = ({
@@ -49,7 +51,7 @@ export const TableTestWrapper: React.FC<TableTestWrapperFProps> = ({
     >
       {header && (
         <Table.THead>
-          <Table.Tr>
+          <Table.Tr idx={0}>
             <Table.Th sort={sort} onClick={(e, { direction }) => handleClick(e, direction, "id")}>
               ID
             </Table.Th>
@@ -66,7 +68,7 @@ export const TableTestWrapper: React.FC<TableTestWrapperFProps> = ({
       <Table.TBody>
         {data.map(({ id, amount, test, username }, i) => {
           return (
-            <Table.Tr state={i === 1 ? state : undefined} key={i}>
+            <Table.Tr state={i === 1 ? state : undefined} key={i} idx={i + 1}>
               <Table.Td>{id}</Table.Td>
               <Table.Td>{amount}</Table.Td>
               <Table.Td>{String(test)}</Table.Td>

@@ -46,10 +46,11 @@ describe("TimePicker <SwiperCol />", () => {
     const onSlideChange = jest.fn(swiper => swiper.realIndex);
     // Because random number is the initial slide,
     // as many possibilities as possible need to not return 0 as the initial slide
-    render(<SwiperCol max={500} onSlideChange={onSlideChange} />);
+    render(<SwiperCol max={1000} onSlideChange={onSlideChange} />);
 
+    const results = onSlideChange.mock.results;
     expect(onSlideChange).toHaveBeenCalled();
-    expect(onSlideChange.mock.results[1].value).not.toBe(0);
+    expect(results[results.length - 1].value).toBe(0);
   });
   test("with onFocus and onBlur input", () => {
     const onFocus = jest.fn();
