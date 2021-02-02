@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.9",
+  "version": "0.1.12",
   "private": false,
   "scripts": {
     "dev": "react-scripts start",
@@ -15,7 +15,7 @@
     "css:var": "node src/utils/css/variablesToCss.js",
     "storybook": "start-storybook -p 3030 -s public",
     "build-storybook": "build-storybook -s public",
-    "prepublish": "yarn tsc && cp src/index.scss dist/ && cp -r src/styles dist/styles"
+    "prepare": "yarn tsc && cp src/index.scss dist/ && cp -r src/styles dist/styles"
   },
   "eslintConfig": {
     "extends": "react-app"
