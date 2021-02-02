@@ -1,30 +1,38 @@
 {
-  "name": "components",
-  "version": "0.1.2",
+  "name": "@hashtag-design-system/components",
+  "version": "0.1.8",
   "private": false,
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "react-scripts test --setupFiles ./jest.config.ts",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w",
     "test:coverage": "react-scripts test --setupFiles ./jest.config.ts --coverage",
     "test:lint": "eslint . --ext .tsx, .ts --ignore-pattern node_modules/",
     "test:prettier": "prettier --config .prettierrc.json --config-precedence cli-override --write .",
     "css:var": "node src/utils/css/variablesToCss.js",
     "storybook": "start-storybook -p 3030 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "prepublish": "yarn tsc && cp src/index.scss dist/ && cp -r src/styles dist/styles"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "access": "public"
   },
   "repository": "https://github.com/hashtag-design-system/design_system",
-  "author": "George Krachtopoulos <georgekraxt@gmail.com>",
-  "license": "UNLICENSED",
-  "main": "src/index.tsx",
-  "typings": "src/index.d.ts",
+  "author": "George Krachtopoulos <@georgekrax>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.js.map"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,21 +47,19 @@
     ]
   },
   "dependencies": {
-    "@georgekrax-hashtag/common": "^1.0.28",
     "@hashtag-design-system/primitives": "^1.0.22",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
+    "@the_hashtag/common": "^1.0.29",
     "dayjs": "^1.10.3",
     "framer": "^1.2.12",
     "framer-motion": "^2.9.4",
     "libphonenumber-js": "^1.9.7",
     "lodash": "^4.17.20",
-    "next": "^10.0.5",
     "react": "^17.0.1",
     "react-device-detect": "^1.15.0",
     "react-dom": "^17.0.1",
-    "react-dropzone": "^11.2.0",
     "react-hook-form": "^6.14.0",
     "react-scripts": "4.0.1",
     "react-window": "^1.8.6",
@@ -85,5 +91,10 @@
     "sass-loader": "^10.1.0",
     "storybook-addon-designs": "^5.4.2",
     "style-loader": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@hashtag-design-system/primitives": "^1.0.22",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }
