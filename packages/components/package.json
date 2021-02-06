@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.21",
+  "version": "0.1.24",
   "private": false,
   "scripts": {
     "dev": "react-scripts start",
@@ -12,16 +12,14 @@
     "test:prettier": "prettier --config .prettierrc.json --config-precedence cli-override --write .",
     "storybook": "start-storybook -p 3030 -s public",
     "type-check": "yarn type-check:esm && yarn type-check:cjs",
-    "type-check:esm": "tsc --noEmit=\"false\"",
-    "type-check:cjs": "tsc --module commonjs --outDir dist/cjs --noEmit=\"false\"",
+    "type-check:esm": "tsc",
+    "type-check:cjs": "tsc --module commonjs --outDir dist/cjs",
     "type-check:watch": "tsc -w",
     "sass": "yarn sass:esm && yarn sass:cjs",
     "sass:esm": "sass ./dist/esm/index.scss:./dist/esm/index.css -c --update",
     "sass:cjs": "sass ./dist/cjs/index.scss:./dist/cjs/index.css -c --update",
-    "css:var": "node src/utils/css/variablesToCss.js",
     "build-storybook": "build-storybook -s public",
-    "gulp": "gulp",
-    "prepublishOnly": "yarn gulp"
+    "prepublishOnly": "gulp"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -52,13 +50,12 @@
     ]
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "^1.1.1",
+    "@hashtag-design-system/primitives": "^1.1.4",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "@the_hashtag/common": "^1.0.29",
     "dayjs": "^1.10.3",
-    "framer": "^1.2.12",
     "framer-motion": "^3.3.0",
     "libphonenumber-js": "^1.9.7",
     "lodash": "^4.17.20",
@@ -68,7 +65,6 @@
     "react-hook-form": "^6.14.0",
     "react-scripts": "4.0.2",
     "react-window": "^1.8.6",
-    "swiper": "^6.4.11",
     "typescript": "^4.1.3",
     "ua-parser-js": "^0.7.23",
     "vanilla-tilt": "^1.7.0"
@@ -105,7 +101,7 @@
     "ts-node": "^9.1.1"
   },
   "peerDependencies": {
-    "@hashtag-design-system/primitives": "^1.1.1",
+    "@hashtag-design-system/primitives": "^1.1.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
