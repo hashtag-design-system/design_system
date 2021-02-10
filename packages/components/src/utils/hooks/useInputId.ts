@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generateId } from "../generateId";
+import { generateId } from "@the_hashtag/common";
 
 export const generateInputId = () => {
   const res = generateId({

@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import React from "react";
-import { SelectContextProvider, SelectContextType } from "../../../utils/contexts";
+import { SelectContextProvider, SelectContextType } from "../../../utils";
 
 export const defaultProps: Pick<
   SelectContextType,

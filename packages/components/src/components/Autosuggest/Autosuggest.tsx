@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { AutosuggestContextProvider } from "../../utils/contexts";
-import { useDisabled, useIsMobile } from "../../utils/hooks";
+import { AutosuggestContextProvider, useDisabled, useIsMobile } from "../../utils";
 import Select, { SelectFilterFProps, SelectFProps } from "../Select";
 import { SelectedItems } from "../Select/Select";
 import { Filter } from "./__helpers__";

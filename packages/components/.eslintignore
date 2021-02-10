@@ -2,3 +2,4 @@
 /out/*
 /public/*
 .eslintcache
+package.json

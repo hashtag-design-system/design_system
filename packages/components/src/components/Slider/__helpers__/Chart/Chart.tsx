@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePercentage } from "../../../../utils";
-import { useSliderContext } from "../../../../utils/contexts/SliderContext";
-import { useWindowDimensions } from "../../../../utils/hooks";
+import { calculatePercentage, useWindowDimensions } from "../../../../utils";
+import { useSliderContext } from "../../../../utils";
 import { SliderChartDataProp } from "../../Slider";
 import { Bar } from "./Bar";
 

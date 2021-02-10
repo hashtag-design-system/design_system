@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Select, { SelectHeaderProps } from "../index";
 import { StoriesComponent, StoriesComponentProps } from "./utils";
 
 export default {
-  title: `${titleGroups.FORM_SELECT}/Header`,
+  title: `${storybookTitles.FORM_SELECT}/Header`,
   component: Select.Button,
   argTypes: {
     value: {
@@ -25,8 +25,8 @@ WithoutChildren.args = {
 };
 WithoutChildren.storyName = "Without children";
 
-export const WithChilden = Template.bind({});
-WithChilden.args = {
+export const WithChildren = Template.bind({});
+WithChildren.args = {
   headerChildren: true,
 };
-WithChilden.storyName = "With children";
+WithChildren.storyName = "With children";

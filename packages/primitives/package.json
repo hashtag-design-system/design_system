@@ -1,27 +1,20 @@
 {
   "name": "@hashtag-design-system/primitives",
-  "version": "1.0.25",
-  "description": "The CSS (SCSS) primitives of the #hashtag Design System",
+  "version": "1.2.2",
+  "description": "The CSS (SCSS) primitives and brand guidelines of the #hashtag's design system",
   "main": "./src/index.scss",
   "scripts": {
-    "fresh": "rm -rf node_modules; yarn",
-    "css": "sass ./src:./css -c --update",
-    "npm:prepublish": "yarn scss",
-    "npm:publish": "npm publish --access public",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major",
-    "npm:patch": "yarn run npm:prepublish && yarn version:patch && yarn npm:publish",
-    "npm:minor": "yarn run npm:prepublish && yarn version:minor && yarn npm:publish",
-    "npm:major": "yarn run npm:prepublish && yarn version:major && yarn npm:publish"
+    "fresh": "rm -rf node_modules && yarn",
+    "fresh:css": "rm -rf css",
+    "scss": "sass ./src:./css -c --update --no-source-map",
+    "prepublishOnly": "yarn fresh:css && yarn scss"
   },
   "repository": "https://github.com/hashtag-design-system/design_system",
-  "author": "George Krachtopoulos <georgekraxt@gmail.com>",
-  "license": "UNLICENSED",
+  "author": "George Krachtopoulos <@georgekrax>",
+  "license": "MIT",
   "private": false,
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "dependencies": {
     "sass": "^1.29.0"

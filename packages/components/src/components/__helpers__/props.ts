@@ -42,7 +42,7 @@ const InputAutocompleteTypes = [
   "cc-csc",
   "cc-type",
   "transaction-currency",
-  "transcation-amount",
+  "transaction-amount",
   "language",
   "bday",
   "bday-day",
@@ -77,32 +77,6 @@ const InputTypes = [
   "url",
 ] as const;
 export type InputType = typeof InputTypes[number];
-
-type BaseInput<S extends string | undefined = undefined, Ref extends boolean = false, T extends React.ElementType = "input"> = {
-  value?: React.ReactText;
-  type?: InputType;
-  defaultValue?: React.ReactText;
-  allowTyping?: boolean;
-  autoComplete?: InputAutocompleteType;
-  onSelect?: (e: React.MouseEvent<HTMLLIElement>, key: string) => void;
-} & Omit<Ref extends false ? React.ComponentPropsWithoutRef<T> : React.ComponentPropsWithRef<T>, "value" | "type" | "onSelect"> &
-  (S extends undefined ? {} : { state?: S });
-
-type Input<S extends string | undefined = undefined, Ref extends boolean = false, T extends React.ElementType = "input"> = Omit<
-  BaseInput<S, Ref, T>,
-  "value"
->;
-
-type NumberInput<S extends string | undefined = undefined, Ref extends boolean = false> = {
-  min?: number;
-  max?: number;
-  count?: number;
-  step?: number;
-} & Omit<Input<S, Ref>, "min" | "max" | "step">;
-
-type InputStateObjType<S extends string | undefined> = S extends undefined ? {} : { state?: S };
-
-// ------------------------------- //
 
 export type SelectionInputProps = {
   defaultChecked?: boolean;

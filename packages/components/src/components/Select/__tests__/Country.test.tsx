@@ -1,5 +1,5 @@
-import { COUNTRIES_ARR } from "@georgekrax-hashtag/common";
 import { render, screen, waitFor } from "@testing-library/react";
+import { COUNTRIES_ARR } from "@the_hashtag/common";
 import Select from "../index";
 
 describe("Select <CountryItem />", () => {

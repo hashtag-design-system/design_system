@@ -73,7 +73,7 @@
     position: absolute;
     inset: auto;
     padding: 0;
-    margin: em(8) 0 em(0) 0;
+    margin: 0.5em 0 0 0;
     background-color: $grey-1;
     z-index: 99;
     border-radius: 6px;
@@ -84,7 +84,7 @@
     box-sizing: border-box;
     overflow: hidden;
     z-index: 99;
-    box-shadow: $modal-shadow;
+    box-shadow: $portal-shadow;
 
     &--mobile {
       .input__container__field {
@@ -177,8 +177,8 @@
   &__header {
     @extend .select__item;
     border-radius: 0;
-    padding-top: em(8);
-    padding-bottom: em(8);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 
     &[data-children="true"] {
       & ~ .select__item:not(.select__header),
@@ -188,7 +188,7 @@
     }
 
     h6 {
-      font-size: em(12);
+      font-size: 0.75em;
     }
 
     + .select__hr {
@@ -199,7 +199,7 @@
   &__hr {
     display: block;
     width: auto;
-    margin: em(4) em(0);
+    margin: 0.25em 0;
     height: $input-border-width / 2;
     background: $input-border-color;
   }
@@ -217,9 +217,9 @@
 @include breakpoint("sm") {
   .select {
     &__item {
-      padding: em(10) em(8);
-      margin: em(4);
-      border-radius: em(4);
+      padding: em(10) 0.5em;
+      margin: 0.25em;
+      border-radius: 0.25em;
     }
 
     &__header {
@@ -228,7 +228,7 @@
     }
 
     &__hr {
-      margin: em(4);
+      margin: 0.5em;
     }
 
     &__options {

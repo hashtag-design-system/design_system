@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { listKeys } from "../../config";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
-import { useClassnames } from "../../utils/hooks";
+import { CONFIG } from "../../config";
+import { InputContextProvider, useClassnames } from "../../utils";
 import Input, { InputFProps } from "./index";
 import { HelpTextContainer } from "./__helpers__";
 
@@ -101,7 +100,7 @@ const DigitSequence: React.FunctionComponent<FProps> = ({
               state={state}
               overrideOnChange
               maxLength={maxLength}
-              key={(listKeys.DIGIT_INPUT, i)}
+              key={(CONFIG.listKeys.DIGIT_INPUT, i)}
             />
           ))}
         </div>

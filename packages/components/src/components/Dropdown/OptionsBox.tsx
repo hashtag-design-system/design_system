@@ -1,7 +1,6 @@
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import React, { CSSProperties, useContext } from "react";
-import DropdownContext from "../../utils/contexts/DropdownContext";
-import { useClassnames } from "../../utils/hooks";
+import { DropdownContext, useClassnames } from "../../utils";
 
 export type Props = {
   tooltipBubble?: boolean;

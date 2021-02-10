@@ -1,13 +1,13 @@
 import Select from "../index";
 
-export type StoriesComponentProps = { headerChildren?: boolean; optionsChilden?: boolean };
+export type StoriesComponentProps = { headerChildren?: boolean; optionsChildren?: boolean };
 
-export const StoriesItems: React.FC<Pick<StoriesComponentProps, "optionsChilden">> = ({ optionsChilden = false }) => {
+export const StoriesItems: React.FC<Pick<StoriesComponentProps, "optionsChildren">> = ({ optionsChildren = false }) => {
   return (
     <>
-      {!optionsChilden && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
+      {!optionsChildren && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
       <Select.Options>
-        {optionsChilden && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
+        {optionsChildren && <Select.Filter placeholder="Filter" floatingplaceholder={false} />}
         <Select.Item id="hey_george" content="Hey george" />
         <Select.Item id="amsterdam" content="Amsterdam" htmlContent={{ after: <p>, NL</p> }} />
         <Select.Item id="georgekrax" content="georgekrax" />
@@ -21,7 +21,7 @@ export const StoriesItems: React.FC<Pick<StoriesComponentProps, "optionsChilden"
 
 export const StoriesComponent: React.FC<any & StoriesComponentProps> = ({
   headerChildren = false,
-  optionsChilden = false,
+  optionsChildren = false,
   align = "left",
   ...props
 }) => {
@@ -31,12 +31,12 @@ export const StoriesComponent: React.FC<any & StoriesComponentProps> = ({
       <Select.Modal align={align}>
         {headerChildren ? (
           <Select.Header value="header" {...props}>
-            <StoriesItems optionsChilden={optionsChilden} />
+            <StoriesItems optionsChildren={optionsChildren} />
           </Select.Header>
         ) : (
           <>
             <Select.Header value="header" {...props} />
-            <StoriesItems optionsChilden={optionsChilden} />
+            <StoriesItems optionsChildren={optionsChildren} />
           </>
         )}
       </Select.Modal>

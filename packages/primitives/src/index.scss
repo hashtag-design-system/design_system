@@ -1,6 +1,7 @@
 // This is the single file output by SCSS.
 // ! It is intended to ONLY @import other files
 // ! Any variable should be defined with the `!default` tag, and only in the "src/_variables.scss" file
+// ! The "globals.scss" file is not meant to be imported here
 
 // Utils
 @import "utils/functions";
@@ -10,12 +11,8 @@
 @import "mixins/index";
 @import "mixins/typography";
 @import "mixins/at-rules";
-@import "mixins/icons";
+@import "mixins/animations";
 
 // Base
 @import "base/colors";
 @import "./variables";
-@import "base/globals";
-@import "base/shadows";
-@import "base/typography";
-@import "base/animations";

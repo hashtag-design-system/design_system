@@ -1,6 +1,6 @@
-import { MONTHS } from "@georgekrax-hashtag/common";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MONTHS } from "@the_hashtag/common";
 import dayjs from "dayjs";
 import { DatePickerOnClickInfo } from "../../index";
 import { DefaultDatePicker, TestDatePickerButton, TEST_DEFAULT_DATE } from "../index";
@@ -39,6 +39,10 @@ describe("DatePicker <MonthDays />", () => {
     await waitFor(() => {
       expect(tbody).not.toBeVisible();
     });
+  }, 7500);
+  test("today td", () => {
+    render(<DefaultDatePicker defaultCalendarDate={dayjs()} />);
+    const tds = screen.getAllByTestId("date-picker-tbody-td");
 
     const todayTd = tds.find(
       ({ className, textContent }) => !className.includes("other-day") && textContent === dayjs().date().toString()
@@ -60,7 +64,7 @@ describe("DatePicker <MonthDays />", () => {
     expect(tbody.children).toHaveLength(7 * calendarWeeks);
   });
   test("with isRange={true} and defaultDates", async () => {
-    render(<DefaultDatePicker isRange defaultDates={[dayjs(), dayjs().add(3, "day")]} />);
+    render(<DefaultDatePicker isRange defaultDates={[TEST_DEFAULT_DATE, TEST_DEFAULT_DATE.add(3, "day")]} />);
     const tds = screen.getAllByTestId("date-picker-tbody-td");
 
     await waitFor(() => {

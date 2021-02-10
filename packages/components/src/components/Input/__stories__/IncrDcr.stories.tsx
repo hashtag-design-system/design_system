@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input, { InputIncrDcrFProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_INPUT}/IncrDcr`,
+  title: `${storybookTitles.FORM_INPUT}/IncrDcr`,
   component: Input.IncrDcr,
   argTypes: {
     defaultValue: {
@@ -42,11 +42,11 @@ HoverIncrease.args = {
 };
 HoverIncrease.storyName = "Hover | increase";
 
-export const HoverdDecrease = Template.bind({});
-HoverdDecrease.args = {
+export const HoverDecrease = Template.bind({});
+HoverDecrease.args = {
   state: "hover|decrease",
 };
-HoverdDecrease.storyName = "Hover | decrease";
+HoverDecrease.storyName = "Hover | decrease";
 
 export const Active = Template.bind({});
 Active.args = {

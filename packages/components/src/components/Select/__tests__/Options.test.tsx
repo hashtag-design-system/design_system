@@ -22,8 +22,8 @@ describe("<Select.Options />", () => {
     render(
       <Select defaultOpen>
         <Select.Options>
-          <Select.Item id="hey">Hey</Select.Item>
-          <Select.Item id="amsterdam">Amsterdam</Select.Item>
+          <Select.Item id="hey" content="Hey" />
+          <Select.Item id="amsterdam" content="Amsterdam" />
         </Select.Options>
       </Select>
     );
@@ -39,8 +39,8 @@ describe("<Select.Options />", () => {
     render(
       <Select defaultOpen mobileView>
         <Select.Options>
-          <Select.Item id="hey">Hey</Select.Item>
-          <Select.Item id="amsterdam">Amsterdam</Select.Item>
+          <Select.Item id="hey" content="Hey" />
+          <Select.Item id="amsterdam" content="Amsterdam" />
         </Select.Options>
         ,
       </Select>

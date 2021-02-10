@@ -1,5 +1,6 @@
 import Table from "./Table";
 
+export { default as Table } from "./Table";
 export type { FProps as TableFProps, Props as TableProps } from "./Table";
 export type { FProps as TableTBodyFProps } from "./TBody";
 export type { FProps as TableTdFProps } from "./Td";

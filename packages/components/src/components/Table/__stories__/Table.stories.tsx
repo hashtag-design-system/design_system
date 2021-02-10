@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import { TableTestWrapper, TableTestWrapperFProps } from "../__tests__/Table.test";
 
 export default {
-  title: `${titleGroups.DATA}/Table`,
+  title: `${storybookTitles.DATA}/Table`,
   component: TableTestWrapper,
   argTypes: {
     onClick: { action: "clicked" },

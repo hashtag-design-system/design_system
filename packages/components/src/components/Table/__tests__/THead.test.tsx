@@ -18,7 +18,7 @@ describe("<Table.THead />", () => {
     render(
       <Table>
         <Table.THead>
-          <Table.Tr>
+          <Table.Tr idx={0}>
             <Table.Th>ID</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Test</Table.Th>

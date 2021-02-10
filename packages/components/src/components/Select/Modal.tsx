@@ -1,8 +1,6 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { isInViewport } from "../../utils";
-import { useSelectContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { isInViewport, useClassnames, useSelectContext, useWindowDimensions } from "../../utils";
 import { SelectFProps } from "./index";
 import { ModalMobile } from "./__helpers__";
 
@@ -46,34 +44,35 @@ export const Modal: React.FC<FProps> = ({ align = "left", fullWidth = false, ope
   const [top, setTop] = useState<number | undefined>(undefined);
   const [animationEnd, setAnimationEnd] = useState(false);
   const { isOpen, isMobile, modalRef, width } = useSelectContext();
+  const windowDimensions = useWindowDimensions();
 
   const [classNames, rest] = useClassnames("select__modal", props);
   const initialRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  if (initialRef && initialRef.current && !isMobile) {
-    if (!isInViewport(initialRef.current)) {
-      const { current } = initialRef;
-      const rects = current.getBoundingClientRect();
+  useEffect(() => {
+    if (initialRef && initialRef.current && !isMobile) {
+      if (!isInViewport(initialRef.current)) {
+        const { current } = initialRef;
+        const rects = current.getBoundingClientRect();
 
-      const { style } = current;
+        const { style } = current;
 
-      if (rects.x < 0) {
-        style.left = String(Math.abs(rects.x)) + "px";
-      }
-      const { clientWidth, clientHeight } = document.documentElement;
-      if (rects.right > clientWidth) {
-        const diff = clientWidth - rects.right;
-        style.left = String(diff) + "px";
-      }
-      if (!isInViewport(current.parentElement?.parentElement!)) {
-        if (rects.bottom > clientHeight) {
-          style.bottom = String(-(clientHeight - (current.parentElement?.getBoundingClientRect().bottom || 0))) + "px";
+        if (rects.x < 0) {
+          style.left = String(Math.abs(rects.x)) + "px";
+        }
+        const { clientWidth, clientHeight } = document.documentElement;
+        if (rects.right > clientWidth) {
+          const diff = clientWidth - rects.right;
+          style.left = String(diff) + "px";
+        }
+        if (!isInViewport(current.parentElement?.parentElement!)) {
+          if (rects.bottom > clientHeight) {
+            style.bottom = String(-(clientHeight - (current.parentElement?.getBoundingClientRect().bottom || 0))) + "px";
+          }
         }
       }
     }
-  }
-  // }, [initialRef, isOpen, isMobile, windowDimensions.width, windowDimensions.height]);
+  }, [initialRef, isOpen, isMobile, windowDimensions.width, windowDimensions.height]);
 
   const fOpen = useMemo(() => (open === undefined ? isOpen : open), [isOpen, open]);
 

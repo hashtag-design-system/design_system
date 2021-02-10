@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
 import { TableTrStates } from "..";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import { TableTestWrapper, TableTestWrapperFProps, TEST_TABLE_TOTAL_ROWS } from "../__tests__/Table.test";
 
 export default {
-  title: `${titleGroups.DATA_TABLE}/Tr`,
+  title: `${storybookTitles.DATA_TABLE}/Tr`,
   component: TableTestWrapper,
   argTypes: {
     state: {

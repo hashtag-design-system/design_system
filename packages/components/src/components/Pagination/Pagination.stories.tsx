@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import Pagination, { PaginationProps } from "./index";
 
 export default {
-  title: titleGroups.FORM_PAGINATION,
+  title: storybookTitles.FORM_PAGINATION,
   component: Pagination,
   argTypes: {
     totalPages: {

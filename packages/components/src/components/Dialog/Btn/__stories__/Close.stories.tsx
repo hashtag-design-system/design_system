@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../../config/storybook";
+import { storybookTitles } from "../../../../config";
 import { ButtonSBProps } from "../../../Button";
 import Dialog, { DialogProps } from "../../index";
 
 export default {
-  title: `${titleGroups.FEEDBACK}/Btn/Close`,
+  title: `${storybookTitles.FEEDBACK}/Btn/Close`,
   component: Dialog.Btn.Close,
   argTypes: {
     onDismiss: { action: "dismissed" },

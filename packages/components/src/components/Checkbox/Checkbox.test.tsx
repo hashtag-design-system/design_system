@@ -109,16 +109,15 @@ describe("<Checkbox />", () => {
     checkSelectionInputDisabled(checkbox);
     expect(checkbox).toHaveAttribute("tabindex", "-1");
   });
-  test('state="disabled|unchecked" && state="disabled|checked"', () => {
-    const { rerender } = render(<Checkbox state="disabled|unchecked" />);
+  test.each(["disabled|unchecked", "disabled|checked"])('state="disabled|unchecked" && state="disabled|checked"', async state => {
+    const { rerender } = render(<Checkbox state={state as any} />);
     const checkbox = screen.getByTestId("checkbox");
 
     checkSelectionInputDisabled(checkbox);
-    expect(checkbox).toHaveAttribute("value", "false");
-
-    rerender(<Checkbox state="disabled|checked" />);
-
-    checkSelectionInputDisabled(checkbox);
-    expect(checkbox).toHaveAttribute("value", "true");
+    if (state.includes("un")) {
+      expect(checkbox).toHaveAttribute("value", "false");
+    } else {
+      expect(checkbox).toHaveAttribute("value", "true");
+    }
   });
 });

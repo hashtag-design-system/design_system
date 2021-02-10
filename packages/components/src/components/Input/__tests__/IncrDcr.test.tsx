@@ -36,7 +36,7 @@ describe("<Input.IncrDcr />", () => {
     expect(input.getAttribute("value")).toBe("");
     expect(input.getAttribute("aria-valuenow")).toBe("");
   });
-  // * Default state changes (e.g. className) happen in the <Input.Base /> component tests
+  // * Default state changes (eg. className) happen in the <Input.Base /> component tests
   test('state="active"', async () => {
     render(<Input.IncrDcr state="active" />);
 

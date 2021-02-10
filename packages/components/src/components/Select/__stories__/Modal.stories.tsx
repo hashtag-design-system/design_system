@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Select, { SelectFProps, SelectModalAligns, SelectModalProps } from "../index";
 import { StoriesComponent } from "./utils";
 
 export default {
-  title: `${titleGroups.FORM_SELECT}/Modal`,
+  title: `${storybookTitles.FORM_SELECT}/Modal`,
   component: Select.Modal,
   argTypes: {
     align: {

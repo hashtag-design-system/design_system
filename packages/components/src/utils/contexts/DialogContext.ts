@@ -1,6 +1,6 @@
 import { ButtonFProps } from "../../components/Button";
 import { DialogFProps } from "../../components/Dialog";
-import { createCtx } from "../createCtx";
+import { createCtx } from "../index";
 
 export type DialogContextType = Required<Pick<DialogFProps, "confirm" | "allowDismissOnLoading">> &
   Pick<DialogFProps, "loading"> & {

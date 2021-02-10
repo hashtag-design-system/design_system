@@ -1,9 +1,12 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
+import { CONFIG } from "../../../config";
 import Button from "../../Button";
 import Select, { SelectButtonFProps, SelectFilterProps } from "../index";
 import { SelectedItems } from "../Select";
+
+const portalIdSelector = CONFIG.DEFAULT_PORTAL_ID_SELECTOR;
 
 export const SelectTestChildren: React.FunctionComponent<SelectFilterProps & SelectButtonFProps> = ({
   state,
@@ -142,7 +145,7 @@ describe("<Select />", () => {
         </Select>
       );
 
-      expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+      expect(screen.getByTestId(portalIdSelector)).toBeInTheDocument();
     });
     test("with mobileView={true} & defaultOpen={true}", async () => {
       render(
@@ -154,7 +157,7 @@ describe("<Select />", () => {
       const modal = screen.getByTestId("select-modal--mobile");
       const selectModal = screen.getByTestId("select-modal");
 
-      expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+      expect(screen.getByTestId(portalIdSelector)).toBeInTheDocument();
       await waitFor(() => {
         expect(modal).toBeVisible();
       });
@@ -185,7 +188,7 @@ describe("<Select />", () => {
 
       const modal = screen.getByTestId("select-modal--desktop");
 
-      expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+      expect(screen.getByTestId(portalIdSelector)).toBeInTheDocument();
       await waitFor(() => {
         expect(modal).toBeVisible();
       });
@@ -240,7 +243,7 @@ describe("<Select />", () => {
 
         // Test firstly for default (isOpen={false}) behaviour
         const select = screen.getByTestId("select");
-        const modalRoot = screen.getByTestId("modal-root");
+        const modalRoot = screen.getByTestId(portalIdSelector);
 
         expect(screen.getByTestId("select-btn")).toBeVisible();
         expect(modalRoot).toBeInTheDocument();
@@ -348,7 +351,7 @@ describe("<Select />", () => {
           </Select>
         );
 
-        expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+        expect(screen.getByTestId(portalIdSelector)).toBeInTheDocument();
         await waitFor(() => {
           expect(screen.getByTestId("select-modal--mobile")).toBeVisible();
         });
@@ -381,7 +384,7 @@ describe("<Select />", () => {
           </Select>
         );
 
-        expect(screen.getByTestId("modal-root")).toBeInTheDocument();
+        expect(screen.getByTestId(portalIdSelector)).toBeInTheDocument();
         await waitFor(() => {
           expect(screen.getByTestId("select-modal")).toBeVisible();
         });

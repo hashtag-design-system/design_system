@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
-import { useClassnames } from "../../utils/hooks";
+import { CONFIG } from "../../config";
+import { useClassnames } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 import { Icon } from "./__helpers__";
-import AMEX from "./__helpers__/brands/AMEX.png";
-import MasterCard from "./__helpers__/brands/MasterCard.png";
-import VISA from "./__helpers__/brands/VISA.jpg";
 
 export const CreditCardBrands = ["VISA", "AMEX", "MasterCard"] as const;
 
@@ -28,13 +26,22 @@ const CreditCard: React.FC<FProps> = ({ brand, creditNum, ownerName, expirationD
     }
   }, []);
 
+  const url = (brand: string) => {
+    const imageRequest = JSON.stringify({
+      bucket: "hashtag.data",
+      key: `credit_card_brands/${brand}`,
+    });
+    const newUrl = CONFIG.CLOUDFRONT_URL + btoa(imageRequest);
+    return newUrl;
+  };
+
   return (
     <div ref={ref} className={classNames} data-testid="credit-card" data-tilt {...rest}>
       <Icon />
       <img
         className={`credit-card__brand ${brand}`}
         id="credit-card"
-        src={brand === "VISA" ? VISA : brand === "AMEX" ? AMEX : brand === "MasterCard" ? MasterCard : undefined}
+        src={url(brand)}
         alt="Credit card brand logo"
         data-testid="credit-card-brand"
       />
@@ -44,7 +51,11 @@ const CreditCard: React.FC<FProps> = ({ brand, creditNum, ownerName, expirationD
         </p>
         {(ownerName || expirationDate) && (
           <div className="credit-card__owner-container">
-            {ownerName && <p className="credit-card__owner" data-testid="credit-card-owner">{ownerName}</p>}
+            {ownerName && (
+              <p className="credit-card__owner" data-testid="credit-card-owner">
+                {ownerName}
+              </p>
+            )}
             {expirationDate && (
               <span className="credit-card__expiration" data-testid="credit-card-expiration">
                 {typeof expirationDate === "string"

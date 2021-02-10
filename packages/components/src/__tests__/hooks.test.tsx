@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Button from "../components/Button";
 import { Base } from "../components/Input/__helpers__";
 import { inputCustomRender } from "../components/Input/__helpers__/utils";
-import { useClassnames, useInputId } from "../utils/hooks";
+import { useClassnames, useInputId, useLocalStorage, UseLocalStorageOptions } from "../utils";
 
 const TestComponent: React.FunctionComponent<React.ComponentProps<"input"> & { state?: "basic" | "hover" | "pressed" }> = ({
   state,
@@ -84,5 +86,53 @@ describe("useDisabled", () => {
 
     expect(input).toBeDisabled();
     expect(input.getAttribute("aria-disabled")).toBeTruthy();
+  });
+});
+
+const TEST_USE_LOCAL_STORAGE_INITIAL = "Test initial value";
+const TEST_USE_LOCAL_STORAGE_NEW_VALUE = "Test";
+
+const TestUseLocalStorage: React.FC<Partial<UseLocalStorageOptions>> = ({ key = "test_key", initialValue }) => {
+  const [storedValue, setStoredValue] = useLocalStorage({ key, initialValue });
+
+  return (
+    <>
+      <Button onClick={() => setStoredValue(TEST_USE_LOCAL_STORAGE_NEW_VALUE)}>Click me!</Button>
+      <div data-testid="div">{storedValue}</div>
+    </>
+  );
+};
+
+describe("useLocalStorage", () => {
+  test("default behabiour", () => {
+    render(<TestUseLocalStorage />);
+    const div = screen.getByTestId("div");
+    const btn = screen.getByTestId("btn");
+
+    expect(div).toBeVisible();
+    expect(div).toHaveTextContent("");
+    expect(btn).toBeVisible();
+    expect(btn.onclick).toBeDefined();
+    expect(btn).toHaveTextContent("Click me!");
+  });
+  test("initialValue", async () => {
+    render(<TestUseLocalStorage initialValue={TEST_USE_LOCAL_STORAGE_INITIAL} />);
+
+    expect(screen.getByTestId("div")).toHaveTextContent(TEST_USE_LOCAL_STORAGE_INITIAL);
+  });
+  test("click <Button />", async () => {
+    render(<TestUseLocalStorage />);
+    const div = screen.getByTestId("div");
+    const btn = screen.getByTestId("btn");
+
+    expect(div).toBeVisible();
+    expect(div).toHaveTextContent(TEST_USE_LOCAL_STORAGE_INITIAL);
+
+    userEvent.click(btn);
+
+    await waitFor(() => {
+      expect(div).not.toHaveTextContent(TEST_USE_LOCAL_STORAGE_INITIAL);
+      expect(div).toHaveTextContent(TEST_USE_LOCAL_STORAGE_NEW_VALUE);
+    });
   });
 });

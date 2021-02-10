@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import CreditCard, { CreditCardProps } from "./index";
 
 export default {
-  title: `${titleGroups.DATA}/CreditCard`,
+  title: `${storybookTitles.DATA}/CreditCard`,
   component: CreditCard,
   argTypes: {
     expirationDate: {

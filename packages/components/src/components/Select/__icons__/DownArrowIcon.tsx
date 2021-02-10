@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { useSelectContext } from "../../../utils/contexts";
+import { useSelectContext } from "../../../utils";
 
 export const DownArrowIcon: React.FunctionComponent = () => {
   const { isOpen } = useSelectContext();

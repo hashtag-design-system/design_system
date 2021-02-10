@@ -1,10 +1,10 @@
 export { Modal } from "./Modal/Modal";
 export { overlayVariants } from "./Modal/Overlay";
-export { overlayCheckStyle } from "./Modal/__helpers__";
-export type { FProps as ModalOverlayFProps, Props as ModalOverlayProps } from "./Modal/Overlay";
-export { createPortalElement } from "./Modal/Portal";
-export type { Props as PortalProps } from "./Modal/Portal";
-export type { ComponentLoading, ComponentProps, ComponentState, InputAutocompleteType, SelectionInputProps } from "./props";
+export { overlayCheckStyle, createPortalElement } from "./Modal/__helpers__";
 export { Base, SelectionInputStates } from "./SelectionInput/Base";
-export type { SelectionInputFProps, SelectionInputState } from "./SelectionInput/Base";
 export { LabelContainer } from "./SelectionInput/LabelContainer";
+
+// Typings
+export type { FProps as ModalOverlayFProps, Props as ModalOverlayProps } from "./Modal/Overlay";
+export type { ComponentLoading, ComponentProps, ComponentState, InputAutocompleteType, SelectionInputProps } from "./props";
+export type { SelectionInputFProps, SelectionInputState } from "./SelectionInput/Base";

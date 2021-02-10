@@ -1,5 +1,6 @@
-@import "@hashtag-design-system/primitives";
-@import "styles/css/colors";
+@use "@hashtag-design-system/primitives/src/globals.scss" as *;
+@import "@hashtag-design-system/primitives/src/index.scss";
+@import "swiper/swiper.scss";
 @import "components/__helpers__/index";
 @import "components/Button/index";
 @import "components/Checkbox/index";
@@ -20,19 +21,7 @@
 @import "components/DatePicker/index";
 @import "components/TimePicker/index";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  @extend .body-16;
-  overflow: auto;
-}
-
-#modal-root {
+##{$portal-selector} {
   position: relative;
   z-index: 999;
 }
@@ -70,7 +59,7 @@ body {
   gap: em(48);
 
   &.credit-card {
-    background-image: url(./credit-card-bg.jfif);
+    background-image: url(./static/credit-card-bg.jfif);
     background-size: cover;
   }
 }

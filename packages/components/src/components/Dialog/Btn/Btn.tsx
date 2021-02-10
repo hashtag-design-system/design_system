@@ -1,6 +1,5 @@
 import React from "react";
-import { useDialogContext } from "../../../utils/contexts";
-import { useClassnames } from "../../../utils/hooks";
+import { useClassnames, useConfigContext, useDialogContext } from "../../../utils";
 import Animated from "../../Animated";
 import Button, { ButtonFProps } from "../../Button";
 import Close from "./Close";
@@ -24,6 +23,10 @@ const Btn: React.FC<FProps> & SubComponents = ({ confirm = false, onClick, child
     props
   );
 
+  const {
+    colors: { grey },
+  } = useConfigContext();
+
   return (
     <Button
       variant={confirm ? "primary" : "secondary"}
@@ -32,7 +35,7 @@ const Btn: React.FC<FProps> & SubComponents = ({ confirm = false, onClick, child
       data-testid="dialog-btn"
       {...rest}
     >
-      {confirm && loading && <Animated.Loading.Spinner size="20px" color="var(--grey-1)" circleProps={{ strokeWidth: 5 }} />}
+      {confirm && loading && <Animated.Loading.Spinner size="20px" color={grey["100"]} circleProps={{ strokeWidth: 5 }} />}
       {children}
     </Button>
   );

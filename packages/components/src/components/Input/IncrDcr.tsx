@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
-import { useClassnames, useDisabled } from "../../utils/hooks";
-import { ACTIONS, reducer, ReducerInitialStateType } from "../../utils/reducers/inputNumber";
+import { useClassnames, useDisabled } from "../../utils";
+import { InputContextProvider } from "../../utils";
+import { ACTIONS, reducer, ReducerInitialStateType } from "./__helpers__";
 import Button from "../Button";
 import { ComponentProps } from "../__helpers__";
 import { InputNumberFProps } from "./index";

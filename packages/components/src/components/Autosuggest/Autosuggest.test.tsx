@@ -66,10 +66,10 @@ describe("<Autosuggest />", () => {
         }
         await waitFor(() => {
           expect(modal).not.toBeVisible();
-        });
+        }, { timeout: 5000 });
         expect(filterInput).not.toHaveFocus();
       }
-    });
+    }, 10000);
   });
   describe("onChange & onSelect", () => {
     test("onSelect", async () => {

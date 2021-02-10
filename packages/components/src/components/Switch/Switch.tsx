@@ -1,22 +1,21 @@
-import { Color } from "framer";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { ColorSystemObj, ConfigVariables } from "../../config";
 import { IconPropType } from "../../typings";
-import { error } from "../../utils";
-import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
+import { error, useClassnames, useDisabled, useInputId, useConfigContext } from "../../utils";
 import { Base, ComponentProps, SelectionInputFProps } from "../__helpers__";
 
-const grey5 = Color("#d6d6d6").toValue();
-const primary = Color("#0303ff").toValue();
-
 // See -> Switch animation in https://codesandbox.io/s/framer-motion-2-layout-animations-kij8p?from-embed
+
+type CustomVariants = Pick<ColorSystemObj, "grey"> & Pick<ConfigVariables, "primary">;
+
 const boxVariants = {
-  on: {
+  on: ({ primary }: CustomVariants) => ({
     backgroundColor: primary,
-  },
-  initial: {
-    backgroundColor: grey5,
-  },
+  }),
+  initial: ({ grey }: CustomVariants) => ({
+    backgroundColor: grey["500"],
+  }),
 };
 
 const circleVariants = {
@@ -66,6 +65,8 @@ const Switch = React.forwardRef<HTMLInputElement, FProps>(
       props
     );
 
+    const { colors: { grey }, variables: { primary } } = useConfigContext();
+
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
       if (state !== "on" && !isDisabled) {
         setIsOn(!isOn);
@@ -94,6 +95,7 @@ const Switch = React.forwardRef<HTMLInputElement, FProps>(
             initial="initial"
             animate={isOn ? "on" : "initial"}
             variants={boxVariants}
+            custom={{ grey, primary } as CustomVariants}
             transition={{ duration: 0.2 }}
             ref={ref}
             onClick={e => handleClick(e)}

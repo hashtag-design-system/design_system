@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Form, { FormHeaderFProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_FORM}/Header`,
+  title: `${storybookTitles.FORM_FORM}/Header`,
   component: Form.Header,
   argTypes: {
     children: {

@@ -1,4 +1,4 @@
-export const titleGroups = {
+export const storybookTitles = {
   FORM: "Form",
   FORM_FORM: "Form/Form",
   FORM_INPUT: "Form/Input",

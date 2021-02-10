@@ -1,5 +1,5 @@
 import React, { ComponentProps } from "react";
-import { useClassnames } from "../../../../utils/hooks";
+import { useClassnames } from "../../../../utils";
 
 type Props = {
   pageNum: number;

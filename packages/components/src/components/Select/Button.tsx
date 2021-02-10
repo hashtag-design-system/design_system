@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelectContext } from "../../utils/contexts";
-import { useClassnames, useDisabled } from "../../utils/hooks";
+import { useClassnames, useDisabled, useSelectContext } from "../../utils";
 import { ButtonProps } from "../Button";
 import { ComponentProps } from "../__helpers__";
 import { DownArrowIcon } from "./__icons__/DownArrowIcon";
@@ -22,7 +21,7 @@ export const Button: React.FC<FProps> = ({ state, showValue = true, style, child
     if (e.code === "Tab") {
       e.currentTarget.blur();
     }
-  }
+  };
 
   useEffect(() => {
     setIsDisabled(isDisabled);

@@ -1,6 +1,5 @@
 import React from "react";
-import { useDialogContext } from "../../../utils/contexts";
-import { useClassnames } from "../../../utils/hooks";
+import { useClassnames, useDialogContext } from "../../../utils";
 import Button, { ButtonFProps } from "../../Button";
 
 export type FProps = ButtonFProps;

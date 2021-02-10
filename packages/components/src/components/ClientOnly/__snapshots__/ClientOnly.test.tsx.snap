@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ClientOnly /> default behaviour & with defaultMounted 1`] = `
+<div
+  data-testid="div"
+>
+  Hey!
+</div>
+`;
+
+exports[`<ClientOnly /> default behaviour & with defaultMounted 2`] = `
+<div
+  data-testid="div"
+>
+  Hey!
+</div>
+`;

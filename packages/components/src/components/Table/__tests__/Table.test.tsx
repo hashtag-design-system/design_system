@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { SortDirection } from "../../../typings";
-import { useSortableData } from "../../../utils/hooks";
+import { useSortableData } from "../../../utils";
 import Table, { TableFProps, TableThProps, TableTrFProps } from "../index";
 
 export type TableTestInitialDataType = {

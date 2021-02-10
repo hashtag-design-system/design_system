@@ -1,8 +1,7 @@
 import React from "react";
-import { DatePickerCalendarOperation } from "../../index";
-import { useDatePickerContext } from "../../../../utils/contexts";
-import { useClassnames } from "../../../../utils/hooks";
+import { useClassnames, useDatePickerContext } from "../../../../utils";
 import Button, { ButtonFProps } from "../../../Button";
+import { DatePickerCalendarOperation } from "../../index";
 
 type Props = {
   operation: DatePickerCalendarOperation;

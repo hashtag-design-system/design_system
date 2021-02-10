@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input, { InputDigitSequenceFProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_INPUT}/DigitSequence`,
+  title: `${storybookTitles.FORM_INPUT}/DigitSequence`,
   component: Input.DigitSequence,
   args: {
     numberOfDigits: 4,

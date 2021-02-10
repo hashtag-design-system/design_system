@@ -5,8 +5,6 @@
   text-align: center;
 }
 
-@include generate-flex();
-
 .state--disabled {
   cursor: not-allowed !important;
 }
@@ -30,15 +28,4 @@
   &::-webkit-scrollbar-corner {
     background-color: transparent;
   }
-}
-
-a,
-td,
-div,
-input,
-select,
-button,
-summary,
-textarea {
-  -webkit-tap-highlight-color: transparent;
 }

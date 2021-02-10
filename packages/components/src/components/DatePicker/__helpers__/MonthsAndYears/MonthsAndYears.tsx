@@ -1,8 +1,8 @@
-import { MONTHS } from "@georgekrax-hashtag/common";
+import { MONTHS } from "@the_hashtag/common";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, Variant } from "framer-motion";
 import React from "react";
-import { useDatePickerContext } from "../../../../utils/contexts";
+import { useDatePickerContext } from "../../../../utils";
 import Button from "../../../Button";
 import { ACTIONS } from "../index";
 

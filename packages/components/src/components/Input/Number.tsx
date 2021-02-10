@@ -1,11 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useMemo, useReducer, useState } from "react";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
-import { useDisabled } from "../../utils/hooks";
-import { ACTIONS, reducer, ReducerInitialStateType } from "../../utils/reducers/inputNumber";
+import { InputContextProvider, useDisabled } from "../../utils";
 import Button from "../Button";
 import { InputFProps } from "./index";
 import { BaseNumber } from "./__helpers__";
+import { ACTIONS, reducer, ReducerInitialStateType } from "./__helpers__/numberReducer";
 
 // See -> http://jsfiddle.net/8edLbmtz/
 
@@ -63,6 +62,7 @@ const Number: React.FunctionComponent<FProps> = ({
   const [isBtnShown, setIsBtnShown] = useState<boolean>(false || state === "hover" || state === "focus" || state === "disabled");
   const [isUp, setIsUp] = useState<boolean>(false);
   const [isDown, setIsDown] = useState<boolean>(false);
+  // const overlayControls = useAnimation();
 
   const increment = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
     e.preventDefault();
@@ -140,6 +140,22 @@ const Number: React.FunctionComponent<FProps> = ({
         }}
       >
         <BaseNumber isBtnShown={fIsBtnShown} data-testid="input-number">
+          {/* <motion.div
+            className="input-number__overlay"
+            animate={overlayControls}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "90%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "white",
+              height: "75%",
+              opacity: 0,
+              user-select: "none",
+              pointer-events: "none",
+            }}
+          /> */}
           <AnimatePresence>
             {fIsBtnShown && (
               <motion.div

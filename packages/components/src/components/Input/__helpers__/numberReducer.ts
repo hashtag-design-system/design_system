@@ -1,4 +1,4 @@
-import { InputFProps } from "../../components/Input";
+import { InputFProps } from "..";
 
 // ------------ Reducer types ------------ //
 export const ACTIONS = {

@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input from "../index";
 
 export default {
-  title: `${titleGroups.FORM_INPUT}/Mutliline`,
+  title: `${storybookTitles.FORM_INPUT}/Multiline`,
   component: Input.Multiline,
   argTypes: {
     floatingplaceholder: {

@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Select from "../index";
 import { StoriesComponent } from "./utils";
 
 export default {
-  title: `${titleGroups.FORM_SELECT}/Filter`,
+  title: `${storybookTitles.FORM_SELECT}/Filter`,
   component: Select.Filter,
 } as Meta;
 

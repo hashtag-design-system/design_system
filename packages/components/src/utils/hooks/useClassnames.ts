@@ -1,6 +1,6 @@
 import { ComponentProps } from "../../components/__helpers__";
 import { AllProps } from "../../typings";
-import { addClassnames } from "../styles";
+import { addClassnames } from "../index";
 
 type useClassnamesConfig = {
   stateToRemove?: { defaultState?: string } & Pick<ComponentProps<any, false, string>, "state">;

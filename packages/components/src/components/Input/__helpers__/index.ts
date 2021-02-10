@@ -7,3 +7,4 @@ export * from "./HelpTextContainer/HelpTextContainer";
 export * from "./InputContainer/InputContainer";
 export * from "./OuterFieldContainer/OuterFieldContainer";
 export * from "./PasswordBoxes/PasswordBoxes";
+export * from "./numberReducer";

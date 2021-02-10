@@ -1,9 +1,8 @@
 import { range } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper.scss";
-import { useClassnames, useIsMobile } from "../../../../utils/hooks";
+import { useClassnames, useIsMobile } from "../../../../utils";
 import Input, { InputNumberFProps } from "../../../Input";
 
 export type TimePickerSwiperColProps = {
@@ -12,6 +11,7 @@ export type TimePickerSwiperColProps = {
   step?: number;
   padMaxLength?: number;
   inputProps?: Omit<InputNumberFProps, "max" | "min" | "step" | "showBtnControl">;
+  mobileView?: boolean;
 };
 
 export type TimePickerSwiperColFProps = TimePickerSwiperColProps & Swiper;
@@ -24,13 +24,14 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
   padMaxLength = 2,
   style,
   inputProps = {},
+  mobileView,
   ...props
 }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [swiper, setSwiper] = useState<SwiperClass>();
   const [classNames, restProps] = useClassnames("time-picker", props);
   const [inputClassNames, inputRestProps] = useClassnames("time-picker__input", inputProps);
-  const { isMobile } = useIsMobile();
+  const { isMobile } = useIsMobile(mobileView);
 
   /* istanbul ignore next */
   const { height = isMobile ? 240 : 160, ...rest } = restProps;
@@ -70,15 +71,23 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
     }
   };
 
+  const calcRandom = useCallback(() => {
+    const res = Math.floor((Math.random() * (max - min + 1 + min)) / 2);
+    // Never be equal to min (eg. 0)
+    /* istanbul ignore next */
+    if (res === min) {
+      calcRandom();
+    }
+    return res;
+  }, []);
+
   useEffect(() => {
     if (swiper && isMobile) {
-      swiper.slideToLoop(Math.floor(Math.random() * (max - min + 1)) + min);
       setTimeout(() => {
-        /* istanbul ignore next */
         swiper.slideToLoop(initialSlide, 750);
-      }, 750);
+      }, 500);
     }
-  }, [min, max, initialSlide, isMobile, swiper]);
+  }, [isMobile, swiper]);
 
   return (
     <div style={{ position: "relative", width: "max-content" }}>
@@ -101,7 +110,7 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
         slidesPerView={3}
         centeredSlides
         grabCursor
-        initialSlide={initialSlide}
+        initialSlide={isMobile && calcRandom()}
         slideToClickedSlide
         freeMode
         height={height}

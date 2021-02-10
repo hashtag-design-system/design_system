@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../../config/storybook";
+import { storybookTitles } from "../../../../config";
 import Animated from "../../index";
 import { AnimatedLoadingSpinnerProps } from "../index";
 
 export default {
-  title: `${titleGroups.ANIMATED_LOADING}/Spinner`,
+  title: `${storybookTitles.ANIMATED_LOADING}/Spinner`,
   component: Animated.Loading.Spinner,
   args: {
     size: "5em",

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { SelectContextProvider } from "../../utils/contexts";
-import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
+import { SelectContextProvider, useClassnames, useClickOutside, useIsMobile } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 import { Button } from "./Button";
 import Countries from "./Countries";
@@ -70,7 +69,6 @@ const Select: React.FC<FProps> & SubComponents = ({
   const [isDisabled, setIsDisabled] = useState(false);
   const [classNames, rest] = useClassnames("select__box__container", props);
   const { isMobile } = useIsMobile(mobileView);
-  
 
   useEffect(() => {
     if (onOutsideClick) {

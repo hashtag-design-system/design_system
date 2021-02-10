@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
-import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
+import { useClassnames, useDisabled, useInputId } from "../../utils";
+import { InputContextProvider } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 import { InputSBProps } from "./index";
 import { InputContainer, OuterFieldContainer } from "./__helpers__";

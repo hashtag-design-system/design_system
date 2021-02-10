@@ -1,6 +1,6 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
-import { useClassnames, useDisabled } from "../../utils/hooks";
+import { useClassnames, useDisabled } from "../../utils";
 
 // const variants = {
 //   checked: { pathLength: 1 },

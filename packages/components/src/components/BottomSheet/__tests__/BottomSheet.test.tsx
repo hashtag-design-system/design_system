@@ -2,11 +2,13 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DraggableProps } from "framer-motion";
 import { useState } from "react";
+import { CONFIG } from "../../../config";
 import Button from "../../Button";
 import Dialog from "../../Dialog";
 import Input from "../../Input";
-import { BottomSheetChangeInfo, BottomSheetPosition } from "../BottomSheet";
-import BottomSheet, { BottomSheetFProps } from "../index";
+import BottomSheet, { BottomSheetChangeInfo, BottomSheetFProps, BottomSheetPosition } from "../index";
+
+const portalIdSelector = CONFIG.DEFAULT_PORTAL_ID_SELECTOR;
 
 const TestChildren: React.FC<Partial<BottomSheetFProps>> = ({ isShown: propsIsShown, ...props }) => {
   const [isShown, setIsShown] = useState(true);
@@ -22,19 +24,29 @@ const TestChildren: React.FC<Partial<BottomSheetFProps>> = ({ isShown: propsIsSh
   );
 };
 
-const checkNotShown = () => {
-  const bottomSheet = screen.queryByTestId("bottom-sheet");
-  const modalRoot = screen.getByTestId("modal-root");
+const checkNotShown = async () => {
+  await waitFor(() => {
+    const bottomSheet = screen.queryByTestId("bottom-sheet");
+    const modalRoot = screen.getByTestId(portalIdSelector);
 
-  expect(bottomSheet).toBeNull();
-  expect(modalRoot.children).toHaveLength(0);
-  expect(modalRoot).not.toContainElement(bottomSheet);
+    expect(bottomSheet).toBeNull();
+    expect(modalRoot.children).toHaveLength(0);
+    expect(modalRoot).not.toContainElement(bottomSheet);
+  });
 };
 
-const checkY = (y: number) => {
+const checkY = async (y: number) => {
   const bottomSheet = screen.getByTestId("bottom-sheet");
-  expect(bottomSheet).toBeVisible();
-  expect(bottomSheet.style.transform).toContain(`translate3d(0px, ${y}px, 0)`);
+  await waitFor(() => {
+    expect(bottomSheet).toBeVisible();
+  });
+
+  await waitFor(
+    () => {
+      expect(bottomSheet.style.transform).toContain(y + "px");
+    },
+    { timeout: 2500 }
+  );
 };
 
 describe("<BottomSheet />", () => {
@@ -55,36 +67,28 @@ describe("<BottomSheet />", () => {
   test("with isShown={false}", async () => {
     render(<BottomSheet isShown={false} />);
 
-    checkNotShown();
+    await checkNotShown();
   });
   test("with defaultY", async () => {
     const testDefaultY = 200;
     render(<BottomSheet hugContentsHeight={false} isShown defaultY={testDefaultY} />);
 
-    await waitFor(() => {
-      checkY(testDefaultY);
-    });
+    await checkY(testDefaultY);
   });
   test('with state="expanded"', async () => {
     render(<BottomSheet isShown state="expanded" />);
 
-    await waitFor(() => {
-      checkY(0);
-    });
+    await checkY(0);
   });
   test('with state="middle"', async () => {
     render(<BottomSheet isShown hugContentsHeight={false} state="middle" />);
 
-    await waitFor(() => {
-      checkY(400);
-    });
+    await checkY(400);
   });
   test('with state="input-focused"', async () => {
     render(<BottomSheet isShown hugContentsHeight={false} state="input-focused" />);
 
-    await waitFor(() => {
-      checkY(400 - 75);
-    });
+    await checkY(400 - 75);
   });
   test("with hugContents={false}", async () => {
     const onChange = jest.fn((y: number) => y);
@@ -94,19 +98,17 @@ describe("<BottomSheet />", () => {
 
     await waitFor(() => {
       expect(bottomSheet).toBeVisible();
-      expect(bottomSheet.style.transform).toContain(`translate3d(0px, 400px, 0)`);
-    });
+      expect(bottomSheet.style.transform).toContain("400px");
+    }, { timeout: 5000 });
     expect(onChange).toHaveBeenCalled();
     expect(onChange).toHaveLastReturnedWith(400);
-  });
+  }, 7500);
   test("click outside", async () => {
     render(<TestChildren />);
 
-    userEvent.click(screen.getByTestId("modal"));
+    userEvent.click(screen.getByTestId(portalIdSelector));
 
-    await waitFor(() => {
-      checkNotShown();
-    });
+    await checkNotShown();
   });
   test("onAnimationComplete", async () => {
     const onAnimationComplete = jest.fn(() => true);
@@ -117,13 +119,15 @@ describe("<BottomSheet />", () => {
       expect(bottomSheet).toBeVisible();
     });
 
-    expect(onAnimationComplete).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(onAnimationComplete).toHaveBeenCalledTimes(1);
+    });
     expect(onAnimationComplete.mock.results[0].value).toBeTruthy();
   });
   test("onChange", async () => {
     type OnChangeType = { y: number; info: BottomSheetChangeInfo };
     const onChange = jest.fn((y: number, info: BottomSheetChangeInfo): OnChangeType => ({ y, info }));
-    render(<TestChildren onChange={(y, info) => onChange(y, info)} />);
+    render(<TestChildren onChange={(y, info) => onChange(y, info)} hugContentsHeight={false} />);
     const bottomSheet = screen.getByTestId("bottom-sheet");
     const btn = screen.getByTestId("btn");
 
@@ -146,7 +150,7 @@ describe("<BottomSheet />", () => {
     const defaultY = 400;
     await waitFor(() => {
       checkOnChangeResults("middle", { top: expect.any(Number), bottom: expect.any(Number) });
-    });
+    }, { timeout: 5000 });
 
     act(() => {
       btn.click();
@@ -154,8 +158,8 @@ describe("<BottomSheet />", () => {
 
     await waitFor(() => {
       checkOnChangeResults("hidden", { top: 0, bottom: expect.any(Number) });
-    });
-  });
+    }, { timeout: 5000 });
+  }, 12500);
   test("with onChildrenHeight and onWidth", async () => {
     const onChildrenHeight = jest.fn(height => height);
     const onWidth = jest.fn(width => width);
@@ -185,12 +189,15 @@ describe("<BottomSheet />", () => {
 
       const defaultY = 400;
       const inputFocusedYString = `, ${inputFocusedMove <= defaultY ? defaultY - inputFocusedMove : 0}px,`;
-      const defaultYString = `, ${defaultY}px,`;
+      const defaultYString = defaultY + "px";
       await waitFor(() => {
         bottomSheet = screen.getByTestId("bottom-sheet");
         expect(bottomSheet).toBeVisible();
-        expect(bottomSheet.style.transform).toContain(defaultYString);
       });
+
+      await waitFor(() => {
+        expect(bottomSheet.style.transform).toContain(defaultYString);
+      }, { timeout: 5000 });
 
       userEvent.tab();
 
@@ -211,7 +218,8 @@ describe("<BottomSheet />", () => {
         expect(bottomSheet.style.transform).toContain(defaultYString);
         expect(bottomSheet.style.transform).not.toContain(inputFocusedYString);
       });
-    }
+    },
+    7500
   );
   describe("with children", () => {
     test("<React.Fragment />", async () => {
@@ -240,7 +248,7 @@ describe("<BottomSheet />", () => {
     test("dismiss() function", async () => {
       render(<TestChildren />);
       const bottomSheet = screen.getByTestId("bottom-sheet");
-      const btn = screen.getByTestId("btn");
+      const btn = screen.getByText("Button");
 
       await waitFor(() => {
         expect(bottomSheet).toBeVisible();
@@ -250,13 +258,9 @@ describe("<BottomSheet />", () => {
       expect(bottomSheet).toContainElement(btn);
       expect(btn.onclick).toBeDefined();
 
-      act(() => {
-        btn.click();
-      });
+      userEvent.click(btn);
 
-      await waitFor(() => {
-        checkNotShown();
-      });
+      await checkNotShown();
     });
   });
 });

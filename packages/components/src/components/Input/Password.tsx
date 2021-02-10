@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IconPropType } from "../../typings";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames } from "../../utils";
 import Input, { InputFProps, InputSBProps } from "./index";
 import { PasswordBoxes } from "./__helpers__";
 

@@ -1,5 +1,6 @@
 import Dialog from "./Dialog";
 
+export { default as Dialog } from "./Dialog";
 export type { Props as DialogBtnProps, FProps as DialogBtnFProps } from "./Btn/Btn";
 export type { FProps as DialogBtnCloseFProps } from "./Btn/Close";
 export type { FProps as DialogBtnGroupFProps } from "./Btn/Group";

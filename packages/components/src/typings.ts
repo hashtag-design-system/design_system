@@ -1,6 +1,7 @@
 import { HTMLMotionProps } from "framer-motion";
 import React from "react";
 import { ComponentProps } from "./components/__helpers__";
+import { CONFIG } from "./config";
 
 export const UserSelectionInputEventTypes = ["click", "space"] as const;
 export type UserSelectionInputEventType = typeof UserSelectionInputEventTypes[number];
@@ -8,17 +9,6 @@ export type UserSelectionInputEventType = typeof UserSelectionInputEventTypes[nu
 export type IconPropType = React.ReactNode;
 
 export type SortDirection = "asc" | "desc";
-
-export interface GenerateIdParams {
-  length: number;
-  specialCharacters?: string;
-  lowerCase?: boolean;
-  upperCase?: boolean;
-  numbersOnly?: boolean;
-  numbers?: boolean;
-  hyphen?: boolean;
-  underscore?: boolean;
-}
 
 export type AllProps = React.ComponentPropsWithoutRef<any> | ComponentProps<"input", true, string> | HTMLMotionProps<any>;
 
@@ -46,3 +36,10 @@ export type ReducerActionType<
       });
 
 export type ValueOf<T> = T[keyof T];
+
+export type IconPosition = typeof CONFIG.iconPositions[number];
+
+export type IconSize = 24 | 36;
+
+export type LiteralUnion<T extends U, U = string> = T | (U & {});
+export type NumberLiteralUnion<T extends U, U = number> = T | (U & {});

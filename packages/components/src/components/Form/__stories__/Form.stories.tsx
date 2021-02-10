@@ -1,11 +1,11 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Button from "../../Button";
 import Input from "../../Input";
 import Form, { FormProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_FORM}/Form`,
+  title: `${storybookTitles.FORM_FORM}/Form`,
   component: Form,
   argTypes: {
     onSubmit: { action: "submitted" },
