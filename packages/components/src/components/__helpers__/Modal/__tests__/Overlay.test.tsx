@@ -1,11 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { CONFIG } from "../../../../config";
 import { Modal } from "../Modal";
 import { overlayCheckStyle } from "../__helpers__";
 
+const portalIdSelector = CONFIG.PORTAL_ID_SELECTOR;
 describe("<Modal.Overlay />", () => {
   test("default behaviour", () => {
     render(<Modal.Overlay isShown={false}>Test</Modal.Overlay>);
-    const modalRoot = screen.getByTestId("modal-root");
+    const modalRoot = screen.getByTestId(portalIdSelector);
 
     expect(modalRoot).toBeInTheDocument();
     expect(modalRoot).toBeVisible();
@@ -17,12 +19,11 @@ describe("<Modal.Overlay />", () => {
         <div>Test</div>
       </Modal.Overlay>
     );
-    const modalRoot = screen.getByTestId("modal-root");
+    const modalRoot = screen.getByTestId(portalIdSelector);
     const modal = screen.getByTestId("modal");
 
     expect(modalRoot).toBeInTheDocument();
     expect(modalRoot).toBeVisible();
-    // Only inside a HTMLElement it is considered a children
     expect(modalRoot.children).toHaveLength(1);
 
     await waitFor(() => {

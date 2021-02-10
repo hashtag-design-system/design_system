@@ -8,7 +8,7 @@ import {
   Transition,
   Tween,
 } from "framer-motion";
-import { useAnimateCheckmark, useClassnames } from "../../utils/hooks";
+import { useAnimateCheckmark, useClassnames } from "../../utils";
 
 // See -> https://codesandbox.io/s/framer-motion-svg-checkbox-kqm7y?file=/src/Example.tsx:137-300
 

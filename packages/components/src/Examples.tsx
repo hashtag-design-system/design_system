@@ -3,6 +3,7 @@ import Autosuggest from "./components/Autosuggest";
 import BottomSheet from "./components/BottomSheet";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
+import TimePicker from "./components/TimePicker";
 import DatePicker from "./components/DatePicker";
 import Dialog from "./components/Dialog";
 import Form from "./components/Form";
@@ -14,9 +15,9 @@ import Select from "./components/Select";
 import Slider from "./components/Slider";
 import Switch from "./components/Switch";
 import Table from "./components/Table";
-import TimePicker from "./components/TimePicker";
+// import TimePicker from "./components/TimePicker";
 import { Modal } from "./components/__helpers__";
-import { useSortableData } from "./utils/hooks";
+import { ConfigContextType, useConfigContext, useSortableData } from "./utils";
 
 type InitialDataType = {
   id: number;
@@ -38,6 +39,18 @@ const options = [
   { value: "colombia", label: "Colombia" },
   { value: "sweden", label: "Sweden" },
 ];
+
+const TestGenericeConfigProvider: React.FC = () => {
+  const {
+    colors: { me },
+    variables: {
+      colors: { hey },
+      breakpoints: { skg },
+    },
+  } = useConfigContext<ConfigContextType<{ me?: string }, { colors: { hey: string } }, { skg: string }, false>>();
+
+  return <div>{JSON.stringify({ me: "string" })}</div>;
+};
 
 const Examples: React.FC = () => {
   const [isShown, setIsShown] = useState(false);
@@ -62,6 +75,18 @@ const Examples: React.FC = () => {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, voluptates. Doloremque nemo, earum corporis error eum vero nostrum nesciunt, reiciendis dolorum tempora vitae voluptatum reprehenderit nam fuga beatae temporibus dolores!",
         }}
       />
+      <TimePicker
+          bottomSheetProps={{
+            isShown: isShown,
+            onDismiss: () => setIsShown(false),
+          }}
+        >
+          <TimePicker.Content showLabels={{ hasHours: true, hasMinutes: true, hasSeconds: true }}>
+            <TimePicker.Hours />
+            <TimePicker.Minutes />
+            <TimePicker.Seconds onSlideChange={swiper => console.log(swiper.realIndex)} />
+          </TimePicker.Content>
+        </TimePicker>
       <Pagination
         totalPages={10}
         // currentPage={page}
@@ -333,7 +358,7 @@ const Examples: React.FC = () => {
           <div style={{ height: 800, width: "100%", background: "blue" }}></div>
         </Dialog.Content>
       </BottomSheet>
-      <TimePicker
+      {/* <TimePicker
         bottomSheetProps={{
           isShown: true,
         }}
@@ -343,7 +368,7 @@ const Examples: React.FC = () => {
           <TimePicker.Minutes />
           <TimePicker.Seconds onSlideChange={swiper => console.log(swiper.realIndex)} />
         </TimePicker.Content>
-      </TimePicker>
+      </TimePicker> */}
       <Form onSubmit={d => console.log(d)} defaultValues={{ text: "georgerkax", number: 5 }}>
         <Input name="text" placeholder="Placeholder" floatingplaceholder={true} />
         <Input.Number name="number" />

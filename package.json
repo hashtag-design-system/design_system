@@ -8,6 +8,8 @@
     "build": "cd packages/components && yarn build; cd ../icons && yarn build",
     "dependabot": "git pull; yarn"
   },
+  "author": "George Krachtopoulos <@georgekrax>",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.14",
     "@types/node": "^14.14.7",
@@ -25,11 +27,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.2",
     "lerna": "^3.22.1",
-    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "typescript": "^4.0.3"
-  },
-  "dependencies": {
-    "@hashtag-design-system/primitives": "1.0.20"
   }
 }

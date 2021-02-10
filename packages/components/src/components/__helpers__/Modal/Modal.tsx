@@ -8,7 +8,7 @@ type SubComponents = {
 };
 
 export const Modal: React.FC & SubComponents = () => {
-  return <div></div>;
+  return <></>;
 };
 
 Modal.displayName = "Modal";

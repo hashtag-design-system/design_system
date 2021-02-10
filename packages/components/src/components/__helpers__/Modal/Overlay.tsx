@@ -1,8 +1,8 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import React, { useMemo } from "react";
-import { useClassnames } from "../../../utils/hooks";
+import { useClassnames } from "../../../utils";
 import { ComponentProps } from "../index";
-import { Portal, Props as PortalProps } from "./Portal";
+import { Portal } from "./Portal";
 
 export const overlayVariants = {
   hidden: {
@@ -26,10 +26,10 @@ export type Props = {
   children: React.ReactNode;
 };
 
-export type FProps = Props & ComponentProps<"div", true> & HTMLMotionProps<"div"> & PortalProps;
+export type FProps = Props & ComponentProps<"div", true> & HTMLMotionProps<"div">;
 
 export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
-  ({ root, isShown = false, blur, grayscale, opacity = 1, background = { color: "dark" }, style, children, ...props }, ref) => {
+  ({ isShown = false, blur, grayscale, opacity = 1, background = { color: "dark" }, style, children, ...props }, ref) => {
     const [classNames, rest] = useClassnames<Partial<FProps>>("modal", props);
 
     const backdropFilter = [
@@ -48,7 +48,7 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
     }, [background]);
 
     return isShown ? (
-      <Portal root={root}>
+      <Portal>
         <motion.div
           className={classNames}
           style={{

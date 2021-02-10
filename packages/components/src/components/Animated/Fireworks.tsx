@@ -1,7 +1,6 @@
 import React from "react";
-import { listKeys } from "../../config";
-import { range } from "../../utils";
-import { useClassnames } from "../../utils/hooks";
+import { CONFIG } from "../../config";
+import { range, useClassnames } from "../../utils";
 import { ComponentProps } from "../__helpers__/index";
 import { AnimationType, CSSProperties } from "./__helpers__";
 
@@ -48,7 +47,7 @@ const Fireworks: React.FC<FProps> = ({
       {range(1, totalFireworks).map((_, i) => {
         return (
           <div
-            key={listKeys.FIREWORKS_EXPLOSION + i}
+            key={CONFIG.listKeys.FIREWORKS_EXPLOSION + i}
             className="fireworks__explosion"
             style={{ transform: `rotate(${i * (360 / totalFireworks)}deg) translateY(-15px)` }}
           ></div>

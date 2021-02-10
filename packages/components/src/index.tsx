@@ -1,14 +1,34 @@
-import dayjs from "dayjs";
-import isToday from "dayjs/plugin/isToday";
-import toObject from "dayjs/plugin/toObject";
-import minMax from "dayjs/plugin/minMax";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-dayjs.extend(isToday);
-dayjs.extend(toObject);
-dayjs.extend(minMax);
+// Components
+export * from "./components/Animated";
+export * from "./components/Autosuggest";
+export * from "./components/BottomSheet";
+export * from "./components/Button";
+export * from "./components/Checkbox";
+export * from "./components/CreditCard";
+export * from "./components/DatePicker";
+export * from "./components/Dialog";
+export * from "./components/Dropdown";
+export * from "./components/Form";
+export * from "./components/Input";
+export * from "./components/Pagination";
+export * from "./components/RadioButton";
+export * from "./components/Select";
+export * from "./components/Slider";
+export * from "./components/Switch";
+export * from "./components/Table";
+export * from "./components/TimePicker";
+export * from "./components/__helpers__";
+export * from "./components/ConfigProvider";
+
+// Config
+export * from "./config";
+
+// Utils
+export * from "./utils";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,8 +36,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister();

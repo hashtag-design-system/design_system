@@ -1,5 +1,5 @@
-import { calculatePercentage, calculateValue, round, snakeCase } from "../utils";
-import { kebabCase } from "../utils/caseStyles";
+import { calculatePercentage, calculateValue, round, snakeCase } from "..";
+import { kebabCase } from "../utils";
 
 describe("calculate.ts", () => {
   test("calculateValue", () => {

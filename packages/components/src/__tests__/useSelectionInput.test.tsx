@@ -5,9 +5,8 @@ import { useEffect } from "react";
 import Checkbox, { CheckboxState } from "../components/Checkbox";
 import RadioButton from "../components/RadioButton";
 import { UserSelectionInputEventType, UserSelectionInputEventTypes } from "../typings";
-import { checkSelectionInput, clickOrType } from "../utils";
-import { useSelectionInput } from "../utils/hooks";
-import { SelectionInputGroupObj, UseSelectionInputOptions } from "../utils/hooks/useSelectionInput";
+import { checkSelectionInput, clickOrType, useSelectionInput } from "../utils";
+import { SelectionInputGroupObj, UseSelectionInputOptions } from "../utils";
 
 const TEST_CHILDREN_LENGTH = 5;
 
@@ -275,8 +274,8 @@ describe("useSelectionInput(", () => {
         } else if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) {
           return true;
         }
-        return false
-      })
+        return false;
+      });
       // [false, true, true, true, false];
       render(<TestChildren shift defaultChecked={defaultChecked} />);
       const checkboxes = Array.from(screen.getAllByTestId("checkbox"));
