@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePercentage, calculateValue } from "../../utils";
-import { InputContextProvider } from "../../utils/contexts/InputContext";
-import { SliderContextProvider } from "../../utils/contexts/SliderContext";
-import { useClassnames, useDisabled } from "../../utils/hooks";
+import { calculatePercentage, calculateValue, useClassnames, useDisabled } from "../../utils";
+import { InputContextProvider, SliderContextProvider } from "../../utils";
 import Input from "../Input";
 import { SliderFProps } from "./index";
 import { SliderThumbProp } from "./Slider";

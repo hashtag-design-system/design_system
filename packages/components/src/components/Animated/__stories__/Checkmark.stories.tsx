@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Animated, { AnimatedCheckmarkSBProps } from "../index";
 
 export default {
-  title: `${titleGroups.ANIMATED}/Checkmark`,
+  title: `${storybookTitles.ANIMATED}/Checkmark`,
   component: Animated.Checkmark,
   args: {
     size: 35,

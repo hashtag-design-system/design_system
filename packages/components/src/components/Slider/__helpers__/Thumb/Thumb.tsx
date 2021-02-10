@@ -1,5 +1,5 @@
 import React from "react";
-import { useSliderContext } from "../../../../utils/contexts/SliderContext";
+import { useSliderContext } from "../../../../utils";
 import { ComponentProps } from "../../../__helpers__";
 import { SliderFProps } from "../../index";
 
@@ -22,7 +22,7 @@ export const Thumb: React.FunctionComponent<FProps> = ({
   onMouseOver,
 }) => {
   const { formatRegExp } = thumb;
-  const {  max, calcPercentage } = useSliderContext();
+  const { max, calcPercentage } = useSliderContext();
   const newVal = className?.includes("right") && max !== undefined ? parseFloat(max.toString()) - value : value;
 
   return (

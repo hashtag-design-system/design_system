@@ -1,5 +1,5 @@
 import React from "react";
-import { useInputContext } from "../../../../utils/contexts/InputContext";
+import { useInputContext } from "../../../../utils";
 import { DEFAULT_PADDING, EM_REM_MULTIPLIER } from "../FieldContainer/FieldContainer";
 
 type Props = {

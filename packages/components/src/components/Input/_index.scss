@@ -377,15 +377,18 @@
 }
 
 .input-incr-dcr {
-  padding: em(4);
+  padding: 0.25em;
   height: em(28);
   text-align: center;
+  width: 4.25em;
+  height: 100%;
+  border-radius: $input-border-radius + 4;
 
   &__container {
     @extend .flex-row-center-center;
     padding: 0;
     width: auto;
-    height: auto;
+    height: 2.5em;
     gap: em(16);
   }
 
@@ -393,23 +396,28 @@
     width: rem(32);
     height: rem(32);
     padding: 0.5em;
-    background-color: lighten($primary, 40);
+    background-color: lighten($primary, 42);
+    align-self: center;
 
     @include path-classNames() {
       stroke: $primary;
     }
 
     @include disabled-classNames() {
-      background-color: $grey-4 !important;
+      background-color: $grey-5 !important;
+
+      @include breakpoint("md") {
+        background-color: $grey-6 !important;
+      }
 
       @include path-classNames() {
-        stroke: $grey-7 !important;
+        stroke: $grey-9 !important;
       }
     }
 
     &:not([disabled]) {
       @include hover-classNames() {
-        background-color: lighten($primary, 30);
+        background-color: lighten($primary, 37);
       }
     }
   }

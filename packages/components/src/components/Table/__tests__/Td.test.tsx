@@ -4,7 +4,7 @@ import Table from "../index";
 const Wrapper: React.FC = ({ children }) => {
   return (
     <Table>
-      <Table.TBody><Table.Tr>{children}</Table.Tr></Table.TBody>
+      <Table.TBody><Table.Tr idx={0}>{children}</Table.Tr></Table.TBody>
     </Table>
   );
 };

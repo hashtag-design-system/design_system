@@ -1,9 +1,8 @@
 import React from "react";
-import errors from "../../../config/errors";
-import { error } from "../../../utils";
-import { useInputContext } from "../../../utils/contexts/InputContext";
-import { useClassnames, useDisabled } from "../../../utils/hooks";
-import { ACTIONS } from "../../../utils/reducers/inputNumber";
+import { CONFIG } from "../../../config";
+import { error, useClassnames, useDisabled } from "../../../utils";
+import { useInputContext } from "../../../utils";
+import { ACTIONS } from "./numberReducer";
 import Input from "../index";
 
 type Props = {
@@ -37,7 +36,7 @@ export const BaseNumber: React.FunctionComponent<Props> = ({ isBtnShown, childre
   const isDisabled = useDisabled(props, state);
 
   if (dispatch === undefined) {
-    error(errors.SOMETHING_WENT_WRONG);
+    error(CONFIG.ERRORS.SOMETHING_WENT_WRONG);
     return null;
   }
 

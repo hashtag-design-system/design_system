@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input from "../../Input";
 import Form, { FormGroupProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_FORM}/Group`,
+  title: `${storybookTitles.FORM_FORM}/Group`,
   component: Form.Group,
 } as Meta;
 

@@ -1,5 +1,6 @@
 import Animated from "./Animated";
 
+export { default as Animated } from "./Animated";
 export type {
   FProps as AnimatedCheckmarkFProps,
   Props as AnimatedCheckmarkProps,

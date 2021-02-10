@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../../config/storybook";
+import { storybookTitles } from "../../../../config";
 import Animated from "../../index";
 import { AnimatedLoadingDotsProps } from "../index";
 
 export default {
-  title: `${titleGroups.ANIMATED_LOADING}/Dots`,
+  title: `${storybookTitles.ANIMATED_LOADING}/Dots`,
   component: Animated.Loading.Dots,
   args: {
     totalDots: 3,

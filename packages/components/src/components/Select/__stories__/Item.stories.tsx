@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Select, { SelectItemSBProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_SELECT}/Item`,
+  title: `${storybookTitles.FORM_SELECT}/Item`,
   component: Select.Item,
   argTypes: {
     content: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useInputContext } from "../../../../utils/contexts/InputContext";
+import { useInputContext } from "../../../../utils";
 import { HelpTextContainer } from "../HelpTextContainer/HelpTextContainer";
 
 export const InputContainer: React.FC = ({ children }) => {

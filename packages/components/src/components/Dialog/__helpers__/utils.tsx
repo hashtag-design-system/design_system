@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import React from "react";
-import { DialogContextProvider, DialogContextType } from "../../../utils/contexts";
+import { DialogContextProvider, DialogContextType } from "../../../utils";
 
 export const defaultProps: Omit<DialogContextType, "handleDismiss"> = {
   hasBtnGroup: false,

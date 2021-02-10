@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Animated, { AnimatedFireworksProps } from "../index";
 
 export default {
-  title: `${titleGroups.ANIMATED}/Fireworks`,
+  title: `${storybookTitles.ANIMATED}/Fireworks`,
   component: Animated.Fireworks,
   parameters: {
     backgrounds: { default: "dark" },

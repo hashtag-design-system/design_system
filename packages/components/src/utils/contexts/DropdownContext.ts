@@ -10,10 +10,9 @@ type DropdownContextType = {
   handleClick?: (e: React.MouseEvent<HTMLInputElement | SVGSVGElement>) => void;
 };
 
-const DropdownContext = React.createContext<DropdownContextType>({
+export const DropdownContext = React.createContext<DropdownContextType>({
   isVisible: false,
   helptext: false,
   label: false,
 });
 
-export default DropdownContext;

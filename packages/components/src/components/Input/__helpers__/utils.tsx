@@ -1,7 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import React from "react";
-import { InputContextProvider } from "../../../utils/contexts/InputContext";
-import { generateInputId } from "../../../utils/hooks/useInputId";
+import { InputContextProvider, generateInputId } from "../../../utils";
 import { InputFProps } from "../index";
 
 export const defaultProps: InputFProps = {

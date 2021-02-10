@@ -1,8 +1,8 @@
 import { debounce } from "lodash";
 import React, { useCallback, useState } from "react";
-import { useSelectContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useSelectContext, useAutosuggest } from "../../utils";
 import Input, { InputFProps } from "../Input";
+import { SelectedItems } from "./Select";
 
 // Big thanks to -> https://dev.to/_martinwheeler_/create-a-react-search-bar-that-highlights-your-results-4hdh
 
@@ -15,26 +15,29 @@ export type Props = {
 export type FProps = Props & InputFProps;
 
 export const Filter: React.FunctionComponent<FProps> = React.memo(
-  ({ defaultValue, filterById, bold = true, state, debounceMs = 250, onChange, onKeyDown, ...props }) => {
+  ({ defaultValue, filterById, bold = true, state, debounceMs = 500, onChange, onKeyDown, ...props }) => {
     const [key, setKey] = useState<string | undefined>(undefined);
     const [classNames, rest] = useClassnames<FProps>("select__filter", props);
 
     const { items, setItems, setFilterValue, handleToggle } = useSelectContext();
+    const { handleSearch: me } = useAutosuggest<SelectedItems>({ items });
 
     const handleSearch = debounce(
-      (newVal: string[]) => {
-        const suggestions = items.map(({ id, content, ...item }) => {
-          let isShown: boolean = item.isShown;
-          if (content) {
-            isShown = newVal.every(val => content.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          }
-          if (filterById && id) {
-            isShown = newVal.some(val => id.toLowerCase().indexOf(val.toLowerCase()) > -1);
-            // isShown = id.toLowerCase().indexOf(value.toLowerCase()) > -1;
-          }
-          return { ...item, id, content, isShown };
-        });
-        setItems(suggestions);
+      (newVal: string) => {
+        const hey = me({ newVal, filterById });
+        setItems(hey);
+        // const suggestions = items.map(({ id, content, ...item }) => {
+        //   let isShown: boolean = item.isShown;
+        //   if (content) {
+        //     isShown = newVal.every(val => content.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        //   }
+        //   if (filterById && id) {
+        //     isShown = newVal.some(val => id.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        //     // isShown = id.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        //   }
+        //   return { ...item, id, content, isShown };
+        // });
+        // setItems(suggestions);
       },
       debounceMs,
       { leading: true }
@@ -42,10 +45,10 @@ export const Filter: React.FunctionComponent<FProps> = React.memo(
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newVal = e.target.value.split(" ").filter(val => val.trim().length >= 1);
+        const newVal = e.target.value;
 
         handleSearch(newVal);
-        setFilterValue(newVal);
+        setFilterValue(newVal.split(" ").filter(val => val.trim().length >= 1));
 
         setKey(undefined);
 

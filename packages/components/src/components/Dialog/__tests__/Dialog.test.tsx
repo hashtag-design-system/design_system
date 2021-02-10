@@ -1,11 +1,13 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
+import { CONFIG } from "../../../config";
 import { overlayCheckStyle } from "../../__helpers__";
 import Dialog, { DialogBtnCloseFProps, DialogFProps } from "../index";
 
 const TEST_CHILDREN_HEIGHT = 300;
 const TEST_WIDTH = 270;
+const portalIdSelector = CONFIG.DEFAULT_PORTAL_ID_SELECTOR;
 
 const TestChildren: React.FC<
   Omit<Partial<DialogFProps>, "onClick"> & Pick<DialogBtnCloseFProps, "onClick"> & { hasBtnGroup?: boolean }
@@ -63,7 +65,7 @@ describe("<Dialog />", () => {
 
     expect(screen.queryByTestId("dialog")).toBeNull();
 
-    const modalRoot = screen.getByTestId("modal-root");
+    const modalRoot = screen.getByTestId(portalIdSelector);
     expect(modalRoot).toBeVisible();
     expect(modalRoot.children).toHaveLength(0);
   });
@@ -80,7 +82,7 @@ describe("<Dialog />", () => {
     expect(dialog).toHaveTextContent("Hey");
     expect(dialog).not.toHaveStyle("transform: translateY(-50%)");
 
-    const modalRoot = screen.getByTestId("modal-root");
+    const modalRoot = screen.getByTestId(portalIdSelector);
     expect(modalRoot.children).toHaveLength(1);
     expect(modalRoot).toContainElement(dialog);
   });
@@ -101,7 +103,7 @@ describe("<Dialog />", () => {
   test("with onChildrenHeight and onWidth", async () => {
     const onChildrenHeight = jest.fn(height => height);
     const onWidth = jest.fn(width => width);
-    render(<TestChildren onChildrenHeight={height => onChildrenHeight(height)} onWidth={width => onWidth(width)} />);
+    render(<TestChildren onChildrenHeight={onChildrenHeight} onWidth={onWidth} />);
     const dialog = screen.getByTestId("dialog");
 
     await waitFor(() => {
@@ -110,7 +112,11 @@ describe("<Dialog />", () => {
 
     expect(onChildrenHeight).toHaveBeenCalled();
     expect(onWidth).toHaveBeenCalled();
-    expect(dialog.children[0]).toHaveStyle(`height: ${TEST_CHILDREN_HEIGHT}px; width: ${TEST_WIDTH}px`)
+    await waitFor(() => {
+      expect(onChildrenHeight.mockReturnValue(TEST_CHILDREN_HEIGHT));
+      expect(onWidth.mockReturnValue(TEST_WIDTH));
+    });
+    expect(dialog.children[0]).toHaveStyle(`height: ${TEST_CHILDREN_HEIGHT}px; width: ${TEST_WIDTH}px`);
   });
   describe("with sub-component children", () => {
     test("default behaviour", async () => {
@@ -151,7 +157,7 @@ describe("<Dialog />", () => {
     });
   });
   describe("basic functionality", () => {
-    test.each(["dialog-btn-close", "modal-root"])("onDismiss default functionality & click outside", testId => {
+    test.each(["dialog-btn-close", portalIdSelector])("onDismiss default functionality & click outside", testId => {
       const onClick = jest.fn();
       const onDismiss = jest.fn((_, { cancel }) => cancel);
       render(<TestChildren onDismiss={(_, { cancel }) => onDismiss(_, { cancel })} onClick={onClick} />);
@@ -230,7 +236,7 @@ describe("<Dialog />", () => {
           { timeout: 2000 }
         );
       });
-      test.each(["cancel btn", "close btn", "modal-root"])("and dismiss", btn => {
+      test.each(["cancel btn", "close btn", portalIdSelector])("and dismiss", btn => {
         const btnGroup = screen.getByTestId("dialog-btn-group");
         const children = btnGroup.children;
         expect(children).toHaveLength(2);
@@ -247,7 +253,7 @@ describe("<Dialog />", () => {
           act(() => {
             userEvent.click(children[0]);
           });
-        } else if (btn === "modal-root") {
+        } else if (btn === portalIdSelector) {
           act(() => {
             userEvent.click(screen.getByTestId(btn));
           });
@@ -286,7 +292,7 @@ describe("<Dialog />", () => {
           { timeout: 2000 }
         );
       });
-      test.each(["cancel btn", "close btn", "modal-root"])("and dismiss", btn => {
+      test.each(["cancel btn", "close btn", portalIdSelector])("and dismiss", btn => {
         const btnGroup = screen.getByTestId("dialog-btn-group");
         const children = btnGroup.children;
         expect(children).toHaveLength(2);
@@ -303,7 +309,7 @@ describe("<Dialog />", () => {
           act(() => {
             userEvent.click(children[0]);
           });
-        } else if (btn === "modal-root") {
+        } else if (btn === portalIdSelector) {
           act(() => {
             userEvent.click(screen.getByTestId(btn));
           });

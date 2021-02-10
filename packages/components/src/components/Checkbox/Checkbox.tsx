@@ -1,27 +1,25 @@
-import { Color } from "framer";
 import { AnimateSharedLayout, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
-import { useAnimateCheckmark, useClassnames, useDisabled, useInputId } from "../../utils/hooks";
-import { Base, ComponentProps } from "../__helpers__";
-import { checkmarkVariants } from "../Animated/Checkmark";
-import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/SelectionInput/Base";
+import { ColorSystemObj, ConfigVariables } from "../../config";
+import { useAnimateCheckmark, useClassnames, useConfigContext, useDisabled, useInputId } from "../../utils";
 import Animated from "../Animated";
+import { checkmarkVariants } from "../Animated/Checkmark";
+import { Base, ComponentProps } from "../__helpers__";
+import { SelectionInputFProps, SelectionInputStates } from "../__helpers__/SelectionInput/Base";
 
-const grey1 = Color("#ffffff").toValue();
-const grey5 = Color("#d6d6d6").toValue();
-const primary = Color("#0303ff").toValue();
+type CustomVariants = Pick<ColorSystemObj, "grey"> & Pick<ConfigVariables, "primary">
 
 const inputVariants = {
-  checked: {
+  checked: ({ primary }: CustomVariants) => ({
     backgroundColor: primary,
     borderColor: primary,
-  },
-  indeterminate: {
-    backgroundColor: grey1,
+  }),
+  indeterminate: ({ grey, primary }: CustomVariants) => ({
+    backgroundColor: grey["100"],
     borderColor: primary,
-  },
-  initial: { backgroundColor: grey1, borderColor: grey5 },
-  pressed: { borderColor: primary },
+  }),
+  initial: ({ grey }: CustomVariants) => ({ backgroundColor: grey["100"], borderColor: grey["500"] }),
+  pressed: ({ primary }: CustomVariants) => ({ borderColor:primary }),
 };
 
 const boxVariants = {
@@ -48,6 +46,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, FProps>(
     );
 
     const [pathLength, opacity] = useAnimateCheckmark();
+    const {
+      colors: { grey },
+      variables: { primary },
+    } = useConfigContext();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!isDisabled) {
@@ -94,6 +96,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, FProps>(
               animate={isChecked ? "checked" : isIndeterminate ? "indeterminate" : state === "pressed" ? "pressed" : "initial"}
               whileTap={whileTap}
               variants={inputVariants}
+              custom={{ grey, primary } as CustomVariants}
               transition={{ duration: 0.15 }}
               tabIndex={isDisabled ? -1 : 0}
               ref={ref}
@@ -109,7 +112,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, FProps>(
                 <motion.path
                   d="M1.75 7.583h10.5"
                   fill="transparent"
-                  stroke="var(--primary)"
+                  stroke={primary}
                   strokeWidth={2}
                   strokeLinecap="round"
                   initial={checkmarkVariants.initial}

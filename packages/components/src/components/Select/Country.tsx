@@ -1,21 +1,12 @@
-import { COUNTRY_TYPE } from "@georgekrax-hashtag/common";
+import { COUNTRY_TYPE } from "@the_hashtag/common";
 import React, { useEffect, useState } from "react";
-import { useClassnames } from "../../utils/hooks";
+import { CONFIG } from "../../config";
+import { useClassnames } from "../../utils";
 import Select, { SelectCountriesProps, SelectItemFProps } from "./index";
 
 export type FProps = COUNTRY_TYPE & Pick<SelectCountriesProps, "withFlags"> & Partial<Omit<SelectItemFProps, "id">>;
 
-const Country: React.FC<FProps> = ({
-  id,
-  name,
-  flagKey,
-  alpha2Code,
-  alpha3Code,
-  callingCode,
-  isEu,
-  withFlags = true,
-  ...props
-}) => {
+const Country: React.FC<FProps> = ({ id, name, flagKey, alpha2Code, alpha3Code, callingCode, isEu, withFlags = true, ...props }) => {
   const [url, setUrl] = useState<string>("");
   const [classNames, rest] = useClassnames("select__item__country", props);
 
@@ -31,7 +22,7 @@ const Country: React.FC<FProps> = ({
         },
       },
     });
-    const newUrl = `https://d32454kkzii6gk.cloudfront.net/${btoa(imageRequest)}`;
+    const newUrl = CONFIG.CLOUDFRONT_URL + btoa(imageRequest);
     setUrl(newUrl);
   }, [flagKey]);
 

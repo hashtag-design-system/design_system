@@ -15,13 +15,13 @@ export type Props = {
 
 const jestEnv = isJest();
 if (jestEnv) {
-  const modalRoot = document.getElementById(CONFIG.PORTAL_ID_SELECTOR);
+  const modalRoot = document.getElementById(CONFIG.DEFAULT_PORTAL_ID_SELECTOR);
   if (!modalRoot) {
     createPortalElement();
   }
 }
 
-export const Portal: React.FC<Props> = ({ selector = "#" + CONFIG.PORTAL_ID_SELECTOR, children }) => {
+export const Portal: React.FC<Props> = ({ selector = "#" + CONFIG.DEFAULT_PORTAL_ID_SELECTOR, children }) => {
   // @ts-expect-error
   const query = process.browser || jestEnv;
   const modalRoot = useRef<any>(query ? document.querySelector(selector) : null);

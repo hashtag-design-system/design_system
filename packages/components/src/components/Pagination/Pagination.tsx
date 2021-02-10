@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { listKeys } from "../../config";
-import { range } from "../../utils";
-import { useClassnames } from "../../utils/hooks";
+import { CONFIG } from "../../config";
+import { range, useClassnames } from "../../utils";
 import Button from "../Button";
 import { ComponentProps } from "../__helpers__";
 import { AnchorLink, Icon } from "./__helpers__";
@@ -164,6 +163,7 @@ const Pagination: React.FC<FProps> = ({
   }
 
   const pages = calculatePages();
+  const listKeys = CONFIG.listKeys;
 
   return (
     <nav aria-label="Pagination" className={classNames} data-testid="pagination" {...rest}>

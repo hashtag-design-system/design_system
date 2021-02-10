@@ -1,7 +1,7 @@
-import { COUNTRIES, COUNTRIES_ARR, COUNTRIES_LITERAL_TYPE } from "@georgekrax-hashtag/common";
+import { COUNTRIES, COUNTRIES_ARR, COUNTRIES_LITERAL_TYPE } from "@the_hashtag/common";
 import { AsYouType, CountryCode } from "libphonenumber-js";
 import React, { useCallback, useEffect, useState } from "react";
-import { useClassnames, useDisabled } from "../../utils/hooks";
+import { useClassnames, useDisabled } from "../../utils";
 import Select, { SelectButtonFProps, SelectFilterFProps, SelectFProps, SelectModalFProps, SelectOptionsFProps } from "../Select";
 import { SelectedItems } from "../Select/Select";
 import Input, { InputFProps } from "./index";
@@ -25,7 +25,6 @@ const Tel: React.FC<Props> = React.memo(
     selectModalProps,
     selectFilterProps,
     selectOptionsProps,
-    ...props
   }) => {
     const { onSelect: selectPropsOnSelect, ...selectSRest } = selectProps;
     const { children: selectBtnChildren, ...selectBtnSRest } = selectBtnProps;
@@ -40,8 +39,8 @@ const Tel: React.FC<Props> = React.memo(
     const setVal = useCallback(
       (newVal = inputValue, newCountryCode = countryCode): void => {
         const asYouType = new AsYouType(newCountryCode);
-        const formatedVal = asYouType.input(newVal);
-        setInputValue(formatedVal);
+        const formattedVal = asYouType.input(newVal);
+        setInputValue(formattedVal);
       },
       [inputValue, countryCode]
     );

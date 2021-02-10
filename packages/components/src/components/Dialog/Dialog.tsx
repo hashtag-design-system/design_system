@@ -1,7 +1,6 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
-import { DialogContextProvider } from "../../utils/contexts";
-import { useClassnames, useClickOutside, useIsMobile } from "../../utils/hooks";
+import { DialogContextProvider, useClassnames, useClickOutside, useIsMobile } from "../../utils";
 import { ButtonFProps } from "../Button";
 import { ComponentLoading, Modal, ModalOverlayFProps } from "../__helpers__";
 import Btn from "./Btn/Btn";

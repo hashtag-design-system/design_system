@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Select, { SelectButtonSBProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_SELECT}/Button`,
+  title: `${storybookTitles.FORM_SELECT}/Button`,
   component: Select.Button,
 } as Meta;
 

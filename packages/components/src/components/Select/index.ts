@@ -1,5 +1,6 @@
 import Select from "./Select";
 
+export { default as Select } from "./Select";
 export type { FProps as SelectButtonFProps, Props as SelectButtonProps, SBProps as SelectButtonSBProps } from "./Button";
 export type { FProps as SelectCountriesFProps, Props as SelectCountriesProps } from "./Countries";
 export type { FProps as SelectFilterFProps, Props as SelectFilterProps } from "./Filter";

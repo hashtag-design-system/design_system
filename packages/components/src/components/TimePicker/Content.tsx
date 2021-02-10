@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import React, { useMemo } from "react";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames } from "../../utils";
 import { Dots, Label } from "./__helpers__/index";
 
 export type Props = {

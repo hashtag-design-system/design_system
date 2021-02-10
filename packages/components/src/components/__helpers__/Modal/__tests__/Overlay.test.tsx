@@ -3,7 +3,7 @@ import { CONFIG } from "../../../../config";
 import { Modal } from "../Modal";
 import { overlayCheckStyle } from "../__helpers__";
 
-const portalIdSelector = CONFIG.PORTAL_ID_SELECTOR;
+const portalIdSelector = CONFIG.DEFAULT_PORTAL_ID_SELECTOR;
 describe("<Modal.Overlay />", () => {
   test("default behaviour", () => {
     render(<Modal.Overlay isShown={false}>Test</Modal.Overlay>);

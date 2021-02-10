@@ -1,6 +1,6 @@
 import React from "react";
-import { useInputContext } from "../../../../utils/contexts/InputContext";
-import { useClassnames, useDisabled, useInputId } from "../../../../utils/hooks";
+import { useClassnames, useDisabled, useInputId } from "../../../../utils";
+import { useInputContext } from "../../../../utils";
 import { ComponentProps } from "../../../__helpers__";
 import { InputType } from "../../../__helpers__/props";
 

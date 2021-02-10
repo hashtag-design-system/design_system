@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input, { InputDigitFProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_INPUT}/Digit`,
+  title: `${storybookTitles.FORM_INPUT}/Digit`,
   component: Input.Digit,
   argTypes: {
     defaultValue: {

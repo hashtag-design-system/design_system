@@ -52,7 +52,7 @@ describe("<Input.Number />", () => {
     });
     expect(input.getAttribute("data-isbtnshown")).toBe("false");
   });
-  // * Default state changes (e.g. className) happen in the <Input.Base /> component tests
+  // * Default state changes (eg. className) happen in the <Input.Base /> component tests
   test('state="hover"', async () => {
     render(<Input.Number state="hover" />);
 

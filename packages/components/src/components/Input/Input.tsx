@@ -1,7 +1,7 @@
 import React from "react";
 import { IconPropType } from "../../typings";
-import { InputContextProvider } from "../../utils/contexts";
-import { generateInputId } from "../../utils/hooks/useInputId";
+import { InputContextProvider } from "../../utils";
+import { generateInputId } from "../../utils";
 import { InputAutocompleteType } from "../__helpers__";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";

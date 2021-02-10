@@ -1,6 +1,6 @@
-import { DAY_NAMES_ARR } from "@georgekrax-hashtag/common";
+import { DAY_NAMES_ARR } from "@the_hashtag/common";
 import React from "react";
-import { useClassnames } from "../../../../utils/hooks";
+import { useClassnames } from "../../../../utils";
 import { BottomSheetDismissType } from "../../../BottomSheet";
 import { MonthDays } from "../index";
 

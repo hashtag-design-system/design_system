@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import React from "react";
-import { SliderContextProvider } from "../../../utils/contexts/SliderContext";
+import { SliderContextProvider } from "../../../utils";
 import { SliderFProps } from "../index";
 
 export const defaultProps: SliderFProps = {

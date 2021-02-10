@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useTableContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useTableContext } from "../../utils";
 import Checkbox from "../Checkbox";
 import RadioButton from "../RadioButton";
 import { ComponentState } from "../__helpers__";

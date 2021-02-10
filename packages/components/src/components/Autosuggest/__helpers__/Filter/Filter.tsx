@@ -1,5 +1,5 @@
 import React from "react";
-import { useAutosuggestContext } from "../../../../utils/contexts";
+import { useAutosuggestContext } from "../../../../utils";
 import Select, { SelectFilterFProps } from "../../../Select";
 
 type FProps = SelectFilterFProps;

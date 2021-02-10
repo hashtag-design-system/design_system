@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SortDirection } from "../../typings";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames } from "../../utils";
 import { ChevronDown, ChevronUp, ChevronUpAndDown } from "./__helpers__";
 
 export type Props = {

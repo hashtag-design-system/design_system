@@ -1,6 +1,6 @@
 import BottomSheet from "./BottomSheet";
 
-export { BottomSheetPositions } from "./BottomSheet";
+export { BottomSheetPositions, default as BottomSheet } from "./BottomSheet";
 export type {
   BottomSheetDismissType,
   BottomSheetChildrenInfo,

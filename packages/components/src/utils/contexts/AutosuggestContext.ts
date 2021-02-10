@@ -1,5 +1,5 @@
 import { AutosuggestFProps } from "../../components/Autosuggest";
-import { createCtx } from "../createCtx";
+import { createCtx } from "../index";
 
 type ValueType = string | number | undefined;
 

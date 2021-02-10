@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { isMobile as isMobileByDetect } from "react-device-detect";
 import UAParser from "ua-parser-js";
-import { useWindowDimensions } from "./index";
+import { useWindowDimensions } from "../index";
 
 export const useIsMobile = (overideValue?: boolean): { isMobile: boolean; parser: UAParser } => {
   const [isMobile, setIsMobile] = useState(isMobileByDetect);

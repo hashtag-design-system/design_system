@@ -1,5 +1,5 @@
 import React from "react";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 
 export type Props = {

@@ -1,4 +1,4 @@
-import { COUNTRIES_ARR } from "@georgekrax-hashtag/common";
+import { COUNTRIES_ARR } from "@the_hashtag/common";
 import React, { useMemo } from "react";
 import Select, { SelectItemFProps } from "./index";
 

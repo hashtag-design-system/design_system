@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import errors from "../../../../config/errors";
-import { error, isError } from "../../../../utils";
-import { useInputContext } from "../../../../utils/contexts/InputContext";
+import { CONFIG } from "../../../../config";
+import { error, isError, useInputContext } from "../../../../utils";
 import { FloatingPlaceholder } from "../FloatingPlaceholder/FloatingPlaceholder";
 
 type Props = {
@@ -38,7 +37,7 @@ export const OuterFieldContainer: React.FunctionComponent<Props> = ({ prefixWidt
   }
 
   if (isError() && !placeholder && !label && type !== "number" && className && !className.includes("input-digit")) {
-    error(errors.PLACEHOLDER_OR_LABEL);
+    error(CONFIG.ERRORS.PLACEHOLDER_OR_LABEL);
     return null;
   }
 

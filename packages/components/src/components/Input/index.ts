@@ -1,5 +1,6 @@
 import Input from "./Input";
 
+export { default as Input } from "./Input";
 export type { FProps as InputDigitFProps } from "./Digit";
 export type { FProps as InputDigitSequenceFProps, Props as InputDigitSequenceProps } from "./DigitSequence";
 export type { FProps as InputIncrDcrFProps, IncrDcrState } from "./IncrDcr";

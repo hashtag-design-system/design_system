@@ -1,6 +1,6 @@
-import { MONTHS } from "@georgekrax-hashtag/common";
-import { getByTestId, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MONTHS } from "@the_hashtag/common";
 import { DialogDismissInfoType } from "../Dialog";
 import { DatePickerOnChangeInfo, DefaultDatePicker, TestDatePickerButton, TEST_DEFAULT_DATE } from "./__helpers__";
 
@@ -111,7 +111,7 @@ describe("<DatePicker />", () => {
       userEvent.click(testTd);
 
       expect(testTd).toHaveClass("selected");
-      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange).toHaveBeenCalledTimes(3);
       expect(onChange).toHaveReturnedWith(false);
       expect(onDismiss).toHaveReturnedWith(false);
     });
@@ -126,7 +126,7 @@ describe("<DatePicker />", () => {
     });
   });
   describe("onClick, select date", () => {
-    test.each([true, false])("default functionality", async (dismissOnClick) => {
+    test.each([true, false])("default functionality", async dismissOnClick => {
       render(<DefaultDatePicker dismissOnClick={dismissOnClick} />);
       const tds = screen.getAllByTestId("date-picker-tbody-td");
       const modal = screen.getByTestId("select-modal");
@@ -163,11 +163,14 @@ describe("<DatePicker />", () => {
 
       expect(testTd).toHaveClass("selected");
 
-      await waitFor(() => {
-        expect(datePicker).not.toBeVisible();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getAllByTestId("date-picker")[0]).not.toBeVisible();
+        },
+        { timeout: 2500 }
+      );
     });
-    test.each([true, false])("with isRange={true}", async (dismissOnClick) => {
+    test.each([true, false])("with isRange={true}", async dismissOnClick => {
       render(<DefaultDatePicker isRange defaultDates={undefined} dismissOnClick={dismissOnClick} />);
       const tds = screen.getAllByTestId("date-picker-tbody-td");
       const modal = screen.getByTestId("select-modal");

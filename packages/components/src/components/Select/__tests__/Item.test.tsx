@@ -1,6 +1,6 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent, { specialChars } from "@testing-library/user-event";
-import { SelectContextType } from "../../../utils/contexts";
+import { SelectContextType } from "../../../utils";
 import Select from "../index";
 import { selectCustomRender } from "../__helpers__/utils";
 

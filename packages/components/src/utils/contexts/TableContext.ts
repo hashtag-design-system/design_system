@@ -2,7 +2,7 @@ import { Dayjs } from "dayjs";
 import { CheckboxState } from "../../components/Checkbox";
 import { RadioButtonState } from "../../components/RadioButton";
 import { TableProps } from "../../components/Table";
-import { createCtx } from "../createCtx";
+import { createCtx } from "../index";
 
 export type TableContextType = Pick<TableProps, "extraColumn"> & {
   // selectionInputs: TableSelectionInputsTableType[];

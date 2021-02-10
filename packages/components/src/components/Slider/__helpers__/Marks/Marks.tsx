@@ -1,5 +1,5 @@
 import React from "react";
-import { useSliderContext } from "../../../../utils/contexts/SliderContext";
+import { useSliderContext } from "../../../../utils";
 
 export const Marks: React.FunctionComponent = () => {
   const { marks, min, zeroPercentageOnEdgeMarks, calcPercentage } = useSliderContext();

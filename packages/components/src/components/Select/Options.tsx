@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelectContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useSelectContext } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 
 export type FProps = ComponentProps<"div">;

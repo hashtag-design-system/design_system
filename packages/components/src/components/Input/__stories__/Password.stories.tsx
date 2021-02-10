@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../../config/storybook";
+import { storybookTitles } from "../../../config";
 import Input, { InputPasswordSBProps } from "../index";
 
 export default {
-  title: `${titleGroups.FORM_INPUT}/Password`,
+  title: `${storybookTitles.FORM_INPUT}/Password`,
   component: Input.Password,
   argTypes: {
     defaultValue: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames } from "../../utils";
 
 export type FProps = React.ComponentPropsWithoutRef<"div">;
 

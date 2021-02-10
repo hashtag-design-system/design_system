@@ -1,5 +1,5 @@
-import { DAY_NAMES_ARR } from "@georgekrax-hashtag/common";
 import { render, screen, waitFor } from "@testing-library/react";
+import { DAY_NAMES_ARR } from "@the_hashtag/common";
 import { DefaultDatePicker } from "../index";
 
 describe("DatePicker <DaysTable />", () => {

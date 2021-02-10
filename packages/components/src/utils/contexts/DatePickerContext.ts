@@ -7,7 +7,7 @@ import {
   DatePickerYearsArrObj,
 } from "../../components/DatePicker";
 import { ACTIONTYPE } from "../../components/DatePicker/__helpers__";
-import { createCtx } from "../createCtx";
+import { createCtx } from "../index";
 
 export type DatePickerContextType = Required<Pick<DatePickerProps, "calendarWeeks" | "disabledDays" | "dismissOnClick" | "isRange">> &
   Pick<DatePickerProps, "onClick"> & {

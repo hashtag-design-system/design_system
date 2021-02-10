@@ -1,7 +1,6 @@
-import { MONTHS } from "@georgekrax-hashtag/common";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import dayjs from "dayjs";
+import { MONTHS } from "@the_hashtag/common";
 import { getDecade } from "../../../../utils";
 import { DatePickerProps } from "../../index";
 import { DefaultDatePicker, TEST_DEFAULT_DATE } from "../index";
@@ -89,7 +88,7 @@ describe("DatePicker <MonthsAndYears />", () => {
     if (isMonths) {
       await waitFor(() => {
         expect(container).not.toBeVisible();
-      });
+      }, { timeout: 2500 });
       const dateMonth = screen.getByTestId(`date-picker-months-container-date-month`);
       expect(dateMonth).toHaveTextContent("February");
     } else {
@@ -103,9 +102,9 @@ describe("DatePicker <MonthsAndYears />", () => {
       <DefaultDatePicker
         defaultMode="months"
         disabledDays={{
-          from: { date: dayjs() },
+          from: { date: TEST_DEFAULT_DATE },
           till: {
-            date: dayjs().add(2, "month"),
+            date: TEST_DEFAULT_DATE.add(2, "month"),
           },
         }}
       />
@@ -115,14 +114,13 @@ describe("DatePicker <MonthsAndYears />", () => {
     const btns = screen.getAllByTestId("date-picker-tbody-months-container-btn");
     const operationBtns = screen.getAllByTestId("date-picker-operation-btn");
 
-    
     await waitFor(() => {
       expect(container).toBeVisible();
     });
 
     operationBtns.forEach(btn => {
       expect(btn).toBeDisabled();
-    })
+    });
 
     btns.forEach((btn, i) => {
       if (i <= 2) {
@@ -138,16 +136,16 @@ describe("DatePicker <MonthsAndYears />", () => {
 
     expect(container).toBeVisible();
     expect(btns[0]).toHaveClass("selected");
-    expect(testClickBtn).not.toHaveClass("selected")
+    expect(testClickBtn).not.toHaveClass("selected");
   });
   test('with disabledDays and defaultMode="years"', async () => {
     render(
       <DefaultDatePicker
         defaultMode="years"
         disabledDays={{
-          from: { date: dayjs() },
+          from: { date: TEST_DEFAULT_DATE },
           till: {
-            date: dayjs().add(5, "years"),
+            date: TEST_DEFAULT_DATE.add(5, "years"),
           },
         }}
       />
@@ -163,7 +161,7 @@ describe("DatePicker <MonthsAndYears />", () => {
 
     operationBtns.forEach(btn => {
       expect(btn).toBeDisabled();
-    })
+    });
 
     btns.forEach((btn, i) => {
       if (i >= 4 && i <= 9) {
@@ -180,6 +178,6 @@ describe("DatePicker <MonthsAndYears />", () => {
 
     expect(container).toBeVisible();
     expect(btns[4]).toHaveClass("selected");
-    expect(testClickBtn).not.toHaveClass("selected")
+    expect(testClickBtn).not.toHaveClass("selected");
   });
 });

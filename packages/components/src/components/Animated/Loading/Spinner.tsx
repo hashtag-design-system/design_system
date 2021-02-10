@@ -1,5 +1,5 @@
 import React from "react";
-import { useClassnames } from "../../../utils/hooks";
+import { useClassnames } from "../../../utils";
 import { AnimationType, CSSProperties } from "../__helpers__";
 
 // Big thanks to -> https://codepen.io/jczimm/pen/vEBpoL?editors=1100

@@ -1,6 +1,6 @@
 import React from "react";
 import { SelectModalProps } from "../..";
-import { useSelectContext } from "../../../../utils/contexts";
+import { useSelectContext } from "../../../../utils";
 import { Modal, ModalOverlayFProps } from "../../../__helpers__";
 
 export type FProps = SelectModalProps & Partial<Pick<ModalOverlayFProps, "isShown">>;

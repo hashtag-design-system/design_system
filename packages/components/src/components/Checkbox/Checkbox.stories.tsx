@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import { CheckboxStates } from "./Checkbox";
 import Checkbox, { CheckboxFProps } from "./index";
 
 export default {
-  title: `${titleGroups.FORM}/Checkbox`,
+  title: `${storybookTitles.FORM}/Checkbox`,
   component: Checkbox,
   argTypes: {
     state: {

@@ -7,7 +7,7 @@ const Wrapper: React.FC = ({ children }) => {
   return (
     <Table>
       <Table.THead>
-        <Table.Tr>{children}</Table.Tr>
+        <Table.Tr idx={0}>{children}</Table.Tr>
       </Table.THead>
     </Table>
   );

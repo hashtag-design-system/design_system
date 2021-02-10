@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { UserSelectionInputEventType, UserSelectionInputEventTypes } from "../../../typings";
-import { checkSelectionInput, clickOrType } from "../../../utils";
-import { SelectionInputGroupObj, SelectionInputGroupTypes } from "../../../utils/hooks";
+import { checkSelectionInput, clickOrType, SelectionInputGroupObj, SelectionInputGroupTypes } from "../../../utils";
 import Table from "../index";
 import { TableTestWrapper, TEST_TABLE_TOTAL_ROWS } from "./Table.test";
 

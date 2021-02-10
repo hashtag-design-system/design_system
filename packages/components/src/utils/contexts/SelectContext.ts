@@ -1,6 +1,6 @@
 import { SelectProps } from "../../components/Select";
 import { SelectedItems } from "../../components/Select/Select";
-import { createCtx } from "../createCtx";
+import { createCtx } from "../index";
 
 export type SelectContextType = Pick<SelectProps, "multiSelectable" | "width"> & {
   isOpen: boolean;

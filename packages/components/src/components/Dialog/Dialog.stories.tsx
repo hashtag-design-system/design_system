@@ -1,11 +1,11 @@
 import { Meta, Story } from "@storybook/react";
 import { useState } from "react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import Button from "../Button";
 import Dialog, { DialogFProps } from "./index";
 
 export default {
-  title: titleGroups.FEEDBACK,
+  title: storybookTitles.FEEDBACK,
   component: Dialog,
   argTypes: {
     onDismiss: { action: "dismissed" },

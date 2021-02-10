@@ -1,6 +1,6 @@
-import { MONTHS } from "@georgekrax-hashtag/common";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MONTHS } from "@the_hashtag/common";
 import { getDecade } from "../../../../utils";
 import { DefaultDatePicker } from "../index";
 import { TEST_DEFAULT_DATE } from "../utils";

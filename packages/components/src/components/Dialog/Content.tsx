@@ -1,6 +1,5 @@
 import React from "react";
-import { useDialogContext } from "../../utils/contexts";
-import { useClassnames } from "../../utils/hooks";
+import { useClassnames, useDialogContext } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 
 export type FProps = ComponentProps<"div"> & Required<React.PropsWithChildren<unknown>>;

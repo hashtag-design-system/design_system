@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSelectContext } from "../../utils/contexts";
-import { useClassnames, useDisabled } from "../../utils/hooks";
+import { useClassnames, useDisabled, useSelectContext } from "../../utils";
 import { ComponentProps, ComponentState } from "../__helpers__";
 import Select, { SelectedItems } from "./Select";
 
