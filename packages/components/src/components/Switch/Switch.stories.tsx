@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import Switch from "./index";
 
 export default {
-  title: `${titleGroups.FORM}/Switch`,
+  title: `${storybookTitles.FORM}/Switch`,
   component: Switch,
   argTypes: {
     onClick: { action: "clicked" },

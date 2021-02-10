@@ -1,6 +1,5 @@
 import React from "react";
-import "swiper/swiper.scss";
-import { useIsMobile } from "../../utils/hooks";
+import { useIsMobile } from "../../utils";
 import BottomSheet, { BottomSheetFProps } from "../BottomSheet";
 import Dialog from "../Dialog";
 import Content from "./Content";
@@ -30,7 +29,7 @@ const TimePicker: React.FC<FProps> & SubComponents = ({ mobileView, bottomSheetP
       isShown={bottomSheetProps?.isShown || false}
       dragElastic={0}
       inputFocusedMove={220}
-      allowedPositions={{ middle: true, expanded: true, hidden: false, "input-focused": true }}
+      allowedPositions={{ middle: true, expanded: false, hidden: false, "input-focused": true }}
       {...bottomSheetProps}
     >
       <Dialog.Content className="flex-column-center-center">

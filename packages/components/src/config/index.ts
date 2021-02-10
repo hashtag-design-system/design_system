@@ -1,7 +1,19 @@
-export { listKeys } from "./lists";
-export { breakpoints } from "./styles";
+import { listKeys } from "./lists";
+import { breakpoints } from "./styles";
+import { default as ERRORS } from "./errors";
+import { storybookTitles } from "./storybook";
+import { CLOUDFRONT_URL } from "./aws";
+import { DEFAULT_PORTAL_ID_SELECTOR } from "./provider";
+export * from "./provider";
 
-export const IconPositions = ["left", "right"] as const;
-export type IconPosition = typeof IconPositions[number];
+const iconPositions = ["left", "right"] as const;
 
-export type IconSize = 24 | 36;
+export const CONFIG = {
+  listKeys,
+  breakpoints,
+  storybookTitles,
+  ERRORS,
+  iconPositions,
+  CLOUDFRONT_URL,
+  DEFAULT_PORTAL_ID_SELECTOR,
+}

@@ -1,26 +1,25 @@
-import { Color } from "framer";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useClassnames, useDisabled, useInputId } from "../../utils/hooks";
+import { ColorSystemObj, ConfigVariables } from "../../config";
+import { useClassnames, useConfigContext, useDisabled, useInputId } from "../../utils";
 import { Base, ComponentProps } from "../__helpers__";
 import { SelectionInputFProps, SelectionInputState } from "../__helpers__/SelectionInput/Base";
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
 
-const grey5 = Color("#d6d6d6").toValue();
-const primary = Color("#0303ff").toValue();
+type CustomVariants = { isDisabled: boolean } & Pick<ColorSystemObj, "grey"> & Pick<ConfigVariables, "primary">
 
 const variants = {
-  checked: (isDisabled: boolean) => ({
-    borderColor: isDisabled ? grey5 : primary,
+  checked: ({isDisabled, grey, primary }: CustomVariants) => ({
+    borderColor: isDisabled ? grey["500"] :  primary,
     borderWidth: "7px",
   }),
-  initial: { borderColor: grey5, borderWidth: "2px" },
-  pressed: {
-    borderColor: primary,
+  initial:({ grey }: CustomVariants) => ({ borderColor: grey["500"], borderWidth: "2px" }),
+  pressed: ({primary }: CustomVariants) => ({
+    borderColor:  primary,
     borderWidth: "5px",
     scale: 0.75,
-  },
+  }),
 };
 
 export type RadioButtonState = SelectionInputState;
@@ -38,6 +37,8 @@ const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
       `radio-button selection-input__box ${!isDisabled ? "shadow-sm" : "disabled"} ${state === "focus-visible" ? state : ""}`,
       props
     );
+
+    const { colors: { grey }, variables: { primary } } = useConfigContext();
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
       if (!isDisabled) {
@@ -75,7 +76,7 @@ const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
             whileTap={whileTap}
             variants={variants}
             transition={{ duration: 0.15 }}
-            custom={state === "disabled|checked"}
+            custom={{ isDisabled: state === "disabled|checked", grey, primary } as CustomVariants}
             ref={ref}
             style={{ ...style, ...variants.initial }}
             onClick={e => {

@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
-import { titleGroups } from "../../config/storybook";
+import { storybookTitles } from "../../config";
 import { SelectionInputStates } from "../__helpers__";
 import RadioButton, { RadioButtonFProps } from "./index";
 
 export default {
-  title: `${titleGroups.FORM}/RadioButton`,
+  title: `${storybookTitles.FORM}/RadioButton`,
   component: RadioButton,
   argTypes: {
     state: {

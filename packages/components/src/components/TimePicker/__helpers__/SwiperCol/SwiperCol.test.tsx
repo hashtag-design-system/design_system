@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SwiperCol } from "../index";
 
@@ -42,16 +42,26 @@ describe("TimePicker <SwiperCol />", () => {
       expect(timePicker).toContainElement(item);
     });
   });
-  test("useEffect slide animation", () => {
+  test.each([true, false])("useEffect slide animation & with mobileView", async mobileView => {
     const onSlideChange = jest.fn(swiper => swiper.realIndex);
-    // Because random number is the initial slide,
-    // as many possibilities as possible need to not return 0 as the initial slide
-    render(<SwiperCol max={1000} onSlideChange={onSlideChange} />);
+    render(<SwiperCol onSlideChange={onSlideChange} mobileView={mobileView} />);
 
     const results = onSlideChange.mock.results;
     expect(onSlideChange).toHaveBeenCalled();
-    expect(results[results.length - 1].value).toBe(0);
-  });
+
+    if (mobileView) {
+      expect(results[results.length - 1].value).not.toBe(0);
+
+      await waitFor(
+        () => {
+          expect(results[results.length - 1].value).toBe(0);
+        },
+        { timeout: 2500 }
+      );
+    } else {
+      expect(results[results.length - 1].value).toBe(0);
+    }
+  }, 10000);
   test("with onFocus and onBlur input", () => {
     const onFocus = jest.fn();
     const onBlur = jest.fn();

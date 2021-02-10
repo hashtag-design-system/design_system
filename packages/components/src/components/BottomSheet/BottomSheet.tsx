@@ -1,6 +1,6 @@
 import { DraggableProps, PanInfo, useAnimation, useMotionValue, Variant } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useClassnames, useWindowDimensions } from "../../utils/hooks";
+import { useClassnames, useWindowDimensions } from "../../utils";
 import Dialog, { DialogChildrenInfo, DialogDismissInfoType, DialogFProps } from "../Dialog";
 import { ComponentState, overlayVariants } from "../__helpers__";
 import ScrollBar from "./ScrollBar";
@@ -63,7 +63,6 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   onDrag,
   onDragEnd,
   onDismiss,
-  onAnimationComplete,
   onChildrenHeight,
   ...props
 }) => {
@@ -71,7 +70,6 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   const [defaultY, setDefaultY] = useState(propsDefaultY);
   const y = useMotionValue(position === "expanded" ? 0 : defaultY);
   const [yState, setYState] = useState(y.get());
-  const [animationEnd, setAnimationEnd] = useState<boolean>(false);
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [classNames, rest] = useClassnames("bottom-sheet", props);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -116,7 +114,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
 
   const goTo = useCallback(
     (newPosition: BottomSheetPosition) => {
-      if (allowedPositions[newPosition]) {
+      if (allowedPositions[newPosition] || newPosition === "input-focused") {
         dialogControls.start(dialogVariants[newPosition]);
         setPosition(newPosition);
       }
@@ -131,14 +129,6 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       await dialogControls.start(dialogVariants.hidden);
     }
     await overlayControls.start(overlayVariants.hidden, { delay: cancel ? 0 : 0.1 });
-  };
-
-  const handleAnimationComplete = () => {
-    setAnimationEnd(true);
-
-    if (onAnimationComplete) {
-      onAnimationComplete();
-    }
   };
 
   /* istanbul ignore next */
@@ -211,17 +201,21 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
 
   useEffect(() => {
     async function promiseFunction() {
-      if (isShown === true) {
-        await dialogControls.start(dialogVariants.hidden);
-        overlayControls.start("visible");
+      // ! Check if viewportHeight, because the animation will start from y=0, due to the fact that
+      // ! viewportHeight === 0
+      if (isShown === true && viewportHeight) {
         const newPosition: BottomSheetPosition = state || "middle";
-        dialogControls.start(dialogVariants[newPosition]);
+        await dialogControls.start(dialogVariants.hidden, { duration: 0 });
+        // * if await overlayControls || await dialogControls, then tests do not pass
+        // * also animation lags
+        overlayControls.start("visible");
+        dialogControls.start(dialogVariants[newPosition], { duration: 0.5, ease: "easeOut", delay: 0.1 });
         setPosition(newPosition);
       }
     }
     promiseFunction();
     // eslint-disable-next-line
-  }, [isShown]);
+  }, [isShown, viewportHeight]);
 
   useEffect(() => {
     if (onChange) {
@@ -266,9 +260,9 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
     <Dialog
       isShown={isShown}
       className={classNames}
-      drag={animationEnd && "y"}
+      drag="y"
       dragDirectionLock
-      variants={animationEnd ? variants : { ...dialogVariants, ...variants }}
+      variants={{ ...dialogVariants, ...variants }}
       transition={{ duration: 0.3, ease: "easeInOut", ...transition }}
       animate={dialogControls}
       custom={{ defaultY, height: viewportHeight, inputFocusedMove, ...custom } as DialogVariantsCustom}
@@ -278,7 +272,6 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       onDismiss={async (e, info) => await handleDismiss(info, e)}
       dragConstraints={{ ...dragConstraints }}
       overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
-      onAnimationComplete={() => handleAnimationComplete()}
       style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
       onChildrenHeight={height => handleChildrenHeight(height)}
       data-testid="bottom-sheet"
