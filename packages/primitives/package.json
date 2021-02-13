@@ -1,13 +1,13 @@
 {
   "name": "@hashtag-design-system/primitives",
-  "version": "1.2.2",
+  "version": "1.2.6",
   "description": "The CSS (SCSS) primitives and brand guidelines of the #hashtag's design system",
   "main": "./src/index.scss",
   "scripts": {
     "fresh": "rm -rf node_modules && yarn",
     "fresh:css": "rm -rf css",
     "scss": "sass ./src:./css -c --update --no-source-map",
-    "prepublishOnly": "yarn fresh:css && yarn scss"
+    "prepack": "yarn fresh:css && yarn scss"
   },
   "repository": "https://github.com/hashtag-design-system/design_system",
   "author": "George Krachtopoulos <@georgekrax>",
