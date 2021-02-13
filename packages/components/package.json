@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.39",
+  "version": "0.1.41",
   "private": false,
   "scripts": {
     "dev": "yarn fresh-index && react-scripts start",
@@ -55,7 +55,7 @@
     ]
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "1.2.4",
+    "@hashtag-design-system/primitives": "1.2.6",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
@@ -108,7 +108,7 @@
     "ts-node": "^9.1.1"
   },
   "peerDependencies": {
-    "@hashtag-design-system/primitives": ">=1.2.1",
+    "@hashtag-design-system/primitives": ">=1.2.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
