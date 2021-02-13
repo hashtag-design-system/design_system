@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.35",
+  "version": "0.1.39",
   "private": false,
   "scripts": {
     "dev": "yarn fresh-index && react-scripts start",
@@ -24,8 +24,7 @@
     "fresh-index": "gulp freshIndex",
     "comment-index": "gulp commentIndex",
     "build-storybook": "build-storybook -s public",
-    "prepublishOnly": "yarn test:no-watch && yarn gulp",
-    "prepack": "yarn prepublishOnly"
+    "prepack": "yarn test:no-watch && yarn gulp"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,7 +55,7 @@
     ]
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "1.2.2",
+    "@hashtag-design-system/primitives": "1.2.4",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
