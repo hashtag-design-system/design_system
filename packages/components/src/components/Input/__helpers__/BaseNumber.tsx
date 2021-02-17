@@ -1,9 +1,8 @@
 import React from "react";
 import { CONFIG } from "../../../config";
-import { error, useClassnames, useDisabled } from "../../../utils";
-import { useInputContext } from "../../../utils";
-import { ACTIONS } from "./numberReducer";
+import { error, useClassnames, useDisabled, useInputContext } from "../../../utils";
 import Input from "../index";
+import { ACTIONS } from "./numberReducer";
 
 type Props = {
   isBtnShown?: boolean;
@@ -79,6 +78,7 @@ export const BaseNumber: React.FunctionComponent<Props> = ({ isBtnShown, childre
     } else {
       dispatch({ type: ACTIONS.HANDLE_CHANGE, payload: { newVal } });
     }
+
     if (onChange) {
       onChange(e);
     }

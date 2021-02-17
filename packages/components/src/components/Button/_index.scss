@@ -1,12 +1,12 @@
 // Primary button
 .btn {
   @extend .flex-row-center-center;
-  @include body;
+  @include body-16();
   flex: none;
   align-self: flex-start;
   position: relative;
   white-space: nowrap;
-  padding: em(10) em(16);
+  padding: em(10) 1em;
   width: auto;
   align-items: center;
   border-radius: rem(12);
@@ -16,10 +16,9 @@
   position: relative;
   text-align: center;
   appearance: none;
-  gap: em(8);
+  gap: 0.5em;
   transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
-  font-size: 1em;
   letter-spacing: 0.025em;
 
   @include focus-visible-classNames() {

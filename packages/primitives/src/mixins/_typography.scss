@@ -9,84 +9,89 @@
 }
 
 @mixin font-light {
-  font-weight: 200 !important;
+  font-weight: map-get($font-weights, "light");
 }
 
-@mixin font-medium {
-  font-weight: 500 !important;
+@mixin font-semibold {
+  font-weight: map-get($font-weights, "semibold");
 }
 
 @mixin font-bold {
-  font-weight: bold !important;
+  font-weight: map-get($font-weights, "bold");
 }
 
 @mixin font-upper {
-  text-transform: uppercase !important;
+  text-transform: uppercase;
 }
 
 @mixin font-lower {
-  text-transform: lowercase !important;
+  text-transform: lowercase;
 }
 
 @mixin font-caps {
-  text-transform: capitalize !important;
+  text-transform: capitalize;
 }
 
 @mixin header {
-  @include font-base;
-  @include font-bold;
-  @include font-upper;
+  @include font-base();
+  @include font-bold();
+  @include font-upper();
 }
 
 @mixin subheader {
-  @include font-base;
-  @include font-medium;
+  @include font-base();
+  @include font-semibold();
 }
 
 @mixin body {
-  @include font-base;
-  font-weight: normal;
+  @include font-base();
+  font-weight: map-get($font-weights, "normal");
   letter-spacing: 0.01em;
+}
+
+@mixin body-16 {
+  @include body();
+  font-size: 1rem;
 }
 
 // Headings
 @mixin h1 {
-  @include header;
-  font-size: 64px;
-  line-height: 75px;
+  @include header();
+  font-size: 4rem;
+  line-height: 4.625rem;
   letter-spacing: -0.02em;
 }
 
 @mixin h2 {
-  @include header;
-  font-size: 48px;
-  line-height: 56px;
+  @include header();
+  font-size: 3rem;
+  line-height: 3.5rem;
   letter-spacing: -0.02em;
 }
 
 @mixin h3 {
-  @include header;
-  font-size: 40px;
-  line-height: 47px;
+  @include header();
+  font-size: 2.5rem;
+  line-height: 3rem;
   letter-spacing: -0.02em;
 }
 
 @mixin h4 {
-  @include header;
-  font-size: 24px;
-  line-height: 28px;
+  @include header();
+  font-size: 1.5rem;
+  line-height: 1.75rem;
   letter-spacing: -0.02em;
 }
 
 // Subheader
 @mixin h5 {
-  @include subheader;
-  font-size: 24px;
-  line-height: 28px;
+  @include subheader();
+  font-size: 1.5rem;
+  line-height: 1.75rem;
 }
 
 @mixin h6 {
-  @include subheader;
-  font-size: 20px;
-  line-height: 23px;
+  @include subheader();
+  font-size: 1.25rem;
+  line-height: 1.5rem;
 }

@@ -107,7 +107,7 @@ describe("<Autosuggest />", () => {
 
       await waitFor(() => {
         expect(modal).not.toBeVisible();
-      });
+      }, { timeout: 5000 });
       const firstItemText = items[0].textContent;
       expect(filterInput).toHaveValue(firstItemText);
       expect(onSelect).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe("<Autosuggest />", () => {
       });
 
       expect(filterInput).toHaveValue(firstItemText?.slice(0, -2) + secondTestVal);
-    });
+    }, 10000);
     test("onChange -> onBlur -> onFocus => items.length should be the same", async () => {
       render(<AutosuggestTestComponent />);
       const filterInput = screen.getByTestId("select-filter");

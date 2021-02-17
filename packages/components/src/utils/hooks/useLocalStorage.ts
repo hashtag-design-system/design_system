@@ -1,4 +1,4 @@
-import { useHasMounted } from "@hashtag-design-system/components";
+import { useHasMounted } from "../index";
 import { useEffect, useState } from "react";
 
 // Recommended in -> https://codesandbox.io/s/z20gn?file=/pages/index.js:336-397

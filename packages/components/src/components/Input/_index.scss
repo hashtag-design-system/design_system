@@ -2,10 +2,11 @@
 
 .input {
   $input-placeholder-clr: $grey-7;
+  $input-padding: 0.75rem;
   @extend .flex-row-center-center;
   @extend .body-16;
   color: $grey-10;
-  padding: em(12);
+  padding: $input-padding;
   width: $input-width;
   height: 3em;
   box-sizing: border-box;
@@ -35,8 +36,8 @@
 
   @include focus-classNames() {
     @include input--hover();
-
     border-color: $primary;
+
     &:not([placeholder]) {
       &[data-hasfloatingplaceholder="true"] {
         padding-bottom: em(0);
@@ -48,21 +49,25 @@
     }
   }
 
+  &__container,
+  &__container__field {
+    display: inline-block;
+  }
+
   &__container {
     @extend .flex-column-stretch-flex-start;
-    gap: em(4);
-    height: 100%;
+    gap: 0.5em;
+    width: fit-content;
 
     &__field {
       padding: 0;
-      width: auto;
       align-self: stretch;
+      width: 100%;
       position: relative;
-      height: 100%;
 
       &[data-isfloated="true"] {
         .input {
-          padding-bottom: em(0);
+          padding-bottom: 0;
 
           &__floating-placeholder {
             @include input__floating-placeholder--focus();
@@ -89,12 +94,13 @@
     position: absolute;
     // top: calc(50% - 1rem);
     top: 50%;
-    transform: translateY(-50%);
     left: rem(12);
+    transform: translateY(-50%);
+    width: calc(100% - (#{$input-padding} * 2));
     color: $input-placeholder-clr;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: clip;
+    text-overflow: ellipsis;
     user-select: none;
     pointer-events: none;
     overflow: visible;
@@ -106,7 +112,7 @@
   }
 
   &__label {
-    @extend .medium;
+    @extend .semibold;
     color: $grey-9;
     align-self: stretch;
     width: auto;
@@ -389,7 +395,7 @@
     padding: 0;
     width: auto;
     height: 2.5em;
-    gap: em(16);
+    gap: 1em;
   }
 
   &__btn {
@@ -398,6 +404,7 @@
     padding: 0.5em;
     background-color: lighten($primary, 42);
     align-self: center;
+    border-radius: 0.875rem;
 
     @include path-classNames() {
       stroke: $primary;
@@ -440,8 +447,8 @@
 
   &__btn {
     height: 100%;
-    padding-right: em(12);
-    padding-left: em(12);
+    padding-right: 0.75em;
+    padding-left: 0.75em;
     gap: 0.25em;
     border-radius: $input-border-radius 0 0 $input-border-radius;
   }

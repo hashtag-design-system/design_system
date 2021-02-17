@@ -1,7 +1,4 @@
-@import "index.scss";
-@import "base/globals";
-@import "base/shadows";
-@import "base/typography";
+@import "index";
 
 :root {
   --grey-1: #ffffff;
@@ -160,4 +157,31 @@ code {
     monospace;
 }
 
-@include generate-flex();
+// Typography
+h1 {
+  @extend .header-1;
+}
+
+h2 {
+  @extend .header-2;
+}
+
+h3 {
+  @extend .header-3;
+}
+
+h4 {
+  @extend .header-4;
+}
+
+h5 {
+  @extend .header-5;
+}
+
+h6 {
+  @extend .header-6;
+}
+
+p {
+  @extend .body-16;
+}

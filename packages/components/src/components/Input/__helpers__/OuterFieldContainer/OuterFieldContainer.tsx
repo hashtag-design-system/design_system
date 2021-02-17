@@ -21,15 +21,16 @@ export const OuterFieldContainer: React.FunctionComponent<Props> = ({ prefixWidt
     className,
   } = useInputContext();
 
+  const [defaultIsFloated, setDefaultIsFloated] = useState<boolean>((value || prefix) && floatingplaceholder ? true : false);
+
   useEffect(() => {
     if (typeof floatingplaceholder === "object") {
-      setIsFloated(floatingplaceholder.now);
+      setDefaultIsFloated(floatingplaceholder.now);
     } else {
-      setIsFloated((value || typeof prefix === "string" || typeof suffix === "string") && floatingplaceholder ? true : false);
+      setDefaultIsFloated((value || typeof prefix === "string" || typeof suffix === "string") && floatingplaceholder ? true : false);
     }
   }, [value, floatingplaceholder, prefix, suffix]);
 
-  const [isFloated, setIsFloated] = useState<boolean>((value || prefix) && floatingplaceholder ? true : false);
 
   if (isError() && defaultValue && maxLength && String(defaultValue).length > maxLength) {
     error("`defaultValue` Prop has more characters than its Prop limit of `maxLength`");
@@ -42,7 +43,7 @@ export const OuterFieldContainer: React.FunctionComponent<Props> = ({ prefixWidt
   }
 
   return (
-    <div className="input__container__field" data-isfloated={isFloated} data-testid="outer-field-container">
+    <div className="input__container__field" data-isfloated={defaultIsFloated} data-testid="outer-field-container">
       {children}
       <FloatingPlaceholder prefixWidth={prefixWidth} />
     </div>

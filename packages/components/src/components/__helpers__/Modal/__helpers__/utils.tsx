@@ -19,8 +19,8 @@ export const overlayCheckStyle = async (toContain: string): Promise<void> => {
 
 export const createPortalElement = () => {
   const newEl = document.createElement("div");
-  newEl.setAttribute("id", CONFIG.PORTAL_ID_SELECTOR);
-  newEl.setAttribute("data-testid", CONFIG.PORTAL_ID_SELECTOR);
+  newEl.setAttribute("id", CONFIG.DEFAULT_PORTAL_ID_SELECTOR);
+  newEl.setAttribute("data-testid", CONFIG.DEFAULT_PORTAL_ID_SELECTOR);
   document.body.prepend(newEl);
   return newEl;
 };

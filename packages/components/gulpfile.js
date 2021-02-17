@@ -12,9 +12,9 @@ sass.compiler = sassCompiler;
 const REPLACEMENTS = [
   ["import", "// import"],
   ["ReactDOM.render(", "// ReactDOM.render("],
-  ["  <React.StrictMode>", "// <React.StrictMode>"],
+  ["  <React.StrictMode>", "//   <React.StrictMode>"],
   ["    <App />", "//     <App />"],
-  ["  </React.StrictMode>", "// </React.StrictMode>"],
+  ["  </React.StrictMode>", "//   </React.StrictMode>"],
   ['  document.getElementById("root")', '//   document.getElementById("root")'],
   [");", "// );"],
 ];

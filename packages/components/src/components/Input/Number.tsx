@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import { InputContextProvider, useDisabled } from "../../utils";
 import Button from "../Button";
 import { InputFProps } from "./index";
@@ -29,6 +29,7 @@ const animationVariants = {
 
 export type Props = {
   showBtnControl?: boolean;
+  onValue?: (value: number) => void;
 };
 
 export type FProps = Props & Omit<InputFProps, "characterLimit" | "type" | "allowClear" | "passwordboxes">;
@@ -43,6 +44,7 @@ const Number: React.FunctionComponent<FProps> = ({
   width = "7.5em",
   overrideOnChange,
   showBtnControl = true,
+  onValue,
   onFocus,
   onBlur,
   onMouseOver,
@@ -64,15 +66,12 @@ const Number: React.FunctionComponent<FProps> = ({
   const [isDown, setIsDown] = useState<boolean>(false);
   // const overlayControls = useAnimation();
 
-  const increment = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
+  const handleOperation = (e: React.MouseEvent<HTMLButtonElement>, operation: "increment" | "decrement", stepNumber = step) => {
     e.preventDefault();
-    dispatch({ type: ACTIONS.INCREMENT, payload: { step: stepNumber } });
+    dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
   };
 
-  const decrement = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
-    e.preventDefault();
-    dispatch({ type: ACTIONS.DECREMENT, payload: { step: stepNumber } });
-  };
+  // const increment = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
 
   const toggleBtn = (boolean: boolean) => {
     if (!isDisabled && state === "default") {
@@ -90,6 +89,13 @@ const Number: React.FunctionComponent<FProps> = ({
       }
     }
   };
+
+  useEffect(() => {
+    if (onValue) {
+      const parsedValue = parseFloat(value.toString() || min.toString());
+      onValue(parsedValue);
+    }
+  }, [value]);
 
   const fIsBtnShown = useMemo(() => isBtnShown && showBtnControl, [isBtnShown, showBtnControl]);
 
@@ -172,7 +178,7 @@ const Number: React.FunctionComponent<FProps> = ({
                   style={{ height: isUp ? IS_UP_HEIGHT : isDown ? IS_DOWN_HEIGHT : undefined }}
                   onMouseEnter={e => handleBtnMouse(e, "up", true)}
                   onMouseLeave={e => handleBtnMouse(e, "up", false)}
-                  onMouseDown={e => increment(e)}
+                  onMouseDown={e => handleOperation(e, "increment")}
                   data-testid="input-number-btn-increase"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,7 +190,7 @@ const Number: React.FunctionComponent<FProps> = ({
                   style={{ height: isDown ? IS_UP_HEIGHT : isUp ? IS_DOWN_HEIGHT : undefined }}
                   onMouseEnter={e => handleBtnMouse(e, "down", true)}
                   onMouseLeave={e => handleBtnMouse(e, "down", false)}
-                  onMouseDown={e => decrement(e)}
+                  onMouseDown={e => handleOperation(e, "decrement")}
                   data-testid="input-number-btn-decrease"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">

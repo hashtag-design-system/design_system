@@ -37,7 +37,7 @@ export const InputContainer: React.FC = ({ children }) => {
         >
           <HelpTextContainer second helptext={secondhelptext} />
           {characterLimit && maxLength && (
-            <div className={`input__character-limit body-12 ${isAllowedMoreCharacters ? "medium" : ""}`} data-testid="character-limit">
+            <div className={`input__character-limit body-12 ${isAllowedMoreCharacters ? "semibold" : ""}`} data-testid="character-limit">
               {value ? String(value).length : 0} / {maxLength}
             </div>
           )}

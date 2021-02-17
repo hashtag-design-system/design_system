@@ -179,7 +179,7 @@
         margin-top: 0.25em;
 
         & > .btn {
-          @extend .medium;
+          @extend .semibold;
           font-size: 18px;
           margin: 0;
           // border-color: $grey-4;
@@ -245,7 +245,7 @@
       }
 
       &:not(.other-date) {
-        @extend .medium;
+        @extend .semibold;
       }
 
       &.other-day {

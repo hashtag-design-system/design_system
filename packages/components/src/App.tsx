@@ -67,8 +67,8 @@ function App() {
             <Select.Item id="georgekrax9" content="Me9" /> */}
         </Autosuggest>
         <Button pill>Button</Button>
-        <Input.Number />
-        <Input.IncrDcr />
+        <Input.Number defaultValue={0} onChange={e => console.log(e.target.value)} />
+        <Input.IncrDcr defaultValue={0} onValue={e => console.log(e)} />
         {/* <BottomSheet isShown={isChecked} hugContentsHeight={false} onDismiss={() => setIsChecked(false)}>
           {({ dismiss }) => (
             <>

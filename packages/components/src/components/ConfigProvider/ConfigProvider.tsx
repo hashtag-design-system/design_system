@@ -26,8 +26,9 @@ export const configDefaultValues: OmitConfigContextType = {
       selector: "portal",
     },
     breakpoints: {
-      sm: 480,
-      md: 600,
+      xs: 420,
+      sm: 600,
+      md: 768,
       lg: 992,
       xl: 1200,
     },
@@ -47,7 +48,7 @@ export type FProps<
   V extends {} = Record<string, unknown>,
   VB extends {} = Record<string, unknown>,
   FW extends {} = Record<string, number>
-> = PartialConfigContextType<C, V, VB, FW> & { children: React.ReactNode };
+> = PartialConfigContextType<C, V, VB, FW> & { children?: React.ReactNode };
 
 function ConfigProvider<T extends FProps = FProps>({ mode, colors, variables, fontWeights, fontSizes, children }: T) {
   const {

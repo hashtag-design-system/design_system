@@ -12,8 +12,15 @@ $success-color: $green-7 !default;
 $portal-shadow: 0px 2px 16px rgba(0, 0, 0, 20%) !default;
 $portal-selector: "portal" !default;
 $breakpoints: (
-  "sm": 480px,
-  "md": 600px,
+  "xs": 420px,
+  "sm": 600px,
+  "md": 768px,
   "lg": 992px,
   "xl": 1200px,
+);
+$font-weights: (
+  "light": 300,
+  "normal": 400,
+  "semibold": 500,
+  "bold": 700,
 );

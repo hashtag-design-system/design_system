@@ -32,7 +32,7 @@ const checkNotShown = async () => {
     expect(bottomSheet).toBeNull();
     expect(modalRoot.children).toHaveLength(0);
     expect(modalRoot).not.toContainElement(bottomSheet);
-  });
+  }, { timeout: 2000 });
 };
 
 const checkY = async (y: number) => {

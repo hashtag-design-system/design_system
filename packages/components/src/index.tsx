@@ -23,6 +23,7 @@ export * from "./components/Table";
 export * from "./components/TimePicker";
 export * from "./components/__helpers__";
 export * from "./components/ConfigProvider";
+export * from "./components/ClientOnly";
 
 // Config
 export * from "./config";
@@ -31,8 +32,8 @@ export * from "./config";
 export * from "./utils";
 
 // ReactDOM.render(
-// <React.StrictMode>
+//   <React.StrictMode>
 //     <App />
-// </React.StrictMode>,
+//   </React.StrictMode>,
 //   document.getElementById("root")
 // );

@@ -163,37 +163,28 @@ describe("<Input.Number />", () => {
 
       expect(input).toHaveValue(0);
     });
-    test("increment with ⬆️", async () => {
-      render(<Input.Number />);
+    test.each([
+      { defaultValue: 0, expected: 1 },
+      { defaultValue: 10, expected: 9 },
+    ])("increment with ⬆️ & decrement with ⬇️", async ({ defaultValue, expected }) => {
+      const onValue = jest.fn(value => value);
+      render(<Input.Number defaultValue={defaultValue} onValue={onValue} />);
       const input = screen.getByTestId("input-number");
 
-      userEvent.type(input, specialChars.arrowUp);
+      userEvent.type(input, defaultValue < expected ? specialChars.arrowUp : specialChars.arrowDown);
 
-      expect(input).toHaveValue(1);
+      expect(input).toHaveValue(expected);
+      expect(onValue).toHaveBeenCalled();
+      expect(onValue).toHaveLastReturnedWith(expected);
     });
-    test("decrement with ⬇️", async () => {
-      render(<Input.Number defaultValue={10} />);
+    test.each([{ defaultValue: 0 }, { defaultValue: 20 }])("increment with Shift+⬆️", async ({ defaultValue }) => {
+      const expected = 10;
+      render(<Input.Number defaultValue={defaultValue} />);
       const input = screen.getByTestId("input-number");
 
-      userEvent.type(input, specialChars.arrowDown);
+      userEvent.type(input, `{shift}${defaultValue < expected ? specialChars.arrowUp : specialChars.arrowDown}`);
 
-      expect(input).toHaveValue(9);
-    });
-    test("increment with Shift+⬆️", async () => {
-      render(<Input.Number />);
-      const input = screen.getByTestId("input-number");
-
-      userEvent.type(input, `{shift}${specialChars.arrowUp}`);
-
-      expect(input).toHaveValue(10);
-    });
-    test("decrement with Shift+⬇️", async () => {
-      render(<Input.Number defaultValue={20} />);
-      const input = screen.getByTestId("input-number");
-
-      userEvent.type(input, `{shift}${specialChars.arrowDown}`);
-
-      expect(input).toHaveValue(10);
+      expect(input).toHaveValue(expected);
     });
     test("increment with Shift+⬆️, with defaultValue={1}", async () => {
       render(<Input.Number defaultValue={1} />);

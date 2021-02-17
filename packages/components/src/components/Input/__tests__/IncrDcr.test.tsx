@@ -141,46 +141,36 @@ describe("<Input.IncrDcr />", () => {
 
       expect(input).toHaveValue(1);
     });
-    test("increment with ⬆️", async () => {
-      render(<Input.IncrDcr />);
+    test.each([
+      { defaultValue: 0, expected: 2 },
+      { defaultValue: 10, expected: 9 },
+    ])("increment with ⬆️ & decrement with ⬇️", async ({ defaultValue, expected }) => {
+      const onValue = jest.fn(value => value);
+      render(<Input.IncrDcr defaultValue={defaultValue} onValue={onValue} />);
       const input = screen.getByTestId("input-incr-dcr");
 
-      userEvent.type(input, specialChars.arrowUp);
+      userEvent.type(input, defaultValue < expected ? specialChars.arrowUp : specialChars.arrowDown);
 
       await waitFor(() => {
-        expect(input).toHaveValue(2);
+        expect(input).toHaveValue(expected);
       });
+      expect(onValue).toHaveBeenCalled();
+      expect(onValue).toHaveLastReturnedWith(expected);
     });
-    test("decrement with ⬇️", async () => {
-      render(<Input.IncrDcr defaultValue={10} />);
-      const input = screen.getByTestId("input-incr-dcr");
+    test.each([{ defaultValue: 0 }, { defaultValue: 20 }])(
+      "increment with Shift+⬆️ & decrement with Shift+⬇️",
+      async ({ defaultValue }) => {
+        const expected = 10;
+        render(<Input.IncrDcr defaultValue={defaultValue} />);
+        const input = screen.getByTestId("input-incr-dcr");
 
-      userEvent.type(input, specialChars.arrowDown);
+        userEvent.type(input, `{shift}${defaultValue < expected ? specialChars.arrowUp : specialChars.arrowDown}`);
 
-      await waitFor(() => {
-        expect(input).toHaveValue(9);
-      });
-    });
-    test("increment with Shift+⬆️", async () => {
-      render(<Input.IncrDcr />);
-      const input = screen.getByTestId("input-incr-dcr");
-
-      userEvent.type(input, `{shift}${specialChars.arrowUp}`);
-
-      await waitFor(() => {
-        expect(input).toHaveValue(10);
-      });
-    });
-    test("decrement with Shift+⬇️", async () => {
-      render(<Input.IncrDcr defaultValue={20} />);
-      const input = screen.getByTestId("input-incr-dcr");
-
-      userEvent.type(input, `{shift}${specialChars.arrowDown}`);
-
-      await waitFor(() => {
-        expect(input).toHaveValue(10);
-      });
-    });
+        await waitFor(() => {
+          expect(input).toHaveValue(expected);
+        });
+      }
+    );
     test("increment with Shift+⬆️, with defaultValue={1}", async () => {
       render(<Input.IncrDcr />);
       const input = screen.getByTestId("input-incr-dcr");

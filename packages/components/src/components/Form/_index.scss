@@ -16,7 +16,7 @@
   }
 }
 
-@include breakpoint("md") {
+@include breakpoint("sm") {
   .form {
     &-group {
       gap: em(28);

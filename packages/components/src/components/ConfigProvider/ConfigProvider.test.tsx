@@ -42,9 +42,8 @@ describe("<ConfigProvider />", () => {
     render(<TestConfigProvider onContext={onContext} />);
 
     const children = document.body.children;
-    // +1 for <Modal.Portal />
-    expect(children).toHaveLength(2);
-    expect(children[1].children).toHaveLength(1);
+    expect(children).toHaveLength(1);
+    expect(children[0].children).toHaveLength(1);
     expect(onContext).toHaveBeenCalledTimes(1);
   });
   test("get mode", () => {
@@ -170,7 +169,7 @@ describe("<ConfigProvider />", () => {
     test.each([true, false])("with extra fontWeight & override fontWeight", override => {
       const onContext = jest.fn((fontWeights: ConfigFontWeightsType) => fontWeights);
       const testVal: Partial<ConfigFontWeightsType> = override ? { bold: 700 } : { lightbold: 450 };
-      render(<TestConfigProvider fontWeights={{ ...testVal }} onContext={({ fontWeights }) => onContext(fontWeights)} />);
+      render(<TestConfigProvider fontWeights={{ ...testVal as any }} onContext={({ fontWeights }) => onContext(fontWeights)} />);
 
       expect(onContext).toHaveBeenCalledTimes(1);
       const mockResults = onContext.mock.results;
@@ -218,7 +217,7 @@ describe("<ConfigProvider />", () => {
     });
     test.each([true, false])("with extra breakpoints & override breakpoints", override => {
       const onContext = jest.fn((variables: ConfigVariablesType) => variables["breakpoints"]);
-      const testVal: Partial<ConfigVariablesType["breakpoints"]> = override ? { lg: 700 } : { xs: 200 };
+      const testVal: Partial<ConfigVariablesType["breakpoints"]> = override ? { lg: 700 } : { xxl: 200 };
       render(<TestConfigProvider variables={{ breakpoints: testVal }} onContext={({ variables }) => onContext(variables)} />);
 
       expect(onContext).toHaveBeenCalledTimes(1);

@@ -1,12 +1,10 @@
-import React, { useReducer } from "react";
-import { useClassnames, useDisabled } from "../../utils";
-import { InputContextProvider } from "../../utils";
-import { ACTIONS, reducer, ReducerInitialStateType } from "./__helpers__";
+import React, { useEffect, useReducer } from "react";
+import { InputContextProvider, useClassnames, useDisabled } from "../../utils";
 import Button from "../Button";
 import { ComponentProps } from "../__helpers__";
 import { InputNumberFProps } from "./index";
 import { InputBaseState } from "./Input";
-import { BaseNumber } from "./__helpers__";
+import { ACTIONS, BaseNumber, reducer, ReducerInitialStateType } from "./__helpers__";
 import { AddIcon } from "./__icons__/AddIcon";
 import { SubtractIcon } from "./__icons__/SubtractIcon";
 
@@ -47,6 +45,7 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
   width = "3rem",
   overrideOnChange,
   state = "default",
+  onValue,
   ...props
 }) => {
   const [classNames, rest] = useClassnames("input-incr-dcr", props);
@@ -61,13 +60,17 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
     };
   });
 
-  const increment = (stepNumber = step) => {
-    dispatch({ type: ACTIONS.INCREMENT, payload: { step: stepNumber } });
+  const handleOperation = (e: React.MouseEvent<HTMLButtonElement>, operation: "increment" | "decrement", stepNumber = step) => {
+    e.preventDefault();
+    dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
   };
 
-  const decrement = (stepNumber = step) => {
-    dispatch({ type: ACTIONS.DECREMENT, payload: { step: stepNumber } });
-  };
+  useEffect(() => {
+    if (onValue) {
+      const parsedValue = parseFloat(value.toString() || min.toString());
+      onValue(parsedValue);
+    }
+  }, [value]);
 
   const active = state === "active";
   const leftActive =
@@ -87,7 +90,7 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
         className={`input-incr-dcr__btn ${state === "hover|decrease" ? "hover" : ""} ${
           state === "focus-visible|decrease" ? "focus-visible" : ""
         }`}
-        onClick={() => decrement()}
+        onClick={e => handleOperation(e, "decrement")}
         data-testid="input-incr-dcr-decrease"
       >
         <SubtractIcon />
@@ -113,7 +116,7 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
           className={`input-incr-dcr__btn ${state === "hover|increase" ? "hover" : ""} ${
             state === "focus-visible|increase" ? "focus-visible" : ""
           }`}
-          onClick={() => increment()}
+          onClick={e => handleOperation(e, "increment")}
           data-testid="input-incr-dcr-increase"
         >
           <AddIcon />

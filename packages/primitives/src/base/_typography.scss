@@ -1,104 +1,95 @@
 // Base
 .light {
-  @include font-light;
+  @include font-light();
 }
 
-.medium {
-  @include font-medium;
+.semibold {
+  @include font-semibold();
 }
 
 .bold {
-  @include font-bold;
+  @include font-bold();
 }
 
 .upper {
-  @include font-upper;
+  @include font-upper();
 }
 
 .lower {
-  @include font-lower;
+  @include font-lower();
 }
 
 .caps {
-  @include font-caps;
+  @include font-caps();
 }
 
 // Headings
-h1,
 .header-1 {
-  @include h1;
+  @include h1();
 }
 
-h2,
 .header-2 {
-  @include h2;
+  @include h2();
 }
 
-h3,
 .header-3 {
-  @include h3;
+  @include h3();
 }
 
-h4,
 .header-4 {
-  @include h4;
+  @include h4();
 }
 
-h5,
 .header-5 {
-  @include h5;
+  @include h5();
 }
 
-h6,
 .header-6 {
-  @include h6;
+  @include h6();
 }
 
 // Body
-p,
 .body-16 {
-  @include body;
-  font-size: 16px;
+  @include body-16();
 }
 
 .body-14 {
-  @include body;
-  font-size: 14px;
+  @include body();
+  font-size: 0.875rem;
   line-height: 150%;
 }
 
 .body-12 {
-  @include body;
-  font-size: 12px;
+  @include body();
+  font-size: 0.75rem;
   line-height: 150%;
 }
 
 // Other
 .pre-header {
-  @include font-base;
-  @include font-upper;
-  font-size: 10px;
-  line-height: 12px;
+  @include font-base();
+  @include font-upper();
+  font-size: 0.625rem;
+  line-height: 0.75rem;
   letter-spacing: 0.04em;
 }
 
 .link-font {
-  @include font-base;
-  @include font-bold;
-  font-size: 16px;
+  @include font-base();
+  @include font-bold();
+  font-size: 1rem;
   line-height: 150%;
 }
 
 .input-label-font {
-  @include body;
-  font-size: 14px;
+  @include body();
+  font-size: 0.875rem;
   line-height: 150%;
 }
 
 .input-placeholder-font {
-  @include body;
-  font-size: 16px;
-  line-height: 19px;
+  @include body-16();
+  line-height: rem(19);
 }
 
 .input-password-font {

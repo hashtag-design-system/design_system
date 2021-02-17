@@ -192,8 +192,9 @@ type ConfigVariablesPortal = {
 };
 
 export type ConfigBreakpoint = {
-  sm: NumberLiteralUnion<480>;
-  md: NumberLiteralUnion<600>;
+  xs: NumberLiteralUnion<420>;
+  sm: NumberLiteralUnion<600>;
+  md: NumberLiteralUnion<768>;
   lg: NumberLiteralUnion<992>;
   xl: NumberLiteralUnion<1200>;
 };

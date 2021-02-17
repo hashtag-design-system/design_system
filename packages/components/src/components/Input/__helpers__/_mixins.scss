@@ -22,7 +22,7 @@
 }
 
 @mixin input__floating-placeholder--focus {
-  top: em(8);
+  top: 15%;
   font-size: em(10);
   transform: none;
 }
