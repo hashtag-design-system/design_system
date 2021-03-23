@@ -55,6 +55,15 @@
   }
 }
 
+@mixin hover-active-classNames {
+  &:hover,
+  &.hover,
+  &:active,
+  &.active {
+    @content;
+  }
+}
+
 @mixin not-disabled {
   &:not(:disabled),
   &:not(.disabled) {

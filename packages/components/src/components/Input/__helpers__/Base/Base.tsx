@@ -37,7 +37,7 @@ export const Base: React.FunctionComponent = () => {
     disabled,
     ...props
   } = useInputContext();
-
+  
   const id = useInputId(propsId);
   const [classNames, rest] = useClassnames("input", props, { stateToRemove: { state } });
   const isDisabled = useDisabled(props, state) || disabled;

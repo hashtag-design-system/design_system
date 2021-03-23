@@ -109,9 +109,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   useEffect(() => {
     document.addEventListener("keydown", e => handleKeyDown(e));
 
-    return () => {
-      document.removeEventListener("keydown", e => handleKeyDown(e));
-    };
+    return () => document.removeEventListener("keydown", e => handleKeyDown(e));
   }, [handleKeyDown]);
 
   return (
@@ -124,7 +122,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
           transition={{ duration: 0.2 }}
           className={classNames}
           ref={modalRef}
-          style={{ translateY: !isMobile ? "-50%" : undefined, ...style }}
+          style={{ top: !isMobile ? "11%" : undefined, ...style }}
           data-testid="dialog"
           {...rest}
         >

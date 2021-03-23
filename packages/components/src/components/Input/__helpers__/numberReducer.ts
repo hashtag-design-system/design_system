@@ -1,4 +1,4 @@
-import { InputFProps } from "..";
+import { InputFProps, InputNumberFProps } from "..";
 
 // ------------ Reducer types ------------ //
 export const ACTIONS = {
@@ -20,47 +20,37 @@ export type ACTIONTYPE =
       payload: { e: React.KeyboardEvent<HTMLInputElement> };
     };
 
-export type ReducerInitialStateType = Required<Pick<InputFProps, "value" | "min" | "max" | "defaultValue">> & {
+export type ReducerInitialStateType = {
   isDisabled: boolean;
   hasShiftKey: boolean;
-};
+} & Required<Pick<InputFProps, "value" | "min" | "max" | "defaultValue">> &
+  Pick<InputNumberFProps, "none">;
 
 // ------------ Utility functions ------------ //
 const valueEqualsDefault = (value: number, defaultValue: React.ReactText) => {
-  if (String(value) === String(defaultValue)) {
-    return "";
-  } else {
-    return value;
-  }
+  if (String(value) === String(defaultValue)) return "";
+  else return value;
 };
 
 const increment = (value: number, step: number, max: number) => {
-  if (!(value + step > max)) {
-    return value + step;
-  } else {
-    return value;
-  }
+  if (!(value + step > max)) return value + step;
+  else return value;
 };
 
 const decrement = (value: number, step: number, min: number) => {
-  if (!(value - step < min)) {
-    return value - step;
-  } else {
-    return value;
-  }
+  if (!(value - step < min)) return value - step;
+  else return value;
 };
 
 // ------------ The reducer ------------ //
 export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): ReducerInitialStateType => {
-  const { value: number, min: prevMin, max: prevMax, defaultValue, isDisabled, hasShiftKey } = state;
+  const { value: number, min: prevMin, max: prevMax, defaultValue, isDisabled, hasShiftKey, none } = state;
 
   const value = parseFloat(String(number || prevMin));
   const min = parseFloat(String(prevMin));
   const max = parseFloat(String(prevMax));
 
-  if (isDisabled) {
-    return state;
-  }
+  if (isDisabled) return state;
 
   switch (action.type) {
     case ACTIONS.INCREMENT: {
@@ -74,26 +64,18 @@ export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): Red
     case ACTIONS.HANDLE_FOCUS:
       return { ...state, value: valueEqualsDefault(value, defaultValue) };
     case ACTIONS.HANDLE_BLUR:
-      if (!value || String(value) === "" || String(value) === String(defaultValue)) {
+      if ((!value || String(value) === "" || String(value) === String(defaultValue)) && !none)
         return { ...state, value: defaultValue.toString() };
-      }
       return state;
     case ACTIONS.HANDLE_CHANGE: {
       const { newVal } = action.payload;
-      if (hasShiftKey === true) {
-        return { ...state, hasShiftKey: false };
-      }
-      if (isNaN(newVal)) {
-        return { ...state, value: "" };
-      }
+      if (hasShiftKey === true) return { ...state, hasShiftKey: false };
+      if (isNaN(newVal)) return { ...state, value: "" };
       return { ...state, value: newVal };
     }
     case ACTIONS.HANDLE_KEY_UP_CAPTURE:
       const e = action.payload.e;
-      if (!(e.shiftKey && (e.key === "ArrowUp" || e.key === "ArrowDown"))) {
-        return { ...state, hasShiftKey: false };
-      }
-
+      if (!(e.shiftKey && (e.key === "ArrowUp" || e.key === "ArrowDown"))) return { ...state, hasShiftKey: false };
       return state;
     case ACTIONS.HANDLE_KEY_DOWN_CAPTURE: {
       const e = action.payload.e;
@@ -113,12 +95,8 @@ export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): Red
           }
         }
       } else {
-        if (e.key === "ArrowUp") {
-          state = { ...state, value: increment(value, 1, max) };
-        }
-        if (e.key === "ArrowDown") {
-          state = { ...state, value: decrement(value, 1, min) };
-        }
+        if (e.key === "ArrowUp") state = { ...state, value: increment(value, 1, max) };
+        if (e.key === "ArrowDown") state = { ...state, value: decrement(value, 1, min) };
       }
 
       return state;

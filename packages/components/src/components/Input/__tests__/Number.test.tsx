@@ -207,12 +207,14 @@ describe("<Input.Number />", () => {
         userEvent.click(increaseBtn);
 
         expect(increaseBtn.onclick).toBeDefined();
+        expect(increaseBtn).toHaveAttribute("aria-label", "Increment");
         expect(input).toHaveValue(1);
         expect(input.getAttribute("aria-valuenow")).toBe("1");
 
         userEvent.click(decreaseBtn);
 
         expect(decreaseBtn.onclick).toBeDefined();
+        expect(decreaseBtn).toHaveAttribute("aria-label", "Decrement");
         expect(input).toHaveValue(0);
         expect(input.getAttribute("aria-valuenow")).toBe("0");
       });

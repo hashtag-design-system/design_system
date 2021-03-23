@@ -6,7 +6,7 @@
   align-self: flex-start;
   position: relative;
   white-space: nowrap;
-  padding: em(10) 1em;
+  padding: 0.75em 1em;
   width: auto;
   align-items: center;
   border-radius: rem(12);
@@ -20,6 +20,7 @@
   transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   letter-spacing: 0.025em;
+  cursor: pointer;
 
   @include focus-visible-classNames() {
     @include accessibility-5dp;
@@ -50,10 +51,9 @@
   background-color: $primary;
   color: $grey-1;
 
-  @include hover-classNames() {
+  @include hover-active-classNames() {
     background-color: darken($primary, 10);
     border-color: darken($primary, 10);
-    cursor: pointer;
   }
 
   @include disabled-classNames {
@@ -70,9 +70,8 @@
   border: 2px solid $primary;
   box-sizing: border-box;
 
-  @include hover-classNames() {
+  @include hover-active-classNames() {
     background-color: $primary;
-    cursor: pointer;
     color: $grey-1;
     border-color: $primary;
   }
@@ -94,10 +93,9 @@
   background-color: $red-6;
   border-color: $red-6;
 
-  @include hover-classNames() {
+  @include hover-active-classNames() {
     background-color: $red-7;
     border-color: $red-7;
-    cursor: pointer;
     color: $grey-1;
   }
 

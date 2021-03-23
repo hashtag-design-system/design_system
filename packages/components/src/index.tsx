@@ -3,6 +3,7 @@
 // import App from "./App";
 
 // Components
+export * from "./components/__helpers__";
 export * from "./components/Animated";
 export * from "./components/Autosuggest";
 export * from "./components/BottomSheet";
@@ -21,7 +22,6 @@ export * from "./components/Slider";
 export * from "./components/Switch";
 export * from "./components/Table";
 export * from "./components/TimePicker";
-export * from "./components/__helpers__";
 export * from "./components/ConfigProvider";
 export * from "./components/ClientOnly";
 

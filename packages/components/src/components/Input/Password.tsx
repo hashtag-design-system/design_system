@@ -99,21 +99,23 @@ const Password: React.FC<FProps> = ({
   }, [password, defaultValue, setStrengthBoxes, calcPasswordStrength]);
 
   return (
-    <Input
-      type="password"
-      value={password}
-      placeholder={placeholder}
-      floatingplaceholder={floatingplaceholder}
-      autoComplete={autoComplete}
-      suffix={visibilityToggle ? toggleIcon : undefined}
-      className={classNames}
-      forwardref={forwardref}
-      onChange={e => handleChange(e)}
-      overrideOnChange={overrideOnChange}
-      passwordboxes={<PasswordBoxes strengthBoxes={strengthBoxes} />}
-      data-testid="input-password"
-      {...rest}
-    />
+    <div style={{ width: "100%", marginTop: -8 }}>
+      <Input
+        type="password"
+        value={password}
+        placeholder={placeholder}
+        floatingplaceholder={floatingplaceholder}
+        autoComplete={autoComplete}
+        suffix={visibilityToggle ? toggleIcon : undefined}
+        className={classNames}
+        forwardref={forwardref}
+        onChange={e => handleChange(e)}
+        overrideOnChange={overrideOnChange}
+        passwordboxes={<PasswordBoxes strengthBoxes={strengthBoxes} />}
+        data-testid="input-password"
+        {...rest}
+      />
+    </div>
   );
 };
 

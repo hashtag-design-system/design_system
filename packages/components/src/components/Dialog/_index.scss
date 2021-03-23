@@ -1,12 +1,12 @@
 .dialog {
   @extend .flex-row-center-center;
+  position: fixed;
   background-color: $grey-1;
   border-radius: 20px;
   min-height: 56px;
   height: auto;
   width: min(75%, 32em);
   display: block;
-  position: relative;
   overflow: hidden;
 
   .btn {
@@ -64,7 +64,7 @@
       }
 
       .btn-primary {
-        @extend .bold;
+        @extend .semibold;
       }
 
       .btn-secondary {

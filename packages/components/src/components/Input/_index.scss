@@ -7,7 +7,7 @@
   @extend .body-16;
   color: $grey-10;
   padding: $input-padding;
-  width: $input-width;
+  width: 100%;
   height: 3em;
   box-sizing: border-box;
   border: $input-border-width solid $input-border-color;
@@ -40,7 +40,10 @@
 
     &:not([placeholder]) {
       &[data-hasfloatingplaceholder="true"] {
-        padding-bottom: em(0);
+        @extend .input-multiline__floating-placeholder;
+        &:not(.input-multiline) {
+          padding-bottom: 0;
+        }
 
         ~ .input__floating-placeholder {
           @include input__floating-placeholder--focus();
@@ -55,9 +58,9 @@
   }
 
   &__container {
+    @extend .input--width;
     @extend .flex-column-stretch-flex-start;
     gap: 0.5em;
-    width: fit-content;
 
     &__field {
       padding: 0;
@@ -67,7 +70,11 @@
 
       &[data-isfloated="true"] {
         .input {
-          padding-bottom: 0;
+          @extend .input-multiline__floating-placeholder;
+
+          &:not(.input-multiline) {
+            padding-bottom: 0;
+          }
 
           &__floating-placeholder {
             @include input__floating-placeholder--focus();
@@ -120,6 +127,7 @@
     &__container {
       @extend .flex-row-space-between-flex-end;
       padding: 0;
+      margin-bottom: 0.25em;
       height: auto;
       align-self: stretch;
     }
@@ -127,7 +135,7 @@
 
   &__help-text__container {
     @extend .flex-row-flex-end-center;
-    gap: em(4);
+    gap: 0.25em;
     color: $grey-7;
     padding: 0;
     flex: none;
@@ -174,12 +182,13 @@
       @extend .flex-row-space-between-center;
       align-self: stretch;
       width: auto;
-      gap: em(8);
+      gap: 0.5em;
+      margin-top: 0.25em;
     }
   }
 
   &__padding-container {
-    padding: 0 rem(4) 0 rem(4);
+    padding: 0 0.25rem 0 0.25rem;
   }
 
   &__character-limit {
@@ -246,36 +255,27 @@
 }
 
 .input-multiline {
+  @extend .scrollbar;
   height: auto;
   box-sizing: border-box;
   resize: vertical;
   min-height: em(56);
 
   &:not([placeholder]) {
-    padding-top: rem(22);
+    padding-top: 1.5rem;
   }
-
-  @include focus-classNames() {
-    padding-bottom: em(10) !important;
-  }
-
-  @extend .scrollbar;
 
   + .input__floating-placeholder {
+    top: 1.5em;
     width: calc(100% - (1.5rem + 0.5rem));
   }
 
-  + .input__floating-placeholder::before {
-    @extend .input__floating-placeholder--pseudo-element;
-    top: rem(-4);
-    height: rem(4);
-  }
-
-  + .input__floating-placeholder::after {
-    @extend .input__floating-placeholder--pseudo-element;
-    left: 0;
-    bottom: rem(-6);
-    height: rem(6);
+  + .input__floating-placeholder {
+    &::before,
+    &::after {
+      @extend .input__floating-placeholder--pseudo-element;
+      height: 0.5rem;
+    }
   }
 }
 
@@ -319,8 +319,8 @@
 }
 
 .input-number {
+  width: 7em;
   position: relative;
-  width: $input-width * 0.6;
   -moz-appearance: textfield;
 
   &::-webkit-outer-spin-button,

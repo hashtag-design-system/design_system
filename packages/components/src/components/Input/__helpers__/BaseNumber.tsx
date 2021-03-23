@@ -41,52 +41,41 @@ export const BaseNumber: React.FunctionComponent<Props> = ({ isBtnShown, childre
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     dispatch({ type: ACTIONS.HANDLE_FOCUS });
-    if (onFocus) {
-      onFocus(e);
-    }
+    if (onFocus) onFocus(e);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     dispatch({ type: ACTIONS.HANDLE_BLUR });
-    if (onBlur) {
-      onBlur(e);
-    }
+    if (onBlur) onBlur(e);
   };
 
   const handleKeyDownCapture = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key;
+    if (key === "ArrowUp" || key === "ArrowDown") e.preventDefault();
     dispatch({ type: ACTIONS.HANDLE_KEY_DOWN_CAPTURE, payload: { e } });
-    if (onKeyDownCapture) {
-      onKeyDownCapture(e);
-    }
+    if (onKeyDownCapture) onKeyDownCapture(e);
   };
 
   const handleKeyUpCapture = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
     dispatch({ type: ACTIONS.HANDLE_KEY_UP_CAPTURE, payload: { e } });
-    if (onKeyUpCapture) {
-      onKeyUpCapture(e);
-    }
+    if (onKeyUpCapture) onKeyUpCapture(e);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (overrideOnChange && onChange) {
-      return;
-    }
+    if (overrideOnChange && onChange) return;
     const newVal = e.target.valueAsNumber;
-
-    if (!isNaN(newVal) && (String(newVal).length > String(max).length || isDisabled || newVal > max || newVal < min)) {
+    if (!isNaN(newVal) && (String(newVal).length > String(max).length || isDisabled || newVal > max || newVal < min))
       e.preventDefault();
-    } else {
-      dispatch({ type: ACTIONS.HANDLE_CHANGE, payload: { newVal } });
-    }
+    else dispatch({ type: ACTIONS.HANDLE_CHANGE, payload: { newVal } });
 
-    if (onChange) {
-      onChange(e);
-    }
+    if (onChange) onChange(e);
   };
 
   return (
     <Input
-      value={value}
+      // value={isNaN(parseFloat(value?.toString() || "")) && none ? undefined : value}
+      value={value !== "none" ? value : ""}
       type="number"
       state={state}
       placeholder={placeholder}

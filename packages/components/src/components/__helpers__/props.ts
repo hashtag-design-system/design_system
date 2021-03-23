@@ -66,6 +66,7 @@ const InputTypes = [
   "text",
   "textarea",
   "email",
+  "file",
   "hidden",
   "number",
   "password",

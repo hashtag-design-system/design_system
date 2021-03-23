@@ -2,14 +2,14 @@
 $primary: $blue-5 !default;
 $secondary: $blue-5 !default;
 $input-bg: $grey-2 !default;
-$input-width: 13.5em !default;
+$input-width: 15em !default;
 $input-disabled-bg: $grey-5 !default;
 $input-border-width: 1px !default;
 $input-border-color: $grey-5 !default;
 $input-border-radius: 8px !default;
 $error-color: $red-6 !default;
 $success-color: $green-7 !default;
-$portal-shadow: 0px 2px 16px rgba(0, 0, 0, 20%) !default;
+$portal-shadow: 0px 2px 16px rgba(0, 0, 0, 12.5%) !default;
 $portal-selector: "portal" !default;
 $breakpoints: (
   "xs": 420px,

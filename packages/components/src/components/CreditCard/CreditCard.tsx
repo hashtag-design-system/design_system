@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
-import { CONFIG } from "../../config";
 import { useClassnames } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 import { Icon } from "./__helpers__";
@@ -8,9 +7,9 @@ import { Icon } from "./__helpers__";
 export const CreditCardBrands = ["VISA", "AMEX", "MasterCard"] as const;
 
 export type Props = {
-  brand: typeof CreditCardBrands[number];
   creditNum: string;
   ownerName?: string;
+  brand?: typeof CreditCardBrands[number];
   expirationDate?: Date | string;
 };
 
@@ -22,29 +21,31 @@ const CreditCard: React.FC<FProps> = ({ brand, creditNum, ownerName, expirationD
 
   useEffect(() => {
     if (ref && ref.current) {
-      VanillaTilt.init(ref.current, { max: 45, speed: 650, glare: true, "max-glare": 0.25 });
+      VanillaTilt.init(ref.current, { max: 35, speed: 650, glare: true, "max-glare": 0.5 });
     }
   }, []);
 
-  const url = (brand: string) => {
-    const imageRequest = JSON.stringify({
-      bucket: "hashtag.data",
-      key: `credit_card_brands/${brand}`,
-    });
-    const newUrl = CONFIG.CLOUDFRONT_URL + btoa(imageRequest);
-    return newUrl;
+  const url = (brand?: string) => {
+    // const imageRequest = JSON.stringify({
+    //   bucket: "hashtag.data",
+    //   key: `credit_card_brands/${brand}`,
+    // });
+    // const newUrl = CONFIG.CLOUDFRONT_URL + btoa(imageRequest);
+    return `https://hashtag--data.s3-eu-west-1.amazonaws.com/credit-card-brands/${brand?.toLowerCase()}.png`;
   };
 
   return (
     <div ref={ref} className={classNames} data-testid="credit-card" data-tilt {...rest}>
       <Icon />
-      <img
-        className={`credit-card__brand ${brand}`}
-        id="credit-card"
-        src={url(brand)}
-        alt="Credit card brand logo"
-        data-testid="credit-card-brand"
-      />
+      {brand && (
+        <img
+          className={`credit-card__brand ${brand}`}
+          id="credit-card"
+          src={url(brand)}
+          alt="Credit card brand logo"
+          data-testid="credit-card-brand"
+        />
+      )}
       <div className="credit-card__info-container">
         <p className="credit-card__num" data-testid="credit-card-num">
           **** **** **** <span>{creditNum}</span>

@@ -29,6 +29,7 @@ const animationVariants = {
 
 export type Props = {
   showBtnControl?: boolean;
+  none?: boolean;
   onValue?: (value: number) => void;
 };
 
@@ -39,6 +40,7 @@ const Number: React.FunctionComponent<FProps> = ({
   max = 9999999,
   step = 1,
   value: propsValue,
+  none = false,
   defaultValue = min,
   state = "default",
   width = "7.5em",
@@ -55,10 +57,11 @@ const Number: React.FunctionComponent<FProps> = ({
   const [{ value }, dispatch] = useReducer(reducer, initialState, (): typeof initialState => {
     return {
       ...initialState,
-      value: propsValue || defaultValue || min,
+      value: none ? "none" : propsValue || defaultValue || min,
       isDisabled,
       min,
       max,
+      none,
     };
   });
   const [isBtnShown, setIsBtnShown] = useState<boolean>(false || state === "hover" || state === "focus" || state === "disabled");
@@ -71,22 +74,15 @@ const Number: React.FunctionComponent<FProps> = ({
     dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
   };
 
-  // const increment = (e: React.MouseEvent<HTMLButtonElement>, stepNumber = step) => {
-
   const toggleBtn = (boolean: boolean) => {
-    if (!isDisabled && state === "default") {
-      setIsBtnShown(boolean);
-    }
+    if (!isDisabled && state === "default") setIsBtnShown(boolean);
   };
 
   const handleBtnMouse = (e: React.MouseEvent<HTMLButtonElement>, btn: NumberInputBtnsType, bool: boolean) => {
     e.stopPropagation();
     if (showBtnControl) {
-      if (btn === "up") {
-        setIsUp(bool);
-      } else {
-        setIsDown(bool);
-      }
+      if (btn === "up") setIsUp(bool);
+      else setIsDown(bool);
     }
   };
 
@@ -103,7 +99,7 @@ const Number: React.FunctionComponent<FProps> = ({
   return (
     <div
       style={{ height: "100%" }}
-      onMouseOver={() => toggleBtn(true)}
+      onMouseEnter={() => toggleBtn(true)}
       onMouseLeave={() => toggleBtn(false)}
       data-testid="input-number-container"
     >
@@ -121,27 +117,19 @@ const Number: React.FunctionComponent<FProps> = ({
           overrideOnChange,
           onMouseOver: e => {
             toggleBtn(true);
-            if (onMouseOver) {
-              onMouseOver(e);
-            }
+            if (onMouseOver) onMouseOver(e);
           },
           onMouseLeave: e => {
             toggleBtn(false);
-            if (onMouseLeave) {
-              onMouseLeave(e);
-            }
+            if (onMouseLeave) onMouseLeave(e);
           },
           onFocus: e => {
             toggleBtn(true);
-            if (onFocus) {
-              onFocus(e);
-            }
+            if (onFocus) onFocus(e);
           },
           onBlur: e => {
             toggleBtn(false);
-            if (onBlur) {
-              onBlur(e);
-            }
+            if (onBlur) onBlur(e);
           },
         }}
       >
@@ -176,9 +164,10 @@ const Number: React.FunctionComponent<FProps> = ({
                 <Button
                   variant="secondary"
                   style={{ height: isUp ? IS_UP_HEIGHT : isDown ? IS_DOWN_HEIGHT : undefined }}
+                  aria-label="Increment"
                   onMouseEnter={e => handleBtnMouse(e, "up", true)}
                   onMouseLeave={e => handleBtnMouse(e, "up", false)}
-                  onMouseDown={e => handleOperation(e, "increment")}
+                  onClick={e => handleOperation(e, "increment")}
                   data-testid="input-number-btn-increase"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -188,9 +177,10 @@ const Number: React.FunctionComponent<FProps> = ({
                 <Button
                   variant="secondary"
                   style={{ height: isDown ? IS_UP_HEIGHT : isUp ? IS_DOWN_HEIGHT : undefined }}
+                  aria-label="Decrement"
                   onMouseEnter={e => handleBtnMouse(e, "down", true)}
                   onMouseLeave={e => handleBtnMouse(e, "down", false)}
-                  onMouseDown={e => handleOperation(e, "decrement")}
+                  onClick={e => handleOperation(e, "decrement")}
                   data-testid="input-number-btn-decrease"
                 >
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">

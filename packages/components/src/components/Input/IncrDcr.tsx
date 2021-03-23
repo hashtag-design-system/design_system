@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { InputContextProvider, useClassnames, useDisabled } from "../../utils";
-import Button from "../Button";
+import Button, { ButtonFProps } from "../Button";
 import { ComponentProps } from "../__helpers__";
 import { InputNumberFProps } from "./index";
 import { InputBaseState } from "./Input";
@@ -30,7 +30,12 @@ export const initialState: ReducerInitialStateType = {
   hasShiftKey: false,
 };
 
-export type FProps = Omit<
+export type Props = {
+  btnProps?: ButtonFProps;
+  onBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export type FProps = Props & Omit<
   InputNumberFProps,
   "state" | "helptext" | "secondhelptext" | "floatingplaceholder" | "label" | "optional" | "prefix" | "suffix"
 > &
@@ -45,7 +50,9 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
   width = "3rem",
   overrideOnChange,
   state = "default",
+  btnProps,
   onValue,
+  onBtnClick,
   ...props
 }) => {
   const [classNames, rest] = useClassnames("input-incr-dcr", props);
@@ -63,6 +70,9 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
   const handleOperation = (e: React.MouseEvent<HTMLButtonElement>, operation: "increment" | "decrement", stepNumber = step) => {
     e.preventDefault();
     dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
+    if (onBtnClick) {
+      onBtnClick(e);
+    }
   };
 
   useEffect(() => {
@@ -90,8 +100,10 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
         className={`input-incr-dcr__btn ${state === "hover|decrease" ? "hover" : ""} ${
           state === "focus-visible|decrease" ? "focus-visible" : ""
         }`}
+        aria-label="Decrement"
         onClick={e => handleOperation(e, "decrement")}
         data-testid="input-incr-dcr-decrease"
+        {...btnProps}
       >
         <SubtractIcon />
       </Button>
@@ -116,8 +128,10 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
           className={`input-incr-dcr__btn ${state === "hover|increase" ? "hover" : ""} ${
             state === "focus-visible|increase" ? "focus-visible" : ""
           }`}
+          aria-label="Increment"
           onClick={e => handleOperation(e, "increment")}
           data-testid="input-incr-dcr-increase"
+          {...btnProps}
         >
           <AddIcon />
         </Button>

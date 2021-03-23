@@ -7,16 +7,16 @@ import { SelectionInputFProps, SelectionInputState } from "../__helpers__/Select
 
 // * Please set the `defaultChecked` property, if you would like the user to toggle it again by `onClick`
 
-type CustomVariants = { isDisabled: boolean } & Pick<ColorSystemObj, "grey"> & Pick<ConfigVariables, "primary">
+type CustomVariants = { isDisabled: boolean } & Pick<ColorSystemObj, "grey"> & Pick<ConfigVariables, "primary">;
 
 const variants = {
-  checked: ({isDisabled, grey, primary }: CustomVariants) => ({
-    borderColor: isDisabled ? grey["500"] :  primary,
+  checked: ({ isDisabled, grey, primary }: CustomVariants) => ({
+    borderColor: isDisabled ? grey["500"] : primary,
     borderWidth: "7px",
   }),
-  initial:({ grey }: CustomVariants) => ({ borderColor: grey["500"], borderWidth: "2px" }),
-  pressed: ({primary }: CustomVariants) => ({
-    borderColor:  primary,
+  initial: ({ grey }: CustomVariants) => ({ borderColor: grey["500"], borderWidth: "2px" }),
+  pressed: ({ primary }: CustomVariants) => ({
+    borderColor: primary,
     borderWidth: "5px",
     scale: 0.75,
   }),
@@ -24,10 +24,13 @@ const variants = {
 
 export type RadioButtonState = SelectionInputState;
 
-export type FProps = ComponentProps<"input", false, RadioButtonState> & Pick<SelectionInputFProps, "label">;
+export type FProps = ComponentProps<"input", false, RadioButtonState> &
+  Pick<SelectionInputFProps, "label"> & {
+    onValue?: (newVal: boolean) => void;
+  };
 
 const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
-  ({ defaultChecked = false, state = "default", checked, label, style, onClick, ...props }, ref) => {
+  ({ defaultChecked = false, state = "default", checked, label, style, onClick, onValue, ...props }, ref) => {
     const id = useInputId(props.id);
     // It applies also for the `disabled|checked` state, without applying to the `disabled|unchecked` state
     // that the `state.includes("checked")` would
@@ -38,23 +41,24 @@ const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
       props
     );
 
-    const { colors: { grey }, variables: { primary } } = useConfigContext();
+    const {
+      colors: { grey },
+      variables: { primary },
+    } = useConfigContext();
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
-      if (!isDisabled) {
-        setIsChecked(!isChecked);
-      }
+      if (!isDisabled) setIsChecked(!isChecked);
 
-      if (onClick) {
-        onClick(e);
-      }
+      if (onClick) onClick(e);
     };
 
     useEffect(() => {
-      if (checked !== undefined) {
-        setIsChecked(checked);
-      }
+      if (checked !== undefined) setIsChecked(checked);
     }, [checked]);
+
+    useEffect(() => {
+      if (onValue) onValue(isChecked);
+    }, [isChecked]);
 
     const whileTap = !isDisabled && state !== "checked" ? "pressed" : undefined;
 

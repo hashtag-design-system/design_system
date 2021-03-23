@@ -3105,8 +3105,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  text-transform: uppercase;
   font-size: 4rem;
   line-height: 4.625rem;
   letter-spacing: -0.02em;
@@ -3117,8 +3115,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  text-transform: uppercase;
   font-size: 3rem;
   line-height: 3.5rem;
   letter-spacing: -0.02em;
@@ -3129,8 +3125,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  text-transform: uppercase;
   font-size: 2.5rem;
   line-height: 3rem;
   letter-spacing: -0.02em;
@@ -3141,8 +3135,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  text-transform: uppercase;
   font-size: 1.5rem;
   line-height: 1.75rem;
   letter-spacing: -0.02em;
@@ -3153,7 +3145,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 500;
   font-size: 1.5rem;
   line-height: 1.75rem;
 }
@@ -3163,7 +3154,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 500;
   font-size: 1.25rem;
   line-height: 1.5rem;
 }

@@ -1,5 +1,5 @@
 var { src, dest, series } = require("gulp");
-var sass = require("gulp-sass");
+var sass = require("gulp-dart-sass");
 var run = require("gulp-run");
 var moduleImporter = require("sass-module-importer");
 var clean = require("gulp-clean");

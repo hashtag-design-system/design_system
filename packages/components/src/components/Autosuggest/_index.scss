@@ -1,4 +1,8 @@
 .autosuggest {
+  &__container {
+    @extend .input--width;
+  }
+
   &__select {
     &__container {
       width: 100%;

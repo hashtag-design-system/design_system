@@ -1,7 +1,6 @@
 import React from "react";
 import { IconPropType } from "../../typings";
-import { InputContextProvider } from "../../utils";
-import { generateInputId } from "../../utils";
+import { generateInputId, InputContextProvider } from "../../utils";
 import { InputAutocompleteType } from "../__helpers__";
 import Digit from "./Digit";
 import DigitSequence from "./DigitSequence";
@@ -20,7 +19,7 @@ export const InputStates = [...InputBaseStates, "hover", "error", "success"] as 
 export type InputState = typeof InputStates[number];
 
 export type InputHelpTextType = {
-  value: string;
+  value?: string;
   icon?: IconPropType;
   error?: boolean;
   transparent?: boolean;

@@ -24,8 +24,12 @@ describe("<Input.IncrDcr />", () => {
     expect(input.getAttribute("width")).toBeDefined();
     expect(decreaseBtn).toBeInTheDocument();
     expect(decreaseBtn).toBeDisabled();
+    expect(decreaseBtn).toHaveAttribute("aria-label", "Decrement");
+    expect(decreaseBtn.onclick).toBeDefined();
     expect(increaseBtn).toBeInTheDocument();
     expect(increaseBtn).not.toBeDisabled();
+    expect(increaseBtn).toHaveAttribute("aria-label", "Increment");
+    expect(increaseBtn.onclick).toBeDefined();
   });
   test("onFocus", async () => {
     render(<Input.IncrDcr />);
@@ -195,7 +199,8 @@ describe("<Input.IncrDcr />", () => {
     });
     describe("btn control", () => {
       test("default behaviour", async () => {
-        render(<Input.IncrDcr />);
+        const onBtnClick = jest.fn();
+        render(<Input.IncrDcr onBtnClick={onBtnClick} />);
         const input = screen.getByTestId("input-incr-dcr");
         const increaseBtn = screen.getByTestId("input-incr-dcr-increase");
         const decreaseBtn = screen.getByTestId("input-incr-dcr-decrease");
@@ -205,11 +210,13 @@ describe("<Input.IncrDcr />", () => {
         expect(increaseBtn.onclick).toBeDefined();
         expect(input).toHaveValue(2);
         expect(input.getAttribute("aria-valuenow")).toBe("2");
-
+        expect(onBtnClick).toHaveBeenCalledTimes(1);
+        
         userEvent.click(decreaseBtn);
         expect(increaseBtn.onclick).toBeDefined();
         expect(input).toHaveValue(1);
         expect(input.getAttribute("aria-valuenow")).toBe("1");
+        expect(onBtnClick).toHaveBeenCalledTimes(2);
       });
       test("increment, when max", async () => {
         render(<Input.IncrDcr max={9999} />);

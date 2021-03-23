@@ -24,7 +24,7 @@ export const HelpTextContainer: React.FC<FProps> = ({ helptext, second = false, 
         ? children
         : helptext && (
             <>
-              {helptext.value}
+              {helptext?.value}
               {helptext?.icon}
             </>
           )}

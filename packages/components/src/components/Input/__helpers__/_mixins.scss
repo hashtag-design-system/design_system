@@ -1,8 +1,24 @@
 .input__floating-placeholder--pseudo-element {
   content: "";
   background-color: inherit;
-  position: absolute;
   width: 100%;
+  display: block;
+}
+
+.input--width {
+  width: 100%;
+
+  @include breakpoint("xs") {
+    max-width: $input-width;
+  }
+}
+
+.input-multiline__floating-placeholder {
+  &.input-multiline {
+    + .input__floating-placeholder {
+      top: 2.75px;
+    }
+  }
 }
 
 @mixin input-background($color: $input-bg) {
@@ -22,9 +38,8 @@
 }
 
 @mixin input__floating-placeholder--focus {
-  top: 15%;
-  font-size: em(10);
-  transform: none;
+  top: 10%;
+  transform: scale(0.625) translate(-30%, -37.5%);
 }
 
 @mixin input--state($color) {

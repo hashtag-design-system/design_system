@@ -75,9 +75,9 @@ export const FieldContainer: React.FunctionComponent = () => {
           placeholder: floatingplaceholder === false && placeholder ? placeholder : undefined,
           onChange: e => handleChange(e),
           style: {
+            paddingLeft: prefix ? `${(prefixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : undefined,
+            paddingRight: suffix ? `${(suffixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : undefined,
             ...style,
-            paddingLeft: prefix ? `${(prefixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : "",
-            paddingRight: suffix ? `${(suffixWidth + DEFAULT_PADDING) / EM_REM_MULTIPLIER}em` : "",
           },
           type,
           label,

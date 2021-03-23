@@ -16,21 +16,29 @@ describe("<RadioButton />", () => {
 
     checkSelectionInputValue(radioBtn, false, true);
   });
-  test("onClick functionality", () => {
-    render(<RadioButton />);
+  test("onClick functionality with onValue", () => {
+    const onValue = jest.fn(newVal => newVal);
+    render(<RadioButton onValue={onValue} />);
     const radioBtn = screen.getByTestId("radio-btn");
 
     userEvent.click(radioBtn);
 
     checkSelectionInputValue(radioBtn, true, true);
+    // +1 in useEffect
+    expect(onValue).toHaveBeenCalledTimes(2);
+    expect(onValue).toHaveLastReturnedWith(true);
 
     userEvent.click(radioBtn);
 
     checkSelectionInputValue(radioBtn, false, true);
+    expect(onValue).toHaveBeenCalledTimes(3);
+    expect(onValue).toHaveLastReturnedWith(false);
 
     userEvent.click(radioBtn);
 
     checkSelectionInputValue(radioBtn, true, true);
+    expect(onValue).toHaveBeenCalledTimes(4);
+    expect(onValue).toHaveLastReturnedWith(true);
   });
   test("double click functionality", () => {
     render(<RadioButton />);

@@ -10,7 +10,7 @@ export type Props = {
   defaultCountry?: COUNTRIES_LITERAL_TYPE;
   inputProps?: InputFProps;
   selectProps?: SelectFProps;
-  selectBtnProps?: SelectButtonFProps;
+  selectBtnProps?: SelectButtonFProps & {placeholder?: string};
   selectModalProps?: SelectModalFProps;
   selectFilterProps?: SelectFilterFProps;
   selectOptionsProps?: SelectOptionsFProps;
@@ -96,15 +96,15 @@ const Tel: React.FC<Props> = React.memo(
     }, [defaultCountry, countryCode, setVal]);
 
     return (
-      <div className="input-tel__container" data-testid="input-tel-container">
+      <div className="input-tel__container input--width" data-testid="input-tel-container">
         <Select width="5.35em" className={selectClassNames} onSelect={items => handleSelect(items)} {...selectRest}>
           <Select.Button className={selectBtnClassNames} {...selectBtnRest}>
             {selectBtnChildren
               ? selectBtnChildren
               : countryCode
               ? "+" + COUNTRIES_ARR.find(country => country.alpha2Code.toUpperCase() === countryCode.toUpperCase())?.callingCode ||
-                "Code"
-              : "Code"}
+                selectBtnProps.placeholder || "Tel"
+              : selectBtnProps.placeholder || "Tel"}
           </Select.Button>
           <Select.Modal {...selectModalProps}>
             <Select.Filter placeholder="Country" {...selectFilterProps} />

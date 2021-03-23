@@ -2,17 +2,17 @@
   &-group {
     @extend .flex-column-center-flex-start;
     @extend .body-16;
-    gap: em(24);
+    gap: 1.5em;
     width: 100%;
   }
 
   &-header {
     @extend .body-16;
-    margin: em(24) 0 em(16) 0;
-    color: $grey-8;
+    margin-top: 1em;
+    color: $grey-10;
     width: min(100%, 24em);
-    padding-bottom: em(4);
-    border-bottom: $input-border-width solid $input-border-color;
+    padding-bottom: 0.25em;
+    border-bottom: $input-border-width solid $grey-6;
   }
 }
 
