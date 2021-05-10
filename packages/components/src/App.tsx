@@ -12,6 +12,7 @@ import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
 import Switch from "./components/Switch";
 import Table from "./components/Table";
+import TimePicker from "./components/TimePicker";
 import "./index.scss";
 import { useSelectionInput } from "./utils";
 
@@ -66,6 +67,13 @@ function App() {
             <Dialog.Btn confirm>Confirm</Dialog.Btn>
           </Dialog.Btn.Group>
         </Dialog>
+        <TimePicker>
+          <TimePicker.Content showLabels={{ hasHours: true, hasMinutes: true, hasSeconds: true }}>
+            <TimePicker.Hours />
+            <TimePicker.Minutes />
+            <TimePicker.Seconds onSlideChange={swiper => console.log(swiper.realIndex)} />
+          </TimePicker.Content>
+        </TimePicker>
         <div
           style={{
             width: "fit-content",

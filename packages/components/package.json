@@ -91,7 +91,6 @@
     "@types/swiper": "^5.4.1",
     "@types/ua-parser-js": "^0.7.35",
     "@types/vanilla-tilt": "^1.6.2",
-    "eslint-config-prettier": "^7.2.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
@@ -102,10 +101,7 @@
     "jest": "^26.6.3",
     "react-test-renderer": "^17.0.1",
     "sass": "^1.32.6",
-    "sass-module-importer": "^1.4.0",
-    "storybook-addon-designs": "^5.4.2",
-    "style-loader": "^2.0.0",
-    "ts-node": "^9.1.1"
+    "storybook-addon-designs": "^5.4.2"
   },
   "peerDependencies": {
     "@hashtag-design-system/primitives": ">=1.2.10",
