@@ -1,11 +1,11 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.72",
+  "version": "0.1.74",
   "private": false,
   "scripts": {
     "dev": "yarn fresh-index && react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "build": "rollup -c rollup.config.js",
+    "prepublishonly": "yarn gulp && yarn build",
     "test": "yarn index-tsx && react-scripts test --setupFiles ./jest.config.ts",
     "test:no-watch": "yarn test --watchAll=false",
     "test:coverage": "yarn test --coverage",
@@ -17,14 +17,13 @@
     "type-check:cjs": "gulp buildCjs",
     "type-check:watch": "tsc -w",
     "gulp": "gulp",
-    "sass": "gulp scss",
+    "concatScss": "gulp concatScss",
     "fresh": "gulp fresh",
     "copy-files": "gulp copyFiles",
     "index-tsx": "yarn fresh-index && yarn comment-index",
     "fresh-index": "gulp freshIndex",
     "comment-index": "gulp commentIndex",
-    "build-storybook": "build-storybook -s public",
-    "prepack": "yarn test:no-watch && yarn gulp"
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,11 +34,11 @@
   "repository": "https://github.com/hashtag-design-system/design_system",
   "author": "George Krachtopoulos <@georgekrax>",
   "license": "MIT",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/index.es.js",
+  "types": "./build/index.d.ts",
   "files": [
-    "/dist"
+    "/build"
   ],
   "browserslist": {
     "production": [
@@ -55,20 +54,20 @@
     ]
   },
   "dependencies": {
-    "@hashtag-design-system/primitives": "1.2.12",
+    "@hashtag-design-system/primitives": "^1.2.12",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "@the_hashtag/common": "^1.0.29",
     "dayjs": "^1.10.3",
-    "framer-motion": "2.9.5",
+    "framer-motion": "^4.1.13",
     "libphonenumber-js": "^1.9.7",
     "lodash": "^4.17.20",
-    "react": "^17.0.1",
+    "react": "^17.0.2",
     "react-device-detect": "^1.15.0",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.14.0",
-    "react-scripts": "4.0.2",
+    "react-scripts": "^4.0.3",
     "react-window": "^1.8.6",
     "swiper": "^6.4.11",
     "typescript": "^4.2.3",
@@ -76,6 +75,9 @@
     "vanilla-tilt": "^1.7.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-typescript": "^8.2.1",
     "@storybook/addon-actions": "^6.1.10",
     "@storybook/addon-essentials": "^6.1.10",
     "@storybook/addon-links": "^6.1.10",
@@ -94,13 +96,17 @@
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
-    "gulp-dart-sass": "^1.0.2",
     "gulp-replace": "^1.0.0",
-    "gulp-run": "^1.7.1",
-    "gulp-sourcemaps": "^3.0.0",
     "jest": "^26.6.3",
+    "postcss": "^8.2.15",
     "react-test-renderer": "^17.0.1",
+    "rollup": "^2.47.0",
+    "rollup-plugin-dts": "^3.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.32.6",
+    "sass-module-importer": "^1.4.0",
     "storybook-addon-designs": "^5.4.2"
   },
   "peerDependencies": {
