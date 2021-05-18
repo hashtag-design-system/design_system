@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/components",
-  "version": "0.1.77",
+  "version": "0.1.79",
   "private": false,
   "scripts": {
     "dev": "yarn fresh-index && react-scripts start",
