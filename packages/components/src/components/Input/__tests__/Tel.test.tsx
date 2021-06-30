@@ -40,7 +40,7 @@ describe("<Input.Tel />", () => {
     expect(selectContainer).toContainElement(selectBtn);
     expect(selectContainer).toContainElement(selectFilter);
     expect(selectBtn).toHaveStyle("width: 5.35em");
-    expect(selectBtn).toHaveTextContent("Code");
+    expect(selectBtn).toHaveTextContent("Tel");
     expect(selectFilter).not.toHaveAttribute("placeholder");
     expect(selectFilter).toHaveAttribute("data-hasfloatingplaceholder", "true");
     expect(selectFilterFieldContainer).toContainElement(selectFilter);

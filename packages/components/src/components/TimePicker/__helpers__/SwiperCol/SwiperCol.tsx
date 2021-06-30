@@ -23,6 +23,7 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
   initialSlide = min,
   padMaxLength = 2,
   style,
+  loop = true,
   inputProps = {},
   mobileView,
   ...props
@@ -39,61 +40,40 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>, bool: boolean, eventType: "focus" | "blur") => {
     setIsInputFocused(bool);
-    if (eventType === "focus" && swiper) {
-      swiper.slideToLoop(e.target.valueAsNumber);
-    }
+    if (eventType === "focus" && swiper) swiper.slideToLoop(e.target.valueAsNumber);
 
-    if (eventType === "focus") {
-      if (inputOnFocus) {
-        inputOnFocus(e);
-      }
-    } else {
-      /* istanbul ignore next */
-      if (inputOnBlur) {
-        inputOnBlur(e);
-      }
-    }
+    if (eventType === "focus" && inputOnFocus) inputOnFocus(e);
+    else if (inputOnBlur) /* istanbul ignore next */ inputOnBlur(e);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, valueAsNumber } = e.target;
     /* istanbul ignore next */
     if (swiper) {
-      if (valueAsNumber === 0 || value.trim().length === 0 || valueAsNumber > max || valueAsNumber < min) {
-        swiper.slideToLoop(0);
-      } else if (valueAsNumber) {
-        swiper.slideToLoop(valueAsNumber);
-      }
+      if (valueAsNumber === 0 || value.trim().length === 0 || valueAsNumber > max || valueAsNumber < min) swiper.slideToLoop(0);
+      else if (valueAsNumber) swiper.slideToLoop(valueAsNumber);
     }
 
-    if (inputOnChange) {
-      inputOnChange(e);
-    }
+    if (inputOnChange) inputOnChange(e);
   };
 
   const calcRandom = useCallback(() => {
     const res = Math.floor((Math.random() * (max - min + 1 + min)) / 2);
     // Never be equal to min (eg. 0)
     /* istanbul ignore next */
-    if (res === min) {
-      calcRandom();
-    }
+    if (res === min) calcRandom();
     return res;
   }, []);
 
   useEffect(() => {
-    if (swiper && isMobile) {
-      setTimeout(() => {
-        swiper.slideToLoop(initialSlide, 750);
-      }, 500);
-    }
+    if (swiper && isMobile) setTimeout(() => swiper.slideToLoop(initialSlide, 750), 500);
   }, [isMobile, swiper]);
 
   return (
     <div style={{ position: "relative", width: "max-content" }}>
       <div className="time-picker__item-container" data-testid="time-picker-item-container">
         <Input.Number
-          min={min}
+          min={0}
           max={max}
           step={step}
           showBtnControl={false}
@@ -110,15 +90,15 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
         slidesPerView={3}
         centeredSlides
         grabCursor
-        initialSlide={isMobile && calcRandom()}
+        initialSlide={!loop ? initialSlide : isMobile && calcRandom()}
         slideToClickedSlide
         freeMode
+        loop={loop}
         height={height}
         freeModeSticky
         freeModeMomentumRatio={0.75}
         freeModeMomentumVelocityRatio={0.75}
         direction="vertical"
-        loop
         loopAdditionalSlides={max / 2}
         preloadImages={false}
         resistanceRatio={0.25}

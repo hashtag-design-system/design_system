@@ -434,7 +434,7 @@
   height: 100%;
 
   &__container {
-    @extend .flex-row-stretch-stretch;
+    @extend .flex-row-stretch-flex-end;
     height: 100%;
     width: $input-width;
 
@@ -446,7 +446,6 @@
   }
 
   &__btn {
-    height: 100%;
     padding-right: 0.75em;
     padding-left: 0.75em;
     gap: 0.25em;

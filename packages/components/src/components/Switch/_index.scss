@@ -21,6 +21,7 @@
     position: relative;
     display: inline-flex;
     pointer-events: none;
+    padding: 0.25em 0;
 
     @include focus-classNames() {
       outline: none;
