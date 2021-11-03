@@ -8,6 +8,7 @@ export * from "./provider";
 
 const iconPositions = ["left", "right"] as const;
 
+export { storybookTitles };
 export const CONFIG = {
   listKeys,
   breakpoints,

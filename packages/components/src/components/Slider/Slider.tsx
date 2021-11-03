@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { calculatePercentage, calculateValue, useClassnames, useDisabled } from "../../utils";
 import { InputContextProvider, SliderContextProvider } from "../../utils";
-import Input from "../Input";
+import Input from "../Input2";
 import { ComponentProps } from "../__helpers__";
 import Double from "./Double";
 import { Bar, Chart, Marks, Thumb } from "./__helpers__/";

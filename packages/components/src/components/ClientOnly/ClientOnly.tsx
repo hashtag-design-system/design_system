@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHasMounted } from "../../utils";
 
 // Big thanks to -> https://www.joshwcomeau.com/react/the-perils-of-rehydration/
@@ -11,9 +11,7 @@ const ClientOnly: React.FC<Props> = ({ defaultMounted = false, children }) => {
   // const [hasMounted, setHasMounted] = useState(defaultMounted);
   const [hasMounted] = useHasMounted(defaultMounted);
 
-  if (!hasMounted) {
-    return null;
-  }
+  if (!hasMounted) return null;
 
   return <>{children}</>;
 };

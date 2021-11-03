@@ -16,37 +16,20 @@ const todayVariants: Variants = {
 type FProps = HTMLMotionProps<"div"> & BottomSheetDismissType;
 
 export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
-  const {
-    selectedDate,
-    calendarDate,
-    calendarWeeks,
-    disabledDays,
-    dismissOnClick,
-    isRange,
-    onClick,
-    dispatch,
-    isDisabled,
-  } = useDatePickerContext();
+  const { selectedDate, calendarDate, calendarWeeks, disabledDays, dismissOnClick, isRange, onClick, dispatch, isDisabled } =
+    useDatePickerContext();
 
   const formatDate = <T extends string | string[]>(value: Dayjs | Dayjs[]): T => {
     const format = "DD/MM/YYYY";
     let formattedValue: any;
-    if (Array.isArray(value)) {
-      formattedValue = value.map(date => date.format(format));
-    } else {
-      formattedValue = value.format(format);
-    }
+    if (Array.isArray(value)) formattedValue = value.map(date => date.format(format));
+    else formattedValue = value.format(format);
     return formattedValue;
   };
 
   const isSelected = (dayInCalendar: Dayjs): { checked: boolean; first: boolean; middle: boolean; last: boolean } => {
     if (isRange && selectedDate.length === 1 && dayInCalendar.isSame(selectedDate[0])) {
-      return {
-        checked: true,
-        middle: false,
-        first: false,
-        last: false,
-      };
+      return { checked: true, middle: false, first: false, last: false };
     }
 
     const formattedSelectedDate = formatDate(selectedDate);
@@ -71,12 +54,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
         };
       }
     }
-    return {
-      checked: false,
-      middle: false,
-      first: false,
-      last: false,
-    };
+    return { checked: false, middle: false, first: false, last: false };
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>, dayInCalendar: Dayjs, otherDay?: DatePickerOtherDay) => {
@@ -85,9 +63,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
       payload: { dayInCalendar, isRange, otherDay, dismissOnClick, isDisabled, dismiss, formatDate },
     });
 
-    if (onClick) {
-      onClick({ e, dayInCalendar, otherDay });
-    }
+    if (onClick) onClick({ e, selectedDate: dayInCalendar, otherDay });
   };
 
   return (
@@ -114,7 +90,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
           const classNames = `${disabled ? " other-day" : ""} ${baseClassNames}`.trim();
 
           return (
-            <div key={idx} className={classNames} onMouseDown={e => handleClick(e, dayInCalendar)} data-testid="date-picker-tbody-td">
+            <div key={idx} className={classNames} onClick={e => handleClick(e, dayInCalendar)} data-testid="date-picker-tbody-td">
               {day}
               <AnimatePresence>
                 {dayInCalendar.isToday() && !selected && (
@@ -139,7 +115,7 @@ export const MonthDays: React.FC<FProps> = ({ dismiss, ...props }) => {
             <div
               key={idx}
               className={("other-day " + baseClassNames).trimEnd()}
-              onMouseDown={e => handleClick(e, dayInCalendar, month)}
+              onClick={e => handleClick(e, dayInCalendar, month)}
               data-testid="date-picker-tbody-td"
             >
               {otherDate}

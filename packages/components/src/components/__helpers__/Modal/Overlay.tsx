@@ -40,11 +40,8 @@ export const Overlay = React.forwardRef<HTMLDivElement, FProps>(
 
     const backgroundColor: string = useMemo(() => {
       const alpha = background.alpha;
-      if (background.color === "light") {
-        return `rgba(255, 255, 255, ${alpha ? alpha : 0.75})`;
-      } else {
-        return `rgba(0, 0, 0, ${alpha ? alpha : 0.5})`;
-      }
+      if (background.color === "light") return `rgba(255, 255, 255, ${alpha ? alpha : 0.75})`;
+      else return `rgba(0, 0, 0, ${alpha ? alpha : 0.5})`;
     }, [background]);
 
     return isShown ? (

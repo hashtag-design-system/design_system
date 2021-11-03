@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { IconPropType } from "../../typings";
-import { useClassnames, DropdownContext } from "../../utils";
+import { DropdownContext, useClassnames } from "../../utils";
 import { ComponentProps } from "../__helpers__";
 
 const DropdownItemStates = ["default", "hover"] as const;
@@ -25,23 +25,16 @@ const Item: React.FC<FProps> = ({ id, state, leftIcon, rightIcon, children, ...p
 
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     if (handleSelect) {
-      if (typeof children === "string") {
-        handleSelect(e, id, children);
-      } else {
-        handleSelect(e, id);
-      }
+      if (typeof children === "string") handleSelect(e, id, children);
+      else handleSelect(e, id);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLLIElement>) => {
     const { key } = e;
-    if (key === "Enter" || key === " ") {
-      handleClick(e as any);
-    }
+    if (key === "Enter" || key === " ") handleClick(e as any);
 
-    if (key === "Escape" && setIsVisible) {
-      setIsVisible(false);
-    }
+    if (key === "Escape" && setIsVisible) setIsVisible(false);
   };
 
   return (

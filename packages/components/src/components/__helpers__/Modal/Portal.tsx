@@ -16,9 +16,7 @@ export type Props = {
 const jestEnv = isJest();
 if (jestEnv) {
   const modalRoot = document.getElementById(CONFIG.DEFAULT_PORTAL_ID_SELECTOR);
-  if (!modalRoot) {
-    createPortalElement();
-  }
+  if (!modalRoot) createPortalElement();
 }
 
 export const Portal: React.FC<Props> = ({ selector = "#" + CONFIG.DEFAULT_PORTAL_ID_SELECTOR, children }) => {

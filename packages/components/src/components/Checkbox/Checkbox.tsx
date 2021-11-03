@@ -59,19 +59,12 @@ const Checkbox = React.forwardRef<HTMLInputElement, FProps>(
     };
 
     useEffect(() => {
-      if (isChecked || (isChecked === false && isPressed === true)) {
-        setIsPressed(false);
-      }
-      if (checked !== undefined) {
-        setIsChecked(checked);
-      }
-      if (state === "indeterminate") {
-        setIsChecked(defaultChecked);
-      }
+      if (isChecked || (isChecked === false && isPressed === true)) setIsPressed(false);
+      if (checked !== undefined) setIsChecked(checked);
+      if (state === "indeterminate") setIsChecked(defaultChecked);
     }, [id, defaultChecked, checked, state, isChecked, isPressed]);
 
     const isIndeterminate = useMemo(() => state === "indeterminate", [state]);
-
     const whileTap = !isDisabled && state !== "checked" ? "pressed" : undefined;
 
     return (

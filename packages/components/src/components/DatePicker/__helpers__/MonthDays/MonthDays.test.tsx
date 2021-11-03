@@ -22,11 +22,8 @@ describe("DatePicker <MonthDays />", () => {
       expect(td).toHaveAttribute("class");
       if (i <= 4 || i >= 36) {
         expect(td).toHaveClass("other-day");
-        if (i <= 4) {
-          expect(td).toHaveTextContent(String(31 - 4 + i));
-        } else {
-          expect(td).toHaveTextContent(String(i - 35));
-        }
+        if (i <= 4) expect(td).toHaveTextContent(String(31 - 4 + i));
+        else expect(td).toHaveTextContent(String(i - 35));
       } else {
         expect(td).not.toHaveClass("other-day");
         expect(td).toHaveTextContent(String(i - 4));
@@ -129,7 +126,7 @@ describe("DatePicker <MonthDays />", () => {
   });
   describe("onClick", () => {
     test("default functioncality", async () => {
-      const onClick = jest.fn(({ dayInCalendar, otherDay }: DatePickerOnClickInfo) => ({ dayInCalendar, otherDay }));
+      const onClick = jest.fn((params: DatePickerOnClickInfo) => params);
       render(
         <DefaultDatePicker onClick={onClick} selectBtn={({ selectedDate }) => <TestDatePickerButton selectedDate={selectedDate} />} />
       );
@@ -154,12 +151,12 @@ describe("DatePicker <MonthDays />", () => {
       expect(selectBtn).toHaveTextContent(date + TEST_DEFAULT_DATE.format("/MM/YYYY"));
       expect(onClick).toHaveBeenCalledTimes(1);
       expect(onClick.mock.results[0].value).toStrictEqual({
-        dayInCalendar: TEST_DEFAULT_DATE.date(parseInt(date!)),
+        selectedDate: TEST_DEFAULT_DATE.date(parseInt(date!)),
         otherDay: undefined,
-      });
+      } as Pick<DatePickerOnClickInfo, "selectedDate" | "otherDay">);
     });
     test("other day", async () => {
-      const onClick = jest.fn(({ dayInCalendar, otherDay }: DatePickerOnClickInfo) => ({ dayInCalendar, otherDay }));
+      const onClick = jest.fn((params: DatePickerOnClickInfo) => params);
       render(<DefaultDatePicker dismissOnClick={false} onClick={onClick} />);
       const tds = screen.getAllByTestId("date-picker-tbody-td");
       const dateMonth = screen.getByTestId("date-picker-months-container-date-month");
@@ -179,9 +176,9 @@ describe("DatePicker <MonthDays />", () => {
       expect(selectedTd).toHaveClass("selected");
       expect(onClick).toHaveBeenCalledTimes(1);
       expect(onClick.mock.results[0].value).toStrictEqual({
-        dayInCalendar: TEST_DEFAULT_DATE.month(newMonth).date(parseInt(selectedTd.textContent!)),
+        selectedDate: TEST_DEFAULT_DATE.month(newMonth).date(parseInt(selectedTd.textContent!)),
         otherDay: "next",
-      });
+      } as Pick<DatePickerOnClickInfo, "selectedDate" | "otherDay">);
     });
     test.each([true, false])("with isRange={true}", async reverse => {
       render(<DefaultDatePicker isRange defaultDates={undefined} />);

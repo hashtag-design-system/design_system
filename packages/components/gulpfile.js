@@ -1,13 +1,8 @@
-var { src, dest, series } = require("gulp");
-var sass = require("gulp-dart-sass");
-var run = require("gulp-run");
-var moduleImporter = require("sass-module-importer");
-var clean = require("gulp-clean");
-var sassCompiler = require("sass");
-var sourceMaps = require("gulp-sourcemaps");
-var replace = require("gulp-replace");
+const { src, dest, series } = require("gulp");
+const clean = require("gulp-clean");
+// const concat = require("gulp-concat");
+const replace = require("gulp-replace");
 
-sass.compiler = sassCompiler;
 
 const REPLACEMENTS = [
   ["import", "// import"],
@@ -23,41 +18,16 @@ function arr(i, flow = "regular") {
   return REPLACEMENTS[i][flow === "regular" ? 0 : 1];
 }
 
-function scss() {
-  return src("./src/**/*.scss")
-    .pipe(sourceMaps.init())
-    .pipe(
-      sass({
-        sourceMap: true,
-        sourceMapEmbed: true,
-        sourceMapRoot: true,
-        sourceComments: true,
-        errLogToConsole: true,
-        importer: moduleImporter(),
-        precision: 3,
-        outputStyle: "compressed",
-        // includePaths: ["../../node_modules/@hashtag-design-system/primitives/src/globals.scss"],
-      }).on("error", sass.logError)
-    )
-    .pipe(sourceMaps.write("."))
-    .pipe(dest("./dist/esm"))
-    .pipe(dest("./dist/cjs"));
-}
+// function concatScss() {
+//   return src("./**/*.scss").pipe(concat("index.scss")).pipe(dest("./build/"));
+// }
+
+// function copyFiles() {
+//   return src(["src/**/*.scss", "src/static/**/*"], { base: "src" }).pipe(dest("./build/esm")).pipe(dest("./build/cjs"));
+// }
 
 function fresh() {
-  return src("dist", { read: false, allowEmpty: true }).pipe(clean());
-}
-
-function buildEsm() {
-  return run("tsc --noEmit false").exec();
-}
-
-function buildCjs() {
-  return run("tsc --noEmit false --module commonjs --outDir dist/cjs").exec();
-}
-
-function copyFiles() {
-  return src(["src/**/*.scss", "src/static/**/*"], { base: "src" }).pipe(dest("./dist/esm")).pipe(dest("./dist/cjs"));
+  return src("build", { read: false, allowEmpty: true }).pipe(clean());
 }
 
 function freshIndex() {
@@ -84,11 +54,7 @@ function commentIndex() {
     .pipe(dest("./src"));
 }
 
-exports.scss = scss;
 exports.fresh = fresh;
-exports.buildEsm = buildEsm;
-exports.buildCjs = buildCjs;
-exports.copyFiles = copyFiles;
 exports.commentIndex = commentIndex;
 exports.freshIndex = freshIndex;
-exports.default = series(fresh, freshIndex, commentIndex, buildEsm, buildCjs, scss, copyFiles);
+exports.default = series(fresh, freshIndex, commentIndex);

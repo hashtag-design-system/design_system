@@ -43,15 +43,10 @@ export const FieldContainer: React.FunctionComponent = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
 
-    if (characterLimit && maxLength && String(newVal).length > maxLength) {
-      e.preventDefault();
-    }
-
+    if (characterLimit && maxLength && String(newVal).length > maxLength) e.preventDefault();
     setValue(newVal);
 
-    if (onChange) {
-      onChange(e);
-    }
+    if (onChange) onChange(e);
   };
 
   useEffect(() => {

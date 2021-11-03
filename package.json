@@ -11,23 +11,6 @@
   "author": "George Krachtopoulos <@georgekrax>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.14.7",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react": "^1.1.7",
-    "eslint-import-resolver-typescript": "^2.3.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^24.0.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.2",
-    "lerna": "^3.22.1",
-    "prettier": "^2.1.2",
-    "typescript": "^4.0.3"
+    "lerna": "^3.22.1"
   }
 }

@@ -1,6 +1,6 @@
-import { InputFProps } from "../../components/Input";
+import { InputFProps } from "../../components/Input2";
 import { createCtx } from "../index";
-import { ACTIONTYPE } from "../../components/Input/__helpers__/numberReducer";
+import { ACTIONTYPE } from "../../components/Input2/__helpers__/numberReducer";
 
 export type InputContextType = InputFProps & {
   dispatch?: React.Dispatch<ACTIONTYPE>;

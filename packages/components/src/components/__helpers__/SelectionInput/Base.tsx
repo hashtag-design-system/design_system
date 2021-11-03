@@ -22,7 +22,10 @@ export type SelectionInputFProps<S extends string | undefined = undefined> = Sel
 
 export type FProps = Pick<SelectionInputFProps, "label"> & React.ComponentPropsWithoutRef<"div">;
 export const Base: React.FC<FProps> = ({ id, defaultChecked = false, label, onClick, onChange, className, children, ...props }) => {
-  const topOrBottom = label && typeof label === "object" && label.position ? ["top", "bottom"].includes(label.position) : false;
+  const topOrBottom =
+    label && !React.isValidElement(label) && typeof label === "object" && label.position
+      ? ["top", "bottom"].includes(label.position)
+      : false;
 
   return (
     <div
@@ -30,7 +33,7 @@ export const Base: React.FC<FProps> = ({ id, defaultChecked = false, label, onCl
       style={{
         width: props.style?.width,
         flexDirection: topOrBottom ? "column" : undefined,
-        gap: label && typeof label === "object" && label.gap !== undefined ? label.gap : undefined,
+        gap: label && !React.isValidElement(label) && typeof label === "object" && label.gap !== undefined ? label.gap : undefined,
       }}
       data-testid="selection-input__container"
       {...props}

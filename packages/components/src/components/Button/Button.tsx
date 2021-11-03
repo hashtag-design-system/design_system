@@ -23,7 +23,7 @@ export type FProps = Props & HTMLMotionProps<"button">;
 
 export type SBProps = Props & Pick<FProps, "disabled" | "type" | "onClick" | "children">;
 
-const Button = React.forwardRef<HTMLButtonElement, FProps>(
+const Button: React.ForwardRefExoticComponent<FProps> = React.forwardRef<HTMLButtonElement, FProps>(
   ({ variant = "primary", state = "default", block = false, pill = false, disabled, children, ...props }, ref) => {
     let [classNames, rest] = useClassnames<FProps>(
       `btn btn-${variant} ${block ? "block" : ""} ${pill ? "pill" : ""} btn-default-font shadow__form-2`,

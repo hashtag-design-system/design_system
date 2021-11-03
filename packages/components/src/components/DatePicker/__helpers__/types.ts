@@ -28,6 +28,6 @@ export type DatePickerOnChangeInfo = {
 
 export type DatePickerOnClickInfo = {
   e: React.MouseEvent<HTMLElement>;
-  dayInCalendar: Dayjs;
+  selectedDate: Dayjs;
   otherDay?: DatePickerOtherDay;
 };

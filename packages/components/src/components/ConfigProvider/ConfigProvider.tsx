@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { ConfigCSSColor, configDefaultColors, configDefaultFontSizes } from "../../config";
+import { configDefaultColors, configDefaultFontSizes } from "../../config";
 import { ConfigContextProvider, ConfigContextType, OmitConfigContextType, PartialConfigContextType } from "../../utils";
 
 const primaryColor = configDefaultColors.blue["500"];
@@ -91,14 +91,8 @@ function ConfigProvider<T extends FProps = FProps>({ mode, colors, variables, fo
         breakpoints: { ...defaultVariables.breakpoints, ...breakpoints },
         errorColor: errorColor || defaultVariables.errorColor,
         successColor: successColor || defaultVariables.successColor,
-        input: {
-          ...defaultVariables.input,
-          ...input,
-        },
-        portal: {
-          ...defaultVariables.portal,
-          ...portal,
-        },
+        input: { ...defaultVariables.input, ...input },
+        portal: { ...defaultVariables.portal, ...portal },
         ...restVariables,
       };
     }

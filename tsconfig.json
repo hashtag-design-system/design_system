@@ -3,6 +3,8 @@
     "lib": ["DOM", "es5", "es6", "ESNext"],
     "removeComments": true,
     "noEmit": false,
+    "rootDir": ".",
+    "baseUrl": ".",
 
     "strict": false,
     "noImplicitAny": false,
@@ -25,5 +27,6 @@
     "resolveJsonModule": true,
     "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": ["node_modules"]
 }

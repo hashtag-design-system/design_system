@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "./__helpers__/mixins";
 
 .input {
@@ -227,57 +228,55 @@
   }
 }
 
-.input-password {
-  letter-spacing: 0.05em;
+// .input-password {
+// letter-spacing: 0.05em;
 
-  &__strength-meter-box {
-    height: 10px;
-    width: 10px;
-    border-radius: calc(#{$input-border-radius} / 3);
-    background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
-    margin-left: em(6);
-    align-self: flex-end;
-    opacity: 0;
-    @include transition-2s("ease-out");
+// &__strength-meter-box {
+// height: 10px;
+// width: 10px;
+// border-radius: math.div($input-border-radius, 3);
+// background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
+// align-self: flex-end;
+// @include transition-2s("ease-out");
 
-    &.sm-secure {
-      background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
-    }
+// &.sm-secure {
+//   background: linear-gradient(48deg, $volcano-3 0%, $red-5 77%);
+// }
 
-    &.md-secure {
-      background: linear-gradient(48deg, $volcano-4 0%, $yellow-5 77%);
-    }
+// &.md-secure {
+//   background: linear-gradient(48deg, $volcano-4 0%, $yellow-5 77%);
+// }
 
-    &.lg-secure {
-      background: linear-gradient(48deg, $green-5 0%, $green-7 77%);
-    }
-  }
-}
+// &.lg-secure {
+//   background: linear-gradient(48deg, $green-5 0%, $green-7 77%);
+// }
+// }
+// }
 
-.input-multiline {
-  @extend .scrollbar;
-  height: auto;
-  box-sizing: border-box;
-  resize: vertical;
-  min-height: em(56);
+// .input-multiline {
+// @extend .scrollbar;
+// height: auto;
+// box-sizing: border-box;
+// resize: vertical;
+// min-height: em(56);
 
-  &:not([placeholder]) {
-    padding-top: 1.5rem;
-  }
+// &:not([placeholder]) {
+//   padding-top: 1.5rem;
+// }
 
-  + .input__floating-placeholder {
-    top: 1.5em;
-    width: calc(100% - (1.5rem + 0.5rem));
-  }
+// + .input__floating-placeholder {
+//   top: 1.5em;
+//   width: calc(100% - (1.5rem + 0.5rem));
+// }
 
-  + .input__floating-placeholder {
-    &::before,
-    &::after {
-      @extend .input__floating-placeholder--pseudo-element;
-      height: 0.5rem;
-    }
-  }
-}
+// + .input__floating-placeholder {
+//   &::before,
+//   &::after {
+//     @extend .input__floating-placeholder--pseudo-element;
+//     height: 0.5rem;
+//   }
+// }
+// }
 
 .input-digit {
   font-size: rem(36);

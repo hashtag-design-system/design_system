@@ -10,36 +10,53 @@ export const useClickOutside = <T extends HTMLInputElement | HTMLUListElement | 
 ) => {
   const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [outsideClick, setOutsideClick] = useState(false);
+  const [prevMouseEvent, setPrevMouseEvent] = useState("");
   const backupRef = useRef<T>(null);
   const ref = forwardRef ? forwardRef : backupRef;
 
   const handleClickOutside = useCallback(
-    (event: any) => {
-      if (typeof ref !== "function" && ref.current && ref.current !== null) {
-        if (!ref.current.contains(event.target)) {
+    (e: any) => {
+      if (typeof ref !== "function" && ref.current && prevMouseEvent === "mousedown") {
+        if (!ref.current.contains(e.target)) {
           setIsOpen(false);
           setOutsideClick(true);
 
-          if (onDismiss) {
-            onDismiss(event);
-          }
+          if (onDismiss) onDismiss(e);
         }
       }
     },
+    // eslint-disable-next-line
     [ref, onDismiss]
   );
 
+  const handleMouse = useCallback(
+    (e: MouseEvent) => {
+      const type = e.type;
+      if (prevMouseEvent !== type) setPrevMouseEvent(type);
+    },
+    // eslint-disable-next-line
+    []
+  );
+
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside, !isOpen);
+    document.addEventListener("mousedown", e => handleMouse(e));
+    document.addEventListener("mousemove", e => handleMouse(e));
+    // document.addEventListener("mouseup", e => handleMouse(e));
+
     return () => {
-      document.removeEventListener("click", handleClickOutside, !isOpen);
+      document.removeEventListener("mousedown", e => handleMouse(e));
+      document.removeEventListener("mousemove", e => handleMouse(e));
+      // document.removeEventListener("mouseup", e => handleMouse(e));
     };
+  }, [handleMouse]);
+
+  useEffect(() => {
+    document.addEventListener("mouseup", handleClickOutside, !isOpen);
+    return () => document.removeEventListener("mouseup", handleClickOutside, !isOpen);
   }, [initialIsOpen, isOpen, handleClickOutside]);
 
   useEffect(() => {
-    if (isOpen === false && outsideClick === true) {
-      setOutsideClick(false);
-    }
+    if (isOpen === false && outsideClick === true) setOutsideClick(false);
   }, [isOpen, outsideClick]);
 
   return { ref: ref as React.RefObject<T>, isOpen, setIsOpen, outsideClick };

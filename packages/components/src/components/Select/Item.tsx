@@ -41,47 +41,33 @@ export const Item: React.FC<FProps> = React.memo(
       ]);
     }, [id, defaultChecked, content, valueAlternative, setItems]);
 
-    const handleClick = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        if (isDisabled) {
-          return;
-        }
-        if (!multiSelectable) {
-          handleToggle(e, false);
-        }
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      if (isDisabled) return;
+      if (!multiSelectable) handleToggle(e, false);
 
-        // state has not been updated yet, that is why the opposite is used
-        const newItems = items.map(item => {
-          if (item.id === id) {
-            const newItem: SelectedItems = {
-              ...item,
-              // Opposite because the state has not changed yet
-              selected: !isChecked,
-            };
-            return newItem;
-          }
-
-          if (multiSelectable) {
-            return item;
-          } else {
-            return { ...item, selected: false };
-          }
-        });
-        if (!isDisabled) {
-          setItems(newItems);
-
-          if (onSelect) {
-            onSelect(newItems);
-          }
+      // state has not been updated yet, that is why the opposite is used
+      const newItems = items.map(item => {
+        if (item.id === id) {
+          const newItem: SelectedItems = {
+            ...item,
+            // Opposite because the state has not changed yet
+            selected: !isChecked,
+          };
+          return newItem;
         }
 
-        if (onClick) {
-          onClick(e);
-        }
-      },
-      [id, items, multiSelectable, isChecked, isDisabled, onSelect, onClick, setItems, handleToggle]
-    );
+        if (multiSelectable) return item;
+        else return { ...item, selected: false };
+      });
+      if (!isDisabled) {
+        setItems(newItems);
+
+        if (onSelect) onSelect(newItems);
+      }
+
+      if (onClick) onClick(e);
+    };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       const key = e.code;
@@ -108,18 +94,6 @@ export const Item: React.FC<FProps> = React.memo(
       }
     }, [item, addItem]);
 
-    useEffect(() => {
-      setIsChecked(item?.selected!);
-    }, [item?.selected]);
-
-    useEffect(() => {
-      if ((!isChecked || isDisabled) && ref && ref.current) {
-        ref.current.blur();
-      }
-    }, [isDisabled, isChecked]);
-
-    const isHidden = useMemo(() => !item?.isShown, [item?.isShown]);
-
     const handleSearch: () => string = useCallback(() => {
       let newChildren = item?.content || "";
       const newFilterValue = filterValue.join(" ");
@@ -129,7 +103,15 @@ export const Item: React.FC<FProps> = React.memo(
       return newChildren;
     }, [filterValue, item?.content]);
 
-    const fChecked = useMemo(() => isChecked || defaultChecked, [isChecked, defaultChecked]);
+    useEffect(() => setIsChecked(item?.selected!), [item?.selected]);
+
+    useEffect(() => {
+      if ((!isChecked || isDisabled) && ref && ref.current) ref.current.blur();
+    }, [isDisabled, isChecked]);
+
+    const isHidden = useMemo(() => !item?.isShown, [item?.isShown]);
+
+    // const fChecked = useMemo(() => isChecked, [isChecked, defaultChecked]);
     const fChildren = useMemo(() => handleSearch(), [handleSearch]);
 
     return (
@@ -139,9 +121,9 @@ export const Item: React.FC<FProps> = React.memo(
           ref={ref}
           tabIndex={isDisabled ? -1 : 0}
           onClick={e => handleClick(e)}
-          onMouseDown={e => handleClick(e)}
+          // onMouseDown={e => handleClick(e)}
           onKeyDown={e => handleKeyDown(e)}
-          aria-selected={fChecked}
+          aria-selected={isChecked}
           aria-disabled={isDisabled}
           data-testid="select-item"
           role="option"
@@ -153,8 +135,8 @@ export const Item: React.FC<FProps> = React.memo(
         >
           <input
             type="checkbox"
-            value={String(fChecked)}
-            aria-checked={fChecked}
+            value={String(isChecked)}
+            aria-checked={isChecked}
             id={id}
             disabled={Boolean(isDisabled)}
             aria-disabled={isDisabled}

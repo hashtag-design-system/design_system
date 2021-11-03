@@ -6,9 +6,7 @@ export const checkSelectionInputValue = (checkbox: HTMLElement, bool: boolean | 
   const strBool = String(bool);
   expect(checkbox).toHaveAttribute("value", strBool);
   expect(checkbox).toHaveAttribute("aria-checked", strBool.trim());
-  if (!radio) {
-    expect(checkbox).toHaveAttribute("data-ischecked", strBool.trim());
-  }
+  if (!radio) expect(checkbox).toHaveAttribute("data-ischecked", strBool.trim());
 };
 
 export const checkSelectionInputDisabled = (checkbox: HTMLElement) => {
@@ -114,10 +112,7 @@ describe("<Checkbox />", () => {
     const checkbox = screen.getByTestId("checkbox");
 
     checkSelectionInputDisabled(checkbox);
-    if (state.includes("un")) {
-      expect(checkbox).toHaveAttribute("value", "false");
-    } else {
-      expect(checkbox).toHaveAttribute("value", "true");
-    }
+    if (state.includes("un")) expect(checkbox).toHaveAttribute("value", "false");
+    else expect(checkbox).toHaveAttribute("value", "true");
   });
 });

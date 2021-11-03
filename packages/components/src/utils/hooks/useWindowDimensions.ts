@@ -5,29 +5,30 @@ export type WindowDimensionsType = {
   height: number;
 };
 
-export const getWindowDimensions = (): WindowDimensionsType => {
-  return {
-    width: document.documentElement.clientWidth || window.innerWidth,
-    height: document.documentElement.clientHeight || window.innerHeight,
-  };
-};
+export const getWindowDimensions = (): WindowDimensionsType => ({
+  width: document.documentElement.clientWidth || window.innerWidth,
+  height: document.documentElement.clientHeight || window.innerHeight,
+});
 
 export const useWindowDimensions = (): WindowDimensionsType => {
-  const [windowDimensions, setWindowDimensions] = useState<WindowDimensionsType>();
+  const [windowSize, setWindowSize] = useState<WindowDimensionsType>({ width: 0, height: 0 });
 
   useEffect(() => {
+    // Handler to call on window resize
     function handleResize() {
-      setWindowDimensions(getWindowDimensions());
+      // Set window width/height to state
+      setWindowSize({
+        width: document.documentElement.clientWidth || window.innerWidth,
+        height: document.documentElement.clientHeight || window.innerHeight,
+      });
     }
-
-    const res = getWindowDimensions();
-    if (windowDimensions !== res) {
-      setWindowDimensions(res);
-    }
-
+    // Add event listener
     window.addEventListener("resize", handleResize);
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, []); // Empty array ensures that effect is only run on mount
 
-  return windowDimensions || { width: 0, height: 0 };
+  return windowSize;
 };

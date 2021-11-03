@@ -31,7 +31,7 @@ $justify-contents: (
 
 @mixin flex-class($direction, $content, $align) {
   .flex-#{$direction}-#{$content}-#{$align} {
-    display: flex;
+    display: flex !important;
     flex-direction: #{$direction};
     justify-content: #{$content};
     align-items: #{$align};

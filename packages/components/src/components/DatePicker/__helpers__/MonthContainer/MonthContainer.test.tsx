@@ -192,21 +192,15 @@ describe("DatePicker <MonthContainer />", () => {
         for (let i = 0; i <= 1; i++) {
           userEvent.click(date);
 
-          if (i === 0) {
-            expect(dateMonth).toBeVisible();
-          } else {
-            expect(dateMonth).toBeNull();
-          }
+          if (i === 0) expect(dateMonth).toBeVisible();
+          else expect(dateMonth).toBeNull();
           expect(dateYear).toBeVisible();
 
           dateMonth = screen.queryByTestId("date-picker-months-container-date-month");
           dateYear = screen.getByTestId("date-picker-months-container-date-year");
 
-          if (i === 0) {
-            expect(dateMonth).toBeNull();
-          } else {
-            expect(dateMonth).toBeVisible();
-          }
+          if (i === 0) expect(dateMonth).toBeNull();
+          else expect(dateMonth).toBeVisible();
           expect(dateYear).toBeVisible();
         }
       });

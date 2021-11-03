@@ -1,69 +1,28 @@
 import { Meta, Story } from "@storybook/react";
-import { storybookTitles } from "../../../config";
-import Input, { InputSBProps } from "../index";
+import Input, { InputProps } from "../index";
 
 export default {
-  title: storybookTitles.FORM_INPUT,
+  title: "Input2",
   component: Input,
   argTypes: {
-    defaultValue: {
-      control: {
-        type: "text",
-      },
-    },
-    floatingplaceholder: {
-      control: {
-        type: "boolean",
-      },
-    },
-    prefix: {
-      control: {
-        type: "text",
-      },
-    },
-    suffix: {
-      control: {
-        type: "text",
-      },
-    },
-    maxLength: {
-      control: {
-        type: "number",
-      },
-    },
+    // defaultValue: {
+    //   control: { type: "text" },
+    // },
+    // hasFloatingPlaceholder: {
+    //   control: { type: "boolean" },
+    // },
+    // maxLength: {
+    //   control: { type: "number" },
+    // },
   },
 } as Meta;
 
-const Template: Story<InputSBProps> = ({ placeholder = "Placeholder", floatingplaceholder = true, ...args }) => (
-  <Input placeholder={placeholder} floatingplaceholder={floatingplaceholder} {...args} />
+const Template: Story<InputProps> = ({ placeholder = "Placeholder", hasFloatingPlaceholder = true, ...args }) => (
+  <Input placeholder={placeholder} hasFloatingPlaceholder={hasFloatingPlaceholder} {...args} />
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  state: "default",
-};
-
 export const Hover = Template.bind({});
 Hover.args = {
-  state: "hover",
-};
-
-export const Focus = Template.bind({});
-Focus.args = {
-  state: "focus",
-};
-
-export const Success = Template.bind({});
-Success.args = {
-  state: "success",
-};
-
-export const Error = Template.bind({});
-Error.args = {
-  state: "error",
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  state: "disabled",
-};
+  placeholder: "hey"
+}

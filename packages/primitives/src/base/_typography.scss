@@ -3,6 +3,10 @@
   @include font-light();
 }
 
+.normal {
+  font-weight: map-get($font-weights, "normal");
+}
+
 .semibold {
   @include font-semibold();
 }

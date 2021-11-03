@@ -43,11 +43,8 @@ describe("<Dialog.Btn />", () => {
       const btn = screen.getByTestId("dialog-btn");
 
       expect(btn).toHaveClass("loading")
-      if (bool) {
-        expect(btn).not.toHaveClass("dismiss-onloading");
-      } else {
-        expect(btn).toHaveClass("dismiss-onloading");
-      }
+      if (bool) expect(btn).not.toHaveClass("dismiss-onloading");
+      else expect(btn).toHaveClass("dismiss-onloading");
     });
   });
 });

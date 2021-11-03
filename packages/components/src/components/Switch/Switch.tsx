@@ -68,18 +68,14 @@ const Switch = React.forwardRef<HTMLInputElement, FProps>(
     const { colors: { grey }, variables: { primary } } = useConfigContext();
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
-      if (state !== "on" && !isDisabled) {
-        setIsOn(!isOn);
-      }
+      if (state !== "on" && !isDisabled) setIsOn(!isOn);
 
-      if (onClick) {
-        onClick(e);
-      }
+      if (onClick) onClick(e);
     };
 
     if (icon && insideText) {
-      error("You can only pass an Icon or a text inside the <Switch /> component");
-      return null;
+     error("You can only pass an Icon or a text inside the <Switch /> component");
+     return null;
     }
 
     return (

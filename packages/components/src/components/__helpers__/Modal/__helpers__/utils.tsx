@@ -10,11 +10,8 @@ export const overlayCheckStyle = async (toContain: string): Promise<void> => {
   });
 
   expect(modal).toHaveAttribute("style");
-  if (toContain.includes("rgba")) {
-    expect(modal.style.backgroundColor).toContain(toContain);
-  } else {
-    expect(modal.style["backdropFilter"]).toContain(toContain);
-  }
+  if (toContain.includes("rgba")) expect(modal.style.backgroundColor).toContain(toContain);
+  else expect(modal.style["backdropFilter"]).toContain(toContain);
 };
 
 export const createPortalElement = () => {

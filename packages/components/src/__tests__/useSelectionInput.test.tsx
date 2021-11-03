@@ -5,8 +5,7 @@ import { useEffect } from "react";
 import Checkbox, { CheckboxState } from "../components/Checkbox";
 import RadioButton from "../components/RadioButton";
 import { UserSelectionInputEventType, UserSelectionInputEventTypes } from "../typings";
-import { checkSelectionInput, clickOrType, useSelectionInput } from "../utils";
-import { SelectionInputGroupObj, UseSelectionInputOptions } from "../utils";
+import { checkSelectionInput, clickOrType, SelectionInputGroupObj, useSelectionInput, UseSelectionInputOptions } from "../utils";
 
 const TEST_CHILDREN_LENGTH = 5;
 
@@ -19,10 +18,8 @@ const TestChildren: React.FC<Partial<UseSelectionInputOptions> & { onInput?: (in
   const { ref: selectionInputRef, onClick, inputs } = useSelectionInput({ type, inputsLength, ...options });
 
   useEffect(() => {
-    if (onInput) {
-      onInput(inputs);
-    }
-  }, [inputs]);
+    if (onInput) onInput(inputs);
+  }, [inputs, onInput]);
 
   return (
     <div data-testid="container">
@@ -126,11 +123,8 @@ describe("useSelectionInput(", () => {
     const inputs = screen.getAllByTestId(type === "radio" ? type + "-btn" : type);
 
     inputs.forEach((input, i) => {
-      if (i < defaultChecked.length) {
-        checkSelectionInput(input, true);
-      } else {
-        checkSelectionInput(input, false);
-      }
+      if (i < defaultChecked.length) checkSelectionInput(input, true);
+      else checkSelectionInput(input, false);
     });
   });
   test("with defaultState", () => {
@@ -142,15 +136,9 @@ describe("useSelectionInput(", () => {
     checkboxes.forEach((checkbox, i) => {
       const state = defaultState[i];
       if (i < defaultState.length) {
-        if (state === "focus-visible") {
-          expect(checkbox).toHaveClass(state);
-        }
-        if (state === "indeterminate") {
-          expect(checkbox).toBePartiallyChecked();
-        }
-      } else {
-        expect(checkbox).not.toHaveClass(defaultState[i - defaultState.length]);
-      }
+        if (state === "focus-visible") expect(checkbox).toHaveClass(state);
+        if (state === "indeterminate") expect(checkbox).toBePartiallyChecked();
+      } else expect(checkbox).not.toHaveClass(defaultState[i - defaultState.length]);
     });
   });
   describe('with type="checkbox" - <Checkbox />', () => {
@@ -193,11 +181,8 @@ describe("useSelectionInput(", () => {
             latestChange: expect.anything(),
           });
 
-          if (i === checkboxes.length - 2) {
-            checkSelectionInput(header, true);
-          } else {
-            checkSelectionInput(header, false, true);
-          }
+          if (i === checkboxes.length - 2) checkSelectionInput(header, true);
+          else checkSelectionInput(header, false, true);
         });
 
         clickOrType(header, userEventType);
@@ -252,13 +237,9 @@ describe("useSelectionInput(", () => {
       userEvent.click(checkboxes[lastCheckboxIdx], { shiftKey: true });
 
       checkboxes.forEach((checkbox, i) => {
-        if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) {
-          checkSelectionInput(checkbox, true);
-        } else if (i >= firstCheckboxIdx && i <= lastCheckboxIdx) {
-          checkSelectionInput(checkbox, true);
-        } else {
-          checkSelectionInput(checkbox, false, i === 0);
-        }
+        if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) checkSelectionInput(checkbox, true);
+        else if (i >= firstCheckboxIdx && i <= lastCheckboxIdx) checkSelectionInput(checkbox, true);
+        else checkSelectionInput(checkbox, false, i === 0);
       });
     });
     test.each([false, true])("<Checkbox /> | Shift + click to uncheck & reverse", isReverse => {
@@ -269,11 +250,8 @@ describe("useSelectionInput(", () => {
         lastCheckboxIdx = 1;
       }
       const defaultChecked: boolean[] = range(0, TEST_CHILDREN_LENGTH).map((_, i) => {
-        if (!isReverse && i >= firstCheckboxIdx && i <= lastCheckboxIdx) {
-          return true;
-        } else if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) {
-          return true;
-        }
+        if (!isReverse && i >= firstCheckboxIdx && i <= lastCheckboxIdx) return true;
+        else if (isReverse && i <= firstCheckboxIdx && i >= lastCheckboxIdx) return true;
         return false;
       });
       // [false, true, true, true, false];
@@ -282,11 +260,8 @@ describe("useSelectionInput(", () => {
 
       expect(checkboxes).toHaveLength(5);
       checkboxes.forEach((checkbox, i) => {
-        if (defaultChecked[i]) {
-          checkSelectionInput(checkbox, true);
-        } else {
-          checkSelectionInput(checkbox, false);
-        }
+        if (defaultChecked[i]) checkSelectionInput(checkbox, true);
+        else checkSelectionInput(checkbox, false);
       });
 
       for (let i = 0; i < 2; i++) {
@@ -299,9 +274,7 @@ describe("useSelectionInput(", () => {
 
       // Because the other where by default "unchecked", and they were not clicked,
       // they cannot be checked now too
-      checkboxes.forEach((checkbox, i) => {
-        checkSelectionInput(checkbox, false);
-      });
+      checkboxes.forEach((checkbox) => checkSelectionInput(checkbox, false));
     });
   });
   describe.each<UserSelectionInputEventType>(UserSelectionInputEventTypes)('with type="radio" - <RadioButton />', userEventType => {
@@ -334,9 +307,7 @@ describe("useSelectionInput(", () => {
 
       radioBtns.forEach((radioBtn, i) => {
         clickOrType(radioBtn, userEventType);
-        if (i !== 0) {
-          checkSelectionInput(radioBtn, true);
-        }
+        if (i !== 0) checkSelectionInput(radioBtn, true);
         const called = 2 + 1 + i;
         expect(onInput).toHaveBeenCalledTimes(called);
         expect(results[onInput.mock.calls.length - 1].value[i]).toStrictEqual<SelectionInputGroupObj>({
@@ -348,9 +319,7 @@ describe("useSelectionInput(", () => {
         });
         radioBtns
           .filter(btn => btn.id !== radioBtn.id)
-          .forEach(uncheckedBtn => {
-            checkSelectionInput(uncheckedBtn, false);
-          });
+          .forEach(uncheckedBtn => checkSelectionInput(uncheckedBtn, false));
       });
 
       expect(onInput).toHaveBeenCalledTimes(timesCalled);
@@ -373,28 +342,21 @@ describe("useSelectionInput(", () => {
       userEvent.click(radioBtns[1]);
 
       radioBtns.forEach((radioBtn, i) => {
-        if (i !== 1) {
-          checkSelectionInput(radioBtn, false);
-        } else {
-          checkSelectionInput(radioBtn, true);
-        }
+        if (i !== 1) checkSelectionInput(radioBtn, false);
+        else checkSelectionInput(radioBtn, true);
       });
 
       expect(radioBtns.filter(btn => btn.getAttribute("value")?.includes("true"))).toHaveLength(1);
 
       userEvent.click(radioBtns[1]);
 
-      radioBtns.forEach(radioBtn => {
-        checkSelectionInput(radioBtn, false);
-      });
+      radioBtns.forEach(radioBtn => checkSelectionInput(radioBtn, false));
 
       expect(radioBtns.filter(btn => btn.getAttribute("value")?.includes("true"))).toHaveLength(0);
 
       userEvent.dblClick(radioBtns[1]);
 
-      radioBtns.forEach(radioBtn => {
-        checkSelectionInput(radioBtn, false);
-      });
+      radioBtns.forEach(radioBtn => checkSelectionInput(radioBtn, false));
 
       expect(radioBtns.filter(btn => btn.getAttribute("value")?.includes("true"))).toHaveLength(0);
     });

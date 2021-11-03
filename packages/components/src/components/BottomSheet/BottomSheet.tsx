@@ -102,14 +102,8 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
 
   /* istanbul ignore next */
   const fAllowNext = useMemo((): BottomSheetAllowNextObj => {
-    if (typeof allowNext === "number") {
-      return {
-        whenMiddle: allowNext,
-        whenExpanded: allowNext,
-      };
-    } else {
-      return allowNext;
-    }
+    if (typeof allowNext === "number") return { whenMiddle: allowNext, whenExpanded: allowNext };
+    else return allowNext;
   }, [allowNext]);
 
   const goTo = useCallback(
@@ -125,9 +119,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   const dismiss = async (info: DialogDismissInfoType) => {
     setPosition("hidden");
     const cancel = info.cancel;
-    if (cancel === true) {
-      await dialogControls.start(dialogVariants.hidden);
-    }
+    if (cancel === true) await dialogControls.start(dialogVariants.hidden);
     await overlayControls.start(overlayVariants.hidden, { delay: cancel ? 0 : 0.1 });
   };
 
@@ -139,65 +131,54 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       }
     }
 
-    if (onDrag) {
-      onDrag(e, info);
-    }
+    if (onDrag) onDrag(e, info);
   };
 
   /* istanbul ignore next */
   const handleDragEnd = (e: DragEvent, info: PanInfo) => {
-    if (position === "hidden") {
-      return;
-    }
+    if (position === "hidden") return;
     if (Math.abs(info.velocity.y) >= 175) {
-      if (position === "expanded") {
-        goTo("middle");
-      } else if (position === "middle" && info.velocity.y <= 0) {
-        goTo("expanded");
-      }
+      if (position === "expanded") goTo("middle");
+      else if (position === "middle" && info.velocity.y <= 0) goTo("expanded");
     } else if (position === "expanded" && yState >= fAllowNext.whenExpanded) {
       // ! Not this -> dialogControls.start(dialogVariants.middle).then(() => setPosition("middle"));
       // It lags and makes is totally bad UX. That is why the following is preffered
       // Neither "await dialogControls.start(dialogVariants.middle)" will work correctly.
       // But the following seems to work just as needed
       goTo("middle");
-    } else if (yState <= defaultY - fAllowNext.whenMiddle) {
-      goTo("expanded");
-    }
-
-    if (onDragEnd) {
-      onDragEnd(e, info);
-    }
+    } else if (yState <= defaultY - fAllowNext.whenMiddle) goTo("expanded");
+    if (onDragEnd) onDragEnd(e, info);
   };
 
   const handleDismiss = async (info: DialogDismissInfoType, e?: React.MouseEvent<HTMLElement>) => {
     await dismiss(info);
 
-    if (onDismiss) {
-      onDismiss(info, e);
-    }
+    if (onDismiss) onDismiss(info, e);
   };
 
   const handleChildrenHeight = (height: number) => {
     const newHeight = viewportHeight - height;
     if (defaultY !== newHeight && hugContentsHeight && !isInputFocused) {
-      if (newHeight > 25) {
-        setDefaultY(newHeight);
-      } else {
+      if (newHeight > 25) setDefaultY(newHeight);
+      else {
         /* istanbul ignore next */
         setDefaultY(0);
       }
     }
 
-    if (onChildrenHeight) {
-      onChildrenHeight(newHeight);
-    }
+    if (onChildrenHeight) onChildrenHeight(newHeight);
   };
 
   useEffect(() => {
     const unsubscribe = y.onChange(setYState);
     return unsubscribe;
   }, [y]);
+
+  // Change height if defaultY prop changes
+  useEffect(() => {
+    setDefaultY(propsDefaultY);
+    dialogControls.start({ y: propsDefaultY });
+  }, [dialogControls, propsDefaultY]);
 
   useEffect(() => {
     async function promiseFunction() {
@@ -218,9 +199,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
   }, [isShown, viewportHeight]);
 
   useEffect(() => {
-    if (onChange) {
-      onChange(yState, { position, dragConstraints });
-    }
+    if (onChange) onChange(yState, { position, dragConstraints });
   }, [yState, position, dragConstraints, onChange]);
 
   const handleInput = useCallback(
@@ -231,15 +210,10 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
         const type = (e.target as HTMLElement).getAttribute("type") || "text";
         if (type !== "radio" && type !== "checkbox") {
           if (eventType === "focus") {
-            if (defaultY - inputFocusedMove > 50) {
-              goTo("input-focused");
-            } else {
-              goTo("expanded");
-            }
+            if (defaultY - inputFocusedMove > 50) goTo("input-focused");
+            else goTo("expanded");
             setIsInputFocused(true);
-          } else {
-            goTo("middle");
-          }
+          } else goTo("middle");
         }
       }
     },
@@ -272,7 +246,14 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
       onDismiss={async (e, info) => await handleDismiss(info, e)}
       dragConstraints={{ ...dragConstraints }}
       overlayProps={{ ref: modalRef, animate: overlayControls, background: { alpha: 0.5 }, ...overlayProps }}
-      style={{ ...style, y, borderRadius: yState <= 5 ? 0 : undefined }}
+      style={{
+        top: "unset",
+        bottom: yState + "px",
+        height: viewportHeight - yState + "px",
+        y,
+        borderRadius: yState <= 5 ? 0 : undefined,
+        ...style,
+      }}
       onChildrenHeight={height => handleChildrenHeight(height)}
       data-testid="bottom-sheet"
       {...rest}
@@ -282,7 +263,7 @@ const BottomSheet: React.FC<FProps> & SubComponents = ({
           <>
             {children &&
               (typeof children === "function"
-                ? // @ts-expect-error
+                ? // @ts-ignore
                   children({ dismiss: () => handleDismiss({ cancel: true }), childrenHeight, width } as BottomSheetChildrenInfo)
                 : children)}
           </>

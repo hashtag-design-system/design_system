@@ -5,7 +5,7 @@ const SelectionInputLabelPositions = ["top", "bottom", "right", "left"] as const
 type SelectionInputLabelPosition = typeof SelectionInputLabelPositions[number];
 
 export type SelectionInputLabelType = {
-  value: string;
+  value: React.ReactChild;
   position?: SelectionInputLabelPosition;
 } & Pick<React.CSSProperties, "gap">;
 
@@ -18,15 +18,13 @@ export const LabelContainer: React.FC<Props> = ({ id, label: propsLabel, childre
     if (propsLabel) {
       const newLabel: RequiredInputLabel = {
         value: "",
-        position: (typeof propsLabel === "object" && propsLabel.position) || "right",
+        position:
+          (propsLabel && !React.isValidElement(propsLabel) && typeof propsLabel === "object" && propsLabel.position) || "right",
         gap: "",
       };
 
-      if (typeof propsLabel === "string") {
-        newLabel.value = propsLabel;
-      } else {
-        newLabel.value = propsLabel.value;
-      }
+      if (!React.isValidElement(propsLabel) && typeof propsLabel === "object") newLabel.value = propsLabel.value;
+      else newLabel.value = propsLabel;
 
       return newLabel;
     }

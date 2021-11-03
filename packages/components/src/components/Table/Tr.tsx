@@ -38,9 +38,7 @@ const Tr: React.FC<FProps> = ({ idx, state = "default", children, ...props }) =>
   }, [extraColumn]);
 
   const newExtraColumn = () => {
-    if (!extraColumn) {
-      return undefined;
-    }
+    if (!extraColumn) return undefined;
     if (extraColumn.component === "checkbox") {
       return (
         <Checkbox
@@ -63,27 +61,15 @@ const Tr: React.FC<FProps> = ({ idx, state = "default", children, ...props }) =>
     }
   };
 
+  const STYLE = { width: extraColumn ? "3em" : undefined };
+
   return (
     <tr ref={ref} className={classNames} data-testid="table-tr" {...rest}>
       {extraColumn?.component &&
         (header ? (
-          <Table.Th
-            style={{
-              width: extraColumn ? "3em" : undefined,
-            }}
-          >
-            {newExtraColumn()}
-          </Table.Th>
+          <Table.Th style={STYLE}>{newExtraColumn()}</Table.Th>
         ) : (
-          body && (
-            <Table.Td
-              style={{
-                width: extraColumn ? "3em" : undefined,
-              }}
-            >
-              {newExtraColumn()}
-            </Table.Td>
-          )
+          body && <Table.Td style={STYLE}>{newExtraColumn()}</Table.Td>
         ))}
       {children}
     </tr>

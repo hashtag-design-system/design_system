@@ -14,10 +14,8 @@ const TestConfigProviderChildren: React.FC<ChildrenProps> = ({ onContext }) => {
   const context = useConfigContext();
 
   useEffect(() => {
-    if (onContext) {
-      onContext(context);
-    }
-  }, [context]);
+    if (onContext) onContext(context);
+  }, [context, onContext]);
 
   return (
     <Button onClick={() => context.setValue(({ fontSizes, ...rest }) => ({ ...rest, fontSizes: [...fontSizes, TEST_ADD_FONT_SIZE] }))}>
@@ -169,7 +167,7 @@ describe("<ConfigProvider />", () => {
     test.each([true, false])("with extra fontWeight & override fontWeight", override => {
       const onContext = jest.fn((fontWeights: ConfigFontWeightsType) => fontWeights);
       const testVal: Partial<ConfigFontWeightsType> = override ? { bold: 700 } : { lightbold: 450 };
-      render(<TestConfigProvider fontWeights={{ ...testVal as any }} onContext={({ fontWeights }) => onContext(fontWeights)} />);
+      render(<TestConfigProvider fontWeights={{ ...(testVal as any) }} onContext={({ fontWeights }) => onContext(fontWeights)} />);
 
       expect(onContext).toHaveBeenCalledTimes(1);
       const mockResults = onContext.mock.results;

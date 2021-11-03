@@ -7,38 +7,15 @@ import Button from "../../../Button";
 import { ACTIONS } from "../index";
 
 const containerVariants: Record<"initial" | "visible" | "exit", Variant> = {
-  initial: {
-    scale: 1,
-    height: 0,
-    opacity: 0,
-  },
-  visible: {
-    scale: 1,
-    height: "100%",
-    opacity: 1,
-  },
-  exit: {
-    scale: 0,
-    height: 0,
-    opacity: 0,
-    transition: {
-      delay: 0.1,
-    },
-  },
+  initial: { scale: 1, height: 0, opacity: 0 },
+  visible: { scale: 1, height: "100%", opacity: 1 },
+  exit: { scale: 0, height: 0, opacity: 0, transition: { delay: 0.1 } },
 };
 
 const btnVariants: Record<"initial" | "exit" | "transition", Variant> = {
-  initial: {
-    opacity: 0,
-  },
-  exit: {
-    opacity: 0,
-  },
-  transition: {
-    transition: {
-      duration: 0.05,
-    },
-  },
+  initial: { opacity: 0 },
+  exit: { opacity: 0 },
+  transition: { transition: { duration: 0.05 } },
 };
 
 export const MonthsAndYears: React.FC = () => {

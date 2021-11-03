@@ -61,13 +61,9 @@ const Dialog: React.FC<FProps> & SubComponents = ({
   const { isMobile } = useIsMobile();
 
   const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>, info: { cancel: boolean }, onClick?: ButtonFProps["onClick"]) => {
-    if (onClick) {
-      onClick(e);
-    }
+    if (onClick) onClick(e);
 
-    if (onDismiss) {
-      onDismiss(e, { cancel: info.cancel });
-    }
+    if (onDismiss) onDismiss(e, { cancel: info.cancel });
   };
 
   const hasBtnGroup =
@@ -79,9 +75,7 @@ const Dialog: React.FC<FProps> & SubComponents = ({
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (onDismiss && e.code === "Escape") {
-        onDismiss(e as any, { cancel: true });
-      }
+      if (onDismiss && e.code === "Escape") onDismiss(e as any, { cancel: true });
     },
     [onDismiss]
   );
@@ -97,12 +91,8 @@ const Dialog: React.FC<FProps> & SubComponents = ({
       setHeight(newChildrenHeight);
       setWidth(newWidth);
 
-      if (onChildrenHeight) {
-        onChildrenHeight(newChildrenHeight);
-      }
-      if (onWidth) {
-        onWidth(newWidth);
-      }
+      if (onChildrenHeight) onChildrenHeight(newChildrenHeight);
+      if (onWidth) onWidth(newWidth);
     }
   }, [modalRef, onChildrenHeight, onWidth]);
 
@@ -126,8 +116,11 @@ const Dialog: React.FC<FProps> & SubComponents = ({
           data-testid="dialog"
           {...rest}
         >
-          {/* @ts-expect-error */}
-          {children && (typeof children === "function" ? children({ childrenHeight: height, width } as DialogChildrenInfo) : children)}
+          {children &&
+            (typeof children === "function"
+              ? // @ts-ignore
+                children({ childrenHeight: height, width } as DialogChildrenInfo)
+              : children)}
         </motion.div>
       </Modal.Overlay>
     </DialogContextProvider>

@@ -1,9 +1,9 @@
 import { range } from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import { Swiper as SwiperClass } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import { useClassnames, useIsMobile } from "../../../../utils";
-import Input, { InputNumberFProps } from "../../../Input";
+import Input, { InputNumberFProps } from "../../../Input2";
 
 export type TimePickerSwiperColProps = {
   min?: number;
@@ -63,11 +63,11 @@ export const SwiperCol: React.FC<TimePickerSwiperColFProps> = ({
     /* istanbul ignore next */
     if (res === min) calcRandom();
     return res;
-  }, []);
+  }, [min, max]);
 
   useEffect(() => {
     if (swiper && isMobile) setTimeout(() => swiper.slideToLoop(initialSlide, 750), 500);
-  }, [isMobile, swiper]);
+  }, [initialSlide, isMobile, swiper]);
 
   return (
     <div style={{ position: "relative", width: "max-content" }}>

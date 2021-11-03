@@ -141,11 +141,8 @@ describe("<DatePicker />", () => {
       userEvent.click(testTd);
 
       expect(testTd).toHaveClass("selected");
-      if (dismissOnClick) {
-        expect(modal).not.toBeVisible();
-      } else {
-        expect(modal).toBeVisible();
-      }
+      if (dismissOnClick) expect(modal).not.toBeVisible();
+      else expect(modal).toBeVisible();
     });
     test("default functionality, with mobileView={true}", async () => {
       render(<DefaultDatePicker mobileView />);
@@ -194,11 +191,8 @@ describe("<DatePicker />", () => {
       expect(lastTd).toHaveClass("selected");
       expect(lastTd).toHaveClass("last");
 
-      if (dismissOnClick) {
-        expect(modal).not.toBeVisible();
-      } else {
-        expect(modal).toBeVisible();
-      }
+      if (dismissOnClick) expect(modal).not.toBeVisible();
+      else expect(modal).toBeVisible();
     });
   });
 });

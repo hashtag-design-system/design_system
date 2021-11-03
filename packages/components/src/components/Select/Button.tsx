@@ -18,14 +18,10 @@ export const Button: React.FC<FProps> = ({ state, showValue = true, style, child
   const isDisabled = useDisabled<boolean>(props, state);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.code === "Tab") {
-      e.currentTarget.blur();
-    }
+    if (e.code === "Tab") e.currentTarget.blur();
   };
 
-  useEffect(() => {
-    setIsDisabled(isDisabled);
-  }, [isDisabled, setIsDisabled]);
+  useEffect(() => setIsDisabled(isDisabled), [isDisabled, setIsDisabled]);
 
   return (
     <summary
@@ -36,7 +32,7 @@ export const Button: React.FC<FProps> = ({ state, showValue = true, style, child
       data-testid="select-btn"
       {...rest}
     >
-      <p>{value && showValue ? value : children}</p>
+      <div>{value && showValue ? value : children}</div>
       <DownArrowIcon />
     </summary>
   );

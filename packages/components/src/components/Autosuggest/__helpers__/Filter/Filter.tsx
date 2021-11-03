@@ -15,9 +15,7 @@ export const Filter: React.FC<FProps> = ({ onBlur, ...props }) => {
 
         switch (key) {
           case "Enter":
-            if (onBlur) {
-              onBlur(e as any);
-            }
+            if (onBlur) onBlur(e as any);
             break;
         }
       }}

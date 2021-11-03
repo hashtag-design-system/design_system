@@ -79,9 +79,7 @@ const Select: React.FC<FProps> & SubComponents = ({
   const divRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    if (isDisabled) {
-      e.preventDefault();
-    }
+    if (isDisabled) e.preventDefault();
   };
 
   const handleToggle = useCallback(
@@ -92,22 +90,16 @@ const Select: React.FC<FProps> & SubComponents = ({
         if (boolean) {
           // @ts-expect-error
           setIsOpen(e.target.open);
-        } else {
-          setIsOpen(!isOpen);
-        }
+        } else setIsOpen(!isOpen);
       }
 
-      if (onToggle) {
-        onToggle(e);
-      }
+      if (onToggle) onToggle(e);
     },
     [isOpen, isDisabled, setIsOpen, onToggle]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.target instanceof HTMLInputElement) {
-      return;
-    }
+    if (e.target instanceof HTMLInputElement) return;
     e.preventDefault();
 
     const focusItem = (next: boolean) => {
@@ -129,9 +121,7 @@ const Select: React.FC<FProps> & SubComponents = ({
             if (nextOpt) {
               item = nextOpt;
               // (nextOpt as HTMLDivElement).focus();
-            } else {
-              item = options[options.length - 1];
-            }
+            } else item = options[options.length - 1];
           }
         }
         return item;
@@ -141,13 +131,11 @@ const Select: React.FC<FProps> & SubComponents = ({
     const isSummaryFocused = e.target instanceof Element && e.target.tagName.toLowerCase() === "summary";
     switch (e.code) {
       case "Escape":
-        if (isOpen) {
-          handleToggle(e, false);
-        }
+        if (isOpen) handleToggle(e, false);
         break;
       case "Space":
       case "Enter":
-        handleToggle(e, false);
+        if (!multiSelectable) handleToggle(e, false);
 
         const selected = document.activeElement;
         if (!isSummaryFocused) {
@@ -160,24 +148,18 @@ const Select: React.FC<FProps> & SubComponents = ({
 
         break;
       case "ArrowDown":
-        if (isSummaryFocused && !isOpen) {
-          handleToggle(e, false);
-        } else {
+        if (isSummaryFocused && !isOpen) handleToggle(e, false);
+        else {
           const target = focusItem(true);
-          if (target) {
-            (target as HTMLDivElement).focus();
-          }
+          if (target) (target as HTMLDivElement).focus();
           e.preventDefault();
         }
         break;
       case "ArrowUp":
-        if (isSummaryFocused && isOpen) {
-          handleToggle(e, false);
-        } else {
+        if (isSummaryFocused && isOpen) handleToggle(e, false);
+        else {
           const target = focusItem(false);
-          if (target) {
-            (target as HTMLDivElement).focus();
-          }
+          if (target) (target as HTMLDivElement).focus();
           e.preventDefault();
         }
         break;
@@ -189,11 +171,8 @@ const Select: React.FC<FProps> & SubComponents = ({
       items
         .filter(item => item.selected)
         .map(item => {
-          if (item.valueAlternative) {
-            return item.valueAlternative;
-          } else {
-            return item.content;
-          }
+          if (item.valueAlternative)  return item.valueAlternative;
+          else return item.content;
         })
         .join(", ")
     );

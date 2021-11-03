@@ -23,7 +23,7 @@ export type ACTIONTYPE =
 export type ReducerInitialStateType = {
   isDisabled: boolean;
   hasShiftKey: boolean;
-} & Required<Pick<InputFProps, "value" | "min" | "max" | "defaultValue">> &
+} & Required<Pick<InputFProps, "value" | "min" | "max" | "step" | "defaultValue">> &
   Pick<InputNumberFProps, "none">;
 
 // ------------ Utility functions ------------ //
@@ -44,11 +44,12 @@ const decrement = (value: number, step: number, min: number) => {
 
 // ------------ The reducer ------------ //
 export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): ReducerInitialStateType => {
-  const { value: number, min: prevMin, max: prevMax, defaultValue, isDisabled, hasShiftKey, none } = state;
+  const { value: number, min: preMin, max: preMax, step: prevStep, defaultValue, isDisabled, hasShiftKey, none } = state;
 
-  const value = parseFloat(String(number || prevMin));
-  const min = parseFloat(String(prevMin));
-  const max = parseFloat(String(prevMax));
+  const value = parseFloat(String(number || preMin));
+  const min = parseFloat(String(preMin));
+  const max = parseFloat(String(preMax));
+  const step = parseFloat(String(prevStep));
 
   if (isDisabled) return state;
 
@@ -64,8 +65,9 @@ export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): Red
     case ACTIONS.HANDLE_FOCUS:
       return { ...state, value: valueEqualsDefault(value, defaultValue) };
     case ACTIONS.HANDLE_BLUR:
-      if ((!value || String(value) === "" || String(value) === String(defaultValue)) && !none)
+      if ((!value || String(value) === "" || String(value) === String(defaultValue)) && !none) {
         return { ...state, value: defaultValue.toString() };
+      }
       return state;
     case ACTIONS.HANDLE_CHANGE: {
       const { newVal } = action.payload;
@@ -84,19 +86,15 @@ export const reducer = (state: ReducerInitialStateType, action: ACTIONTYPE): Red
         if (e.key === "ArrowUp") {
           if (value === 1 || (value.toString() === "" && min === 1)) {
             state = { ...state, value: increment(value, 9, max) };
-          } else {
-            state = { ...state, value: increment(value, 10, max) };
-          }
+          } else state = { ...state, value: increment(value, 10, max) };
         } else if (e.key === "ArrowDown") {
           if (value === 1 || (value.toString() === "" && min === 1) || value - 10 < min) {
             state = { ...state, value: decrement(value, 9, min) };
-          } else {
-            state = { ...state, value: decrement(value, 10, min) };
-          }
+          } else state = { ...state, value: decrement(value, 10, min) };
         }
       } else {
-        if (e.key === "ArrowUp") state = { ...state, value: increment(value, 1, max) };
-        if (e.key === "ArrowDown") state = { ...state, value: decrement(value, 1, min) };
+        if (e.key === "ArrowUp") state = { ...state, value: increment(value, step, max) };
+        if (e.key === "ArrowDown") state = { ...state, value: decrement(value, step, min) };
       }
 
       return state;

@@ -58,7 +58,7 @@ const RadioButton = React.forwardRef<HTMLInputElement, FProps>(
 
     useEffect(() => {
       if (onValue) onValue(isChecked);
-    }, [isChecked]);
+    }, [isChecked, onValue]);
 
     const whileTap = !isDisabled && state !== "checked" ? "pressed" : undefined;
 

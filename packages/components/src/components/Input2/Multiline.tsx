@@ -33,15 +33,11 @@ const Multiline = React.forwardRef<HTMLTextAreaElement, FProps>(
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newVal = e.target.value;
 
-      if (characterLimit && maxLength && String(newVal).length > maxLength) {
-        return;
-      }
+      if (characterLimit && maxLength && String(newVal).length > maxLength) return;
 
       setValue(newVal);
 
-      if (onChange) {
-        onChange(e);
-      }
+      if (onChange) onChange(e);
     };
 
     // TODO: Replace with <Icon /> component

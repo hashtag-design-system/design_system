@@ -66,9 +66,7 @@ export const Base: React.FunctionComponent = () => {
       return;
     }
 
-    if (onChange) {
-      onChange(e);
-    }
+    if (onChange) onChange(e);
   };
   
 

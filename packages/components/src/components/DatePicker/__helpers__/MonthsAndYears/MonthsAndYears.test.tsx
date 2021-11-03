@@ -53,18 +53,14 @@ describe("DatePicker <MonthsAndYears />", () => {
     expect(btns).toHaveLength(length);
     btns.forEach((btn, i) => {
       expect(btn).toBeVisible();
-      if (i === 0 && isMonths) {
-        expect(btn).toHaveClass("selected");
-      } else if (!isMonths && (i <= 2 || i >= 13)) {
+      if (i === 0 && isMonths) expect(btn).toHaveClass("selected");
+      else if (!isMonths && (i <= 2 || i >= 13)) {
         expect(btn).toHaveClass("other-year");
         expect(btn).not.toHaveStyle("opacity: 1");
-      } else {
-        expect(btn).toHaveAttribute("class");
-      }
+      } else expect(btn).toHaveAttribute("class");
       expect(btn.onmousedown).toBeDefined();
-      if (isMonths) {
-        expect(btn).toHaveTextContent(MONTHS[i]);
-      } else {
+      if (isMonths) expect(btn).toHaveTextContent(MONTHS[i]);
+      else {
         const year = String(decade - yearsBeforeAfter + i);
         expect(btn).toHaveTextContent(String(year));
       }
@@ -76,9 +72,7 @@ describe("DatePicker <MonthsAndYears />", () => {
     const container = screen.getByTestId(`date-picker-tbody-${defaultMode}-container`);
     const btns = screen.getAllByTestId(`date-picker-tbody-${defaultMode}-container-btn`);
 
-    await waitFor(() => {
-      expect(container).toBeVisible();
-    });
+    await waitFor(() => expect(container).toBeVisible());
 
     const isMonths = defaultMode === "months";
     expect(btns).toHaveLength(isMonths ? 12 : 16);
@@ -86,9 +80,7 @@ describe("DatePicker <MonthsAndYears />", () => {
     userEvent.click(btns[isMonths ? 1 : 5]);
 
     if (isMonths) {
-      await waitFor(() => {
-        expect(container).not.toBeVisible();
-      }, { timeout: 2500 });
+      await waitFor(() => expect(container).not.toBeVisible(), { timeout: 2500 });
       const dateMonth = screen.getByTestId(`date-picker-months-container-date-month`);
       expect(dateMonth).toHaveTextContent("February");
     } else {
@@ -101,12 +93,7 @@ describe("DatePicker <MonthsAndYears />", () => {
     render(
       <DefaultDatePicker
         defaultMode="months"
-        disabledDays={{
-          from: { date: TEST_DEFAULT_DATE },
-          till: {
-            date: TEST_DEFAULT_DATE.add(2, "month"),
-          },
-        }}
+        disabledDays={{ from: { date: TEST_DEFAULT_DATE }, till: { date: TEST_DEFAULT_DATE.add(2, "month") } }}
       />
     );
 
@@ -114,18 +101,13 @@ describe("DatePicker <MonthsAndYears />", () => {
     const btns = screen.getAllByTestId("date-picker-tbody-months-container-btn");
     const operationBtns = screen.getAllByTestId("date-picker-operation-btn");
 
-    await waitFor(() => {
-      expect(container).toBeVisible();
-    });
+    await waitFor(() => expect(container).toBeVisible());
 
-    operationBtns.forEach(btn => {
-      expect(btn).toBeDisabled();
-    });
+    operationBtns.forEach(btn => expect(btn).toBeDisabled());
 
     btns.forEach((btn, i) => {
-      if (i <= 2) {
-        expect(btn).not.toBeDisabled();
-      } else {
+      if (i <= 2) expect(btn).not.toBeDisabled();
+      else {
         expect(btn).toBeDisabled();
         expect(btn).not.toHaveStyle("opacity: 1");
       }
@@ -142,12 +124,7 @@ describe("DatePicker <MonthsAndYears />", () => {
     render(
       <DefaultDatePicker
         defaultMode="years"
-        disabledDays={{
-          from: { date: TEST_DEFAULT_DATE },
-          till: {
-            date: TEST_DEFAULT_DATE.add(5, "years"),
-          },
-        }}
+        disabledDays={{ from: { date: TEST_DEFAULT_DATE }, till: { date: TEST_DEFAULT_DATE.add(5, "years") } }}
       />
     );
 
@@ -155,18 +132,13 @@ describe("DatePicker <MonthsAndYears />", () => {
     const btns = screen.getAllByTestId("date-picker-tbody-years-container-btn");
     const operationBtns = screen.getAllByTestId("date-picker-operation-btn");
 
-    await waitFor(() => {
-      expect(container).toBeVisible();
-    });
+    await waitFor(() => expect(container).toBeVisible());
 
-    operationBtns.forEach(btn => {
-      expect(btn).toBeDisabled();
-    });
+    operationBtns.forEach(btn => expect(btn).toBeDisabled());
 
     btns.forEach((btn, i) => {
-      if (i >= 4 && i <= 9) {
-        expect(btn).not.toBeDisabled();
-      } else {
+      if (i >= 4 && i <= 9) expect(btn).not.toBeDisabled();
+      else {
         expect(btn).toBeDisabled();
         expect(btn).toHaveClass("other-year");
         expect(btn).not.toHaveStyle("opacity: 1");

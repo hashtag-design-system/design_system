@@ -1,14 +1,17 @@
+@use "sass:math";
+
 $base-size: 16;
 
 @function em($target, $context: $base-size) {
-  @return ($target / $context) * 1em;
+  @return math.div($target, $context) * 1em;
 }
 
 @function rem($target, $context: $base-size) {
-  @return ($target / $context) * 1rem;
+  @return math.div($target, $context) * 1rem;
 }
 
 // https://stackoverflow.com/a/29546639/13142787
 @function flex-basis($columns, $margin: 0) {
-  @return (calc(100% * (1 / #{$columns}) - #{$margin * 2}));
+  $const: 100% * math.div(1, $columns);
+  @return calc(#{$const} - #{$margin} * 2);
 }

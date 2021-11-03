@@ -37,45 +37,30 @@ const DigitSequence: React.FunctionComponent<FProps> = ({
         const idx = i + index;
         const last = idx === numberOfDigits - 1;
         setValue(prevState => [...prevState, letter]);
-        if (!last && curVal.length >= 1) {
-          focus(idx + 1);
-        } else {
-          blur(idx);
-        }
+        if (!last && curVal.length >= 1) focus(idx + 1);
+        else blur(idx);
       });
-    } else {
-      setValue(prevState => [...prevState.filter((_, index) => index !== i)]);
-    }
+    } else setValue(prevState => [...prevState.filter((_, index) => index !== i)]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, i: number) => {
-    if (e.key === "Backspace" && e.currentTarget.value.length === 0) {
-      focus(i - 1);
-    }
+    if (e.key === "Backspace" && e.currentTarget.value.length === 0) focus(i - 1);
   };
 
   const focus = (i: number) => {
-    if (inputRefs.current[i]) {
-      inputRefs.current[i]?.focus();
-    }
+    if (inputRefs.current[i]) inputRefs.current[i]?.focus();
   };
 
   const blur = (i: number) => {
-    if (inputRefs.current[i]) {
-      inputRefs.current[i]?.blur();
-    }
+    if (inputRefs.current[i]) inputRefs.current[i]?.blur();
   };
 
   useEffect(() => {
-    if (focusOnRender) {
-      focus(0);
-    }
+    if (focusOnRender) focus(0);
   }, [focusOnRender]);
 
   useEffect(() => {
-    if (onChange) {
-      onChange(value.join(""));
-    }
+    if (onChange) onChange(value.join(""));
   }, [value, onChange]);
 
   return (

@@ -1,7 +1,7 @@
 import { debounce } from "lodash";
 import React, { useCallback, useState } from "react";
 import { useClassnames, useSelectContext, useAutosuggest } from "../../utils";
-import Input, { InputFProps } from "../Input";
+import Input, { InputFProps } from "../Input2";
 import { SelectedItems } from "./Select";
 
 // Big thanks to -> https://dev.to/_martinwheeler_/create-a-react-search-bar-that-highlights-your-results-4hdh

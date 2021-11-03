@@ -22,7 +22,8 @@
     "index-tsx": "yarn fresh-index && yarn comment-index",
     "fresh-index": "gulp freshIndex",
     "comment-index": "gulp commentIndex",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "gen:theme-typings": "chakra-cli tokens src/theme/index.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -55,28 +56,38 @@
     ]
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.10",
+    "@emotion/react": "11",
+    "@emotion/styled": "11",
+    "@hashtag-design-system/icons": "0.2.0",
     "@hashtag-design-system/primitives": "1.2.16",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@the_hashtag/common": "^1.1.2",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.6",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "create-react-app": "^5.0.0-next.47",
     "dayjs": "^1.10.6",
-    "framer-motion": "^4.1.17",
-    "libphonenumber-js": "^1.9.23",
+    "framer-motion": "4.1.17",
+    "libphonenumber-js": "^1.9.39",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-device-detect": "^1.17.0",
+    "react-device-detect": "^2.1.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.12.2",
+    "react-hook-form": "^7.18.0",
     "react-scripts": "^4.0.3",
     "react-window": "^1.8.6",
-    "swiper": "^6.8.1",
-    "typescript": "^4.3.5",
-    "ua-parser-js": "^0.7.28",
+    "swiper": "^7.2.0",
+    "typescript": "^4.4.4",
+    "ua-parser-js": "^1.0.2",
     "vanilla-tilt": "^1.7.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^20.0.0",
+    "@chakra-ui/cli": "^1.5.3",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
     "@storybook/addon-actions": "^6.3.7",
@@ -87,11 +98,7 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.3.7",
     "@types/glob-base": "^0.3.0",
-    "@types/jest": "^27.0.0",
     "@types/lodash": "^4.14.172",
-    "@types/node": "^16.4.14",
-    "@types/react": "^17.0.17",
-    "@types/react-dom": "^17.0.9",
     "@types/react-test-renderer": "^17.0.1",
     "@types/react-window": "^1.8.5",
     "@types/swiper": "^5.4.3",
@@ -106,19 +113,23 @@
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
     "react-test-renderer": "^17.0.2",
-    "rollup": "^2.56.2",
-    "rollup-plugin-dts": "^3.0.2",
+    "rollup": "^2.58.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-dts": "^4.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
-    "sass": "^1.37.5",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "sass": "^1.43.4",
     "sass-module-importer": "^1.4.0",
     "storybook-addon-designs": "^6.0.1",
-    "typescript": "^4.3.5"
+    "storybook-addon-performance": "^0.16.1",
+    "storybook-addon-toolbar-actions": "^0.4.8"
   },
   "peerDependencies": {
+    "@chakra-ui/react": "^1.6.10",
     "@hashtag-design-system/primitives": ">=1.2.10",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

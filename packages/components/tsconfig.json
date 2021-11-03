@@ -1,16 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist/esm",
+    "rootDir": "./src",
+    "outDir": "build",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "target": "ES6",
-    "lib": [
-      "ES6",
-      "DOM",
-      "DOM.Iterable",
-      "ES2016",
-      "ES2017"
-    ],
+    "target": "ES2020",
+    "lib": ["ES6", "DOM", "DOM.Iterable", "ES2020"],
     "jsx": "react-jsx",
     "noUnusedLocals": false,
     "noUnusedParameters": true,
@@ -31,14 +26,14 @@
     "noFallthroughCasesInSwitch": false,
     "sourceMap": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "declarationDir": "build/types"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "dist",
+    "build",
     "src/__tests__",
     "src/**/__tests__",
     "src/**/*.test.ts",

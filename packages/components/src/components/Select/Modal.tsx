@@ -57,9 +57,7 @@ export const Modal: React.FC<FProps> = ({ align = "left", fullWidth = false, ope
 
         const { style } = current;
 
-        if (rects.x < 0) {
-          style.left = String(Math.abs(rects.x)) + "px";
-        }
+        if (rects.x < 0) style.left = String(Math.abs(rects.x)) + "px";
         const { clientWidth, clientHeight } = document.documentElement;
         if (rects.right > clientWidth) {
           const diff = clientWidth - rects.right;
@@ -99,9 +97,7 @@ export const Modal: React.FC<FProps> = ({ align = "left", fullWidth = false, ope
         transition={{ type: "tween", duration: 0.25 }}
         className={classNames}
         data-testid="select-modal"
-        onAnimationComplete={() => {
-          setAnimationEnd(true);
-        }}
+        onAnimationComplete={() => setAnimationEnd(true)}
         {...rest}
       >
         {children}

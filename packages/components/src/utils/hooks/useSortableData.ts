@@ -9,21 +9,20 @@ export const useSortableData = <T extends Record<string, any>>(data: T[], config
   const [items, setItems] = useState(data);
   const [sort, setSort] = useState<SortConfigType<T> | undefined>(config);
 
+  // eslint-disable-next-line
+  useEffect(() => setItems(data), [data.length]);
+
   useEffect(() => {
-    if (sort) {
-      const { key, direction } = sort;
-      setItems(prevData =>
-        prevData.slice().sort((a, b) => {
-          if (a[key] < b[key]) {
-            return direction === "desc" ? 1 : -1;
-          }
-          if (a[key] > b[key]) {
-            return direction === "asc" ? 1 : -1;
-          }
-          return 0;
-        })
-      );
-    }
+    if (!sort) return;
+    const { key, direction } = sort;
+    setItems(
+      data.slice().sort((a, b) => {
+        if (a[key] < b[key]) return direction === "desc" ? 1 : -1;
+        if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
+        return 0;
+      })
+    );
+    // eslint-disable-next-line
   }, [sort]);
 
   return { data: items, setSort };

@@ -1,5 +1,5 @@
-import { useHasMounted } from "../index";
 import { useEffect, useState } from "react";
+import { useHasMounted } from "../index";
 
 // Recommended in -> https://codesandbox.io/s/z20gn?file=/pages/index.js:336-397
 
@@ -21,17 +21,13 @@ export const useLocalStorage = ({
     if (hasMounted) {
       const stickyValue = localStorage.getItem(key);
 
-      if (stickyValue) {
-        setStoredValue(stickyValue);
-      }
+      if (stickyValue) setStoredValue(stickyValue);
     }
-  }, [hasMounted]);
+  }, [hasMounted, key]);
 
   useEffect(() => {
-    if (hasMounted && storedValue !== null) {
-      localStorage.setItem(key, storedValue);
-    }
-  }, [hasMounted]);
+    if (hasMounted && storedValue !== null) localStorage.setItem(key, storedValue);
+  }, [hasMounted, key, storedValue]);
 
   return [storedValue, setStoredValue];
 };

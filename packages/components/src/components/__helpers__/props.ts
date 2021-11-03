@@ -1,3 +1,4 @@
+import React from "react";
 import { SelectionInputLabelType } from "./SelectionInput/LabelContainer";
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
@@ -81,7 +82,7 @@ export type InputType = typeof InputTypes[number];
 
 export type SelectionInputProps = {
   defaultChecked?: boolean;
-  label?: string | SelectionInputLabelType;
+  label?: SelectionInputLabelType["value"] | SelectionInputLabelType;
   groupName?: string;
   incheck?: (isChecked: boolean) => void;
 };

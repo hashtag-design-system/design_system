@@ -14,19 +14,14 @@ const Th: React.FC<FProps> = ({ sort, onClick, children, ...props }) => {
   const [sortDirection, setSortDirection] = useState<SortDirection | "">("");
   const [classNames, rest] = useClassnames("table__thead__th", props);
 
-  const handleClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLTableCellElement>) => {
     let newDirection: SortDirection = sortDirection || "asc";
 
-    if (newDirection === "asc") {
-      newDirection = "desc";
-    } else {
-      newDirection = "asc";
-    }
+    if (newDirection === "asc") newDirection = "desc";
+    else newDirection = "asc";
 
     setSortDirection(newDirection);
-    if (onClick) {
-      onClick(e, { direction: newDirection });
-    }
+    if (onClick) onClick(e, { direction: newDirection });
   };
 
   return (

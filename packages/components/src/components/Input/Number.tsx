@@ -1,199 +1,172 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useMemo, useReducer, useState } from "react";
-import { InputContextProvider, useDisabled } from "../../utils";
-import Button from "../Button";
-import { InputFProps } from "./index";
-import { BaseNumber } from "./__helpers__";
-import { ACTIONS, reducer, ReducerInitialStateType } from "./__helpers__/numberReducer";
+import {
+  forwardRef,
+  NumberDecrementStepper,
+  NumberDecrementStepperProps,
+  NumberIncrementStepper,
+  NumberIncrementStepperProps,
+  NumberInput,
+  NumberInputField,
+  NumberInputFieldProps,
+  NumberInputProps,
+  useMergeRefs,
+  useMultiStyleConfig
+} from "@chakra-ui/react";
+import { Icon } from "@hashtag-design-system/icons";
+import { motion, MotionProps } from "framer-motion";
+import React, { useState } from "react";
+import { InputProps } from "./index";
+import { FloatingPlaceholder, InputNumberContextProvider, useInput, useInputNumberContext } from "./__helpers__";
 
-// See -> http://jsfiddle.net/8edLbmtz/
+const MotionIncrementStepper = motion<NumberIncrementStepperProps>(NumberIncrementStepper);
+const MotionDecrementStepper = motion<NumberDecrementStepperProps>(NumberDecrementStepper);
 
-const IS_UP_HEIGHT = "57.5%";
-const IS_DOWN_HEIGHT = "42.5%";
+/*
+ * NumberGroup
+ */
+export type GroupProps = Pick<InputProps, "hasFloatingPlaceholder"> &
+  NumberInputProps & {
+    format?: (val: string) => string;
+  };
 
-type NumberInputBtnsType = "up" | "down";
+export const Group = forwardRef<GroupProps, "div">(
+  (
+    { placeholder, hasFloatingPlaceholder = (placeholder?.length || 0) !== 0, children, format, onChange, onFocus, onBlur, ...props },
+    ref
+  ) => {
+    const { _internalValue, _setInternalValue, handleClear, ...rest } = useInput<"input">({
+      ...props,
+      onFocus,
+      onBlur,
+      hasFloatingPlaceholder,
+    });
 
-const initialState: ReducerInitialStateType = {
-  min: 0,
-  max: 9999999,
-  value: 0,
-  defaultValue: 0,
-  isDisabled: false,
-  hasShiftKey: false,
-};
-
-const animationVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
-
-export type Props = {
-  showBtnControl?: boolean;
-  none?: boolean;
-  onValue?: (value: number) => void;
-};
-
-export type FProps = Props & Omit<InputFProps, "characterLimit" | "type" | "allowClear" | "passwordboxes">;
-
-const Number: React.FunctionComponent<FProps> = ({
-  min = 0,
-  max = 9999999,
-  step = 1,
-  value: propsValue,
-  none = false,
-  defaultValue = min,
-  state = "default",
-  width = "7.5em",
-  overrideOnChange,
-  showBtnControl = true,
-  onValue,
-  onFocus,
-  onBlur,
-  onMouseOver,
-  onMouseLeave,
-  ...props
-}) => {
-  const isDisabled = useDisabled(props, state);
-  const [{ value }, dispatch] = useReducer(reducer, initialState, (): typeof initialState => {
-    return {
-      ...initialState,
-      value: none ? "none" : propsValue || defaultValue || min,
-      isDisabled,
-      min,
-      max,
-      none,
+    const handleChange = (valueAsString: string, valueAsNumber: number) => {
+      _setInternalValue(valueAsString);
+      if (onChange) onChange(valueAsString, valueAsNumber);
     };
-  });
-  const [isBtnShown, setIsBtnShown] = useState<boolean>(false || state === "hover" || state === "focus" || state === "disabled");
-  const [isUp, setIsUp] = useState<boolean>(false);
-  const [isDown, setIsDown] = useState<boolean>(false);
-  // const overlayControls = useAnimation();
 
-  const handleOperation = (e: React.MouseEvent<HTMLButtonElement>, operation: "increment" | "decrement", stepNumber = step) => {
-    e.preventDefault();
-    dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
-  };
+    return (
+      <InputNumberContextProvider value={{ ...props, ...rest, _internalValue, placeholder, hasFloatingPlaceholder }}>
+        {/* <Down /> */}
+        <NumberInput
+          width="100%"
+          {...props}
+          value={format ? format(_internalValue) : _internalValue}
+          ref={ref}
+          onChange={handleChange}
+        >
+          {children}
+        </NumberInput>
+      </InputNumberContextProvider>
+    );
+  }
+);
 
-  const toggleBtn = (boolean: boolean) => {
-    if (!isDisabled && state === "default") setIsBtnShown(boolean);
-  };
+Group.displayName = "InputNumberGroup";
 
-  const handleBtnMouse = (e: React.MouseEvent<HTMLButtonElement>, btn: NumberInputBtnsType, bool: boolean) => {
-    e.stopPropagation();
-    if (showBtnControl) {
-      if (btn === "up") setIsUp(bool);
-      else setIsDown(bool);
-    }
-  };
+/*
+ * Number
+ */
+export type NumberProps = NumberInputFieldProps;
 
-  useEffect(() => {
-    if (onValue) {
-      const parsedValue = parseFloat(value.toString() || min.toString());
-      onValue(parsedValue);
-    }
-  }, [value]);
+export const Number = React.forwardRef<HTMLInputElement, NumberProps>(
+  ({ children, onChange, onFocus, onBlur, ...props }, propsRef) => {
+    const {
+      _internalValue,
+      _internalRef,
+      hasAlready,
+      paddingLeft,
+      paddingTop,
+      paddingRight,
+      isFocused,
+      offsetLeft,
+      placeholder,
+      hasFloatingPlaceholder,
+      handleChange,
+      handleFocus,
+      handleBlur,
+      defaultValue,
+      value,
+      ...rest
+    } = useInputNumberContext();
 
-  const fIsBtnShown = useMemo(() => isBtnShown && showBtnControl, [isBtnShown, showBtnControl]);
+    const baseStyle = useMultiStyleConfig("NumberInput", props);
+    const refs = useMergeRefs(_internalRef, propsRef);
 
-  // TODO: Replace with <Icon /> components
-  return (
-    <div
-      style={{ height: "100%" }}
-      onMouseEnter={() => toggleBtn(true)}
-      onMouseLeave={() => toggleBtn(false)}
-      data-testid="input-number-container"
-    >
-      <InputContextProvider
-        value={{
-          ...props,
-          value,
-          dispatch,
-          defaultValue,
-          state: fIsBtnShown ? "focus" : state,
-          min,
-          max,
-          step,
-          width,
-          overrideOnChange,
-          onMouseOver: e => {
-            toggleBtn(true);
-            if (onMouseOver) onMouseOver(e);
-          },
-          onMouseLeave: e => {
-            toggleBtn(false);
-            if (onMouseLeave) onMouseLeave(e);
-          },
-          onFocus: e => {
-            toggleBtn(true);
+    return (
+      <>
+        <NumberInputField
+          paddingTop={paddingTop}
+          paddingLeft={paddingLeft ? paddingLeft + "px" : undefined}
+          paddingRight={paddingRight ? paddingRight + "px" : undefined}
+          {...props}
+          {...rest}
+          placeholder={hasFloatingPlaceholder ? undefined : placeholder}
+          ref={refs}
+          onChange={e => {
+            handleChange(e);
+            if (onChange) onChange(e);
+          }}
+          onFocus={e => {
+            handleFocus(e);
             if (onFocus) onFocus(e);
-          },
-          onBlur: e => {
-            toggleBtn(false);
+          }}
+          onBlur={e => {
+            handleBlur(e);
             if (onBlur) onBlur(e);
-          },
-        }}
-      >
-        <BaseNumber isBtnShown={fIsBtnShown} data-testid="input-number">
-          {/* <motion.div
-            className="input-number__overlay"
-            animate={overlayControls}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "90%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              height: "75%",
-              opacity: 0,
-              user-select: "none",
-              pointer-events: "none",
-            }}
-          /> */}
-          <AnimatePresence>
-            {fIsBtnShown && (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={animationVariants}
-                transition={{ duration: 0.3 }}
-                exit={animationVariants.hidden}
-                className="input-number__btn__container"
-                data-testid="input-number-btn-container"
-              >
-                <Button
-                  variant="secondary"
-                  style={{ height: isUp ? IS_UP_HEIGHT : isDown ? IS_DOWN_HEIGHT : undefined }}
-                  aria-label="Increment"
-                  onMouseEnter={e => handleBtnMouse(e, "up", true)}
-                  onMouseLeave={e => handleBtnMouse(e, "up", false)}
-                  onClick={e => handleOperation(e, "increment")}
-                  data-testid="input-number-btn-increase"
-                >
-                  <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.25 6.91665L7 1.08331L1.75 6.91665" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Button>
-                <Button
-                  variant="secondary"
-                  style={{ height: isDown ? IS_UP_HEIGHT : isUp ? IS_DOWN_HEIGHT : undefined }}
-                  aria-label="Decrement"
-                  onMouseEnter={e => handleBtnMouse(e, "down", true)}
-                  onMouseLeave={e => handleBtnMouse(e, "down", false)}
-                  onClick={e => handleOperation(e, "decrement")}
-                  data-testid="input-number-btn-decrease"
-                >
-                  <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.25 1.08332L7 6.91666L1.75 1.08332" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </BaseNumber>
-      </InputContextProvider>
-    </div>
-  );
+          }}
+        />
+        <FloatingPlaceholder
+          placeholder={placeholder}
+          hasFloatingPlaceholder={hasFloatingPlaceholder}
+          _internalValue={_internalValue}
+          isFocused={isFocused}
+          hasAlreadyLabel={hasAlready.label}
+          offsetLeft={offsetLeft}
+          defaultPaddingX={+(baseStyle.field.px?.toString() || 0) * 0.25}
+          paddingLeft={paddingLeft}
+        />
+        {children}
+      </>
+    );
+  }
+);
+
+Number.displayName = "InputNumber";
+
+/*
+ * Stepper
+ */
+export type StepperProps = (NumberIncrementStepperProps | NumberDecrementStepperProps) & {
+  type: "increment" | "decrement";
 };
 
-export default Number;
+export const Stepper: React.FC<StepperProps> = forwardRef<StepperProps, "div">(({ type }, ref) => {
+  const [hasHover, setHasHover] = useState(false);
+
+  const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    setHasHover(e.type === "mouseover" ? true : false);
+  };
+
+  const rest: (NumberIncrementStepperProps | NumberDecrementStepperProps) &
+    MotionProps &
+    Pick<React.ComponentPropsWithRef<"div">, "ref"> = {
+    ref,
+    flex: hasHover ? "none" : 1,
+    animate: { height: hasHover ? "62.5%" : "50%", transition: { duration: 0.2 } },
+    onMouseOver: handleHover,
+    onMouseOut: handleHover,
+  };
+
+  return type === "increment" ? (
+    <MotionIncrementStepper {...rest}>
+      <Icon.Chevron.Up />
+    </MotionIncrementStepper>
+  ) : (
+    <MotionDecrementStepper {...rest}>
+      <Icon.Chevron.Down />
+    </MotionDecrementStepper>
+  );
+});
+
+Stepper.displayName = "InputNumberIncrementStepperProps";

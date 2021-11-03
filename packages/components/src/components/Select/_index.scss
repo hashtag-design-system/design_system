@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "./__helpers__/mixins";
 
 .select {
@@ -9,7 +10,7 @@
     height: auto;
     justify-content: space-between;
     border-color: $input-border-color;
-    border-width: $input-border-width / 2;
+    border-width: math.div($input-border-width, 2);
     box-shadow: 0px 0px 2px rgba(194, 194, 194, 0.25);
 
     &::marker {
@@ -31,11 +32,11 @@
       border-color: $grey-7;
     }
 
-    p {
+    & > div {
       text-align: left;
-      overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
@@ -78,7 +79,7 @@
     z-index: 99;
     border-radius: 6px;
     pointer-events: auto;
-    border: $input-border-width / 2 solid $input-border-color;
+    border: math.div($input-border-width, 2) solid $input-border-color;
     height: auto;
     width: auto;
     box-sizing: border-box;
@@ -200,7 +201,7 @@
     display: block;
     width: auto;
     margin: 0.25em 0;
-    height: $input-border-width / 2;
+    height: math.div($input-border-width, 2);
     background: $input-border-color;
   }
 

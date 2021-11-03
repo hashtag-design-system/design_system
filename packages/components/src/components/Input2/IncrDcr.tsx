@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 import { InputContextProvider, useClassnames, useDisabled } from "../../utils";
 import Button, { ButtonFProps } from "../Button";
 import { ComponentProps } from "../__helpers__";
@@ -24,6 +24,7 @@ export type IncrDcrState = typeof IncrDcrStates[number] | InputBaseState;
 export const initialState: ReducerInitialStateType = {
   min: 1,
   max: 9999,
+  step: 1,
   value: 1,
   defaultValue: 1,
   isDisabled: false,
@@ -33,12 +34,13 @@ export const initialState: ReducerInitialStateType = {
 export type Props = {
   btnProps?: ButtonFProps;
   onBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}
+};
 
-export type FProps = Props & Omit<
-  InputNumberFProps,
-  "state" | "helptext" | "secondhelptext" | "floatingplaceholder" | "label" | "optional" | "prefix" | "suffix"
-> &
+export type FProps = Props &
+  Omit<
+    InputNumberFProps,
+    "state" | "helptext" | "secondhelptext" | "floatingplaceholder" | "label" | "optional" | "prefix" | "suffix"
+  > &
   Pick<ComponentProps<"input", false, IncrDcrState>, "state">;
 
 const IncrDcr: React.FunctionComponent<FProps> = ({
@@ -52,7 +54,9 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
   state = "default",
   btnProps,
   onValue,
+  onChange,
   onBtnClick,
+  onKeyUpCapture,
   ...props
 }) => {
   const [classNames, rest] = useClassnames("input-incr-dcr", props);
@@ -67,20 +71,31 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
     };
   });
 
+  const handleValue = (newVal: string) => {
+    if (onValue) onValue(parseFloat(newVal || min.toString()));
+  };
+
   const handleOperation = (e: React.MouseEvent<HTMLButtonElement>, operation: "increment" | "decrement", stepNumber = step) => {
     e.preventDefault();
     dispatch({ type: ACTIONS[operation.toUpperCase()], payload: { step: stepNumber } });
-    if (onBtnClick) {
-      onBtnClick(e);
-    }
+    if (onBtnClick) onBtnClick(e);
+    setTimeout(() => {
+      const newVal = (e.target as HTMLButtonElement).parentElement
+        ?.closest(".input-incr-dcr__container")
+        ?.getElementsByTagName("input")[0].value;
+      if (newVal !== undefined) handleValue(newVal);
+    }, 1);
   };
 
-  useEffect(() => {
-    if (onValue) {
-      const parsedValue = parseFloat(value.toString() || min.toString());
-      onValue(parsedValue);
-    }
-  }, [value]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) onChange(e);
+    handleValue(e.target.value);
+  };
+
+  const handleKeyUpCapture = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (onKeyUpCapture) onKeyUpCapture(e);
+    handleValue((e.target as HTMLInputElement).value);
+  };
 
   const active = state === "active";
   const leftActive =
@@ -120,6 +135,8 @@ const IncrDcr: React.FunctionComponent<FProps> = ({
           className: classNames,
           width,
           overrideOnChange,
+          onChange: e => handleChange(e),
+          onKeyUpCapture: e => handleKeyUpCapture(e),
         }}
       >
         <BaseNumber data-testid="input-incr-dcr" />

@@ -1,6 +1,6 @@
-@use "@hashtag-design-system/primitives/src/globals.scss" as *;
-@import "@hashtag-design-system/primitives/src/index.scss";
-@import "swiper/swiper.scss";
+@import "~@hashtag-design-system/primitives/src/globals.scss";
+// @import "~@hashtag-design-system/primitives/src/index.scss";
+@import "~swiper/swiper.scss";
 @import "components/__helpers__/index";
 @import "components/Button/index";
 @import "components/Checkbox/index";
@@ -9,7 +9,7 @@
 @import "components/Select/index";
 @import "components/Dropdown/index";
 @import "components/Slider/index";
-@import "components/Input/index";
+@import "components/Input2/index";
 @import "components/Pagination/index";
 @import "components/Form/index";
 @import "components/Dialog/index";
@@ -21,6 +21,8 @@
 @import "components/DatePicker/index";
 @import "components/TimePicker/index";
 
+// $portal-selector refers to an ID selector
+// Double # need to be used in order to work correctly
 ##{$portal-selector} {
   position: relative;
   z-index: 999;
@@ -36,6 +38,7 @@
   height: 100%;
   gap: em(48);
   padding: 25px 50px;
+  padding-bottom: 8em;
 }
 
 .App > * {
@@ -59,7 +62,7 @@
   gap: em(48);
 
   &.credit-card {
-    background-image: url(./static/credit-card-bg.jfif);
+    // background-image: url(./static/credit-card-bg.jfif);
     background-size: cover;
   }
 }

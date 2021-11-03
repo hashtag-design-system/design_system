@@ -22,22 +22,14 @@ const Autosuggest: React.FC<FProps> = React.memo(
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsShown(true);
-
-      if (onFocus) {
-        onFocus(e);
-      }
+      if (onFocus) onFocus(e);
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      if (key === "Tab") {
-        return;
-      }
-
+      if (key === "Tab") return;
       setIsShown(false);
 
-      if (onBlur) {
-        onBlur(e);
-      }
+      if (onBlur) onBlur(e);
     };
 
     const handleChange = useCallback(
@@ -48,9 +40,7 @@ const Autosuggest: React.FC<FProps> = React.memo(
           setIsShown(true);
         }
 
-        if (onChange) {
-          onChange(newVal, e);
-        }
+        if (onChange) onChange(newVal, e);
       },
       [isDisabled, onChange]
     );
@@ -74,35 +64,19 @@ const Autosuggest: React.FC<FProps> = React.memo(
         const newVal = checkedItem[0].content;
         setValue(newVal);
 
-        if (onChange) {
-          onChange(newVal);
-        }
+        if (onChange) onChange(newVal);
       }
-      if (onSelect) {
-        onSelect(selectItems);
-      }
+      if (onSelect) onSelect(selectItems);
     };
 
     useEffect(() => {
       const checkedItems = items.filter(item => item.selected);
-      if (isShown && checkedItems.length > 0) {
-        setIsShown(false);
-      }
-
+      if (isShown && checkedItems.length > 0) setIsShown(false);
       // eslint-disable-next-line
     }, [items]);
 
     return (
-      <AutosuggestContextProvider
-        value={{
-          inputValue: value,
-          key,
-          setKey,
-          filterById,
-          handleChange,
-          handleFocus,
-        }}
-      >
+      <AutosuggestContextProvider value={{ inputValue: value, key, setKey, filterById, handleChange, handleFocus }}>
         <div className="autosuggest__container">
           <Select
             open

@@ -52,21 +52,9 @@ describe("<Autosuggest />", () => {
       expect(filterInput).toHaveFocus();
 
       if (eventType === "blur" || eventType === "escape") {
-        if (eventType === "blur") {
-          act(() => {
-            filterInput.blur();
-          });
-        } else {
-          fireEvent.keyDown(filterInput, {
-            key: "Escape",
-            code: "Escape",
-            keyCode: 27,
-            charCode: 27,
-          });
-        }
-        await waitFor(() => {
-          expect(modal).not.toBeVisible();
-        }, { timeout: 5000 });
+        if (eventType === "blur") act(() => filterInput.blur());
+        else fireEvent.keyDown(filterInput, { key: "Escape", code: "Escape", keyCode: 27, charCode: 27 });
+        await waitFor(() => expect(modal).not.toBeVisible(), { timeout: 5000 });
         expect(filterInput).not.toHaveFocus();
       }
     }, 10000);
@@ -80,13 +68,9 @@ describe("<Autosuggest />", () => {
       const modal = screen.getByTestId("select-modal");
 
       const testVal = "hey";
-      act(() => {
-        userEvent.type(filterInput, testVal);
-      });
+      act(() => userEvent.type(filterInput, testVal));
       // expect(filterInput).toHaveValue(testVal);
-      await waitFor(() => {
-        expect(modal).toBeVisible();
-      });
+      await waitFor(() => expect(modal).toBeVisible());
       expect(onChange).toHaveBeenCalledTimes(testVal.length);
       // expect(onChange.mock.results[testVal.length - 1].value).toBe(testVal);
       const items = screen.getAllByTestId("select-item");
@@ -101,13 +85,9 @@ describe("<Autosuggest />", () => {
         });
       });
 
-      act(() => {
-        items[0].click();
-      });
+      act(() => items[0].click());
 
-      await waitFor(() => {
-        expect(modal).not.toBeVisible();
-      }, { timeout: 5000 });
+      await waitFor(() => expect(modal).not.toBeVisible(), { timeout: 5000 });
       const firstItemText = items[0].textContent;
       expect(filterInput).toHaveValue(firstItemText);
       expect(onSelect).toHaveBeenCalledTimes(1);
@@ -120,10 +100,7 @@ describe("<Autosuggest />", () => {
 
       expect(filterInput).toHaveValue(firstItemText?.slice(0, -2) + secondTestVal);
 
-      act(() => {
-        filterInput.blur();
-      });
-
+      act(() => filterInput.blur());
       expect(filterInput).toHaveValue(firstItemText?.slice(0, -2) + secondTestVal);
     }, 10000);
     test("onChange -> onBlur -> onFocus => items.length should be the same", async () => {
@@ -134,9 +111,7 @@ describe("<Autosuggest />", () => {
       const testVal = "hey";
       userEvent.type(filterInput, testVal);
       expect(filterInput).toHaveValue(testVal);
-      await waitFor(() => {
-        expect(modal).toBeVisible();
-      });
+      await waitFor(() => expect(modal).toBeVisible());
       const items = screen.getAllByTestId("select-item");
       expect(items).toHaveLength(6);
       let shownItems: HTMLElement[] = [];
@@ -150,18 +125,12 @@ describe("<Autosuggest />", () => {
         });
       });
 
-      act(() => {
-        filterInput.blur();
-      });
+      act(() => filterInput.blur());
 
       expect(filterInput).toHaveValue(testVal);
 
-      act(() => {
-        filterInput.focus();
-      });
-      await waitFor(() => {
-        expect(modal).toBeVisible();
-      });
+      act(() => filterInput.focus());
+      await waitFor(() => expect(modal).toBeVisible());
       expect(filterInput).toHaveValue(testVal);
       expect(shownItems).toHaveLength(shownItems.length);
     });

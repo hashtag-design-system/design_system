@@ -2,7 +2,7 @@ import { COUNTRIES, COUNTRIES_ARR, COUNTRIES_LITERAL_TYPE } from "@the_hashtag/c
 import { AsYouType, CountryCode } from "libphonenumber-js";
 import React, { useCallback, useEffect, useState } from "react";
 import { useClassnames, useDisabled } from "../../utils";
-import Select, { SelectButtonFProps, SelectFilterFProps, SelectFProps, SelectModalFProps, SelectOptionsFProps } from "../Select";
+import Select, { SelectButtonFProps, SelectCountriesProps, SelectFilterFProps, SelectFProps, SelectModalFProps, SelectOptionsFProps } from "../Select";
 import { SelectedItems } from "../Select/Select";
 import Input, { InputFProps } from "./index";
 
@@ -14,7 +14,7 @@ export type Props = {
   selectModalProps?: SelectModalFProps;
   selectFilterProps?: SelectFilterFProps;
   selectOptionsProps?: SelectOptionsFProps;
-};
+} & Pick<SelectCountriesProps, "withFlags">;
 
 const Tel: React.FC<Props> = React.memo(
   ({
@@ -25,6 +25,7 @@ const Tel: React.FC<Props> = React.memo(
     selectModalProps,
     selectFilterProps,
     selectOptionsProps,
+    withFlags = true,
   }) => {
     const { onSelect: selectPropsOnSelect, ...selectSRest } = selectProps;
     const { children: selectBtnChildren, ...selectBtnSRest } = selectBtnProps;
@@ -49,13 +50,9 @@ const Tel: React.FC<Props> = React.memo(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         const newVal = e.target.value;
 
-        if (!isDisabled) {
-          setVal(newVal);
-        }
+        if (!isDisabled) setVal(newVal);
 
-        if (inputOnChange) {
-          inputOnChange(e);
-        }
+        if (inputOnChange) inputOnChange(e);
       },
       [setVal, isDisabled, inputOnChange]
     );
@@ -63,22 +60,16 @@ const Tel: React.FC<Props> = React.memo(
     const handleSelect = useCallback(
       (items: SelectedItems[]) => {
         const selectedCountry = items.find(item => item.selected);
-        if (!selectedCountry || isDisabled) {
-          return;
-        }
+        if (!selectedCountry || isDisabled) return;
         const content = selectedCountry?.content;
         // https://stackoverflow.com/a/17779833/13142787
         const cCode = new RegExp(/\(\+([^)]+)\)/).exec(content);
-        if (!cCode) {
-          return;
-        }
+        if (!cCode) return;
         const countryName = content.replace(cCode[0], "").trimEnd();
         const country = COUNTRIES[countryName.toUpperCase() as COUNTRIES_LITERAL_TYPE];
         setCountryCode(country.alpha2Code as CountryCode);
 
-        if (selectPropsOnSelect) {
-          selectPropsOnSelect(items);
-        }
+        if (selectPropsOnSelect) selectPropsOnSelect(items);
       },
       [isDisabled, selectPropsOnSelect]
     );
@@ -148,6 +139,7 @@ const Tel: React.FC<Props> = React.memo(
                     name={name}
                     content={name + ` (+${callingCode})`}
                     callingCode={callingCode}
+                    withFlags={withFlags}
                     // style={style}
                     {...country}
                     valueAlternative={"+" + callingCode}

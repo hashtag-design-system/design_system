@@ -12,9 +12,7 @@ export const useIsMobile = (overideValue?: boolean): { isMobile: boolean; parser
   useEffect(() => {
     if (overideValue === undefined) {
       setIsMobile(["mobile", "tablet", "wearable", "smarttv"].includes(parser.getDevice().type || "") || isMobileByDetect);
-    } else {
-      setIsMobile(overideValue);
-    }
+    } else setIsMobile(overideValue);
   }, [overideValue, parser, windowDimensions.width, windowDimensions.height]);
 
   return { isMobile, parser };

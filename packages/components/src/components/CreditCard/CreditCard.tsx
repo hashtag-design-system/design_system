@@ -20,9 +20,7 @@ const CreditCard: React.FC<FProps> = ({ brand, creditNum, ownerName, expirationD
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref && ref.current) {
-      VanillaTilt.init(ref.current, { max: 35, speed: 650, glare: true, "max-glare": 0.5 });
-    }
+    if (ref && ref.current) VanillaTilt.init(ref.current, { max: 35, speed: 650, glare: true, "max-glare": 0.5 });
   }, []);
 
   const url = (brand?: string) => {
