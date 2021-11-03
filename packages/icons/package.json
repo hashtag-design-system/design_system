@@ -1,6 +1,6 @@
 {
   "name": "@hashtag-design-system/icons",
-  "version": "0.3.0",
+  "version": "0.2.0",
   "private": false,
   "scripts": {
     "build": "rollup -c rollup.config.js"
@@ -30,6 +30,12 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@chakra-ui/babel-plugin": "^1.0.0",
+    "@emotion/babel-plugin": "^11.3.0",
+    "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",

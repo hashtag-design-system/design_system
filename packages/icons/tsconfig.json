@@ -1,25 +1,45 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "rootDir": "./src",
+    "outDir": "build",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "target": "ES2020",
+    "lib": ["ES6", "DOM", "DOM.Iterable", "ES2020"],
+    "jsx": "react-jsx",
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": false,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "build/types"
   },
-  "include": [
-    "src"
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "src/__tests__",
+    "src/**/__tests__",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.jsx",
+    "src/**/*.stories.tsx"
   ]
 }
